@@ -5,10 +5,10 @@ import 'AddTeacher.dart';
 import '../Teacher.dart';
 import 'TeacherDetails.dart';
 
-var teacher1 = new Teacher("زهراء الهليس", "معلمة");
-var teacher2 = new Teacher("احمد الغلاييني", "معلمة");
-var teacher3 = new Teacher("غنى الغلاييني", "معلمة");
-var teacher4 = new Teacher("زوزو الغلاييني", "معلمة");
+var teacher1 = new Teacher(name: 'الزهراء', age: '22',email: 'zozo',birthday: '22/0',gender: 'f',uid: '123',type: 'teacher',phone: '050');
+var teacher2 = new Teacher(name: 'الزهراء', age: '22',email: 'zozo',birthday: '22/0',gender: 'f',uid: '123',type: 'teacher',phone: '050');
+var teacher3 = new Teacher(name: 'الزهراء', age: '22',email: 'zozo',birthday: '22/0',gender: 'f',uid: '123',type: 'teacher',phone: '050');
+var teacher4 = new Teacher(name: 'الزهراء', age: '22',email: 'zozo',birthday: '22/0',gender: 'f',uid: '123',type: 'teacher',phone: '050');
 
 List<Teacher> teachers = [teacher1, teacher2, teacher3, teacher4];
 List<Teacher> FilteringTeachers = [teacher1, teacher2, teacher3, teacher4];
@@ -38,7 +38,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                   setState(() {
                     FilteringTeachers = (teachers.where((element) =>
                     element.name.contains(string) ||
-                        element.position.contains(string))).toList();
+                        element.type.contains(string))).toList();
                       });
                     },
                   ),
@@ -71,7 +71,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                   title: Text(FilteringTeachers[index].name,
                                       style: KTextPageStyle),
                                   subtitle: Text(
-                                      FilteringTeachers[index].position,
+                                      FilteringTeachers[index].type,
                                       style: KTextPageStyle),
                               onTap: () {
                                       Navigator.pushReplacement(
@@ -80,7 +80,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                             builder: (context) => TeacherInfo(
                                                 FilteringTeachers[index].name,
                                                 FilteringTeachers[index]
-                                                    .position)),
+                                                    .type)),
                                       );
                                   }
                                   )
