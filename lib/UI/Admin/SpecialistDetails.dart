@@ -16,7 +16,6 @@ class SpecialistInfo extends StatelessWidget {
     final _formkey = GlobalKey<FormState>();
     return Scaffold(
         appBar: AppBar(
-          actions: <Widget>[KAppBarTextInkwell(text:"إلغاء",page: MainAdminScreen(1))],
           title: Text("معلومات الأخصائي ", style: KTextAppBarStyle),
           centerTitle: true,
           backgroundColor: KAppBarColor,
@@ -39,6 +38,11 @@ class SpecialistInfo extends StatelessWidget {
                           style: KTextPageStyle,
                         ),
                       ])
-                    ])))));
+                    ]
+                    )
+                )
+            )
+        )
+    );
   }
 }

@@ -1,9 +1,11 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../Constance.dart';
 import '../ForgetPass.dart';
 import 'TeacherMainScreen.dart';
+import '../../services/auth.dart';
 
 class TeacherLoginScreen extends StatefulWidget {
   @override
@@ -13,8 +15,11 @@ class TeacherLoginScreen extends StatefulWidget {
 class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
   TextEditingController _emailcontroller = TextEditingController();
   TextEditingController _passwordcontroller = TextEditingController();
+  AuthService _auth = new AuthService();
 
   final _formkey = GlobalKey<FormState>();
+  String warningText ='';
+  var resultEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +81,13 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                                       builder: (context) =>
                                           MainTeacherScreen(0)));
                             }
-                          },
+                          }
+                        ),
+                        Text(
+                          warningText,
+                          style: KTextPageStyle.copyWith(
+                            color: Colors.red
+                          ),
                         ),
                         new InkWell(
                             child: new Text(" هل نسيت كلمة المرور؟",
@@ -93,3 +104,38 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                     ])))));
   }
 }
+
+
+
+//if (_formkey.currentState.validate()) { // done
+//                                FirebaseFirestore.instance
+//                                   .collection('teachersEmail')
+//                                   .where(
+//                                   'email', isEqualTo: _emailcontroller.text)
+//                                   .get()
+//                                   .then((QuerySnapshot querySnapshot)  {
+//                                     querySnapshot.docs.forEach((doc) => resultEmail = doc.data()['email']);
+//                                 if (resultEmail == _emailcontroller.text)  {
+//                                   final result =  _auth.signInWithEmailAndPassword(
+//                                       _emailcontroller.text,
+//                                       _passwordcontroller.text);
+//                                   print(result);
+//                                   }
+//                                   //
+//                                   // else {
+//                                   //   setState(() {
+//                                   //     warningText =
+//                                   //     "يوجد خطأ فيالايميل او الباسوورد حاول مرة أخرى";
+//                                   //   });
+//                                   // }
+//
+//                                 else {
+//                                   setState(() {
+//                                     warningText =
+//                                     "هذا الايميل غير ليس ايميل معلم ، حاول مره أخرى";
+//                                   });
+//                                   print('email not exist');
+//                                 }
+//                               });
+//                             }
+//                             }

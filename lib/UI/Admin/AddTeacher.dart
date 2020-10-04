@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Teacher.dart';
-import 'package:hanan/services/addUser.dart';
+import 'package:hanan/services/addTeacher.dart';
 import '../Constance.dart';
 import 'AdminTeacherScreen.dart' ;
 import 'AdminMainScreen.dart';
@@ -40,7 +40,6 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          actions: <Widget>[KAppBarTextInkwell(text:"إلغاء",page: MainAdminScreen(0))],
           title: Text("إضافة معلم ", style: KTextAppBarStyle),
           centerTitle: true,
           backgroundColor: KAppBarColor,
@@ -125,7 +124,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                           kDatePicker(_Birthdate,"تاريخ الميلاد"),
 
                          Padding(padding: new EdgeInsets.all(5),
-                          child: AddUser(
+                          child: AddTeacher(
                             email: email,
                             type: "Teacher",
                             name: name,
@@ -133,46 +132,10 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                             phone: phone,
                             birthday:_Birthdate.toString() ,
                             gender: _gender,
-                          )
-
-                          // RaisedButton(
-                          // color: KButtonColor,
-                          // child: Text("إضافة", style: KTextButtonStyle),
-                          // shape: RoundedRectangleBorder(
-                          //     borderRadius: BorderRadius.circular(18.0)),
-                          //
-                          //   onPressed: () async {
-                          //     if (_formkey.currentState.validate()) {
-                          //        var result= await _auth.registerWithEmailAndPassword(email: email, password: "12345678").then((value)
-                          //        {return firestoreInstance.collection("Users").add(
-                          //            {
-                          //              'name': name,
-                          //              'age': age,
-                          //              'email': email,
-                          //              'phone': phone,
-                          //              "gender": _gender,
-                          //              "type": "Teacher",
-                          //              "birthday": _Birthdate,
-                          //
-                          //            });}
-                          //        );
-                          //       Navigator.pushReplacement(
-                          //           context,
-                          //           MaterialPageRoute(
-                          //               builder: (context) =>
-                          //                   TeacherScreen()));
-                          //     }
-                          //   },
-
-                          // onPressed: () {
-                          //   _auth.registerWithEmailAndPassword(email: email,password: '12345678',isAdmin: false,isParent: false,isSpecialist: false,isTeacher: true);
-                          //
-                          //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TeacherScreen()));
-                          //   },
-                              )
-
+                          ),
+                         )
                       ]
-        ),
+                      ),
                     ]
                     )
                 )

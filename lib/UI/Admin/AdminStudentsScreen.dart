@@ -51,10 +51,8 @@ class _StudentScreenState extends State<StudentScreen> {
                     GestureDetector(
                       child: Text(" إضافة طالب  ", style: KTextPageStyle),
                       onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddStudentScreen()),
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => AddStudentScreen()),
                         );
                       },
                     )
@@ -74,7 +72,7 @@ class _StudentScreenState extends State<StudentScreen> {
                                       FiltringStudents[index].position,
                                       style: KTextPageStyle),
                                   onTap: () {
-                                    Navigator.pushReplacement(
+                                    Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => StudentInfo(

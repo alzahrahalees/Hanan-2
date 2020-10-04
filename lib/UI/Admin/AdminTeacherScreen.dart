@@ -49,7 +49,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                     GestureDetector(
                       child: Text(" إضافة معلم  ", style: KTextPageStyle),
                       onTap: () {
-                        Navigator.pushReplacement(context,
+                        Navigator.push(context,
                           MaterialPageRoute(builder: (context) =>
                               AddTeacherScreen()
 
@@ -74,13 +74,10 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                       FilteringTeachers[index].type,
                                       style: KTextPageStyle),
                               onTap: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => TeacherInfo(
+                                      Navigator.push(context, MaterialPageRoute(
+                                          builder: (context) => TeacherInfo(
                                                 FilteringTeachers[index].name,
-                                                FilteringTeachers[index]
-                                                    .type)),
+                                                FilteringTeachers[index].type)),
                                       );
                                   }
                                   )
@@ -88,8 +85,8 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           }
                           )
                   )
-                ]
-                )
+            ]
+            )
               ),
 
     );

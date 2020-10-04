@@ -120,22 +120,22 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                   ),
                 ), //phone num
                 ]),
-            new Row(children: <Widget>[
-              Text("الجنس",
-                  style:
-                  KTextPageStyle.copyWith(color: Colors.grey)),
-              new Padding(padding: new EdgeInsets.all(5)),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RadioButton(genderRadioButtons [0], 0),
-                    new Padding(padding: new EdgeInsets.all(10)),
-                    RadioButton(genderRadioButtons [1], 1),
-                  ],
-                ),
-              )
-            ]),
+                    Row(children: <Widget>[
+                      Text("الجنس",
+                          style:KTextPageStyle.copyWith(color: Colors.grey)),
+                      Padding(padding:  EdgeInsets.all(5)),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                          RadioButton(genderRadioButtons [0], 0),
+                          Padding(padding:  EdgeInsets.all(10)),
+                            RadioButton(genderRadioButtons [1], 1),
+                          ],
+                        ),
+                      )
+                    ]
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(5),
                       child: KNormalTextFormField(
@@ -144,7 +144,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         controller: _live,
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.all(5),
                       child: KNormalTextFormField(
@@ -153,23 +152,18 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         controller: _district,
                       ),
                     ),
-            new Padding(padding: new EdgeInsets.all(10)),
+                    Padding(padding: EdgeInsets.all(10)),
                     kDatePicker(_dateOfBirth,"تاريخ الميلاد"),
-
-        Padding(
-          padding: const EdgeInsets.all(15),
-          child: RaisedButton(
-            color: KButtonColor,
-            child: Text("إضافة", style: KTextButtonStyle),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0)),
-            onPressed: () {
-              if (_formkey.currentState.validate()) {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            StudentScreen()));
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: RaisedButton(
+                        color: KButtonColor,
+                        child: Text("إضافة", style: KTextButtonStyle),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0)),
+                        onPressed: () {
+                          if (_formkey.currentState.validate()) {
+                            Navigator.pop(context);
               }
             },
           ),
