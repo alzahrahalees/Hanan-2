@@ -49,8 +49,7 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                     GestureDetector(
                       child: Text(" إضافة أخصائي  ", style: KTextPageStyle),
                       onTap: () {
-                        Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) =>
+                        Navigator.push(context, MaterialPageRoute(builder: (context) =>
                            AddSpecialistScreen()
                           ),);
                       },
@@ -70,7 +69,7 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                                   subtitle: Text(
                                       FiltringSpecialists[index].position,
                                       style: KTextPageStyle),
-                                  onTap: (){ Navigator.pushReplacement(
+                                  onTap: (){ Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => SpecialistInfo(FiltringSpecialists[index].name,FiltringSpecialists[index].position)),

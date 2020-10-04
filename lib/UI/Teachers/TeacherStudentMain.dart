@@ -72,16 +72,8 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
         body:CustomScrollView(
             slivers:<Widget>[
               SliverAppBar(
-                leading: IconButton(
-                  icon: Icon(
-                    Icons.power_settings_new,
-                    color: KAppBarColor,
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TeacherLoginScreen()));
-                  },
-                ),
-                backgroundColor: Color(0xff),
+
+                backgroundColor: KAppBarColor,
                 title: Text(_titles[_currentIndex], style: KTextAppBarStyle),
                 centerTitle: true,
                 floating: false,

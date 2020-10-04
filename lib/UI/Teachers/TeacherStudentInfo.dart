@@ -12,20 +12,25 @@ class _StudentInfoState extends State<StudentInfo> {
     return Scaffold(
      body: Container(
    child: new Column(children: <Widget>[
-     Row(children: <Widget>[
-       Icon(Icons.person_add),
-       Padding(padding: EdgeInsets.all(3)),
-       GestureDetector(
-         child: Text(" إضافة دراسة الحالة  ", style: KTextPageStyle),
-         onTap: () {
-           Navigator.pushReplacement(
-             context,
-             MaterialPageRoute(
-                 builder: (context) => AddCase()),
-           );
-         },
-       )
-     ]),
+     GestureDetector(
+        onTap: () {
+          Navigator.push(
+          context,
+          MaterialPageRoute(
+          builder: (context) => AddCase()),
+     );
+        },
+       child: Padding(
+         padding: const EdgeInsets.all(8.0),
+         child: Row(children: <Widget>[
+           Icon(Icons.person_add),
+           Padding(
+             padding: const EdgeInsets.all(5.0),
+             child: Text(" إضافة دراسة الحالة  ", style: KTextPageStyle.copyWith(fontSize: 18)),
+           )
+         ]),
+       ),
+     ),
 
 
    ],

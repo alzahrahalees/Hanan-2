@@ -23,7 +23,6 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          actions: <Widget>[KAppBarTextInkwell(text:"إلغاء",page: MainAdminScreen(1))],
           title: Text("إضافة اخصائي ", style: KTextAppBarStyle),
           centerTitle: true,
           backgroundColor: KAppBarColor,
