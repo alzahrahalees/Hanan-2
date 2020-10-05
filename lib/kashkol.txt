@@ -1,0 +1,132 @@
+1-
+//this the navigationbarButtom widget but i can not used to move to another screen :
+
+class AdminNavigationBar extends StatefulWidget {
+  @override
+  _AdminNavigationBarState createState() => _AdminNavigationBarState();
+}
+
+class _AdminNavigationBarState extends State<AdminNavigationBar> {
+  @override
+  Widget build(BuildContext context) {
+    @override
+    int _selectedIndex = 0;
+
+    void _onItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+
+    });}
+
+    Widget build(BuildContext context) {
+      return BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            title: Text('الموظفين'),
+
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.wc),
+            title: Text('الطلاب'),
+          )
+        ],
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped ,
+        iconSize: 30,
+        currentIndex: _selectedIndex,
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 15,
+      );
+    }
+  }
+
+}
+
+2-
+// Navigationbar used raisedButton
+  class KNavigationBarAdmin extends StatefulWidget {
+    @override
+    _KNavigationBarAdminState createState() => _KNavigationBarAdminState();
+  }
+
+  class _KNavigationBarAdminState extends State<KNavigationBarAdmin> {
+    @override
+    Widget build(BuildContext context) {
+      return new Container(
+
+      child: new Row(
+           children: <Widget>[
+             new Expanded(child: new RaisedButton(
+                child: Icon(Icons.people, semanticLabel: "لموظفين ",size: 35),
+                onPressed:(){ Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CaretakersScreenDefult()));}
+            )),
+            new Expanded(child:
+            new RaisedButton(
+               color: Colors.grey,
+                child: Icon(Icons.wc,textDirection: TextDirection.rtl,size: 35),
+                onPressed:(){ Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => StudentScreen()));}
+            )),
+
+          ],
+        )
+
+      );
+    }
+  }
+
+3-
+// for navigationbar but dose not work good
+
+class _KnavigatonBarState extends State<KnavigatonBar> {
+  @override
+  int index = 0;
+
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Stack(
+        children: <Widget>[
+          new Offstage(
+            offstage: index != 0,
+            child: new TickerMode(
+              enabled: index == 0,
+              child: new MaterialApp(home: new CaretakersScreenDefult()),
+            ),
+          ),
+          new Offstage(
+            offstage: index != 1,
+            child: new TickerMode(
+              enabled: index == 1,
+              child: new MaterialApp(home: new StudentScreen()),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: new BottomNavigationBar(
+        currentIndex: index,
+        onTap: (int index) {
+          setState(() {
+            this.index = index;
+          });
+        },
+        items: <BottomNavigationBarItem>[
+          new BottomNavigationBarItem(
+            icon: new Icon(Icons.home),
+            title: new Text("Left"),
+          ),
+          new BottomNavigationBarItem(
+            icon: new Icon(Icons.search),
+            title: new Text("Right"),
+          ),
+        ],
+      ),
+    );
+  }
+
+
