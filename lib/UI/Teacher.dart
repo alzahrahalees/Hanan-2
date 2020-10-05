@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
-import 'package:hanan/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'Constance.dart';
 
 
@@ -27,11 +27,11 @@ class AddTeacher extends StatelessWidget {
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
 
     Future<void> addTeacher() async{
-      final AuthService _auth = AuthService();
-     var result=await _auth.registerWithEmailAndPassword(email: email, password: "1234500");
+      var result=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "123456");
+      User user=result.user;
       //problem:the document must be have the same ID
-     var addToTeachers=Teachers
-          .add({
+     var addToTeachers=Teachers.doc(user.uid)
+          .set({
         'name': name,
         'age': age,
         'email': email,
@@ -43,8 +43,8 @@ class AddTeacher extends StatelessWidget {
       })
           .then((value) => print("User Added in Teacher Collection"))
           .catchError((error) => print("Failed to add Teacher: $error"));
-      var addToUsers=Users
-          .add({
+      var addToUsers=Users.doc(user.uid)
+          .set({
         'name': name,
         'age': age,
         'email': email,
@@ -75,6 +75,7 @@ class TeacherCards extends StatelessWidget {
 @override
 Widget build(BuildContext context) {
   CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
+  CollectionReference Users = FirebaseFirestore.instance.collection('Users');
   return StreamBuilder<QuerySnapshot>(
     stream:
     Teachers.snapshots(),
@@ -102,6 +103,7 @@ Widget build(BuildContext context) {
                       trailing: IconButton(icon: Icon (Icons.delete),
                           onPressed: () {
                             Teachers.doc(document.id).delete();
+                            Users.doc(document.id).delete();
                           }
                       ),
                       title: new Text(document.data()['name'], style: KTextPageStyle),

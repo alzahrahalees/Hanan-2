@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
-import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
 
 class Specialist{
@@ -28,11 +28,11 @@ class AddSpecialist extends StatelessWidget {
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
 
     Future<void> addTeacher() async{
-      final AuthService _auth = AuthService();
-      var result=await _auth.registerWithEmailAndPassword(email: email, password: "1234500");
+      var result=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "123456");
+      User user=result.user;
       //problem:the document must be have the same ID
-      var addToTeachers=Specialists
-          .add({
+      var addToTeachers=Specialists.doc(user.uid)
+          .set({
         'name': name,
         'age': age,
         'email': email,
@@ -45,8 +45,8 @@ class AddSpecialist extends StatelessWidget {
       })
           .then((value) => print("User Added in Specialist Collection"))
           .catchError((error) => print("Failed to add Specialist: $error"));
-      var addToUsers=Users
-          .add({
+      var addToUsers=Users.doc(user.uid)
+          .set({
         'name': name,
         'age': age,
         'email': email,
@@ -83,6 +83,7 @@ class SpecialistCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
+    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
     return StreamBuilder<QuerySnapshot>(
       stream:
       Specialists.snapshots(),
@@ -102,6 +103,7 @@ class SpecialistCards extends StatelessWidget {
                         trailing: IconButton(icon: Icon (Icons.delete),
                             onPressed: () {
                               Specialists.doc(document.id).delete();
+                              Users.doc(document.id).delete();
                             }
                         ),
                         title: new Text(document.data()['name'], style: KTextPageStyle),

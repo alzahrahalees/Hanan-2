@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
-import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
 
 class Student{
@@ -10,8 +10,6 @@ class Student{
   Student({this.name,this.position});
 
 }
-
-
 class AddStudent extends StatelessWidget {
   final String name ;
   final String age  ;
@@ -31,11 +29,11 @@ class AddStudent extends StatelessWidget {
 
     Future<void> addStudent() async{
 
-      final AuthService _auth = AuthService();
-      var result=await _auth.registerWithEmailAndPassword(email: email, password: "1234500");
+      var result=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "123456");
+      User user=result.user;
       //problem:the document must be have the same ID
-      var addToStudent=Students
-          .add({
+      var addToStudent=Students.doc(user.uid).set({
+
         'name': name,
         'age': age,
         'email': email,
@@ -47,8 +45,8 @@ class AddStudent extends StatelessWidget {
       })
           .then((value) => print("User Added in Student Collection"))
           .catchError((error) => print("Failed to add Student: $error"));
-      var addToUsers=Users
-          .add({
+      var addToUsers=Users.doc(user.uid)
+          .set({
         'name': name,
         'age': age,
         'email': email,
@@ -84,6 +82,7 @@ class StudentCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
     return StreamBuilder<QuerySnapshot>(
       stream:
       Students.snapshots(),
@@ -102,7 +101,9 @@ class StudentCards extends StatelessWidget {
                       child: ListTile(
                         trailing: IconButton(icon: Icon (Icons.delete),
                           onPressed: () {
-                            Students.doc(document.id).delete();}
+                            Students.doc(document.id).delete();
+                            Users.doc(document.id).delete();
+                        }
                         ),
                         title: new Text(document.data()['name'], style: KTextPageStyle),
                         subtitle: new Text("طالب", style: KTextPageStyle),
