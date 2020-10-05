@@ -45,14 +45,7 @@ class AddUser extends StatelessWidget {
           .catchError((error) => print("Failed to add user: $error"));
     }
 
-    return FlatButton(
-      color: KButtonColor,
-      onPressed:(){registerUser(); addUser(); Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TeacherScreen()));},
-      child: Text("إضافة", style: KTextButtonStyle),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0)),
+    return Text("");
 
-
-    );
   }
 }
