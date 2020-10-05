@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'mainLogin.dart';
 
 void main() async{
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().whenComplete(() => print('completed'));
   runApp( new MaterialApp(

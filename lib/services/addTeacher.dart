@@ -19,23 +19,23 @@ class AddTeacher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     CollectionReference users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference teacherEmails = FirebaseFirestore.instance.collection('teachersEmail');
+    CollectionReference teacherEmails = FirebaseFirestore.instance.collection(
+        'teachersEmail');
 
-    Future<void> registerUser()async{
+    Future<void> registerUser() async {
       final AuthService _auth = AuthService();
-      await _auth.registerWithEmailAndPassword(email: email, password: "12345678");
+      await _auth.registerWithEmailAndPassword(
+          email: email, password: "12345678");
     }
 
-    Future<void> addEmail(){
+    Future<void> addEmail() {
       return teacherEmails.add({
         'email': email
       });
     }
 
     Future<void> addUser() {
-
       return users
           .add({
 
@@ -50,21 +50,4 @@ class AddTeacher extends StatelessWidget {
       })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
-    }
-
-    return FlatButton(
-      color: KButtonColor,
-      onPressed:(){
-        addEmail();
-        registerUser();
-        addUser();
-        Navigator.pop(context);
-        },
-      child: Text("إضافة", style: KTextButtonStyle),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0)),
-
-
-    );
-  }
-}
+    }  }}

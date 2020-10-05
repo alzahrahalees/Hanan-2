@@ -28,7 +28,7 @@ class DatabaseService {
   }
 // //
 //   // brew list from snapshot
-  List<Teacher> _brewListFromSnapshot(QuerySnapshot snapshot) {
+  /*List<Teacher> _brewListFromSnapshot(QuerySnapshot snapshot) {
 
     return snapshot.docs.map((doc)
     {
@@ -41,10 +41,11 @@ class DatabaseService {
 
       );
     }).toList();
-  }
+  }*/
 //
 //   // get brews stream
 //   Stream<List<Brew>> get brews {
 //     return brewCollection.snapshots()
-//         .map(_brewListFromSnapshot);
+// .map(_brewListFromSnapshot);
+
 }
