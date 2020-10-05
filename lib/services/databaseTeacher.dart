@@ -11,7 +11,7 @@ class DatabaseService {
 
 
 //   // collection reference
-  final CollectionReference teachersCollection = Firestore.instance.collection(
+  final CollectionReference teachersCollection = FirebaseFirestore.instance.collection(
       'teachers');
 
 //
@@ -28,7 +28,7 @@ class DatabaseService {
   }
 // //
 //   // brew list from snapshot
-  List<Teacher> _brewListFromSnapshot(QuerySnapshot snapshot) {
+  List<Teacher> _teachrsListFromSnapshot(QuerySnapshot snapshot) {
 
     return snapshot.docs.map((doc)
     {
@@ -42,9 +42,9 @@ class DatabaseService {
       );
     }).toList();
   }
-//
-//   // get brews stream
-//   Stream<List<Brew>> get brews {
-//     return brewCollection.snapshots()
-//         .map(_brewListFromSnapshot);
+
+  // get teacher stream
+  Stream<List<Teacher>> get brews {
+    return teachersCollection.snapshots()
+        .map(_teachrsListFromSnapshot);
 }
