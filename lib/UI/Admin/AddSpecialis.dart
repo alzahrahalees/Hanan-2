@@ -57,6 +57,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+
           actions: <Widget>[
             KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(0))
           ],

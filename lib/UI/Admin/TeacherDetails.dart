@@ -18,7 +18,6 @@ class TeacherInfo extends StatelessWidget {
     final _formkey = GlobalKey<FormState>();
     return Scaffold(
         appBar: AppBar(
-          actions: <Widget>[KAppBarTextInkwell(text:"إلغاء",page: MainAdminScreen(0))],
           title: Text("معلومات المعلم", style: KTextAppBarStyle),
           centerTitle: true,
           backgroundColor: KAppBarColor,

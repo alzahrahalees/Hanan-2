@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hanan/UI/Specialist.dart';
 import '../Constance.dart';
 import 'AddSpecialis.dart';
-import '../Teacher.dart';
+import '../Specialist.dart';
 
 class SpecialistScreen extends StatefulWidget {
   @override
@@ -11,8 +11,8 @@ class SpecialistScreen extends StatefulWidget {
   _SpecialistScreenState createState() => _SpecialistScreenState();
 }
 class _SpecialistScreenState extends State<SpecialistScreen> {
-  List<Teacher> specialists= [];
-  List<Teacher> FilteringSpecialists = [];
+  List<Specialist> specialists= [];
+  List<Specialist> FilteringSpecialists = [];
 
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,6 +28,7 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                     hintText: "أدخل اسم الأخصائي",
                     prefixIcon: Icon(Icons.search),
                   ),
+
                   onChanged: (string) {
                     setState(() {
                       FilteringSpecialists  = (specialists .where((element) =>

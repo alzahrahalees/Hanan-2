@@ -58,5 +58,6 @@ class _StudentScreenState extends State<StudentScreen> {
                         StudentCards())) // here we add the snapshot from database
               ])),
         ));
+
   }
 }

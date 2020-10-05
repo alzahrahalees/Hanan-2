@@ -15,8 +15,8 @@ class MainTeacherScreen extends StatefulWidget {
 class _MainTeacherScreenState extends State<MainTeacherScreen> {
 
   int _currentIndex=0;
-  List<Widget> _screens=[AllAppointmentsScreen(),StudentList()];
-  List<String> _titles=["جميع المواعيد", "قائمة الطلاب"];
+  List<Widget> _screens=[StudentList(),AllAppointmentsScreen()];
+  List<String> _titles=[ "قائمة الطلاب", "جميع المواعيد"];
 
   @override
   void initState() {
@@ -48,28 +48,19 @@ class _MainTeacherScreenState extends State<MainTeacherScreen> {
           currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
-              title: Text("المواعيد"),
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.accessibility),
               title: Text("الطلاب"),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_today),
+              title: Text("المواعيد"),
             ),
           ],
         ),
         body: CustomScrollView(
             slivers:<Widget>[
               SliverAppBar(
-                leading: IconButton(
-                  icon: Icon(
-                    Icons.power_settings_new,
-                    color: kUnselectedItemColor,
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => TeacherLoginScreen()));
-                  },
-                ),
+                automaticallyImplyLeading: false,
                 backgroundColor: KAppBarColor,
                 title: Text(_titles[_currentIndex], style: KTextAppBarStyle),
                 centerTitle: true,
