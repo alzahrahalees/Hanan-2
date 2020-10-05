@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../Constance.dart';
-import 'AdminMainScreen.dart';
+import '../../Constance.dart';
+import '../AdminMainScreen.dart';
 
 class TeacherInfo extends StatelessWidget {
   String name;

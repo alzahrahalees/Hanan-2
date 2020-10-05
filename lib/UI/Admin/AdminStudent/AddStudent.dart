@@ -1,18 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Teacher.dart';
-import '../Constance.dart';
-import 'AdminMainScreen.dart';
-import '../Teacher.dart';
+import '../../Constance.dart';
+import '../../Student.dart';
+import '../AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
 
-class AddTeacherScreen extends StatefulWidget {
+class AddStudentScreen extends StatefulWidget {
   @override
-  _AddTeacherScreenState createState() => _AddTeacherScreenState();
+  _AddStudentScreenState createState() => _AddStudentScreenState();
 }
 
-class _AddTeacherScreenState extends State<AddTeacherScreen> {
+class _AddStudentScreenState extends State<AddStudentScreen> {
   @override
   void initState() {
     super.initState();
@@ -59,7 +58,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
           actions: <Widget>[
             KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(0))
           ],
-          title: Text("إضافة معلم ", style: KTextAppBarStyle),
+          title: Text("إضافة طالب", style: KTextAppBarStyle),
           centerTitle: true,
           backgroundColor: KAppBarColor,
         ),
@@ -128,22 +127,22 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                                 style: KTextPageStyle.copyWith(
                                     color: Colors.grey)),
                             new Padding(padding: new EdgeInsets.all(5)),
-                           Container(
-                              child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                               Container(
-                                 child: Row(
-                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                   children: <Widget>[
-                                     RadioButton(list[0], 0),
-                                     new Padding(padding: new EdgeInsets.all(10)),
-                                     RadioButton(list[1], 1),
-                                   ],
-                                 ),
-                               ),
+                            Container(
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            RadioButton(list[0], 0),
+                                            new Padding(padding: new EdgeInsets.all(10)),
+                                            RadioButton(list[1], 1),
+                                          ],
+                                        ),
+                                      ),
 
-                          ]))]),
+                                    ]))]),
                         ),
                         new Padding(padding: new EdgeInsets.all(10)),
 
@@ -151,7 +150,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                         new Row(children: <Widget>[
                           Text("تاريخ الميلاد",
                               style:
-                                  KTextPageStyle.copyWith(color: Colors.grey)),
+                              KTextPageStyle.copyWith(color: Colors.grey)),
                           new Padding(padding: new EdgeInsets.all(5)),
                           SizedBox(
                             height: 30,
@@ -171,17 +170,124 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                         ]),
                         new Padding(
                           padding: new EdgeInsets.all(15),
-                          child: AddTeacher(
+                          child: AddStudent(
                               name: _name,
                               age: _age,
                               email: _email,
                               phone: _phone,
                               gender: _gender,
-                              type: "Teacher",
+                              type: "Student",
                               birthday: _Birthdate),
                         )
 
-            ])])  )))   );
+                      ])])  )))   );
 
+   /* key: _formkey,
+                  // here we add the snapshot from database
+                  child: ListView(shrinkWrap: true, children: <Widget>[
+                  new Column(children: <Widget>[
+                  Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: KNormalTextFormField(
+                    validatorText: '#مطلوب',
+                    hintText: 'الاسم',
+                    controller: _name,
+                  ),
+                ), //name
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: KNormalTextFormField(
+                        validatorText: '#مطلوب',
+                        hintText: 'الجنسية',
+                        controller: _nationality,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: KNormalTextFormField(
+                        validatorText: '#مطلوب',
+                        hintText: 'رقم الهوية',
+                        controller:_idNumber,
+                      ),
+                    ),
+                    Padding(
+                  padding: new EdgeInsets.all(5),
+                  child: KNormalTextFormField(
+                    hintText: 'العمر الزمني',
+                    controller: _age,
+                    validatorText: "#مطلوبة",
+                  ),
+                ), //age
+                Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: KNormalTextFormField(
+                    validatorText: "#مطلوبة",
+                    hintText: "البريد الاكتروني",
+                    controller: _email,
+                  ),
+                ), //email
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: KNormalTextFormField(
+                    validatorText: "#مطلوبة",
+                    hintText: "الهاتف",
+                    controller: _phone,
+                  ),
+                ), //phone num
+                ]),
+                    Row(children: <Widget>[
+                      Text("الجنس",
+                          style:KTextPageStyle.copyWith(color: Colors.grey)),
+                      Padding(padding:  EdgeInsets.all(5)),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                          RadioButton(genderRadioButtons [0], 0),
+                          Padding(padding:  EdgeInsets.all(10)),
+                            RadioButton(genderRadioButtons [1], 1),
+                          ],
+                        ),
+                      )
+                    ]
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: KNormalTextFormField(
+                        validatorText: "#مطلوبة",
+                        hintText: "مكان الإقامة",
+                        controller: _live,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: KNormalTextFormField(
+                        validatorText: "#مطلوبة",
+                        hintText: "الحي",
+                        controller: _district,
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.all(10)),
+                    kDatePicker(_dateOfBirth,"تاريخ الميلاد"),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: RaisedButton(
+                        color: KButtonColor,
+                        child: Text("إضافة", style: KTextButtonStyle),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0)),
+                        onPressed: () {
+                          if (_formkey.currentState.validate()) {
+                            Navigator.pop(context);
+              }
+            },
+          ),
+        ),
+        ]),)
+    )
+    )
+    ,
+    );
+*/
   }
 }

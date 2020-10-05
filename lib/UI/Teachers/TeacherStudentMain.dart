@@ -4,7 +4,6 @@ import 'TeacherDiaries.dart';
 import 'TeacherPlans.dart';
 import 'TeacherStudentAppointment.dart';
 import 'TeacherStudentInfo.dart';
-import 'TeacherLogin.dart';
 
 
 class TeacherStudentMain extends StatefulWidget {

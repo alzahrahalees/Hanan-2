@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'UI/Constance.dart';
-import 'UI/Admin/AdminTeacherScreen.dart';
+import 'UI/Admin/AdminTeacher/AdminTeacherScreen.dart';
 import 'UI/Admin/AdminLogin.dart';
 
 

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Constance.dart';
-import 'AdminTeacherScreen.dart';
-import 'AdminSpecialistScreen.dart';
-import 'AdminStudentsScreen.dart';
+import 'AdminTeacher/AdminTeacherScreen.dart';
+import 'AdminSpecialist/AdminSpecialistScreen.dart';
+import 'AdminStudent/AdminStudentsScreen.dart';
 import 'AdminLogin.dart';
 
 

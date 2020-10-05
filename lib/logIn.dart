@@ -1,25 +1,30 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../Constance.dart';
-import '../ForgetPass.dart';
-import 'TeacherMainScreen.dart';
-import '../../services/auth.dart';
+import 'package:hanan/UI/Admin/AdminMainScreen.dart';
+import 'package:hanan/UI/Specialists/SpecialistMain.dart';
+import 'package:hanan/UI/Parents/ParentMain.dart';
+import 'UI/Constance.dart';
+import 'UI/ForgetPass.dart';
+import 'UI/Teachers/TeacherMainScreen.dart';
+import 'services/auth.dart';
 
-class TeacherLoginScreen extends StatefulWidget {
+
+class MainLogIn extends StatefulWidget {
   @override
-  _TeacherLoginScreenState createState() => _TeacherLoginScreenState();
+  _MainLogInState createState() => _MainLogInState();
 }
 
-class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
+class _MainLogInState extends State<MainLogIn> {
   TextEditingController _emailcontroller = TextEditingController();
   TextEditingController _passwordcontroller = TextEditingController();
-  AuthService _auth = new AuthService();
+  AuthService _auth =  AuthService();
 
   final _formkey = GlobalKey<FormState>();
   String warningText ='';
   var resultEmail;
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +78,46 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                           child: Text("تسجيل الدخول", style: KTextButtonStyle),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0)),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formkey.currentState.validate()) {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          MainTeacherScreen(0)));
+                              dynamic type= await whoIs(_emailcontroller.text);
+                              print('inside onpress function $type');
+                              if(signIn()) {
+                                  if(type =='Teacher') {
+                                    _auth.signInWithEmailAndPassword(_emailcontroller.text, '12345678');
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MainTeacherScreen(0)));
+                                  }
+                                  else if(type == 'Specialist'){
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SpecialistMain()));
+                                  }
+                                  else if( type== 'Student' ){
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ParentMainScreen()));
+                                  }
+                                  else if ( type == 'Admin'){
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MainAdminScreen(0)));
+                                  }
+                                  else{
+                                    setState(() {
+                                      warningText = 'هذا الإيميل غير صالحو حاول مرة أخرى';
+                                    });
+                                  }
+                              }
                             }
                           }
                         ),
@@ -103,39 +141,29 @@ class _TeacherLoginScreenState extends State<TeacherLoginScreen> {
                       ])
                     ])))));
   }
+
+  Future<String> whoIs(String email) async{
+    String type;
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .where('email',isEqualTo: email)
+        .get()
+        .then((QuerySnapshot querySnapshot){
+          querySnapshot.docs.forEach((doc) {type= doc.data()['type'];
+          print('iside wois function $type');});
+    });
+    return type;
+  }
+
+  bool signIn() {
+   try {dynamic result = _auth.signInWithEmailAndPassword(
+        _emailcontroller.text, _passwordcontroller.text);
+    if (result!=null){
+      print('User signed in');
+      return true;
+    }
+    else { print('User not signed in'); return false;}}
+    catch(e){print('Err: $e');}
+  }
 }
 
-
-
-//if (_formkey.currentState.validate()) { // done
-//                                FirebaseFirestore.instance
-//                                   .collection('teachersEmail')
-//                                   .where(
-//                                   'email', isEqualTo: _emailcontroller.text)
-//                                   .get()
-//                                   .then((QuerySnapshot querySnapshot)  {
-//                                     querySnapshot.docs.forEach((doc) => resultEmail = doc.data()['email']);
-//                                 if (resultEmail == _emailcontroller.text)  {
-//                                   final result =  _auth.signInWithEmailAndPassword(
-//                                       _emailcontroller.text,
-//                                       _passwordcontroller.text);
-//                                   print(result);
-//                                   }
-//                                   //
-//                                   // else {
-//                                   //   setState(() {
-//                                   //     warningText =
-//                                   //     "يوجد خطأ فيالايميل او الباسوورد حاول مرة أخرى";
-//                                   //   });
-//                                   // }
-//
-//                                 else {
-//                                   setState(() {
-//                                     warningText =
-//                                     "هذا الايميل غير ليس ايميل معلم ، حاول مره أخرى";
-//                                   });
-//                                   print('email not exist');
-//                                 }
-//                               });
-//                             }
-//                             }

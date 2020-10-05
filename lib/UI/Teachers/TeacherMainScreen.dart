@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../Constance.dart';
 import 'TeacherAllAppointments.dart';
 import 'TeacherStudentList.dart';
-import 'TeacherLogin.dart';
 
 
 class MainTeacherScreen extends StatefulWidget {

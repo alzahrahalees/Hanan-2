@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Specialist.dart';
-import '../Constance.dart';
-import 'AddSpecialis.dart';
-import '../Specialist.dart';
+import '../../Constance.dart';
+import '../../Teacher.dart';
+import 'AddTeacher.dart';
 
-class SpecialistScreen extends StatefulWidget {
+
+class TeacherScreen extends StatefulWidget {
   @override
-
-  _SpecialistScreenState createState() => _SpecialistScreenState();
+  _TeacherScreenState createState() => _TeacherScreenState();
 }
-class _SpecialistScreenState extends State<SpecialistScreen> {
-  List<Specialist> specialists= [];
-  List<Specialist> FilteringSpecialists = [];
+
+class _TeacherScreenState extends State<TeacherScreen> {
+  List<Teacher> teachers= [];
+  List<Teacher> FilteringTeachers = [];
 
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,13 +25,12 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                 TextField(
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
-                    hintText: "أدخل اسم الأخصائي",
+                    hintText: "أدخل اسم المعلم",
                     prefixIcon: Icon(Icons.search),
                   ),
-
                   onChanged: (string) {
                     setState(() {
-                      FilteringSpecialists  = (specialists .where((element) =>
+                      FilteringTeachers= (teachers.where((element) =>
                       element.name.contains(string) ||
                           element.position.contains(string))).toList();
                     });
@@ -44,11 +43,11 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                   Icon(Icons.person_add),
                   Padding(padding: EdgeInsets.all(3)),
                   GestureDetector(
-                    child: Text(" إضافة أخصائي", style: KTextPageStyle),
+                    child: Text(" إضافة معلم", style: KTextPageStyle),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AddSpecialistScreen()),
+                        MaterialPageRoute(builder: (context) => AddTeacherScreen()),
                       );
                     },
                   )
@@ -57,8 +56,9 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                     child: Padding(
                         padding: EdgeInsets.all(8),
                         child:
-                       SpecialistCards())) // here we add the snapshot from database
+                        TeacherCards())) // here we add the snapshot from database
               ])),
         ));
+
   }
 }
