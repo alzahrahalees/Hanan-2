@@ -171,16 +171,32 @@ class KNormalTextFormFieldNoV extends StatelessWidget {
   }
 }
 
+
+// i think we need to add in the same page to can access ValueOfIndex
 class KCustomTwoRadioButton extends StatefulWidget {
   @override
-  _KCustomTwoRadioButtonState createState() => _KCustomTwoRadioButtonState();
+  String valueOfIndex;
+  List<String> list ;
+  KCustomTwoRadioButton(String valueOfIndex , List<String> list){
+    this.valueOfIndex=valueOfIndex;
+    this.list=list;
+  }
+
+  _KCustomTwoRadioButtonState createState() => _KCustomTwoRadioButtonState(valueOfIndex,list);
+
 }
 
 // i think we need to add in the same page to can access ValueOfIndex
 class _KCustomTwoRadioButtonState extends State<KCustomTwoRadioButton> {
+
   String valueOfIndex;
-  List<String> list = ["ذكر", "أنثى"];
+  List<String> list ;
+  _KCustomTwoRadioButtonState(String valueOfIndex , List<String> list){
+    this.valueOfIndex=valueOfIndex;
+    this.list=list;
+  }
   int selectedIndex = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +211,6 @@ class _KCustomTwoRadioButtonState extends State<KCustomTwoRadioButton> {
       ),
     );
   }
-
   void changeIndex(int index) {
     setState(() {
       selectedIndex = index;
@@ -206,13 +221,12 @@ class _KCustomTwoRadioButtonState extends State<KCustomTwoRadioButton> {
     return OutlineButton(
       onPressed: () {
         changeIndex(index);
-        selectedIndex == 0 ? valueOfIndex = "male" : valueOfIndex = "female";
-        print(valueOfIndex);
+        selectedIndex == 0 ? valueOfIndex = list[0] : valueOfIndex = list[1];
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       borderSide: BorderSide(
           color:
-              selectedIndex == index ? Colors.deepPurpleAccent : Colors.grey),
+          selectedIndex == index ? Colors.deepPurpleAccent : Colors.grey),
       child: Text(txt,
           style: TextStyle(
               color: selectedIndex == index
@@ -221,6 +235,7 @@ class _KCustomTwoRadioButtonState extends State<KCustomTwoRadioButton> {
     );
   }
 }
+
 
 class kDatePicker extends StatefulWidget {
   DateTime whatDate;
