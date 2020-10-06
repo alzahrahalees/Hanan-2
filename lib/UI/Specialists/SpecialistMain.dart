@@ -11,7 +11,7 @@ class _SpecialistMainState extends State<SpecialistMain> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: KAppBarColor,
+        backgroundColor: kAppBarColor,
         title: Text("Parent Page"),
       ),
       body: Container(

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hanan/UI/logIn.dart';
 import '../Constance.dart';
 import 'AdminTeacher/AdminTeacherScreen.dart';
 import 'AdminSpecialist/AdminSpecialistScreen.dart';
 import 'AdminStudent/AdminStudentsScreen.dart';
-import 'AdminLogin.dart';
+
 
 
 
@@ -38,7 +39,7 @@ class _MainAdminScreenState extends State<MainAdminScreen> {
             elevation: 50,
             showUnselectedLabels: false,
             showSelectedLabels: true,
-            backgroundColor: KBackgroundPageColor,
+            backgroundColor: kBackgroundPageColor,
             selectedItemColor:kSelectedItemColor,
             unselectedItemColor:kUnselectedItemColor,
             selectedIconTheme: IconThemeData(size: 35),
@@ -75,11 +76,11 @@ class _MainAdminScreenState extends State<MainAdminScreen> {
                   ),
                   onPressed: () {
                     Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => AdminLoginScreen()));
+                        MaterialPageRoute(builder: (context) => MainLogIn()));
                   },
                 ),
-                backgroundColor: KAppBarColor,
-                title: Text(_titles[_currentIndex], style: KTextAppBarStyle),
+                backgroundColor: kAppBarColor,
+                title: Text(_titles[_currentIndex], style: kTextAppBarStyle),
                 centerTitle: true,
                 floating: false,
               ),

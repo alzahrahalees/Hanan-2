@@ -69,8 +69,8 @@ class AddSpecialist extends StatelessWidget {
     }
 
     return RaisedButton(
-        color: KButtonColor,
-        child: Text("إضافة", style: KTextButtonStyle),
+        color: kButtonColor,
+        child: Text("إضافة", style: kTextButtonStyle),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0)),
         onPressed: addTeacher
@@ -106,8 +106,8 @@ class SpecialistCards extends StatelessWidget {
                               Users.doc(document.id).delete();
                             }
                         ),
-                        title: new Text(document.data()['name'], style: KTextPageStyle),
-                        subtitle: new Text("أخصائي", style: KTextPageStyle),
+                        title: new Text(document.data()['name'], style: kTextPageStyle),
+                        subtitle: new Text("أخصائي", style: kTextPageStyle),
                       ));
                 }).toList());
         }

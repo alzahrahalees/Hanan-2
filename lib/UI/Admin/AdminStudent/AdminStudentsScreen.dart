@@ -17,7 +17,7 @@ class _StudentScreenState extends State<StudentScreen> {
     return SafeArea(
         child: Scaffold(
           body: Container(
-              color: KBackgroundPageColor,
+              color: kBackgroundPageColor,
               padding: EdgeInsets.all(10),
               alignment: Alignment.topCenter,
               child: Column(children: <Widget>[
@@ -42,7 +42,7 @@ class _StudentScreenState extends State<StudentScreen> {
                   Icon(Icons.person_add),
                   Padding(padding: EdgeInsets.all(3)),
                   GestureDetector(
-                    child: Text(" إضافة طالب", style: KTextPageStyle),
+                    child: Text(" إضافة طالب", style: kTextPageStyle),
                     onTap: () {
                       Navigator.push(
                         context,

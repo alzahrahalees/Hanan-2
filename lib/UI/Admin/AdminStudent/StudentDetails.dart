@@ -16,14 +16,14 @@ class StudentInfo extends StatelessWidget {
     final _formkey = GlobalKey<FormState>();
     return Scaffold(
         appBar: AppBar(
-          title: Text("معلومات الطالب ", style: KTextAppBarStyle),
+          title: Text("معلومات الطالب ", style: kTextAppBarStyle),
           centerTitle: true,
-          backgroundColor: KAppBarColor,
+          backgroundColor: kAppBarColor,
         ),
         body: SafeArea(
             child: Container(
                 padding: EdgeInsets.all(10),
-                color: KBackgroundPageColor,
+                color: kBackgroundPageColor,
                 alignment: Alignment.topRight,
                 child: Form(
                     key: _formkey,
@@ -35,7 +35,7 @@ class StudentInfo extends StatelessWidget {
                         ),
                         Text(
                           " الإسم  $name ",
-                          style: KTextPageStyle,
+                          style: kTextPageStyle,
                         ),
                       ])
                     ])))));

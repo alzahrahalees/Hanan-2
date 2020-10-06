@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Teacher.dart';
 import '../../Constance.dart';
-import '../AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
 
 class AddTeacherScreen extends StatefulWidget {
@@ -55,14 +54,14 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("إضافة معلم ", style: KTextAppBarStyle),
+          title: Text("إضافة معلم ", style: kTextAppBarStyle),
           centerTitle: true,
-          backgroundColor: KAppBarColor,
+          backgroundColor: kAppBarColor,
         ),
         body: SafeArea(
             child: Container(
                 padding: EdgeInsets.all(10),
-                color: KBackgroundPageColor,
+                color: kBackgroundPageColor,
                 alignment: Alignment.topCenter,
                 child: Form(
                     key: _formkey,
@@ -121,7 +120,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                           padding: const EdgeInsets.all(10.0),
                           child: Row(children: <Widget>[
                             Text("الجنس",
-                                style: KTextPageStyle.copyWith(
+                                style: kTextPageStyle.copyWith(
                                     color: Colors.grey)),
                             new Padding(padding: new EdgeInsets.all(5)),
                            Container(
@@ -147,7 +146,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                         new Row(children: <Widget>[
                           Text("تاريخ الميلاد",
                               style:
-                                  KTextPageStyle.copyWith(color: Colors.grey)),
+                                  kTextPageStyle.copyWith(color: Colors.grey)),
                           new Padding(padding: new EdgeInsets.all(5)),
                           SizedBox(
                             height: 30,

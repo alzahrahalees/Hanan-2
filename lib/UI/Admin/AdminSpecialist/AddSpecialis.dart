@@ -61,14 +61,14 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
           actions: <Widget>[
             KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(0))
           ],
-          title: Text("إضافة أخصائي", style: KTextAppBarStyle),
+          title: Text("إضافة أخصائي", style: kTextAppBarStyle),
           centerTitle: true,
-          backgroundColor: KAppBarColor,
+          backgroundColor: kAppBarColor,
         ),
         body: SafeArea(
             child: Container(
                 padding: EdgeInsets.all(10),
-                color: KBackgroundPageColor,
+                color: kBackgroundPageColor,
                 alignment: Alignment.topCenter,
                 child: Form(
                     key: _formkey,
@@ -127,7 +127,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                           padding: const EdgeInsets.all(10.0),
                           child: Row(children: <Widget>[
                             Text("الجنس",
-                                style: KTextPageStyle.copyWith(
+                                style: kTextPageStyle.copyWith(
                                     color: Colors.grey)),
                             new Padding(padding: new EdgeInsets.all(5)),
                             Container(
@@ -153,7 +153,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                         new Row(children: <Widget>[
                           Text("تاريخ الميلاد",
                               style:
-                              KTextPageStyle.copyWith(color: Colors.grey)),
+                              kTextPageStyle.copyWith(color: Colors.grey)),
                           new Padding(padding: new EdgeInsets.all(5)),
                           SizedBox(
                             height: 30,
@@ -175,7 +175,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                     padding: new EdgeInsets.all(10)),
                 Row(children: <Widget>[
                   new Padding(padding: new EdgeInsets.all(5)),
-                  Text("التخصص", style: KTextPageStyle.copyWith(color: Colors.grey)),
+                  Text("التخصص", style: kTextPageStyle.copyWith(color: Colors.grey)),
                   new Padding(padding: new EdgeInsets.all(7)),
                   Expanded(
                       child: SizedBox(

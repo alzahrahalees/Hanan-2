@@ -146,13 +146,13 @@ class _AddCaseState extends State<AddCase> {
               actions: <Widget>[
                 //KAppBarTextInkwell("إلغاء", StudentInfo())
               ],
-              title: Text("دراسة الحالة ", style: KTextAppBarStyle),
+              title: Text("دراسة الحالة ", style: kTextAppBarStyle),
               centerTitle: true,
-              backgroundColor: KAppBarColor,
+              backgroundColor: kAppBarColor,
             ),
             body: Container(
                 padding: EdgeInsets.all(10),
-                color: KBackgroundPageColor,
+                color: kBackgroundPageColor,
                 alignment: Alignment.topCenter,
                 child: Form(
                     key: _formkey,
@@ -164,7 +164,7 @@ class _AddCaseState extends State<AddCase> {
                           padding: const EdgeInsets.all(5),
                           child: Text(
                             "معلومات الأم",
-                            style: KTextPageStyle,
+                            style: kTextPageStyle,
                           ),
                         ),
 
@@ -247,7 +247,7 @@ class _AddCaseState extends State<AddCase> {
                           padding: const EdgeInsets.all(5),
                           child: Text(
                             "معلومات الأب",
-                            style: KTextPageStyle,
+                            style: kTextPageStyle,
                           ),
                         ),
                         Padding(
@@ -329,7 +329,7 @@ class _AddCaseState extends State<AddCase> {
                           padding: const EdgeInsets.all(5),
                           child: Text(
                             "معلومات الطبيب المتابع للحالة",
-                            style: KTextPageStyle,
+                            style: kTextPageStyle,
                           ),
                         ),
 
@@ -883,9 +883,9 @@ class _AddCaseState extends State<AddCase> {
                         Padding(
                           padding: const EdgeInsets.all(15),
                           child: RaisedButton(
-                            color: KButtonColor,
+                            color: kButtonColor,
                             child: Text("إضافة دراسة الحالة ",
-                                style: KTextButtonStyle),
+                                style: kTextButtonStyle),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0)),
                             onPressed: () {

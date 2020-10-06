@@ -17,7 +17,7 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
     return SafeArea(
         child: Scaffold(
           body: Container(
-              color: KBackgroundPageColor,
+              color: kBackgroundPageColor,
               padding: EdgeInsets.all(10),
               alignment: Alignment.topCenter,
               child: Column(children: <Widget>[
@@ -43,7 +43,7 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                   Icon(Icons.person_add),
                   Padding(padding: EdgeInsets.all(3)),
                   GestureDetector(
-                    child: Text(" إضافة أخصائي", style: KTextPageStyle),
+                    child: Text(" إضافة أخصائي", style: kTextPageStyle),
                     onTap: () {
                       Navigator.push(
                         context,

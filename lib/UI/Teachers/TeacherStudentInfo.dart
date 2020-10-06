@@ -26,7 +26,7 @@ class _StudentInfoState extends State<StudentInfo> {
            Icon(Icons.person_add),
            Padding(
              padding: const EdgeInsets.all(5.0),
-             child: Text(" إضافة دراسة الحالة  ", style: KTextPageStyle.copyWith(fontSize: 18)),
+             child: Text(" إضافة دراسة الحالة  ", style: kTextPageStyle.copyWith(fontSize: 18)),
            )
          ]),
        ),

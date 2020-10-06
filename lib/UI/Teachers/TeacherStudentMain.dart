@@ -36,7 +36,7 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
 
 
           type: BottomNavigationBarType.shifting,
-          backgroundColor: KAppBarColor,
+          backgroundColor: kAppBarColor,
           selectedItemColor:kSelectedItemColor,
           unselectedItemColor:kUnselectedItemColor,
           selectedFontSize: 20,
@@ -72,8 +72,8 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
             slivers:<Widget>[
               SliverAppBar(
 
-                backgroundColor: KAppBarColor,
-                title: Text(_titles[_currentIndex], style: KTextAppBarStyle),
+                backgroundColor: kAppBarColor,
+                title: Text(_titles[_currentIndex], style: kTextAppBarStyle),
                 centerTitle: true,
                 floating: false,
               ),

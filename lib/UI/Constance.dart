@@ -5,25 +5,26 @@ import 'package:multiselect_formfield/multiselect_formfield.dart';
 
 const kTitleOfProject = "SECS Hanan";
 
-const Color KAppBarColor = Color(0xFFe1d0ed);
-const Color KBackgroundPageColor = Color(0xFFeeeeee);
-const Color KButtonColor = Color(0xFFB39DDB);
+const Color kAppBarColor = Color(0xFFe1d0ed);
+const Color kWolcomeBkg = Color(0xFFede3fc);
+const Color kBackgroundPageColor = Color(0xFFeeeeee);
+const Color kButtonColor = Color(0xFFB39DDB);
 const kSelectedItemColor = Color(0xff5F3E60);
 const kUnselectedItemColor = Color(0xff9181bd);
 
-const KTextAppBarStyle = TextStyle(
+const kTextAppBarStyle = TextStyle(
     fontSize: 20,
     color: kUnselectedItemColor,
     fontWeight: FontWeight.w800,
     letterSpacing: 1);
 
-const KTextButtonStyle = TextStyle(
-    fontSize: 15,
+const kTextButtonStyle = TextStyle(
+    fontSize: 18,
     color: Colors.white,
     fontWeight: FontWeight.w600,
     letterSpacing: 1);
 
-const KTextPageStyle = TextStyle(
+const kTextPageStyle = TextStyle(
     color: Colors.black,
     fontSize: 15.0,
     decorationStyle: TextDecorationStyle.dotted,
@@ -48,7 +49,7 @@ class KAppBarTextInkwell extends StatelessWidget {
         child: InkWell(
           child: Text(
             "$text ",
-            style: KTextAppBarStyle.copyWith(fontSize: 17),
+            style: kTextAppBarStyle.copyWith(fontSize: 17),
           ),
           onTap: () {
             Navigator.pushReplacement(
@@ -69,6 +70,7 @@ class KCircularTextFormField extends StatelessWidget {
         width: 300,
         height: 70,
         child: TextFormField(
+          textAlign: TextAlign.center,
             controller: controller,
             decoration: InputDecoration(
                 border: new OutlineInputBorder(
@@ -171,7 +173,6 @@ class KNormalTextFormFieldNoV extends StatelessWidget {
   }
 }
 
-
 // i think we need to add in the same page to can access ValueOfIndex
 class KCustomTwoRadioButton extends StatefulWidget {
   @override
@@ -261,7 +262,7 @@ class _kDatePickerState extends State<kDatePicker> {
   @override
   Widget build(BuildContext context) {
     return new Row(children: <Widget>[
-      Text("$textDef", style: KTextPageStyle.copyWith(color: Colors.grey)),
+      Text("$textDef", style: kTextPageStyle.copyWith(color: Colors.grey)),
       new Padding(padding: new EdgeInsets.all(5)),
       SizedBox(
         height: 30,
@@ -318,7 +319,7 @@ class _KDropDownListState extends State<KDropDownList> {
   Widget build(BuildContext context) {
     return Row(children: <Widget>[
       new Padding(padding: new EdgeInsets.all(5)),
-      Text("$textBehind", style: KTextPageStyle.copyWith(color: Colors.grey)),
+      Text("$textBehind", style: kTextPageStyle.copyWith(color: Colors.grey)),
       new Padding(padding: new EdgeInsets.all(7)),
       Expanded(
           child: SizedBox(
@@ -376,7 +377,7 @@ class _MultiSelectState extends State<MultiSelect> {
     return Container(
       padding: EdgeInsets.all(16),
       child: MultiSelectFormField(
-        fillColor: KBackgroundPageColor,
+        fillColor: kBackgroundPageColor,
         autovalidate: false,
         titleText: 'النمو الإنفعالي',
         validator: (value) {

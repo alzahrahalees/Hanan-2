@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hanan/welcomeScreen.dart';
 import 'UI/Constance.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'logIn.dart';
+import 'UI/logIn.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,7 @@ void main() async{
       locale: Locale("ar"), // OR Locale('ar', 'AE') OR Other RTL locales,
 
     title: kTitleOfProject ,
-    home: MainLogIn(),
+    home: WelcomeScreen(),
   )
   );
 }
