@@ -1,7 +1,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hanan/user.dart';
-
+import 'database.dart';
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -10,6 +10,26 @@ class AuthService {
   AUser _userFromFirebaseUser(User user){//,bool isTeacher,  bool isSpecialist,  bool isParent,  bool isAdmin) {
     return user != null ? AUser(uid: user.uid) : null;
   }
+
+  Future deleteUser(String email, String password, dynamic uid) async {
+    try{
+     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password
+      );
+     User user=userCredential.user;
+      AuthCredential credentials =
+      EmailAuthProvider.credential(email: email, password: password);
+      print(user);
+      var result = await user.reauthenticateWithCredential(credentials); // called from database class
+      await result.user.delete();
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
 
   // auth change user stream
   // Stream<User> get user {

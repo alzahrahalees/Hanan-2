@@ -26,7 +26,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
   String _email;
   String _phone;
   String _typeOfSpechalist;
-  List<String> items=["أخصائي تواصل","أخصائي إجتماعي","أخصائي وظيفي"];
+  List<String> items=["أخصائي علاج طبيعي","أخصائي علاج وظيفي","أخصائي نفسي","أخصائي تخاطب"];
   DateTime _Birthdate = DateTime.now();
   String _gender;
   List<String> list =["أنثى","ذكر"];

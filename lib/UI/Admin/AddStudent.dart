@@ -19,20 +19,41 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   final _formkey = GlobalKey<FormState>();
   final firestoreInstance = FirebaseFirestore.instance;
-
+  CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
   final AuthService _auth = AuthService();
+  //Map<String,dynamic> s;
+  List<String>s;
   String _name;
   String _age;
   String _email;
   String _phone;
   DateTime _Birthdate = DateTime.now();
   String _gender;
-  List<String> list =["أنثى","ذكر"];
+  String _teacherName;
+  String _teacherId;
+  String _psychologySpecialistName;//نفسي
+  String _psychologySpecialistId;
+  String _communicationSpecialistName;//تخاطب
+  String _communicationSpecialistId;
+  String _occupationalSpecialistName; //,ظيفي
+  String _occupationalSpecialistId;
+  String _physiotherapySpecialistName;//علاج طبيعي
+  String _physiotherapySpecialistId;
+  List<String> list = ["أنثى", "ذكر"];
   int selectedIndex;
+
+
+
+
+
+  CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
+
   void changeIndex(int index) {
     setState(() {
       selectedIndex = index;
-    });}
+    });
+  }
+
 
   Widget RadioButton(String txt, int index) {
     return OutlineButton(
@@ -49,7 +70,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
               color: selectedIndex == index
                   ? Colors.deepPurpleAccent
                   : Colors.grey)),
-    );}
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,20 +151,25 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(padding: new EdgeInsets.all(5)),
                             Container(
                                 child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
                                     children: <Widget>[
                                       Container(
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceBetween,
                                           children: <Widget>[
                                             RadioButton(list[0], 0),
-                                            new Padding(padding: new EdgeInsets.all(10)),
+                                            new Padding(
+                                                padding: new EdgeInsets.all(
+                                                    10)),
                                             RadioButton(list[1], 1),
                                           ],
                                         ),
                                       ),
 
-                                    ]))]),
+                                    ]))
+                          ]),
                         ),
                         new Padding(padding: new EdgeInsets.all(10)),
 
@@ -158,7 +185,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             child: CupertinoDatePicker(
                               initialDateTime: _Birthdate,
                               maximumDate: DateTime.now(),
-                              use24hFormat: false ,
+                              use24hFormat: false,
                               mode: CupertinoDatePickerMode.date,
                               onDateTimeChanged: (dateTime) {
                                 setState(() {
@@ -168,6 +195,286 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             ),
                           )
                         ]),
+                        Row(
+                          children: [
+                            Text("المعلم المسؤول",
+                                style: KTextPageStyle.copyWith(color: Colors
+                                    .black38)),
+                            new Padding(
+                                padding: new EdgeInsets.all(15),
+                                child: StreamBuilder(
+                                    stream: Teachers.snapshots(),
+                                    builder: (context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (!snapshot.hasData)
+                                        Center(
+                                          child: const CupertinoActivityIndicator(),
+                                        );
+                                      return DropdownButton<String>(
+                                        value: _teacherName,
+                                        isDense: true,
+                                        hint: Text('إختر'),
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            _teacherName = newValue;
+                                          });
+                                          print(_teacherName);
+                                        },
+                                        items: snapshot.data != null
+                                            ? snapshot.data.docs
+                                            .map((DocumentSnapshot document) {
+                                          return new DropdownMenuItem<String>(
+                                              value: document.data()["name"],
+                                              onTap: () {
+                                                _teacherId= document
+                                                    .data()["uid"];
+                                                print(_teacherId);
+                                              },
+                                              child: new Container(
+                                                height: 30,
+                                                //color: primaryColor,
+                                                child: new Text(
+                                                  document.data()["name"]
+                                                      .toString(),
+                                                ),
+                                              ));
+                                        }).toList() : DropdownMenuItem(
+                                          value: 'null',
+                                          child: new Container(
+                                            height: 30,
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("الأخصائي النفسي",
+                                style: KTextPageStyle.copyWith(color: Colors
+                                    .black38)),
+                            new Padding(
+                              padding: new EdgeInsets.all(15),
+                              child: StreamBuilder(
+                                  stream: Specialists.snapshots(),
+                                  builder: (context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    Center(
+                                      child: const CupertinoActivityIndicator(),
+                                    );
+                                    return DropdownButton<String>(
+                                      value: _psychologySpecialistName,
+                                      isDense: true,
+                                      hint: Text('إختر'),
+                                      onChanged: (newValue) {
+                                   /*s=   snapshot.data.docs.map((DocumentSnapshot document) {
+                                          if (document.data()["typeOfSpechalist"]=="أخصائي نفسي"){
+                                           for ()
+                                          }
+                                        }).toList();
+                                     print (s);*/
+                                        setState(() {
+                                          _psychologySpecialistName= newValue;
+                                        });
+                                        print(_psychologySpecialistName);
+                                      },
+                                      items: snapshot.data != null
+                                          ? snapshot.data.docs
+                                          .map((DocumentSnapshot document) {
+                                        return new DropdownMenuItem<String>(
+                                            value:  document
+                                                .data()["name"],
+                                            onTap: () {
+                                              _psychologySpecialistId = document
+                                                  .data()["uid"];
+                                              print(_physiotherapySpecialistId);
+                                            },
+                                            child: new Container(
+                                              height: 25,
+                                              //color: primaryColor,
+                                              child:
+                                              new Text(
+                                               // document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
+                                                  document.data()["typeOfSpechalist"]=="أخصائي نفسي"?document.data()["name"]:"."
+                                              ),
+                                            ));
+                                      }).toList() : DropdownMenuItem(
+                                        value: 'null',
+                                        child: new Container(
+                                          height: 23,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("الأخصائي الوظيفي",
+                                style: KTextPageStyle.copyWith(color: Colors
+                                    .black38)),
+                            new Padding(
+                              padding: new EdgeInsets.all(15),
+                              child: StreamBuilder(
+                                  stream: Specialists.snapshots(),
+                                  builder: (context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    Center(
+                                      child: const CupertinoActivityIndicator(),
+                                    );
+                                    return DropdownButton<String>(
+                                      value: _occupationalSpecialistName,
+                                      isDense: true,
+                                      hint: Text('إختر'),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          _occupationalSpecialistName = newValue;
+                                        });
+                                        print(_occupationalSpecialistName);
+                                      },
+                                      items: snapshot.data != null
+                                          ? snapshot.data.docs
+                                          .map((DocumentSnapshot document) {
+
+                                        return new DropdownMenuItem<String>(
+                                            value:  document
+                                                .data()["name"],
+                                            onTap: () {
+                                              _occupationalSpecialistId = document
+                                                  .data()["uid"];
+                                              print(_occupationalSpecialistId);
+                                            },
+                                            child: new Container(
+                                              height: 25,
+                                              //color: primaryColor,
+                                              child:
+                                              new Text(
+                                                document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
+                                              ),
+                                            ));
+                                      }).toList() : DropdownMenuItem(
+                                        value: 'null',
+                                        child: new Container(
+                                          height: 23,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(" العلاج الطبيعي",
+                                style: KTextPageStyle.copyWith(color: Colors
+                                    .black38)),
+                            new Padding(
+                              padding: new EdgeInsets.all(15),
+                              child: StreamBuilder(
+                                  stream: Specialists.snapshots(),
+                                  builder: (context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    Center(
+                                      child: const CupertinoActivityIndicator(),
+                                    );
+                                    return DropdownButton<String>(
+                                      value:_physiotherapySpecialistName,
+                                      isDense: true,
+                                      hint: Text('إختر'),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          _physiotherapySpecialistName = newValue;
+                                        });
+                                        print(_physiotherapySpecialistName);
+                                      },
+                                      items: snapshot.data != null
+                                          ? snapshot.data.docs
+                                          .map((DocumentSnapshot document) {
+
+                                        return new DropdownMenuItem<String>(
+                                            value:  document
+                                                .data()["name"],
+                                            onTap: () {
+                                              _physiotherapySpecialistId = document
+                                                  .data()["uid"];
+                                              print(_physiotherapySpecialistId);
+                                            },
+                                            child: new Container(
+                                              height: 25,
+                                              //color: primaryColor,
+                                              child:
+                                              new Text(
+                                                document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
+                                              ),
+                                            ));
+                                      }).toList() : DropdownMenuItem(
+                                        value: 'null',
+                                        child: new Container(
+                                          height: 23,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("أخصائي التخاطب",
+                                style: KTextPageStyle.copyWith(color: Colors
+                                    .black38)),
+                            new Padding(
+                              padding: new EdgeInsets.all(15),
+                              child: StreamBuilder(
+                                  stream: Specialists.snapshots(),
+                                  builder: (context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    Center(
+                                      child: const CupertinoActivityIndicator(),
+                                    );
+                                    return DropdownButton<String>(
+                                      value: _communicationSpecialistName,
+                                      isDense: true,
+                                      hint: Text('إختر'),
+                                      onChanged: (newValue) {
+                                        setState(() {
+                                          _communicationSpecialistName = newValue;
+                                        });
+                                        print(_communicationSpecialistName);
+                                      },
+                                      items: snapshot.data != null
+                                          ? snapshot.data.docs
+                                          .map((DocumentSnapshot document) {
+
+                                        return new DropdownMenuItem<String>(
+                                            value:  document
+                                                .data()["name"],
+                                            onTap: () {
+                                              _communicationSpecialistId = document
+                                                  .data()["uid"];
+                                              print(_communicationSpecialistId);
+                                            },
+                                            child: new Container(
+                                              height: 25,
+                                              //color: primaryColor,
+                                              child:
+                                              new Text(
+                                                document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
+                                              ),
+                                            ));
+                                      }).toList() : DropdownMenuItem(
+                                        value: 'null',
+                                        child: new Container(
+                                          height: 23,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
                         new Padding(
                           padding: new EdgeInsets.all(15),
                           child: AddStudent(
@@ -177,12 +484,22 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                               phone: _phone,
                               gender: _gender,
                               type: "Student",
-                              birthday: _Birthdate),
+                              teacherName: _teacherName,
+                              teacherId: _teacherId,
+                              psychologySpecialistName: _psychologySpecialistName,
+                              psychologySpecialistId: _psychologySpecialistId,
+                              communicationSpecialistName: _communicationSpecialistName,
+                              communicationSpecialistId: _communicationSpecialistId,
+                              occupationalSpecialistName: _occupationalSpecialistName,
+                              occupationalSpecialistId: _occupationalSpecialistName,
+                              physiotherapySpecialistName: _physiotherapySpecialistName,
+                              physiotherapySpecialistId: _physiotherapySpecialistId,
+                              birthday: _Birthdate)
                         )
+                      ])
+                    ])))));
 
-                      ])])  )))   );
-
-   /* key: _formkey,
+    /* key: _formkey,
                   // here we add the snapshot from database
                   child: ListView(shrinkWrap: true, children: <Widget>[
                   new Column(children: <Widget>[

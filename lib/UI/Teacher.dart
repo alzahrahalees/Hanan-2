@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hanan/UI/Student.dart';
+import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
 
 
@@ -18,7 +20,9 @@ class AddTeacher extends StatelessWidget {
   final String  type;
   final String  gender;
   final DateTime  birthday;
-  AddTeacher({this.name,this.age,this.email,this.phone,this.type,this.gender,this.birthday});
+  final Map students;
+
+  AddTeacher({this.name,this.age,this.email,this.phone,this.type,this.gender,this.birthday,this.students});
 
   @override
   Widget  build(BuildContext context) {
@@ -32,25 +36,28 @@ class AddTeacher extends StatelessWidget {
       //problem:the document must be have the same ID
      var addToTeachers=Teachers.doc(user.uid)
           .set({
+       "uid":user.uid,
         'name': name,
         'age': age,
         'email': email,
         'phone': phone,
         "gender": gender,
         "type": type,
-        "birthday": birthday.toString()
-
+        "birthday": birthday.toString(),
+       "Students":students
       })
           .then((value) => print("User Added in Teacher Collection"))
           .catchError((error) => print("Failed to add Teacher: $error"));
       var addToUsers=Users.doc(user.uid)
           .set({
+        'uid':user.uid,
         'name': name,
         'age': age,
         'email': email,
         'phone': phone,
         "gender": gender,
         "type": type,
+        "Students":students,
         "birthday": birthday.toString()
       })
           .then((value) => print("User Added in Users Collection"))
@@ -76,6 +83,7 @@ class TeacherCards extends StatelessWidget {
 Widget build(BuildContext context) {
   CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
   CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+  AuthService _auth=AuthService();
   return StreamBuilder<QuerySnapshot>(
     stream:
     Teachers.snapshots(),
@@ -104,7 +112,9 @@ Widget build(BuildContext context) {
                           onPressed: () {
                             Teachers.doc(document.id).delete();
                             Users.doc(document.id).delete();
-                          }
+                _auth.deleteUser(document.data()['email'],"123456",document.data()['uid']);
+                      }
+
                       ),
                       title: new Text(document.data()['name'], style: KTextPageStyle),
                       subtitle: new Text("معلم", style: KTextPageStyle),

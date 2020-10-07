@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
+import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
 
 class Specialist{
@@ -33,6 +34,7 @@ class AddSpecialist extends StatelessWidget {
       //problem:the document must be have the same ID
       var addToTeachers=Specialists.doc(user.uid)
           .set({
+        'uid':user.uid,
         'name': name,
         'age': age,
         'email': email,
@@ -47,6 +49,7 @@ class AddSpecialist extends StatelessWidget {
           .catchError((error) => print("Failed to add Specialist: $error"));
       var addToUsers=Users.doc(user.uid)
           .set({
+        'uid':user.uid,
         'name': name,
         'age': age,
         'email': email,
@@ -65,7 +68,7 @@ class AddSpecialist extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  MainAdminScreen(0)));
+                  MainAdminScreen(1)));
     }
 
     return RaisedButton(
@@ -84,6 +87,7 @@ class SpecialistCards extends StatelessWidget {
   Widget build(BuildContext context) {
     CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+    AuthService _auth=AuthService();
     return StreamBuilder<QuerySnapshot>(
       stream:
       Specialists.snapshots(),
@@ -104,10 +108,10 @@ class SpecialistCards extends StatelessWidget {
                             onPressed: () {
                               Specialists.doc(document.id).delete();
                               Users.doc(document.id).delete();
-                            }
+                _auth.deleteUser(document.data()['email'],"123456",document.data()['uid']);}
                         ),
                         title: new Text(document.data()['name'], style: KTextPageStyle),
-                        subtitle: new Text("أخصائي", style: KTextPageStyle),
+                        subtitle: new Text(document.data()["typeOfSpechalist"], style: KTextPageStyle),
                       ));
                 }).toList());
         }
