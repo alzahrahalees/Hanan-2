@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Specialist.dart';
-import '../Constance.dart';
-import 'AdminMainScreen.dart';
+import 'package:hanan/UI/Teacher.dart';
+import '../../Constance.dart';
 import 'package:hanan/services/auth.dart';
 
-class AddSpecialistScreen extends StatefulWidget {
+class AddTeacherScreen extends StatefulWidget {
   @override
-  _AddSpecialistScreenState createState() => _AddSpecialistScreenState();
+  _AddTeacherScreenState createState() => _AddTeacherScreenState();
 }
 
-class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
+class _AddTeacherScreenState extends State<AddTeacherScreen> {
   @override
   void initState() {
     super.initState();
@@ -25,8 +24,6 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
   String _age;
   String _email;
   String _phone;
-  String _typeOfSpechalist;
-  List<String> items=["أخصائي علاج طبيعي","أخصائي علاج وظيفي","أخصائي نفسي","أخصائي تخاطب"];
   DateTime _Birthdate = DateTime.now();
   String _gender;
   List<String> list =["أنثى","ذكر"];
@@ -57,18 +54,14 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-
-          actions: <Widget>[
-            KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(0))
-          ],
-          title: Text("إضافة أخصائي", style: KTextAppBarStyle),
+          title: Text("إضافة معلم ", style: kTextAppBarStyle),
           centerTitle: true,
-          backgroundColor: KAppBarColor,
+          backgroundColor: kAppBarColor,
         ),
         body: SafeArea(
             child: Container(
                 padding: EdgeInsets.all(10),
-                color: KBackgroundPageColor,
+                color: kBackgroundPageColor,
                 alignment: Alignment.topCenter,
                 child: Form(
                     key: _formkey,
@@ -127,25 +120,25 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                           padding: const EdgeInsets.all(10.0),
                           child: Row(children: <Widget>[
                             Text("الجنس",
-                                style: KTextPageStyle.copyWith(
+                                style: kTextPageStyle.copyWith(
                                     color: Colors.grey)),
                             new Padding(padding: new EdgeInsets.all(5)),
-                            Container(
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            RadioButton(list[0], 0),
-                                            new Padding(padding: new EdgeInsets.all(10)),
-                                            RadioButton(list[1], 1),
-                                          ],
-                                        ),
-                                      ),
+                           Container(
+                              child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                               Container(
+                                 child: Row(
+                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                   children: <Widget>[
+                                     RadioButton(list[0], 0),
+                                     new Padding(padding: new EdgeInsets.all(10)),
+                                     RadioButton(list[1], 1),
+                                   ],
+                                 ),
+                               ),
 
-                                    ]))]),
+                          ]))]),
                         ),
                         new Padding(padding: new EdgeInsets.all(10)),
 
@@ -153,7 +146,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                         new Row(children: <Widget>[
                           Text("تاريخ الميلاد",
                               style:
-                              KTextPageStyle.copyWith(color: Colors.grey)),
+                                  kTextPageStyle.copyWith(color: Colors.grey)),
                           new Padding(padding: new EdgeInsets.all(5)),
                           SizedBox(
                             height: 30,
@@ -171,48 +164,19 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                             ),
                           )
                         ]),
-                new Padding(
-                    padding: new EdgeInsets.all(10)),
-                Row(children: <Widget>[
-                  new Padding(padding: new EdgeInsets.all(5)),
-                  Text("التخصص", style: KTextPageStyle.copyWith(color: Colors.grey)),
-                  new Padding(padding: new EdgeInsets.all(7)),
-                  Expanded(
-                      child: SizedBox(
-                        height: 40,
-                        width: 200,
-                        child: DropdownButton(
-                          hint: Text('اختر'),
-                          // Not necessary for Option 1
-                          value: _typeOfSpechalist,
-                          onChanged: (newValue) {
-                            setState(() {
-                              _typeOfSpechalist = newValue;
-                            });
-                          },
-                          items: items.map((location) {
-                            return DropdownMenuItem(
-                              child: new Text(location),
-                              value: location,
-                            );
-                          }).toList(),
-                        ),
-                      ))
-                ]),
                         new Padding(
                           padding: new EdgeInsets.all(15),
-                          child: AddSpecialist(
+                          child: AddTeacher(
                               name: _name,
                               age: _age,
                               email: _email,
                               phone: _phone,
                               gender: _gender,
-                              type: "Specialist",
-                              typeOfSpechalist: _typeOfSpechalist,
+                              type: "Teacher",
                               birthday: _Birthdate),
                         )
 
-                      ])])  )))   );
+            ])])  )))   );
 
   }
 }

@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../Constance.dart';
-import '../Student.dart';
-import 'AdminMainScreen.dart';
+import '../../Constance.dart';
+import '../../Student.dart';
+import '../AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
+
 
 class AddStudentScreen extends StatefulWidget {
   @override
@@ -80,14 +81,14 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
           actions: <Widget>[
             KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(0))
           ],
-          title: Text("إضافة طالب", style: KTextAppBarStyle),
+          title: Text("إضافة طالب", style: kTextAppBarStyle),
           centerTitle: true,
-          backgroundColor: KAppBarColor,
+          backgroundColor: kAppBarColor,
         ),
         body: SafeArea(
             child: Container(
                 padding: EdgeInsets.all(10),
-                color: KBackgroundPageColor,
+                color: kBackgroundPageColor,
                 alignment: Alignment.topCenter,
                 child: Form(
                     key: _formkey,
@@ -146,7 +147,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           padding: const EdgeInsets.all(10.0),
                           child: Row(children: <Widget>[
                             Text("الجنس",
-                                style: KTextPageStyle.copyWith(
+                                style: kTextPageStyle.copyWith(
                                     color: Colors.grey)),
                             new Padding(padding: new EdgeInsets.all(5)),
                             Container(
@@ -177,7 +178,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         new Row(children: <Widget>[
                           Text("تاريخ الميلاد",
                               style:
-                              KTextPageStyle.copyWith(color: Colors.grey)),
+                              kTextPageStyle.copyWith(color: Colors.grey)),
                           new Padding(padding: new EdgeInsets.all(5)),
                           SizedBox(
                             height: 30,
@@ -198,11 +199,11 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         Row(
                           children: [
                             Text("المعلم المسؤول",
-                                style: KTextPageStyle.copyWith(color: Colors
+                                style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
                                 padding: new EdgeInsets.all(15),
-                                child: StreamBuilder(
+                              child: StreamBuilder(
                                     stream: Teachers.snapshots(),
                                     builder: (context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -252,7 +253,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         Row(
                           children: [
                             Text("الأخصائي النفسي",
-                                style: KTextPageStyle.copyWith(color: Colors
+                                style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
                               padding: new EdgeInsets.all(15),
@@ -313,7 +314,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         Row(
                           children: [
                             Text("الأخصائي الوظيفي",
-                                style: KTextPageStyle.copyWith(color: Colors
+                                style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
                               padding: new EdgeInsets.all(15),
@@ -368,7 +369,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         Row(
                           children: [
                             Text(" العلاج الطبيعي",
-                                style: KTextPageStyle.copyWith(color: Colors
+                                style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
                               padding: new EdgeInsets.all(15),
@@ -423,7 +424,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         Row(
                           children: [
                             Text("أخصائي التخاطب",
-                                style: KTextPageStyle.copyWith(color: Colors
+                                style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
                               padding: new EdgeInsets.all(15),

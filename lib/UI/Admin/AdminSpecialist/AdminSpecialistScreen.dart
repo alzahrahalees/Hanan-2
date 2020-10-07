@@ -1,35 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../Constance.dart';
-import 'AddStudent.dart';
-import '../Student.dart';
+import 'package:hanan/UI/Specialist.dart';
+import '../../Constance.dart';
+import 'AddSpecialis.dart';
 
-class StudentScreen extends StatefulWidget {
+class SpecialistScreen extends StatefulWidget {
   @override
-  _StudentScreenState createState() => _StudentScreenState();
-}
 
-class _StudentScreenState extends State<StudentScreen> {
-  List<Student> students= [];
-  List<Student> FilteringStudents = [];
+  _SpecialistScreenState createState() => _SpecialistScreenState();
+}
+class _SpecialistScreenState extends State<SpecialistScreen> {
+  List<Specialist> specialists= [];
+  List<Specialist> FilteringSpecialists = [];
 
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
           body: Container(
-              color: KBackgroundPageColor,
+              color: kBackgroundPageColor,
               padding: EdgeInsets.all(10),
               alignment: Alignment.topCenter,
               child: Column(children: <Widget>[
                 TextField(
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
-                    hintText: "أدخل اسم الطالب",
+                    hintText: "أدخل اسم الأخصائي",
                     prefixIcon: Icon(Icons.search),
                   ),
+
                   onChanged: (string) {
                     setState(() {
-                      FilteringStudents= (students.where((element) =>
+                      FilteringSpecialists  = (specialists .where((element) =>
                       element.name.contains(string) ||
                           element.position.contains(string))).toList();
                     });
@@ -42,11 +43,11 @@ class _StudentScreenState extends State<StudentScreen> {
                   Icon(Icons.person_add),
                   Padding(padding: EdgeInsets.all(3)),
                   GestureDetector(
-                    child: Text(" إضافة طالب", style: KTextPageStyle),
+                    child: Text(" إضافة أخصائي", style: kTextPageStyle),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AddStudentScreen()),
+                        MaterialPageRoute(builder: (context) => AddSpecialistScreen()),
                       );
                     },
                   )
@@ -55,9 +56,8 @@ class _StudentScreenState extends State<StudentScreen> {
                     child: Padding(
                         padding: EdgeInsets.all(8),
                         child:
-                        StudentCards())) // here we add the snapshot from database
+                       SpecialistCards())) // here we add the snapshot from database
               ])),
         ));
-
   }
 }

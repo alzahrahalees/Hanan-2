@@ -1,36 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../Constance.dart';
-import '../Teacher.dart';
-import 'AddTeacher.dart';
+import '../../Constance.dart';
+import 'AddStudent.dart';
+import '../../Student.dart';
 
-
-class TeacherScreen extends StatefulWidget {
+class StudentScreen extends StatefulWidget {
   @override
-  _TeacherScreenState createState() => _TeacherScreenState();
+  _StudentScreenState createState() => _StudentScreenState();
 }
 
-class _TeacherScreenState extends State<TeacherScreen> {
-  List<Teacher> teachers= [];
-  List<Teacher> FilteringTeachers = [];
+class _StudentScreenState extends State<StudentScreen> {
+  List<Student> students= [];
+  List<Student> FilteringStudents = [];
 
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
           body: Container(
-              color: KBackgroundPageColor,
+              color: kBackgroundPageColor,
               padding: EdgeInsets.all(10),
               alignment: Alignment.topCenter,
               child: Column(children: <Widget>[
                 TextField(
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
-                    hintText: "أدخل اسم المعلم",
+                    hintText: "أدخل اسم الطالب",
                     prefixIcon: Icon(Icons.search),
                   ),
                   onChanged: (string) {
                     setState(() {
-                      FilteringTeachers= (teachers.where((element) =>
+                      FilteringStudents= (students.where((element) =>
                       element.name.contains(string) ||
                           element.position.contains(string))).toList();
                     });
@@ -43,11 +42,11 @@ class _TeacherScreenState extends State<TeacherScreen> {
                   Icon(Icons.person_add),
                   Padding(padding: EdgeInsets.all(3)),
                   GestureDetector(
-                    child: Text(" إضافة معلم", style: KTextPageStyle),
+                    child: Text(" إضافة طالب", style: kTextPageStyle),
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AddTeacherScreen()),
+                        MaterialPageRoute(builder: (context) => AddStudentScreen()),
                       );
                     },
                   )
@@ -56,7 +55,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                     child: Padding(
                         padding: EdgeInsets.all(8),
                         child:
-                        TeacherCards())) // here we add the snapshot from database
+                        StudentCards())) // here we add the snapshot from database
               ])),
         ));
 

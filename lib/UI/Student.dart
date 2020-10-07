@@ -217,8 +217,8 @@ class AddStudent extends StatelessWidget {
     }
 
     return RaisedButton(
-        color: KButtonColor,
-        child: Text("إضافة", style: KTextButtonStyle),
+        color: kButtonColor,
+        child: Text("إضافة", style: kTextButtonStyle),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0)),
         onPressed:
@@ -258,8 +258,8 @@ class StudentCards extends StatelessWidget {
                             Users.doc(document.id).delete();
                            _auth.deleteUser(document.data()['email'],"123456",document.data()['uid']);}
                         ),
-                        title: new Text(document.data()['name'], style: KTextPageStyle),
-                        subtitle: new Text("طالب", style: KTextPageStyle),
+                        title: new Text(document.data()['name'], style: kTextPageStyle),
+                        subtitle: new Text("طالب", style: kTextPageStyle),
                       ));
                 }).toList());
         }

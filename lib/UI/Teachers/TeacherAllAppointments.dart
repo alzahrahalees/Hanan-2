@@ -10,7 +10,7 @@ class _AllAppointmentsScreenState extends State<AllAppointmentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: KBackgroundPageColor,
+      color: kBackgroundPageColor,
       child: Text(
         "This is Appointments Screen",
         style: TextStyle(fontSize: 40),

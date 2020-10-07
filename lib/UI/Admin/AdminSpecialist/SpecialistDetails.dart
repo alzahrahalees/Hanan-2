@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../Constance.dart';
-import 'AdminMainScreen.dart';
+import '../../Constance.dart';
+import '../AdminMainScreen.dart';
 
-class StudentInfo extends StatelessWidget {
+class SpecialistInfo extends StatelessWidget {
   String name;
   String position;
 
-  StudentInfo(String name, String position) {
+  SpecialistInfo(String name, String position) {
     this.name = name;
     this.position = position;
   }
@@ -16,14 +16,14 @@ class StudentInfo extends StatelessWidget {
     final _formkey = GlobalKey<FormState>();
     return Scaffold(
         appBar: AppBar(
-          title: Text("معلومات الطالب ", style: KTextAppBarStyle),
+          title: Text("معلومات الأخصائي ", style: kTextAppBarStyle),
           centerTitle: true,
-          backgroundColor: KAppBarColor,
+          backgroundColor: kAppBarColor,
         ),
         body: SafeArea(
             child: Container(
                 padding: EdgeInsets.all(10),
-                color: KBackgroundPageColor,
+                color: kBackgroundPageColor,
                 alignment: Alignment.topRight,
                 child: Form(
                     key: _formkey,
@@ -35,9 +35,14 @@ class StudentInfo extends StatelessWidget {
                         ),
                         Text(
                           " الإسم  $name ",
-                          style: KTextPageStyle,
+                          style: kTextPageStyle,
                         ),
                       ])
-                    ])))));
+                    ]
+                    )
+                )
+            )
+        )
+    );
   }
 }

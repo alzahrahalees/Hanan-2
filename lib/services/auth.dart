@@ -6,6 +6,17 @@ class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  void authStat(){
+    _auth.authStateChanges().listen((User user) {
+      if (user== null){
+        print('user now is signed ou');
+      }
+      else{
+        print('user now is signed in');
+      }
+    });
+  }
+
   // create user obj based on firebase user
   AUser _userFromFirebaseUser(User user){//,bool isTeacher,  bool isSpecialist,  bool isParent,  bool isAdmin) {
     return user != null ? AUser(uid: user.uid) : null;
@@ -38,17 +49,6 @@ class AuthService {
   //       .map(_userFromFirebaseUser);
   // }
 
-  // sign in anon
-  // Future signInAnon() async {
-  //   try {
-  //     UserCredential result = await _auth.signInAnonymously();
-  //     User user = result.user;
-  //     return _userFromFirebaseUser(user);
-  //   } catch (e) {
-  //     print(e.toString());
-  //     return null;
-  //   }
-  // }
 
   // sign in with email and password
   Future signInWithEmailAndPassword(String email, String password) async {

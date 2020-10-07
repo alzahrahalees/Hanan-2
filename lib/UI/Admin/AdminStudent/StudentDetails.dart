@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import '../Constance.dart';
-import 'AdminMainScreen.dart';
+import '../../Constance.dart';
+import '../AdminMainScreen.dart';
 
-class TeacherInfo extends StatelessWidget {
+class StudentInfo extends StatelessWidget {
   String name;
   String position;
 
-  TeacherInfo(String name, String position) {
+  StudentInfo(String name, String position) {
     this.name = name;
     this.position = position;
-    bool DisplayNameValid = true;
-    bool bioValid = true;
   }
 
   @override
@@ -18,14 +16,14 @@ class TeacherInfo extends StatelessWidget {
     final _formkey = GlobalKey<FormState>();
     return Scaffold(
         appBar: AppBar(
-          title: Text("معلومات المعلم", style: KTextAppBarStyle),
+          title: Text("معلومات الطالب ", style: kTextAppBarStyle),
           centerTitle: true,
-          backgroundColor: KAppBarColor,
+          backgroundColor: kAppBarColor,
         ),
         body: SafeArea(
             child: Container(
                 padding: EdgeInsets.all(10),
-                color: KBackgroundPageColor,
+                color: kBackgroundPageColor,
                 alignment: Alignment.topRight,
                 child: Form(
                     key: _formkey,
@@ -37,7 +35,7 @@ class TeacherInfo extends StatelessWidget {
                         ),
                         Text(
                           " الإسم  $name ",
-                          style: KTextPageStyle,
+                          style: kTextPageStyle,
                         ),
                       ])
                     ])))));

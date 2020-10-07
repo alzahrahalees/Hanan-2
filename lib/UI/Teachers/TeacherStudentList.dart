@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Teachers/TeacherLogin.dart';
 import '../Constance.dart';
 import 'TeacherStudentMain.dart';
 
@@ -19,7 +18,7 @@ class _StudentListState extends State<StudentList> {
       child: Scaffold(
         body:  Container(
           padding: EdgeInsets.all(10),
-          color: KBackgroundPageColor,
+          color: kBackgroundPageColor,
           alignment: Alignment.topCenter,
           // here we add the snapshot from database
           child: ListView(
@@ -30,7 +29,7 @@ class _StudentListState extends State<StudentList> {
                     ReusableCard(
                       color: kCardColor,
                       child: ListTile(
-                        title:Text( "الزهراء الهليس", style: KTextPageStyle),
+                        title:Text( "الزهراء الهليس", style: kTextPageStyle),
                         subtitle: Text( "طالب"),),
 
                       onPress: () {
@@ -43,7 +42,7 @@ class _StudentListState extends State<StudentList> {
                     ReusableCard(
                         color: kCardColor,
                         child: ListTile(
-                          title: Text("غنى الغلاييني", style: KTextPageStyle),
+                          title: Text("غنى الغلاييني", style: kTextPageStyle),
                           subtitle: Text("طالب"),
                         ),
                         onPress: () {
