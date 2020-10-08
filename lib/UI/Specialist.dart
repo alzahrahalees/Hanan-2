@@ -20,8 +20,9 @@ class AddSpecialist extends StatelessWidget {
   final String  gender;
   final String typeOfSpechalist;
   final DateTime  birthday;
+  final  formkey ;
 
-  AddSpecialist({this.name,this.age,this.email,this.phone,this.type,this.gender,this.typeOfSpechalist,this.birthday});
+  AddSpecialist({this.formkey,this.name,this.age,this.email,this.phone,this.type,this.gender,this.typeOfSpechalist,this.birthday});
 
   @override
   Widget  build(BuildContext context) {
@@ -29,6 +30,7 @@ class AddSpecialist extends StatelessWidget {
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
 
     Future<void> addTeacher() async{
+
       var result=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "123456");
       User user=result.user;
       //problem:the document must be have the same ID
@@ -76,7 +78,10 @@ class AddSpecialist extends StatelessWidget {
         child: Text("إضافة", style: kTextButtonStyle),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0)),
-        onPressed: addTeacher
+        onPressed:() {
+          if (formkey.currentState.validate())
+          {addTeacher();}
+        }
 
     );
   }

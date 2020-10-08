@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'welcomeScreen.dart';
 import 'Constance.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'logIn.dart';
+
 
 void main() async{
+
+
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().whenComplete(() => print('completed'));
+  await Firebase.initializeApp().whenComplete(() {print('completed'); });
   runApp( new MaterialApp(
 
       localizationsDelegates: [

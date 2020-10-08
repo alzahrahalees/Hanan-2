@@ -97,6 +97,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                               });
                             },
                             validatorText: "#مطلوبة",
+
                           ),
                         ), //age
                         Padding(
@@ -201,18 +202,27 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                 ]),
                         new Padding(
                           padding: new EdgeInsets.all(15),
-                          child: AddSpecialist(
-                              name: _name,
-                              age: _age,
-                              email: _email,
-                              phone: _phone,
-                              gender: _gender,
-                              type: "Specialist",
-                              typeOfSpechalist: _typeOfSpechalist,
-                              birthday: _Birthdate),
+                          child: Container(
+                            child: AddSpecialist(
+                              formkey: _formkey,
+                                name: _name,
+                                age: _age,
+                                email: _email,
+                                phone: _phone,
+                                gender: _gender,
+                                type: "Specialist",
+                                typeOfSpechalist: _typeOfSpechalist,
+                                birthday: _Birthdate
+                            ),
+                          )
+
                         )
-
-                      ])])  )))   );
-
+                      ]
+                      )
+                    ]
+                    )  )
+            )
+        )
+    );
   }
 }

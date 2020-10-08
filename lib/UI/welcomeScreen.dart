@@ -19,33 +19,47 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Hero(
+                tag: 'logo',
+                child: Image.asset(
+                  'assets/images/testLogo.jpg',
+                  width: 300,
+                  height: 300,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: RaisedButton(
-                    color: kUnselectedItemColor,
-                    elevation: 10,
-                    child: Text("تسجيل الدخول", style: kTextButtonStyle.copyWith(
-                      fontSize: 30
-                    )),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0)),
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context)=> MainLogIn()
-                      ));
-                    }
+                child: Hero(
+                  tag:'login',
+                  child: RaisedButton(
+                      color: kUnselectedItemColor,
+                      elevation: 10,
+                      child: Text("تسجيل الدخول", style: kTextButtonStyle.copyWith(
+                        fontSize: 30
+                      )),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0)),
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=> MainLogIn()
+                        ));
+                      }
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: RaisedButton(
-                  elevation: 10,
-                  color: kUnselectedItemColor,
-                    child: Text("تسجيل مركز جديد", style: kTextButtonStyle.copyWith(fontSize: 30)),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0)),
-                    onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> AddAdminScreen()) );
-                    }
+                child: Hero(
+                  tag: 'newReg',
+                  child: RaisedButton(
+                    elevation: 10,
+                    color: kUnselectedItemColor,
+                      child: Text("تسجيل مركز جديد", style: kTextButtonStyle.copyWith(fontSize: 30)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0)),
+                      onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> AddAdminScreen()) );
+                      }
+                  ),
                 ),
               ),
             ],
