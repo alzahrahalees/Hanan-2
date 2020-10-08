@@ -31,7 +31,7 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: kUnselectedItemColor),
           elevation: 0,
-          title: Text("إضافة مركز ", style: kTextAppBarStyle),
+          title: Hero(tag: 'newReg',child: Text("إضافة مركز ", style: kTextAppBarStyle)),
           centerTitle: true,
           backgroundColor: kBackgroundPageColor,),
         body: SafeArea(
@@ -95,6 +95,7 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                         new Padding(
                           padding: new EdgeInsets.all(15),
                           child: AddAdmin(
+                            formKey: _formkey,
                               name: _name,
                               city: _city,
                               email: _email,
@@ -118,8 +119,9 @@ class AddAdmin extends StatelessWidget {
   final String email;
   final String  phone;
   final String  type;
+  final formKey;
 
-  AddAdmin({this.name,this.city,this.email,this.phone,this.type});
+  AddAdmin({this.formKey,this.name,this.city,this.email,this.phone,this.type});
 
   @override
   Widget  build(BuildContext context) {
@@ -159,7 +161,11 @@ class AddAdmin extends StatelessWidget {
         child: Text("تسجيل", style: kTextButtonStyle.copyWith(fontSize: 20)),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0)),
-        onPressed: addAdmin
+        onPressed:(){
+          if (formKey.currentState.validate()){
+            addAdmin();
+          }
+        }
     );
   }
 }

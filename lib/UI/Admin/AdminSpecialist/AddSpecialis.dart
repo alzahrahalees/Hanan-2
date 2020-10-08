@@ -97,6 +97,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                               });
                             },
                             validatorText: "#مطلوبة",
+
                           ),
                         ), //age
                         Padding(
@@ -202,6 +203,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                         new Padding(
                           padding: new EdgeInsets.all(15),
                           child: AddSpecialist(
+                            formkey: _formkey,
                               name: _name,
                               age: _age,
                               email: _email,

@@ -21,7 +21,11 @@ class AddSpecialist extends StatelessWidget {
   final String  gender;
   final String typeOfSpechalist;
   final DateTime  birthday;
-  AddSpecialist({this.name,this.age,this.email,this.phone,this.type,this.gender,this.typeOfSpechalist,this.birthday});
+
+  final  formkey ;
+
+  AddSpecialist({this.formkey,this.name,this.age,this.email,this.phone,this.type,this.gender,this.typeOfSpechalist,this.birthday});
+
   @override
   Widget  build(BuildContext context) {
 
@@ -38,6 +42,7 @@ class AddSpecialist extends StatelessWidget {
 
 
     Future<void> addTeacher() async{
+
       //problem:the document must be have the same ID
       var addToAdminSpecialist=Admin_Specialists.doc(email)
           .set({
@@ -101,7 +106,10 @@ class AddSpecialist extends StatelessWidget {
         child: Text("إضافة", style: kTextButtonStyle),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0)),
-        onPressed: addTeacher
+        onPressed:() {
+          if (formkey.currentState.validate())
+          {addTeacher();}
+        }
 
     );
   }

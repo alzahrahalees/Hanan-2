@@ -31,9 +31,10 @@ class AddStudent extends StatelessWidget {
   final String physiotherapySpecialistName;//علاج طبيعي
   final String physiotherapySpecialistId;
   final DateTime  birthday;
+  final formKey;
 
 
-  AddStudent({this.name,this.age,this.email,this.phone,this.type,this.gender,this.teacherName,this.teacherId,
+  AddStudent({this.formKey,this.name,this.age,this.email,this.phone,this.type,this.gender,this.teacherName,this.teacherId,
     this.communicationSpecialistName,this.communicationSpecialistId,
     this.occupationalSpecialistName,this.occupationalSpecialistId,
     this.physiotherapySpecialistName,this.physiotherapySpecialistId,
@@ -393,8 +394,14 @@ class AddStudent extends StatelessWidget {
         child: Text("إضافة", style: kTextButtonStyle),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0)),
-        onPressed:
-                     addStudent
+
+
+        onPressed:(){
+          if (formKey.currentState.validate())
+          {
+            addStudent();
+          }
+        }
 
     );
   }

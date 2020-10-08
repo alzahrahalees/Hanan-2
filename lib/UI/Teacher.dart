@@ -6,6 +6,7 @@ import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
 
 
+
 class Teacher{
   String name;
   String position;
@@ -19,8 +20,10 @@ class AddTeacher extends StatelessWidget {
   final String  type;
   final String  gender;
   final DateTime  birthday;
+  final formKey;
 
-  AddTeacher({this.name,this.age,this.email,this.phone,this.type,this.gender,this.birthday});
+  AddTeacher({this.formKey,this.name,this.age,this.email,this.phone,this.type,this.gender,this.birthday});
+
 
   @override
   Widget  build(BuildContext context) {
@@ -31,12 +34,12 @@ class AddTeacher extends StatelessWidget {
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
+
+
     Future<void> addTeacher() async{
       //problem:the document must be have the same ID
-
       var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email)
-          .set({
-      });
+          .set({});
 
 
      var addToAdminTeachers=Admin_Teachers.doc(email)
@@ -44,14 +47,17 @@ class AddTeacher extends StatelessWidget {
        "isAuth":false,
        "center":userAdmin.email,
        "uid":email,
-        'name': name,
-        'age': age,
-        'email': email,
-        'phone': phone,
-        "gender": gender,
-        "type": type,
-        "birthday": birthday.toString(),
-      });
+       'name': name,
+       'age': age,
+       'email': email,
+       'phone': phone,
+       "gender": gender,
+       "type": type,
+       "birthday": birthday.toString(),});
+
+
+      //problem:the document must be have the same ID
+
 
      var addToTeachers=Teachers.doc(email)
          .set({
@@ -69,9 +75,7 @@ class AddTeacher extends StatelessWidget {
 
       var addToUsers=Users.doc(email)
           .set({
-        "isAuth":false,
         'uid':email,
-        "center":userAdmin.email,
         'name': name,
         'age': age,
         'email': email,
@@ -80,6 +84,7 @@ class AddTeacher extends StatelessWidget {
         "type": type,
         "birthday": birthday.toString()
       });
+
 
 
       Navigator.pop(
@@ -92,8 +97,21 @@ class AddTeacher extends StatelessWidget {
       child: Text("إضافة", style: kTextButtonStyle),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0)),
-     onPressed: addTeacher
-
+     onPressed:() {
+        if(formKey.currentState.validate())
+        {addTeacher();}
+     },
+     // onPressed: () async{
+     //
+     //   // print(' befor adding: ${FirebaseAuth.instance.currentUser.uid}');
+     //   //  addTeacher();
+     //   //  await FirebaseAuth.instance.signOut();
+     //   // print(' after sign out: ${FirebaseAuth.instance.currentUser.uid}');
+     //   //  // await FirebaseAuth.instance.signInWithEmailAndPassword(email: 'smaile@gmail.com', password: '123456');
+     //   // print(' after sign in: ${FirebaseAuth.instance.currentUser.uid}');
+     // }
+// smaile@gmail.com
+   // brP1YIhE3YaUaf7DZ303qTSIDt63
     );
   }
 }
@@ -110,6 +128,7 @@ Widget build(BuildContext context) {
   CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
   CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
   AuthService _auth=AuthService();
+
   return StreamBuilder<QuerySnapshot>(
     stream:
     Admin_Teachers.snapshots(),
@@ -139,7 +158,9 @@ Widget build(BuildContext context) {
                           onPressed: () {
                             Teachers.doc(document.id).delete();
                             Users.doc(document.id).delete();
+
                             Admin_Teachers.doc(document.id).delete();
+
                       }
                       ),
                       title: new Text(document.data()['name'], style: kTextPageStyle),
@@ -151,3 +172,25 @@ Widget build(BuildContext context) {
   );
 }}
 
+//document.data()['name']
+//componentDidMount() {
+//
+//       let user = firebase.auth().currentUser;
+//
+//       let name, email, photoUrl, uid, emailVerified;
+//
+//       if (user) {
+//         name = user.displayName;
+//         email = user.email;
+//         photoUrl = user.photoURL;
+//         emailVerified = user.emailVerified;
+//         uid = user.uid;
+//
+//         if (!email) {
+//           email = user.providerData[0].email;
+//         }
+//
+//         console.log(name, email, photoUrl, emailVerified, uid);
+//       }
+//
+//     }

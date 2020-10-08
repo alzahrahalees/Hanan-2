@@ -18,8 +18,8 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
 
   final _formkey = GlobalKey<FormState>();
   final firestoreInstance = FirebaseFirestore.instance;
-
-  final AuthService _auth = AuthService();
+  //
+  // final AuthService _auth = AuthService();
   String _name;
   String _age;
   String _email;
@@ -167,6 +167,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                         new Padding(
                           padding: new EdgeInsets.all(15),
                           child: AddTeacher(
+                            formKey: _formkey,
                               name: _name,
                               age: _age,
                               email: _email,
