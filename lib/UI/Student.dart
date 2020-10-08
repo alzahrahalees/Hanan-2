@@ -11,8 +11,8 @@ class Student{
   String name;
   String position;
   Student({this.name,this.position});
-
 }
+
 class AddStudent extends StatelessWidget {
   final String name ;
   final String age  ;
@@ -43,152 +43,325 @@ class AddStudent extends StatelessWidget {
 
   @override
   Widget  build(BuildContext context) {
+    User userAdmin =  FirebaseAuth.instance.currentUser;
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
     CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
-
+    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
+    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email).collection('Specialists');
+    CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
 
     Future<void> addStudent() async {
-      var result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email, password: "123456");
-      User user = result.user;
       //problem:the document must be have the same ID
-      var addToStudent = Students.doc(user.uid).set({
-        'uid': user.uid,
-        'name': name,
-        'age': age,
-        'email': email,
-        'phone': phone,
-        "gender": gender,
-        "type": type,
-        "birthday": birthday.toString(),
-        "Teacher": { 'name': teacherName,
-          'uid': teacherId},
-        "psychologySpecialist": { 'name': psychologySpecialistName,
-          'uid': psychologySpecialistId},
-        "communicationSpecialist": { 'name': communicationSpecialistName,
-          'uid': communicationSpecialistId},
-        "occupationalSpecialist": { 'name': occupationalSpecialistName,
-          'uid': occupationalSpecialistId},
-        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-          'uid': physiotherapySpecialistId}
-        }).then((value) => print("User Added in Student Collection"))
-          .catchError((error) => print("Failed to add Student: $error"));
-     // "$teacherId/Students"
-      var updateTeacher=Teachers.doc(teacherId).
-          update({
-        user.uid: {
-          'uid': user.uid,
-          'name': name,
-          'age': age,
-          'email': email,
-          'phone': phone,
-          "gender": gender,
-          "type": type,
-          "birthday": birthday.toString(),
-          "psychologySpecialist": { 'name': psychologySpecialistName,
-            'uid': psychologySpecialistId},
-          "communicationSpecialist": { 'name': communicationSpecialistName,
-            'uid': communicationSpecialistId},
-          "occupationalSpecialist": { 'name': occupationalSpecialistName,
-            'uid': occupationalSpecialistId},
-          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-            'uid': physiotherapySpecialistId}
-        }
-          } ).then((value) => print("Teacher Updated"))
-          .catchError((error) => print("Failed to update Teacher: $error"));
-      var updatePsychology=Specialists.doc(psychologySpecialistId).
-      update({
-        user.uid: {
-          'uid': user.uid,
-          'name': name,
-          'age': age,
-          'email': email,
-          'phone': phone,
-          "gender": gender,
-          "type": type,
-          "birthday": birthday.toString(),
-          "Teacher": { 'name': teacherName,
-            'uid': teacherId},
-          "communicationSpecialist": { 'name': communicationSpecialistName,
-            'uid': communicationSpecialistId},
-          "occupationalSpecialist": { 'name': occupationalSpecialistName,
-            'uid': occupationalSpecialistId},
-          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-            'uid': physiotherapySpecialistId}
-        }
-      } ).then((value) => print("psychology specialist Updated"))
-          .catchError((error) => print("Failed to update psychology specialist: $error"));
-      var updateCommunication=Specialists.doc(communicationSpecialistId).
-      update({
-        user.uid: {
-          'uid': user.uid,
-          'name': name,
-          'age': age,
-          'email': email,
-          'phone': phone,
-          "gender": gender,
-          "type": type,
-          "birthday": birthday.toString(),
-          "Teacher": { 'name': teacherName,
-            'uid': teacherId},
-          "psychologySpecialist": { 'name': psychologySpecialistName,
-            'uid': psychologySpecialistId},
-          "occupationalSpecialist": { 'name': occupationalSpecialistName,
-            'uid': occupationalSpecialistId},
-          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-            'uid': physiotherapySpecialistId}
-        }
-      } ).then((value) => print("communication specialist Updated"))
-          .catchError((error) => print("Failed to update communication specialist: $error"));
-      var updateOccupational=Specialists.doc(occupationalSpecialistId).
-      update({
-        user.uid: {
-          'uid': user.uid,
-          'name': name,
-          'age': age,
-          'email': email,
-          'phone': phone,
-          "gender": gender,
-          "type": type,
-          "birthday": birthday.toString(),
-          "Teacher": { 'name': teacherName,
-            'uid': teacherId},
-          "psychologySpecialist": { 'name': psychologySpecialistName,
-            'uid': psychologySpecialistId},
-          "communicationSpecialist": { 'name': communicationSpecialistName,
-            'uid': communicationSpecialistId},
-          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-            'uid': physiotherapySpecialistId}
-        }
-      } ).then((value) => print("occupational specialist Updated"))
-          .catchError((error) => print("Failed to update occupational specialist: $error"));
-      var updatePhysiotherapy=Specialists.doc(physiotherapySpecialistId).
-      update({
-        user.uid: {
-          'uid': user.uid,
-          'name': name,
-          'age': age,
-          'email': email,
-          'phone': phone,
-          "gender": gender,
-          "type": type,
-          "birthday": birthday.toString(),
-          "Teacher": { 'name': teacherName,
-            'uid': teacherId},
-          "psychologySpecialist": { 'name': psychologySpecialistName,
-            'uid': psychologySpecialistId},
-          "communicationSpecialist": { 'name': communicationSpecialistName,
-            'uid': communicationSpecialistId},
-          "occupationalSpecialist": { 'name': occupationalSpecialistName,
-            'uid': occupationalSpecialistId},
-        }
-      } ).then((value) => print("physiotherapy specialist Updated"))
-          .catchError((error) => print("Failed to update physiotherapy specialist: $error"));
-      var addToUsers=Users.doc(user.uid)
+      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email)
           .set({
-        'uid': user.uid,
+      });
+
+      var addToStudent = Students.doc(email).set({
+        "isAuth":false,
+        'uid': email,
+        'name': name,
+        'age': age,
+        'email': email,
+        'phone': phone,
+        "gender": gender,
+        "type": type,
+        "birthday": birthday.toString(),
+      });
+      var addToAminStudent = Admin_Students.doc(email).set({
+        "isAuth":false,
+        'uid': email,
+        'name': name,
+        'age': age,
+        'email': email,
+        'phone': phone,
+        "gender": gender,
+        "type": type,
+        "birthday": birthday.toString(),
+      });
+
+
+      var addToAdminStudentTeacher = Admin_Students.doc(email).collection('Teachers').doc(teacherId).set(
+          {
+             'name': teacherName,
+              'uid': teacherId,
+          });
+
+      var addToAdminTeacherStudent= Admin_Teachers.doc(teacherId).collection('Students').doc(email).
+          set({
+        'uid': email,
+        'name': name,
+        'age': age,
+        'email': email,
+        'phone': phone,
+        "gender": gender,
+        "type": type,
+        "birthday": birthday.toString(),
+        "psychologySpecialist": { 'name': psychologySpecialistName,
+          'uid': psychologySpecialistId},
+        "communicationSpecialist": { 'name': communicationSpecialistName,
+          'uid': communicationSpecialistId},
+        "occupationalSpecialist": { 'name': occupationalSpecialistName,
+          'uid': occupationalSpecialistId},
+        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
+          'uid': physiotherapySpecialistId}
+      });
+
+
+      var addToStudentTeacher = Students.doc(email).collection('Teachers').doc(teacherId).set(
+          {
+            'name': teacherName,
+            'uid': teacherId,
+          });
+
+      var addTeacherStudent= Teachers.doc(teacherId).collection('Students').doc(email).
+      set({
+        'uid': email,
+        'name': name,
+        'age': age,
+        'email': email,
+        'phone': phone,
+        "gender": gender,
+        "type": type,
+        "birthday": birthday.toString(),
+        "psychologySpecialist": { 'name': psychologySpecialistName,
+          'uid': psychologySpecialistId},
+        "communicationSpecialist": { 'name': communicationSpecialistName,
+          'uid': communicationSpecialistId},
+        "occupationalSpecialist": { 'name': occupationalSpecialistName,
+          'uid': occupationalSpecialistId},
+        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
+          'uid': physiotherapySpecialistId}
+      } );
+
+      var addToStudentPsychologyS = Students.doc(email).collection('psychologySpecialist').doc(psychologySpecialistId).set(
+          {
+            'name': psychologySpecialistName,
+            'uid': psychologySpecialistId,
+          });
+
+      var addPsychologyStudent=Specialists.doc(psychologySpecialistId).collection('Students').doc(email).
+      set({
+          'uid': email,
+          'name': name,
+          'age': age,
+          'email': email,
+          'phone': phone,
+          "gender": gender,
+          "type": type,
+          "birthday": birthday.toString(),
+          "Teacher": { 'name': teacherName,
+            'uid': teacherId},
+          "communicationSpecialist": { 'name': communicationSpecialistName,
+            'uid': communicationSpecialistId},
+          "occupationalSpecialist": { 'name': occupationalSpecialistName,
+            'uid': occupationalSpecialistId},
+          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
+            'uid': physiotherapySpecialistId}
+        }
+      );
+      var addToAdminStudentPsychologyS = Admin_Students.doc(email).collection('psychologySpecialist').doc(psychologySpecialistId).set(
+          {
+            'name': psychologySpecialistName,
+            'uid': psychologySpecialistId,
+          });
+
+      var addAdminPsychologyStudent=Admin_Specialists.doc(psychologySpecialistId).collection('Students').doc(email).
+      set({
+        'uid': email,
+        'name': name,
+        'age': age,
+        'email': email,
+        'phone': phone,
+        "gender": gender,
+        "type": type,
+        "birthday": birthday.toString(),
+        "Teacher": { 'name': teacherName,
+          'uid': teacherId},
+        "communicationSpecialist": { 'name': communicationSpecialistName,
+          'uid': communicationSpecialistId},
+        "occupationalSpecialist": { 'name': occupationalSpecialistName,
+          'uid': occupationalSpecialistId},
+        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
+          'uid': physiotherapySpecialistId}
+      }
+      );
+
+
+
+      var addToStudentCommunicationS = Students.doc(email).collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
+          {
+            'name': communicationSpecialistName,
+            'uid': communicationSpecialistId,
+          });
+
+      var addCommunicationStudent=Specialists.doc(communicationSpecialistId).collection('Students').doc(email).
+      set({
+          'center':userAdmin.email,
+          'uid': email,
+          'name': name,
+          'age': age,
+          'email': email,
+          'phone': phone,
+          "gender": gender,
+          "type": type,
+          "birthday": birthday.toString(),
+          "Teacher": { 'name': teacherName,
+            'uid': teacherId},
+          "psychologySpecialist": { 'name': psychologySpecialistName,
+            'uid': psychologySpecialistId},
+          "occupationalSpecialist": { 'name': occupationalSpecialistName,
+            'uid': occupationalSpecialistId},
+          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
+            'uid': physiotherapySpecialistId}
+        });
+
+      var addToAdminStudentCommunicationS = Admin_Students.doc(email).collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
+          {
+            'name': communicationSpecialistName,
+            'uid': communicationSpecialistId,
+          });
+
+      var addAdminCommunicationStudent=Admin_Specialists.doc(communicationSpecialistId).collection('Students').doc(email).
+      set({
+        'center':userAdmin.email,
+        'uid': email,
+        'name': name,
+        'age': age,
+        'email': email,
+        'phone': phone,
+        "gender": gender,
+        "type": type,
+        "birthday": birthday.toString(),
+        "Teacher": { 'name': teacherName,
+          'uid': teacherId},
+        "psychologySpecialist": { 'name': psychologySpecialistName,
+          'uid': psychologySpecialistId},
+        "occupationalSpecialist": { 'name': occupationalSpecialistName,
+          'uid': occupationalSpecialistId},
+        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
+          'uid': physiotherapySpecialistId}
+      });
+
+
+      var addToStudentOccupationalS = Students.doc(email).collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
+          {
+            'name': occupationalSpecialistName,
+            'uid':occupationalSpecialistId,
+          });
+
+
+      var addOccupationalStudent=Specialists.doc(occupationalSpecialistId).collection('Students').doc(email).
+      set({
+          'center':userAdmin.email,
+          'uid': email,
+          'name': name,
+          'age': age,
+          'email': email,
+          'phone': phone,
+          "gender": gender,
+          "type": type,
+          "birthday": birthday.toString(),
+          "Teacher": { 'name': teacherName,
+            'uid': teacherId},
+          "psychologySpecialist": { 'name': psychologySpecialistName,
+            'uid': psychologySpecialistId},
+          "communicationSpecialist": { 'name': communicationSpecialistName,
+            'uid': communicationSpecialistId},
+          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
+            'uid': physiotherapySpecialistId}
+        });
+
+      var addAdminToStudentOccupationalS = Admin_Students.doc(email).collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
+          {
+            'name': occupationalSpecialistName,
+            'uid':occupationalSpecialistId,
+          });
+
+
+      var addAdminOccupationalStudent=Admin_Specialists.doc(occupationalSpecialistId).collection('Students').doc(email).
+      set({
+        'center':userAdmin.email,
+        'uid': email,
+        'name': name,
+        'age': age,
+        'email': email,
+        'phone': phone,
+        "gender": gender,
+        "type": type,
+        "birthday": birthday.toString(),
+        "Teacher": { 'name': teacherName,
+          'uid': teacherId},
+        "psychologySpecialist": { 'name': psychologySpecialistName,
+          'uid': psychologySpecialistId},
+        "communicationSpecialist": { 'name': communicationSpecialistName,
+          'uid': communicationSpecialistId},
+        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
+          'uid': physiotherapySpecialistId}
+      });
+
+
+      var addToStudentPhysiotherapyS = Students.doc(email).collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
+          {
+            'name': physiotherapySpecialistName,
+            'uid':physiotherapySpecialistId,
+          });
+
+      var addPhysiotherapy=Specialists.doc(physiotherapySpecialistId).collection("Students").doc(email).set({
+          'center':userAdmin,
+          'name':name,
+          'uid':email,
+          'age': age,
+          'email': email,
+          'phone': phone,
+          "gender": gender,
+          "type": type,
+          "birthday": birthday.toString(),
+          "Teacher": { 'name': teacherName,
+            'uid': teacherId},
+          "psychologySpecialist": { 'name': psychologySpecialistName,
+            'uid': psychologySpecialistId},
+          "communicationSpecialist": { 'name': communicationSpecialistName,
+            'uid': communicationSpecialistId},
+          "occupationalSpecialist": { 'name': occupationalSpecialistName,
+            'uid': occupationalSpecialistId},
+        }
+       );
+
+      var addToAdminStudentPhysiotherapyS = Admin_Students.doc(email).collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
+          {
+            'name': physiotherapySpecialistName,
+            'uid':physiotherapySpecialistId,
+          });
+
+      var addToAdminPhysiotherapy=Admin_Specialists.doc(physiotherapySpecialistId).collection("Students").doc(email).set({
+        'center':userAdmin,
+        'name':name,
+        'uid':email,
+        'age': age,
+        'email': email,
+        'phone': phone,
+        "gender": gender,
+        "type": type,
+        "birthday": birthday.toString(),
+        "Teacher": { 'name': teacherName,
+          'uid': teacherId},
+        "psychologySpecialist": { 'name': psychologySpecialistName,
+          'uid': psychologySpecialistId},
+        "communicationSpecialist": { 'name': communicationSpecialistName,
+          'uid': communicationSpecialistId},
+        "occupationalSpecialist": { 'name': occupationalSpecialistName,
+          'uid': occupationalSpecialistId},
+      }
+      );
+
+
+      var addToUsers=Users.doc(email)
+          .set({
+        "isAuth":false,
+        'uid': email,
         'name': name,
         'age': age,
         'email': email,
@@ -206,15 +379,14 @@ class AddStudent extends StatelessWidget {
           'uid': occupationalSpecialistId},
         "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
           'uid': physiotherapySpecialistId}
-      })
-          .then((value) => print("User Added in Users Collection"))
-          .catchError((error) => print("Failed to add user: $error"));
+      });
+
       Navigator.pop(
           context,
           MaterialPageRoute(
               builder: (context) =>
                   MainAdminScreen(2)));
-    }
+    };
 
     return RaisedButton(
         color: kButtonColor,
@@ -222,7 +394,6 @@ class AddStudent extends StatelessWidget {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18.0)),
         onPressed:
-
                      addStudent
 
     );
@@ -233,12 +404,18 @@ class AddStudent extends StatelessWidget {
 class StudentCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    User userAdmin =  FirebaseAuth.instance.currentUser;
+    //References
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+    CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
     AuthService _auth=AuthService();
+
     return StreamBuilder<QuerySnapshot>(
       stream:
-      Students.snapshots(),
+      Admin_Students.snapshots(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Text('Loading');
@@ -256,7 +433,8 @@ class StudentCards extends StatelessWidget {
                           onPressed: () {
                             Students.doc(document.id).delete();
                             Users.doc(document.id).delete();
-                           _auth.deleteUser(document.data()['email'],"123456",document.data()['uid']);}
+                         Admin_Students.doc(document.id).delete();
+    }
                         ),
                         title: new Text(document.data()['name'], style: kTextPageStyle),
                         subtitle: new Text("طالب", style: kTextPageStyle),

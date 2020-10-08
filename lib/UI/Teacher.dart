@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hanan/UI/Student.dart';
 import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
 
@@ -20,23 +19,31 @@ class AddTeacher extends StatelessWidget {
   final String  type;
   final String  gender;
   final DateTime  birthday;
-  final Map students;
 
-  AddTeacher({this.name,this.age,this.email,this.phone,this.type,this.gender,this.birthday,this.students});
+  AddTeacher({this.name,this.age,this.email,this.phone,this.type,this.gender,this.birthday});
 
   @override
   Widget  build(BuildContext context) {
     final _formkey = GlobalKey<FormState>();
+    User userAdmin =  FirebaseAuth.instance.currentUser;
+    //Reference
     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-
+    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
     Future<void> addTeacher() async{
-      var result=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "123456");
-      User user=result.user;
       //problem:the document must be have the same ID
-     var addToTeachers=Teachers.doc(user.uid)
+
+      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email)
           .set({
-       "uid":user.uid,
+      });
+
+
+     var addToAdminTeachers=Admin_Teachers.doc(email)
+          .set({
+       "isAuth":false,
+       "center":userAdmin.email,
+       "uid":email,
         'name': name,
         'age': age,
         'email': email,
@@ -44,24 +51,37 @@ class AddTeacher extends StatelessWidget {
         "gender": gender,
         "type": type,
         "birthday": birthday.toString(),
-       "Students":students
-      })
-          .then((value) => print("User Added in Teacher Collection"))
-          .catchError((error) => print("Failed to add Teacher: $error"));
-      var addToUsers=Users.doc(user.uid)
+      });
+
+     var addToTeachers=Teachers.doc(email)
+         .set({
+       "isAuth":false,
+       "center":userAdmin.email,
+       "uid":email,
+       'name': name,
+       'age': age,
+       'email': email,
+       'phone': phone,
+       "gender": gender,
+       "type": type,
+       "birthday": birthday.toString(),
+     });
+
+      var addToUsers=Users.doc(email)
           .set({
-        'uid':user.uid,
+        "isAuth":false,
+        'uid':email,
+        "center":userAdmin.email,
         'name': name,
         'age': age,
         'email': email,
         'phone': phone,
         "gender": gender,
         "type": type,
-        "Students":students,
         "birthday": birthday.toString()
-      })
-          .then((value) => print("User Added in Users Collection"))
-          .catchError((error) => print("Failed to add user: $error"));
+      });
+
+
       Navigator.pop(
           context,
           MaterialPageRoute(
@@ -81,12 +101,18 @@ class AddTeacher extends StatelessWidget {
 class TeacherCards extends StatelessWidget {
 @override
 Widget build(BuildContext context) {
+
+  User userAdmin =  FirebaseAuth.instance.currentUser;
+  //Reference
   CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
   CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+  CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
+  CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
   AuthService _auth=AuthService();
   return StreamBuilder<QuerySnapshot>(
     stream:
-    Teachers.snapshots(),
+    Admin_Teachers.snapshots(),
     builder: (BuildContext context,
         AsyncSnapshot<QuerySnapshot> snapshot) {
       if (!snapshot.hasData) return Text('Loading');
@@ -101,24 +127,24 @@ Widget build(BuildContext context) {
           return new ListView(
               children:
               snapshot.data.docs.map((DocumentSnapshot document) {
+                Admin_Teachers.where(document.data()['isAuth'],isEqualTo: true).get().then((value) =>
                 //return ListView.builder(
                 //  padding: EdgeInsets.all(10.0),
                 //  itemCount: FilteringTeachers.length,
                 // itemBuilder: (BuildContext context, int index) {
-                return Card(
+                Card(
                     borderOnForeground: true,
                     child: ListTile(
                       trailing: IconButton(icon: Icon (Icons.delete),
                           onPressed: () {
                             Teachers.doc(document.id).delete();
                             Users.doc(document.id).delete();
-                _auth.deleteUser(document.data()['email'],"123456",document.data()['uid']);
+                            Admin_Teachers.doc(document.id).delete();
                       }
-
                       ),
                       title: new Text(document.data()['name'], style: kTextPageStyle),
                       subtitle: new Text("معلم", style: kTextPageStyle),
-                    ));
+                    )));
               }).toList());
       }
     },

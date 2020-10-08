@@ -5,6 +5,7 @@ import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
 
+
 class Specialist{
   String name;
   String position;
@@ -20,21 +21,29 @@ class AddSpecialist extends StatelessWidget {
   final String  gender;
   final String typeOfSpechalist;
   final DateTime  birthday;
-
   AddSpecialist({this.name,this.age,this.email,this.phone,this.type,this.gender,this.typeOfSpechalist,this.birthday});
-
   @override
   Widget  build(BuildContext context) {
+
+    var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email)
+        .set({
+    });
+    User userAdmin =  FirebaseAuth.instance.currentUser;
+    //Reference
     CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email).collection('Specialists');
+
+
 
     Future<void> addTeacher() async{
-      var result=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "123456");
-      User user=result.user;
       //problem:the document must be have the same ID
-      var addToTeachers=Specialists.doc(user.uid)
+      var addToAdminSpecialist=Admin_Specialists.doc(email)
           .set({
-        'uid':user.uid,
+        "isAuth":false,
+        "center":userAdmin.email,
+        'uid':email,
         'name': name,
         'age': age,
         'email': email,
@@ -43,13 +52,32 @@ class AddSpecialist extends StatelessWidget {
         "type": type,
         "typeOfSpechalist":typeOfSpechalist,
         "birthday": birthday.toString()
+      })
+          .then((value) => print("User Added in Admin/Specialist Collection"))
+          .catchError((error) => print("Failed to add in Admin/Specialist: $error"));
 
+      var addToSpecialist=Specialists.doc(email)
+          .set({
+        "isAuth":false,
+        "center":userAdmin.email,
+        'uid':email,
+        'name': name,
+        'age': age,
+        'email': email,
+        'phone': phone,
+        "gender": gender,
+        "type": type,
+        "typeOfSpechalist":typeOfSpechalist,
+        "birthday": birthday.toString()
       })
           .then((value) => print("User Added in Specialist Collection"))
-          .catchError((error) => print("Failed to add Specialist: $error"));
-      var addToUsers=Users.doc(user.uid)
+          .catchError((error) => print("Failed to add in Specialist: $error"));
+
+      var addToUsers=Users.doc(email)
           .set({
-        'uid':user.uid,
+        "isAuth":false,
+        "center":userAdmin.email,
+        'uid':email,
         'name': name,
         'age': age,
         'email': email,
@@ -58,9 +86,7 @@ class AddSpecialist extends StatelessWidget {
         "type": type,
         "typeOfSpechalist":typeOfSpechalist,
         "birthday": birthday.toString()
-
       })
-
           .then((value) => print("User Added in Users Collection"))
           .catchError((error) => print("Failed to add user: $error"));
 
@@ -68,8 +94,7 @@ class AddSpecialist extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  MainAdminScreen(1)));
-    }
+                  MainAdminScreen(1)));}
 
     return RaisedButton(
         color: kButtonColor,
@@ -85,12 +110,18 @@ class AddSpecialist extends StatelessWidget {
 class SpecialistCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    User userAdmin =  FirebaseAuth.instance.currentUser;
+    //ReferenceS
     CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email).collection('Specialists');
+
     AuthService _auth=AuthService();
+
     return StreamBuilder<QuerySnapshot>(
       stream:
-      Specialists.snapshots(),
+     Admin_Specialists.snapshots(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Text('Loading');
@@ -101,20 +132,20 @@ class SpecialistCards extends StatelessWidget {
             return new ListView(
                 children:
                 snapshot.data.docs.map((DocumentSnapshot document) {
-                  return Card(
+                  Admin_Specialists.where(document.data()['isAuth'],isEqualTo: true).get().then((value) =>
+                       Card(
                       borderOnForeground: true,
                       child: ListTile(
                         trailing: IconButton(icon: Icon (Icons.delete),
                             onPressed: () {
                               Specialists.doc(document.id).delete();
                               Users.doc(document.id).delete();
-                _auth.deleteUser(document.data()['email'],"123456",document.data()['uid']);}
+                              Admin.doc(userAdmin.email).collection('Specialists').doc(document.id).delete();}
                         ),
-
                         title: new Text(document.data()['name'], style: kTextPageStyle),
                         subtitle: new Text(document.data()["typeOfSpechalist"], style: kTextPageStyle),
 
-                      ));
+                      )));
                 }).toList());
         }
       },

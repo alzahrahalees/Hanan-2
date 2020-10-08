@@ -128,11 +128,12 @@ class AddAdmin extends StatelessWidget {
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
 
     Future<void> addAdmin() async{
-      var result=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "123456");
-      User user=result.user;
+      var result= await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "123456");
+      var user=result.user;
       //problem:the document must be have the same ID
       var addToAdmin=Admin.doc(user.uid)
           .set({
+        'uid':user.uid,
         'name': name,
         'city': city,
         'email': email,

@@ -1,10 +1,26 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:hanan/user.dart';
 import 'database.dart';
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  dynamic inputData() {
+    final User user = auth.currentUser;
+    final uid = user.uid;
+    return user.uid;
+    // here you write the codes to input the data into firestore
+  }
+
+
+
+
+
 
   void authStat(){
     _auth.authStateChanges().listen((User user) {
@@ -21,8 +37,7 @@ class AuthService {
   AUser _userFromFirebaseUser(User user){//,bool isTeacher,  bool isSpecialist,  bool isParent,  bool isAdmin) {
     return user != null ? AUser(uid: user.uid) : null;
   }
-
-  Future deleteUser(String email, String password, dynamic uid) async {
+  /*Future deleteUser(String email, String password, dynamic uid) async {
     try{
      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
@@ -39,7 +54,7 @@ class AuthService {
       print(e.toString());
       return null;
     }
-  }
+  }*/
 
 
   // auth change user stream
@@ -48,6 +63,8 @@ class AuthService {
   //   //.map((FirebaseUser user) => _userFromFirebaseUser(user));
   //       .map(_userFromFirebaseUser);
   // }
+
+
 
 
   // sign in with email and password

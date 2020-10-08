@@ -172,7 +172,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                               email: _email,
                               phone: _phone,
                               gender: _gender,
-                              type: "Teacher",
+                              type: "Teachers",
                               birthday: _Birthdate),
                         )
 

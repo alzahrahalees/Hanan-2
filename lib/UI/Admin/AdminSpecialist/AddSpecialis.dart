@@ -207,7 +207,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                               email: _email,
                               phone: _phone,
                               gender: _gender,
-                              type: "Specialist",
+                              type: "Specialists",
                               typeOfSpechalist: _typeOfSpechalist,
                               birthday: _Birthdate),
                         )

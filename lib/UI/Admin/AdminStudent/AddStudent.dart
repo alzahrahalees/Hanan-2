@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Constance.dart';
@@ -20,6 +21,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
   final _formkey = GlobalKey<FormState>();
   final firestoreInstance = FirebaseFirestore.instance;
+  User userAdmin =  FirebaseAuth.instance.currentUser;
+  CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
   CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
   final AuthService _auth = AuthService();
   //Map<String,dynamic> s;
@@ -45,15 +48,12 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 
 
 
-
-
-  CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-
   void changeIndex(int index) {
     setState(() {
       selectedIndex = index;
     });
   }
+
 
 
   Widget RadioButton(String txt, int index) {
@@ -204,7 +204,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(
                                 padding: new EdgeInsets.all(15),
                               child: StreamBuilder(
-                                    stream: Teachers.snapshots(),
+                                    stream: Admin.doc(userAdmin.email).collection('Teachers').snapshots(),
                                     builder: (context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
                                       if (!snapshot.hasData)
@@ -258,7 +258,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(
                               padding: new EdgeInsets.all(15),
                               child: StreamBuilder(
-                                  stream: Specialists.snapshots(),
+                                  stream: Admin.doc(userAdmin.email).collection('Specialists').snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     Center(
@@ -296,8 +296,8 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                               //color: primaryColor,
                                               child:
                                               new Text(
-                                               // document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
-                                                  document.data()["typeOfSpechalist"]=="أخصائي نفسي"?document.data()["name"]:"."
+                                               document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
+                                                  //document.data()["typeOfSpechalist"]=="أخصائي نفسي"?document.data()["name"]:"."
                                               ),
                                             ));
                                       }).toList() : DropdownMenuItem(
@@ -319,7 +319,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(
                               padding: new EdgeInsets.all(15),
                               child: StreamBuilder(
-                                  stream: Specialists.snapshots(),
+                                  stream: Admin.doc(userAdmin.email).collection('Specialists').snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     Center(
@@ -374,7 +374,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(
                               padding: new EdgeInsets.all(15),
                               child: StreamBuilder(
-                                  stream: Specialists.snapshots(),
+                                  stream: Admin.doc(userAdmin.email).collection('Specialists').snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     Center(
@@ -484,7 +484,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                               email: _email,
                               phone: _phone,
                               gender: _gender,
-                              type: "Student",
+                              type: "Students",
                               teacherName: _teacherName,
                               teacherId: _teacherId,
                               psychologySpecialistName: _psychologySpecialistName,
