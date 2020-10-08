@@ -127,6 +127,7 @@ class SpecialistCards extends StatelessWidget {
 
     AuthService _auth=AuthService();
 
+
     return StreamBuilder<QuerySnapshot>(
       stream:
      Admin_Specialists.snapshots(),
@@ -140,8 +141,8 @@ class SpecialistCards extends StatelessWidget {
             return new ListView(
                 children:
                 snapshot.data.docs.map((DocumentSnapshot document) {
-                  Admin_Specialists.where(document.data()['isAuth'],isEqualTo: true).get().then((value) =>
-                       Card(
+                        if (document.data()["isAuth"]==true ){
+                       return Card(
                       borderOnForeground: true,
                       child: ListTile(
                         trailing: IconButton(icon: Icon (Icons.delete),
@@ -150,10 +151,17 @@ class SpecialistCards extends StatelessWidget {
                               Users.doc(document.id).delete();
                               Admin.doc(userAdmin.email).collection('Specialists').doc(document.id).delete();}
                         ),
-                        title: new Text(document.data()['name'], style: kTextPageStyle),
-                        subtitle: new Text(document.data()["typeOfSpechalist"], style: kTextPageStyle),
+                        title:  Text(document.data()['name'], style: kTextPageStyle),
+                        subtitle:  Text( document.data()["isAuth"]==true? document.data()["typeOfSpechalist"]:" لم تتم المصادقة",style: kTextPageStyle),
 
-                      )));
+                      ));
+                }
+                        else{
+                          return Text ("",style: TextStyle(fontSize: 0));
+
+                        }
+
+
                 }).toList());
         }
       },

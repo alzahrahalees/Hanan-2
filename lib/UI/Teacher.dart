@@ -20,9 +20,9 @@ class AddTeacher extends StatelessWidget {
   final String  type;
   final String  gender;
   final DateTime  birthday;
-  final formKey;
+  final  formkey ;
 
-  AddTeacher({this.formKey,this.name,this.age,this.email,this.phone,this.type,this.gender,this.birthday});
+  AddTeacher({this.formkey,this.name,this.age,this.email,this.phone,this.type,this.gender,this.birthday});
 
 
   @override
@@ -75,6 +75,7 @@ class AddTeacher extends StatelessWidget {
 
       var addToUsers=Users.doc(email)
           .set({
+        "isAuth":false,
         'uid':email,
         'name': name,
         'age': age,
@@ -97,10 +98,11 @@ class AddTeacher extends StatelessWidget {
       child: Text("إضافة", style: kTextButtonStyle),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0)),
-     onPressed:() {
-        if(formKey.currentState.validate())
-        {addTeacher();}
-     },
+       onPressed:() {
+         if (formkey.currentState.validate())
+         {addTeacher();}
+       }
+
      // onPressed: () async{
      //
      //   // print(' befor adding: ${FirebaseAuth.instance.currentUser.uid}');
@@ -119,7 +121,6 @@ class AddTeacher extends StatelessWidget {
 class TeacherCards extends StatelessWidget {
 @override
 Widget build(BuildContext context) {
-
   User userAdmin =  FirebaseAuth.instance.currentUser;
   //Reference
   CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
@@ -128,7 +129,6 @@ Widget build(BuildContext context) {
   CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
   CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
   AuthService _auth=AuthService();
-
   return StreamBuilder<QuerySnapshot>(
     stream:
     Admin_Teachers.snapshots(),
@@ -139,39 +139,42 @@ Widget build(BuildContext context) {
         case ConnectionState.waiting:
           return Text('Loading..');
         default:
-        //List <Widget>s =snapshot.data.docs.map((DocumentSnapshot document) {
-        //teachers.add(Teacher(name: document.data()['name'], position: "معلم"));
-        //}).toList();
-        //FilteringTeachers.addAll(teachers);
           return new ListView(
+
               children:
+
               snapshot.data.docs.map((DocumentSnapshot document) {
-                Admin_Teachers.where(document.data()['isAuth'],isEqualTo: true).get().then((value) =>
-                //return ListView.builder(
-                //  padding: EdgeInsets.all(10.0),
-                //  itemCount: FilteringTeachers.length,
-                // itemBuilder: (BuildContext context, int index) {
-                Card(
+                if (document.data()["isAuth"]==true ){
+                return Card(
                     borderOnForeground: true,
                     child: ListTile(
                       trailing: IconButton(icon: Icon (Icons.delete),
                           onPressed: () {
-                            Teachers.doc(document.id).delete();
+                          Teachers.doc(document.id).delete();
                             Users.doc(document.id).delete();
-
-                            Admin_Teachers.doc(document.id).delete();
-
-                      }
+                            Admin.doc(userAdmin.email).collection('Teachers').doc(document.id).delete();}
                       ),
-                      title: new Text(document.data()['name'], style: kTextPageStyle),
-                      subtitle: new Text("معلم", style: kTextPageStyle),
-                    )));
+                      title:  Text(document.data()['name'], style: kTextPageStyle),
+                      subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
+
+                    ));}
+              else{
+             return Text ("",style: TextStyle(fontSize: 0));
+
+                }
+
+
+
               }).toList());
+
+
+
       }
     },
   );
-}}
 
+
+}}
 //document.data()['name']
 //componentDidMount() {
 //

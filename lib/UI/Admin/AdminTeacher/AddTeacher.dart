@@ -167,7 +167,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                         new Padding(
                           padding: new EdgeInsets.all(15),
                           child: AddTeacher(
-                            formKey: _formkey,
+                            formkey: _formkey,
                               name: _name,
                               age: _age,
                               email: _email,
