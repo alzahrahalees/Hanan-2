@@ -29,6 +29,17 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
   String _password;
   String _password2;
   Color textColor = Colors.black54;
+  bool isItValid=false;
+  Icon icon = Icon(Icons.lock);
+
+  bool isValid(){
+
+    bool isSame= _password==_password2;
+    bool hasDigits = _password.contains( RegExp(r'[0-9]'));
+    bool hasLowercase = _password.contains( RegExp(r'[a-z]')) || _password.contains( RegExp(r'[A-Z]'));
+    bool hasMinLength = _password.length > 6;
+    return  hasDigits  & hasLowercase & hasMinLength & isSame;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +139,7 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                           child:  TextFormField(
                             obscureText: true,
                             decoration: InputDecoration(
-                                prefixIcon: new Icon(Icons.lock),
+                                prefixIcon: icon,
                                 hintText: "إعادة كلمة المرور",
                                 helperStyle: TextStyle(fontSize: 10)),
                             validator: (value) {
@@ -145,7 +156,8 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                             },
                         ),
                         ),
-                        new Padding(
+
+                        isItValid? new Padding(
                           padding: new EdgeInsets.all(15),
                           child: AddAdmin(
                             formKey: _formkey,
@@ -157,6 +169,29 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                               password2: _password2,
                               type: "Admin",
                           ) //phone num
+                        ):  Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RaisedButton(
+                              color: kButtonColor,
+                              child: Text("تحقق من صلاحية الرقم السري", style: kTextButtonStyle.copyWith(fontSize: 20)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0)),
+                              onPressed:() {
+                                if(isValid()){
+                                  setState(() {
+                                    isItValid=isValid();
+                                    icon = Icon(Icons.done,color: Colors.green,);
+                                  });
+                                }
+                                else{
+                                  setState(() {
+                                    textColor=Colors.red;
+                                    icon = Icon(Icons.clear,color: Colors.red,);
+                                  });
+                                }
+                              }
+
+                          ),
                         ),
                         ReusableCard(
                           width: 400,
@@ -169,8 +204,9 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                                   "- حرف انجليزي واحد على الأقل \n "
                                   "- رقم واحد على الأقل \n"
                                   " - يجب أن يكون طول كلمة المرور أكثر من 6 أحرف \n "
+                                  "بعد الانتهاء من كتابة رقم المرور اضغط على زر تحقق من رقم المرور، إن كان رقم المرور يستوفي جميع الشروط يمكنك الضغط على زر التسجيل "
                               ,
-                              style: kTextPageStyle.copyWith(color:Colors.black54  ,fontSize: 18),
+                              style: kTextPageStyle.copyWith(color:textColor  ,fontSize: 18),
                               textAlign: TextAlign.right,
                             ),
                           ),

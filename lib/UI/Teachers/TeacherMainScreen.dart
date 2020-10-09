@@ -6,7 +6,7 @@ import 'package:hanan/services/chang_password.dart';
 import '../Constance.dart';
 import 'TeacherAllAppointments.dart';
 import 'TeacherStudentList.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MainTeacherScreen extends StatefulWidget {
   AuthService _auth = AuthService();
@@ -67,62 +67,70 @@ class _MainTeacherScreenState extends State<MainTeacherScreen> {
           ],
         ),
         // drawerEnableOpenDragGesture: true,
-        drawer: Container(
-          width:225,
-          child: Drawer(
-            child: Container(
-              color: kAppBarColor,
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children:  <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50, bottom: 20,right: 10),
-                    child: Container(
-                      child: Text(
-                      'المعلمة فلانة',
-                      style: TextStyle(
-                        color: kSelectedItemColor,
-                        fontSize: 30,
-                      ),
-                    ),
-                    ),
-                  ),
-                  // DrawerHeader(
-                  //   child: Text(
-                  //     'المعلمة فلانة',
-                  //     style: TextStyle(
-                  //       color: kSelectedItemColor,
-                  //       fontSize: 30,
-                  //     ),
-                  //   ),
-                  // ),
-                  Divider(
-                    color: Colors.black54,
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.account_circle),
-                    title: Text('الملف الشخصي', style: TextStyle(fontSize: 18),),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.phonelink_lock),
-                    title: Text('تغيير كلمة السر', style: TextStyle(fontSize: 18)),
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangePassword()));
+        drawer: Drawer(
+          child:Container(
+            width:225,
+            color: kAppBarColor,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children:  <Widget>[
+                DrawerHeader(
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('Users')
+                        .doc(FirebaseAuth.instance.currentUser.email.toLowerCase())
+                        .snapshots(),
+                    builder: (context, snapshot){
+                      if(!snapshot.hasData){
+                        return CircularProgressIndicator();
+                      }
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        return CircularProgressIndicator();
+                      }
+                      DocumentSnapshot _userData= snapshot.data;
+                      return Center(
+                        child: Text (
+                          _userData.data()['name'],
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: kSelectedItemColor,
+                            fontSize: 30,
+                          ),
+                        ),
+                      );
                     },
                   ),
-                  ListTile(
-                    leading: Icon(Icons.clear),
-                    title: Text('تسجيل الخروج', style: TextStyle(fontSize: 18)),
-                    onTap: (){
-                      // _authService.signOut();
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> MainLogIn()));
-                    },
-                  ),
-                ],
-              ),
+
+
+                ),
+
+                Divider(
+                  color: Colors.black54,
+                ),
+                ListTile(
+                  leading: Icon(Icons.account_circle),
+                  title: Text('الملف الشخصي', style: TextStyle(fontSize: 18),),
+                ),
+                ListTile(
+                  leading: Icon(Icons.phonelink_lock),
+                  title: Text('تغيير كلمة السر', style: TextStyle(fontSize: 18)),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangePassword()));
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.clear),
+                  title: Text('تسجيل الخروج', style: TextStyle(fontSize: 18)),
+                  onTap: (){
+                    FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder:(context)=> MainLogIn()));
+                  },
+                ),
+              ],
             ),
           ),
         ),
+
         body: CustomScrollView(
             slivers:<Widget>[
               SliverAppBar(

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Teacher.dart';
 import '../../Constance.dart';
-import 'package:hanan/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddTeacherScreen extends StatefulWidget {
   @override
@@ -181,3 +181,4 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
 
   }
 }
+

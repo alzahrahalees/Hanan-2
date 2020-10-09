@@ -66,14 +66,14 @@ class KCircularTextFormField extends StatelessWidget {
   KCircularTextFormField(this.controller, this.validatorText);
 
   Widget build(BuildContext context) {
-    return new Container(
+    return  Container(
         width: 300,
         height: 70,
         child: TextFormField(
           textAlign: TextAlign.center,
             controller: controller,
             decoration: InputDecoration(
-                border: new OutlineInputBorder(
+                border:  OutlineInputBorder(
                     borderRadius: const BorderRadius.all(
               const Radius.circular(18.0),
             ))),
@@ -476,6 +476,92 @@ class ReusableCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           color: color,
+        ),
+      ),
+    );
+  }
+}
+
+class Circle extends StatelessWidget {
+
+  final Widget child;
+  final Color color;
+
+  const Circle({this.color, this.child});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 60.0,
+      height: 60.0,
+      child: child,
+      decoration: new BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            blurRadius: 2.0,
+            spreadRadius: 0.0,
+            offset: Offset(2.0, 2.0), // shadow direction: bottom right
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileTile extends StatelessWidget {
+
+  final  icon;
+  final String hintTitle;
+  final String title;
+  final Color color;
+
+  const ProfileTile({this.icon, this.hintTitle, this.title, this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
+      child: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Circle(
+                child: Icon(icon),
+                color: color,
+              ),
+              SizedBox(width: 10),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      hintTitle,
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      title,
+                      textAlign: TextAlign.right,
+                      style:TextStyle(
+                          color: Colors.black,
+                          fontSize: 20
+                      ) ,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

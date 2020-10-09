@@ -28,6 +28,7 @@ class _MainLogInState extends State<MainLogIn> {
   var authReslute;
 
 
+
   final _formKey = GlobalKey<FormState>();
   String warningText = '';
   var resultEmail;
@@ -113,13 +114,14 @@ class _MainLogInState extends State<MainLogIn> {
                               if (_formKey.currentState.validate()) {
                                 setState(() {
                                   isLoading=true;
+
                                 });
                                 isInAuth= await isReg();
                                 if(!isInAuth){
                                dynamic type = await whoIs(
                                     _email.text);
                                 print('inside onPress function $type');
-                                if (type == 'Teacher') {
+                                if (type == 'Teachers') {
                                   result =
                                   await _auth.signInWithEmailAndPassword(
                                       email: _email.text,
@@ -137,7 +139,7 @@ class _MainLogInState extends State<MainLogIn> {
                                                 MainTeacherScreen(0)));
                                   }
                                 }
-                                else if (type == 'Specialist') {
+                                else if (type == 'Specialists') {
                                   result =
                                   await _auth.signInWithEmailAndPassword(
                                       email: _email.text,
@@ -155,7 +157,7 @@ class _MainLogInState extends State<MainLogIn> {
                                                 SpecialistMain()));
                                   }
                                 }
-                                else if (type == 'Student') {
+                                else if (type == 'Students') {
                                   result =
                                   await _auth.signInWithEmailAndPassword(
                                       email: _email.text,
@@ -262,7 +264,6 @@ class _MainLogInState extends State<MainLogIn> {
 
   Future<bool> isReg() async{
     String type;
-
     await FirebaseFirestore.instance
         .collection('Users')
         .where('email', isEqualTo: _email.text)
@@ -281,6 +282,7 @@ class _MainLogInState extends State<MainLogIn> {
     print ("#### inside isReg function $isAdminReg");
     return isAdminReg ;
   }
+
 
 }
 
