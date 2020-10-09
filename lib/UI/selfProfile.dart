@@ -45,8 +45,24 @@ class _ProfileState extends State<Profile> {
               }
               DocumentSnapshot _userData= snapshot.data;
               var type = _userData.data()['type'];
-              var arabicType;
 
+               String arabicTypeF(){
+                 var arabicType;
+                 var spcialistType;
+                if(_userData.data()['type']=='Admin'){
+                  arabicType='مدير/ة الحساب';
+                }
+                else if(_userData.data()['type']=='Teachers'){
+                  arabicType='معلم/ـة';
+                }
+                else if(_userData.data()['type']=='Specialists'){
+                  arabicType= 'اخصائي/ـة';
+                }
+                else if(_userData.data()['type']=='Students'){
+                  arabicType='طالب/ـة';
+                }
+                return arabicType;
+              }
               return ListView(
                 children: [
                   ProfileTile(
@@ -63,12 +79,6 @@ class _ProfileState extends State<Profile> {
                   ),
                   ProfileTile(
                     color: kWolcomeBkg,
-                    icon: Icons.info,
-                    hintTitle: 'الوظيفة',
-                    title:_userData.data()['type'],
-                  ),
-                  ProfileTile(
-                    color: kWolcomeBkg,
                     icon: Icons.phone,
                     hintTitle: 'رقم الهاتف',
                     title:_userData.data()['phone'],
@@ -79,6 +89,18 @@ class _ProfileState extends State<Profile> {
                     hintTitle: 'العمر',
                     title:_userData.data()['age'],
                   ),
+                  ProfileTile(
+                    color: kWolcomeBkg,
+                    icon: Icons.info,
+                    hintTitle: 'الوظيفة',
+                    title:arabicTypeF(),
+                  ),
+                  (type=="Specialists")? ProfileTile(
+                    color: kWolcomeBkg,
+                    icon: Icons.info,
+                    hintTitle: 'التخصص',
+                    title:_userData.data()['typeOfSpechalist'],
+                  ):Text(''),
                 ],
               );
             },
@@ -87,6 +109,7 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
 }
 
 // final Icon icon;
