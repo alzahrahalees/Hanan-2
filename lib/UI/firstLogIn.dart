@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hanan/UI/logIn.dart';
 import 'Constance.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 
 class FirstLogIn extends StatefulWidget {
@@ -79,7 +79,7 @@ class _FirstLogInState extends State<FirstLogIn> {
                   ),
                 ),
                 TextFormField(
-                  controller: _password,
+                  controller: _2ndPassword,
                   obscureText: true,
                   decoration: InputDecoration(
                       prefixIcon: new Icon(Icons.lock),
@@ -103,10 +103,7 @@ class _FirstLogInState extends State<FirstLogIn> {
                   onPressed: ()async{
 
                     if(isValid()) {
-                      await FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(email: _email.text, password: _password.text);
-                    await FirebaseFirestore.instance.collection('NoAuth').doc(_email.text).delete();
-
+                      editisAuthInDB();
                     Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context)=> MainLogIn()
                     )
@@ -143,12 +140,25 @@ class _FirstLogInState extends State<FirstLogIn> {
     );
 }
 
-   whoIs(String email) async {
-    String type;
+//var docRef = db.collection("cities").doc("SF");
+//
+// docRef.get().then(function(doc) {
+//     if (doc.exists) {
+//         console.log("Document data:", doc.data());
+//     } else {
+//         // doc.data() will be undefined in this case
+//         console.log("No such document!");
+//     }
+// }).catch(function(error) {
+//     console.log("Error getting document:", error);
+// });
 
+   editisAuthInDB() async {
+    String type;
+    var centerEmail;
     await FirebaseFirestore.instance
         .collection('Users')
-        .where('email', isEqualTo: email)
+        .where('email', isEqualTo: _email.text)
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs
@@ -158,7 +168,16 @@ class _FirstLogInState extends State<FirstLogIn> {
       });
     }).catchError((err) => type = 'Not Valid')
         .whenComplete(() async {
-      await FirebaseFirestore.instance.collection(type).doc(email).set({"isAuth":false,});
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: _email.text, password: _password.text);
+      await FirebaseFirestore.instance.collection(type).doc(_email.text)
+          .get().then((doc){
+            if(doc.exists){centerEmail= doc.data()['center'];}
+      } );
+      await FirebaseFirestore.instance.collection('NoAuth').doc(_email.text.toLowerCase()).delete();
+      await FirebaseFirestore.instance.collection(type).doc(_email.text.toLowerCase()).update({"isAuth":true});
+      await FirebaseFirestore.instance.collection('Centers').doc(centerEmail)
+          .collection(type).doc(_email.text).update({'isAuth':true});
     });
 
   }

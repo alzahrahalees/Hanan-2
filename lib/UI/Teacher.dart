@@ -4,6 +4,7 @@ import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
 
@@ -27,7 +28,6 @@ class AddTeacher extends StatelessWidget {
 
   @override
   Widget  build(BuildContext context) {
-    final _formkey = GlobalKey<FormState>();
     User userAdmin =  FirebaseAuth.instance.currentUser;
     //Reference
     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
@@ -38,15 +38,14 @@ class AddTeacher extends StatelessWidget {
 
     Future<void> addTeacher() async{
       //problem:the document must be have the same ID
-      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email)
-          .set({});
+      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase());
 
 
-     var addToAdminTeachers=Admin_Teachers.doc(email)
+     var addToAdminTeachers=Admin_Teachers.doc(email.toLowerCase())
           .set({
        "isAuth":false,
-       "center":userAdmin.email,
-       "uid":email,
+       "center":userAdmin.email.toLowerCase(),
+       "uid":email.toLowerCase(),
        'name': name,
        'age': age,
        'email': email,
@@ -59,11 +58,11 @@ class AddTeacher extends StatelessWidget {
       //problem:the document must be have the same ID
 
 
-     var addToTeachers=Teachers.doc(email)
+     var addToTeachers=Teachers.doc(email.toLowerCase())
          .set({
        "isAuth":false,
-       "center":userAdmin.email,
-       "uid":email,
+       "center":userAdmin.email.toLowerCase(),
+       "uid":email.toLowerCase(),
        'name': name,
        'age': age,
        'email': email,
@@ -73,10 +72,10 @@ class AddTeacher extends StatelessWidget {
        "birthday": birthday.toString(),
      });
 
-      var addToUsers=Users.doc(email)
+      var addToUsers=Users.doc(email.toLowerCase())
           .set({
         "isAuth":false,
-        'uid':email,
+        'uid':email.toLowerCase(),
         'name': name,
         'age': age,
         'email': email,
@@ -126,18 +125,26 @@ Widget build(BuildContext context) {
   CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
   CollectionReference Users = FirebaseFirestore.instance.collection('Users');
   CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-  CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
-  CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
+  CollectionReference Admin_Teachers =Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers');
+  CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
   AuthService _auth=AuthService();
   return StreamBuilder<QuerySnapshot>(
     stream:
     Admin_Teachers.snapshots(),
     builder: (BuildContext context,
         AsyncSnapshot<QuerySnapshot> snapshot) {
-      if (!snapshot.hasData) return Text('Loading');
+      if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(
+        color: kUnselectedItemColor,
+        size: 60,
+      )
+        ,);
       switch (snapshot.connectionState) {
         case ConnectionState.waiting:
-          return Text('Loading..');
+          return Center(child:SpinKitFoldingCube(
+            color: kUnselectedItemColor,
+            size: 60,
+          )
+            ,);
         default:
           return new ListView(
 
@@ -152,7 +159,7 @@ Widget build(BuildContext context) {
                           onPressed: () {
                           Teachers.doc(document.id).delete();
                             Users.doc(document.id).delete();
-                            Admin.doc(userAdmin.email).collection('Teachers').doc(document.id).delete();}
+                            Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();}
                       ),
                       title:  Text(document.data()['name'], style: kTextPageStyle),
                       subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),

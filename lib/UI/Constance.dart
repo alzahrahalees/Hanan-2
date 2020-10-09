@@ -91,11 +91,13 @@ class KNormalTextFormField extends StatelessWidget {
   final String hintText;
   final Function onChanged;
 
+
   KNormalTextFormField(
       {this.hintText, this.validatorText, this.controller, this.onChanged});
 
   Widget build(BuildContext context) {
     return TextFormField(
+
       controller: controller,
       decoration: InputDecoration(
         hintText: "$hintText",

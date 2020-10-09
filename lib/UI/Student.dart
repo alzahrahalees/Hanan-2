@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Student{
   String name;
@@ -44,25 +44,29 @@ class AddStudent extends StatelessWidget {
 
   @override
   Widget  build(BuildContext context) {
-    User userAdmin =  FirebaseAuth.instance.currentUser;
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
-    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email).collection('Specialists');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
+
 
     Future<void> addStudent() async {
+
+      User userAdmin =  FirebaseAuth.instance.currentUser;
+      CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+      CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+      CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
+      CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
+      CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+      CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
+      CollectionReference Admin_Specialists = Admin.doc(userAdmin.email).collection('Specialists');
+      CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
+
       //problem:the document must be have the same ID
-      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email)
+      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase())
           .set({
       });
 
-      var addToStudent = Students.doc(email).set({
+      var addToStudent = Students.doc(email.toLowerCase()).set({
         "isAuth":false,
-        'uid': email,
+        "center": userAdmin.email.toLowerCase(),
+        'uid': email.toLowerCase(),
         'name': name,
         'age': age,
         'email': email,
@@ -71,9 +75,10 @@ class AddStudent extends StatelessWidget {
         "type": type,
         "birthday": birthday.toString(),
       });
-      var addToAminStudent = Admin_Students.doc(email).set({
+      var addToAdminStudent = Admin_Students.doc(email.toLowerCase()).set({
         "isAuth":false,
-        'uid': email,
+        'center': userAdmin.email.toLowerCase(),
+        'uid': email.toLowerCase(),
         'name': name,
         'age': age,
         'email': email,
@@ -84,15 +89,15 @@ class AddStudent extends StatelessWidget {
       });
 
 
-      var addToAdminStudentTeacher = Admin_Students.doc(email).collection('Teachers').doc(teacherId).set(
+      var addToAdminStudentTeacher = Admin_Students.doc(email.toLowerCase()).collection('Teachers').doc(teacherId).set(
           {
              'name': teacherName,
               'uid': teacherId,
           });
 
-      var addToAdminTeacherStudent= Admin_Teachers.doc(teacherId).collection('Students').doc(email).
+      var addToAdminTeacherStudent= Admin_Teachers.doc(teacherId).collection('Students').doc(email.toLowerCase()).
           set({
-        'uid': email,
+        'uid': email.toLowerCase(),
         'name': name,
         'age': age,
         'email': email,
@@ -111,15 +116,15 @@ class AddStudent extends StatelessWidget {
       });
 
 
-      var addToStudentTeacher = Students.doc(email).collection('Teachers').doc(teacherId).set(
+      var addToStudentTeacher = Students.doc(email.toLowerCase()).collection('Teachers').doc(teacherId).set(
           {
             'name': teacherName,
             'uid': teacherId,
           });
 
-      var addTeacherStudent= Teachers.doc(teacherId).collection('Students').doc(email).
+      var addTeacherStudent= Teachers.doc(teacherId).collection('Students').doc(email.toLowerCase()).
       set({
-        'uid': email,
+        'uid': email.toLowerCase(),
         'name': name,
         'age': age,
         'email': email,
@@ -137,15 +142,15 @@ class AddStudent extends StatelessWidget {
           'uid': physiotherapySpecialistId}
       } );
 
-      var addToStudentPsychologyS = Students.doc(email).collection('psychologySpecialist').doc(psychologySpecialistId).set(
+      var addToStudentPsychologyS = Students.doc(email.toLowerCase()).collection('psychologySpecialist').doc(psychologySpecialistId).set(
           {
             'name': psychologySpecialistName,
             'uid': psychologySpecialistId,
           });
 
-      var addPsychologyStudent=Specialists.doc(psychologySpecialistId).collection('Students').doc(email).
+      var addPsychologyStudent=Specialists.doc(psychologySpecialistId).collection('Students').doc(email.toLowerCase()).
       set({
-          'uid': email,
+          'uid': email.toLowerCase(),
           'name': name,
           'age': age,
           'email': email,
@@ -163,15 +168,17 @@ class AddStudent extends StatelessWidget {
             'uid': physiotherapySpecialistId}
         }
       );
-      var addToAdminStudentPsychologyS = Admin_Students.doc(email).collection('psychologySpecialist').doc(psychologySpecialistId).set(
+      var addToAdminStudentPsychologyS = Admin_Students.doc(email.toLowerCase())
+          .collection('psychologySpecialist').doc(psychologySpecialistId).set(
           {
             'name': psychologySpecialistName,
             'uid': psychologySpecialistId,
           });
 
-      var addAdminPsychologyStudent=Admin_Specialists.doc(psychologySpecialistId).collection('Students').doc(email).
+      var addAdminPsychologyStudent=Admin_Specialists.doc(psychologySpecialistId)
+          .collection('Students').doc(email.toLowerCase()).
       set({
-        'uid': email,
+        'uid': email.toLowerCase(),
         'name': name,
         'age': age,
         'email': email,
@@ -192,16 +199,18 @@ class AddStudent extends StatelessWidget {
 
 
 
-      var addToStudentCommunicationS = Students.doc(email).collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
+      var addToStudentCommunicationS = Students.doc(email.toLowerCase())
+          .collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
           {
             'name': communicationSpecialistName,
             'uid': communicationSpecialistId,
           });
 
-      var addCommunicationStudent=Specialists.doc(communicationSpecialistId).collection('Students').doc(email).
+      var addCommunicationStudent=Specialists.doc(communicationSpecialistId)
+          .collection('Students').doc(email.toLowerCase()).
       set({
-          'center':userAdmin.email,
-          'uid': email,
+          'center':userAdmin.email.toLowerCase(),
+          'uid': email.toLowerCase(),
           'name': name,
           'age': age,
           'email': email,
@@ -219,16 +228,18 @@ class AddStudent extends StatelessWidget {
             'uid': physiotherapySpecialistId}
         });
 
-      var addToAdminStudentCommunicationS = Admin_Students.doc(email).collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
+      var addToAdminStudentCommunicationS = Admin_Students.doc(email.toLowerCase())
+          .collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
           {
             'name': communicationSpecialistName,
             'uid': communicationSpecialistId,
           });
 
-      var addAdminCommunicationStudent=Admin_Specialists.doc(communicationSpecialistId).collection('Students').doc(email).
+      var addAdminCommunicationStudent=Admin_Specialists.doc(communicationSpecialistId)
+          .collection('Students').doc(email.toLowerCase()).
       set({
-        'center':userAdmin.email,
-        'uid': email,
+        'center':userAdmin.email.toLowerCase(),
+        'uid': email.toLowerCase(),
         'name': name,
         'age': age,
         'email': email,
@@ -247,17 +258,19 @@ class AddStudent extends StatelessWidget {
       });
 
 
-      var addToStudentOccupationalS = Students.doc(email).collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
+      var addToStudentOccupationalS = Students.doc(email.toLowerCase())
+          .collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
           {
             'name': occupationalSpecialistName,
             'uid':occupationalSpecialistId,
           });
 
 
-      var addOccupationalStudent=Specialists.doc(occupationalSpecialistId).collection('Students').doc(email).
+      var addOccupationalStudent=Specialists.doc(occupationalSpecialistId)
+          .collection('Students').doc(email.toLowerCase()).
       set({
-          'center':userAdmin.email,
-          'uid': email,
+          'center':userAdmin.email.toLowerCase(),
+          'uid': email.toLowerCase(),
           'name': name,
           'age': age,
           'email': email,
@@ -275,17 +288,19 @@ class AddStudent extends StatelessWidget {
             'uid': physiotherapySpecialistId}
         });
 
-      var addAdminToStudentOccupationalS = Admin_Students.doc(email).collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
+      var addAdminToStudentOccupationalS = Admin_Students.doc(email.toLowerCase())
+          .collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
           {
             'name': occupationalSpecialistName,
             'uid':occupationalSpecialistId,
           });
 
 
-      var addAdminOccupationalStudent=Admin_Specialists.doc(occupationalSpecialistId).collection('Students').doc(email).
+      var addAdminOccupationalStudent=Admin_Specialists.doc(occupationalSpecialistId)
+          .collection('Students').doc(email.toLowerCase()).
       set({
-        'center':userAdmin.email,
-        'uid': email,
+        'center':userAdmin.email.toLowerCase(),
+        'uid': email.toLowerCase(),
         'name': name,
         'age': age,
         'email': email,
@@ -304,16 +319,18 @@ class AddStudent extends StatelessWidget {
       });
 
 
-      var addToStudentPhysiotherapyS = Students.doc(email).collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
+      var addToStudentPhysiotherapyS = Students.doc(email.toLowerCase())
+          .collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
           {
             'name': physiotherapySpecialistName,
             'uid':physiotherapySpecialistId,
           });
 
-      var addPhysiotherapy=Specialists.doc(physiotherapySpecialistId).collection("Students").doc(email).set({
+      var addPhysiotherapy=Specialists.doc(physiotherapySpecialistId).collection("Students")
+          .doc(email.toLowerCase()).set({
           'center':userAdmin,
           'name':name,
-          'uid':email,
+          'uid':email.toLowerCase(),
           'age': age,
           'email': email,
           'phone': phone,
@@ -331,16 +348,18 @@ class AddStudent extends StatelessWidget {
         }
        );
 
-      var addToAdminStudentPhysiotherapyS = Admin_Students.doc(email).collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
+      var addToAdminStudentPhysiotherapyS = Admin_Students.doc(email.toLowerCase())
+          .collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
           {
             'name': physiotherapySpecialistName,
             'uid':physiotherapySpecialistId,
           });
 
-      var addToAdminPhysiotherapy=Admin_Specialists.doc(physiotherapySpecialistId).collection("Students").doc(email).set({
+      var addToAdminPhysiotherapy=Admin_Specialists.doc(physiotherapySpecialistId)
+          .collection("Students").doc(email.toLowerCase()).set({
         'center':userAdmin,
         'name':name,
-        'uid':email,
+        'uid':email.toLowerCase(),
         'age': age,
         'email': email,
         'phone': phone,
@@ -359,10 +378,10 @@ class AddStudent extends StatelessWidget {
       );
 
 
-      var addToUsers=Users.doc(email)
+      var addToUsers=Users.doc(email.toLowerCase())
           .set({
         "isAuth":false,
-        'uid': email,
+        'uid': email.toLowerCase(),
         'name': name,
         'age': age,
         'email': email,
@@ -417,7 +436,7 @@ class StudentCards extends StatelessWidget {
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
+    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
     AuthService _auth=AuthService();
 
     return StreamBuilder<QuerySnapshot>(
@@ -425,10 +444,10 @@ class StudentCards extends StatelessWidget {
       Admin_Students.snapshots(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return Text('Loading');
+        if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return Text('Loading..');
+            return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
           default:
             return new ListView(
                 children:
