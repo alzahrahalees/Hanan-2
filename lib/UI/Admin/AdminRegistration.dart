@@ -133,9 +133,9 @@ class AddAdmin extends StatelessWidget {
       var result= await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: "123456");
       var user=result.user;
       //problem:the document must be have the same ID
-      var addToAdmin=Admin.doc(user.uid)
+      var addToAdmin=Admin.doc(user.email)
           .set({
-        'uid':user.uid,
+        'uid':user.email,
         'name': name,
         'city': city,
         'email': email,
@@ -144,8 +144,9 @@ class AddAdmin extends StatelessWidget {
       })
           .then((value) => print("User Added in Admin Collection"))
           .catchError((error) => print("Failed to add Admin: $error"));
-      var addToUsers=Users.doc(user.uid)
+      var addToUsers=Users.doc(user.email)
           .set({
+        'uid':user.email,
         'name': name,
         'email': email,
         'phone': phone,

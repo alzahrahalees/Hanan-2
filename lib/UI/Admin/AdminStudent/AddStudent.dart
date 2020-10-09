@@ -429,7 +429,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(
                               padding: new EdgeInsets.all(15),
                               child: StreamBuilder(
-                                  stream: Specialists.snapshots(),
+                                  stream: Admin.doc(userAdmin.email).collection('Specialists').snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     Center(
@@ -479,6 +479,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                         new Padding(
                           padding: new EdgeInsets.all(15),
                           child: AddStudent(
+                            formKey: _formkey,
                               name: _name,
                               age: _age,
                               email: _email,
@@ -492,7 +493,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                               communicationSpecialistName: _communicationSpecialistName,
                               communicationSpecialistId: _communicationSpecialistId,
                               occupationalSpecialistName: _occupationalSpecialistName,
-                              occupationalSpecialistId: _occupationalSpecialistName,
+                              occupationalSpecialistId: _occupationalSpecialistId,
                               physiotherapySpecialistName: _physiotherapySpecialistName,
                               physiotherapySpecialistId: _physiotherapySpecialistId,
                               birthday: _Birthdate)
