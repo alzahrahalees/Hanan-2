@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/logIn.dart';
@@ -75,6 +76,7 @@ class _MainAdminScreenState extends State<MainAdminScreen> {
                     color: kUnselectedItemColor,
                   ),
                   onPressed: () {
+                    FirebaseAuth.instance.signOut();
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => MainLogIn()));
                   },

@@ -220,6 +220,7 @@ class _MainLogInState extends State<MainLogIn> {
                         ),
                          InkWell(
                             child: Text("إذا كنت تسجل الدخول لأول مره اضغط هنا",
+                                textAlign: TextAlign.center,
                                 style: kTextPageStyle.copyWith(
                                     decoration: TextDecoration.underline)),
                             onTap: () {
@@ -260,9 +261,23 @@ class _MainLogInState extends State<MainLogIn> {
   }
 
   Future<bool> isReg() async{
+    String type;
+
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .where('email', isEqualTo: _email.text)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs
+          .forEach((doc) {
+        type = doc.data()['type'];
+        print('inside whoIs function $type');
+      });
+    }).catchError((err) => type = 'Not Valid');
     authReslute = await FirebaseFirestore.instance.collection('NoAuth')
         .doc(_email.text).get();
-    bool isAdminReg =  (authReslute.exists)? true :false;
+
+    bool isAdminReg = (authReslute.exists)& (type!='Admin') & (type!='Students');
     print ("#### inside isReg function $isAdminReg");
     return isAdminReg ;
   }
