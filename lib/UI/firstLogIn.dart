@@ -177,9 +177,9 @@ class _FirstLogInState extends State<FirstLogIn> {
       await FirebaseFirestore.instance.collection('NoAuth').doc(_email.text.toLowerCase()).delete();
       await FirebaseFirestore.instance.collection(type).doc(_email.text.toLowerCase()).update({"isAuth":true});
       await FirebaseFirestore.instance.collection('Centers').doc(centerEmail)
-          .collection(type).doc(_email.text).update({'isAuth':true});
+          .collection(type).doc(_email.text.toLowerCase()).update({'isAuth':true});
+      await FirebaseFirestore.instance.collection('Users').doc(_email.text.toLowerCase()).update({"isAuth":true});
     });
-
   }
 
   bool isValid(){
@@ -187,7 +187,6 @@ class _FirstLogInState extends State<FirstLogIn> {
     bool hasDigits = _password.text.contains( RegExp(r'[0-9]'));
     bool hasLowercase = _password.text.contains( RegExp(r'[a-z]')) || _password.text.contains( RegExp(r'[A-Z]'));
     bool hasMinLength = _password.text.length > 6;
-
     return  hasDigits  & hasLowercase & hasMinLength;
   }
 }

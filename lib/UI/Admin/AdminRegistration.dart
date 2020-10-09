@@ -220,15 +220,12 @@ class AddAdmin extends StatelessWidget {
 
 
       //problem:the document must be have the same ID
-<<<<<<< HEAD
-      var addToAdmin=Admin.doc(user.email)
-          .set({
-        'uid':user.email,
-=======
+
+
+
       var addToAdmin=Admin.doc(user.email.toLowerCase())
           .set({
-        'uid':email,
->>>>>>> ddc6f224d5b820b6d3a180271cda8c55976e0b3c
+        'uid':user.email,
         'name': name,
         'city': city,
         'email': email,
@@ -237,11 +234,8 @@ class AddAdmin extends StatelessWidget {
       })
           .then((value) => print("User Added in Admin Collection"))
           .catchError((error) => print("Failed to add Admin: $error"));
-<<<<<<< HEAD
-      var addToUsers=Users.doc(user.email)
-=======
+
       var addToUsers=Users.doc(user.email.toLowerCase())
->>>>>>> ddc6f224d5b820b6d3a180271cda8c55976e0b3c
           .set({
         'uid':user.email,
         'name': name,
