@@ -171,7 +171,9 @@ Widget build(BuildContext context) {
                           onPressed: () {
                           Teachers.doc(document.id).delete();
                             Users.doc(document.id).delete();
-                            Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();}
+                            Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();
+
+                      }
                       ),
                       title:  Text(document.data()['name'], style: kTextPageStyle),
                       subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
