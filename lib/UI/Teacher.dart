@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hanan/UI/Admin/AdminTeacher/TeacherDetails.dart';
 import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -36,9 +37,25 @@ class AddTeacher extends StatelessWidget {
     CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
 
 
+   final List<String>TeachersL=[];
+  Future <void> TeacherListNames() async {
+
+      await Admin.doc(userAdmin.email).collection('Teachers').where('type',isEqualTo: "Teachers").get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs
+            .forEach((doc) {
+          TeachersL.add(doc.data()['name']);
+        }
+        )
+
+        ;});
+    }
+
     Future<void> addTeacher() async{
       //problem:the document must be have the same ID
-      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase());
+
+
+      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase()).set({});
 
 
      var addToAdminTeachers=Admin_Teachers.doc(email.toLowerCase())
@@ -56,7 +73,6 @@ class AddTeacher extends StatelessWidget {
 
 
       //problem:the document must be have the same ID
-
 
      var addToTeachers=Teachers.doc(email.toLowerCase())
          .set({
@@ -98,22 +114,12 @@ class AddTeacher extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18.0)),
        onPressed:() {
-         if (formkey.currentState.validate())
-         {addTeacher();}
-       }
+         if (formkey.currentState.validate()) {
+           addTeacher();
+         }
 
-     // onPressed: () async{
-     //
-     //   // print(' befor adding: ${FirebaseAuth.instance.currentUser.uid}');
-     //   //  addTeacher();
-     //   //  await FirebaseAuth.instance.signOut();
-     //   // print(' after sign out: ${FirebaseAuth.instance.currentUser.uid}');
-     //   //  // await FirebaseAuth.instance.signInWithEmailAndPassword(email: 'smaile@gmail.com', password: '123456');
-     //   // print(' after sign in: ${FirebaseAuth.instance.currentUser.uid}');
-     // }
-// smaile@gmail.com
-   // brP1YIhE3YaUaf7DZ303qTSIDt63
-    );
+
+       }   );
   }
 }
 
@@ -146,15 +152,21 @@ Widget build(BuildContext context) {
           )
             ,);
         default:
-          return new ListView(
-
+          return ListView(
               children:
-
               snapshot.data.docs.map((DocumentSnapshot document) {
                 if (document.data()["isAuth"]==true ){
                 return Card(
                     borderOnForeground: true,
                     child: ListTile(
+                      onTap: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    TeacherInfo (document.data()['uid']
+                                    )));},
+
                       trailing: IconButton(icon: Icon (Icons.delete),
                           onPressed: () {
                           Teachers.doc(document.id).delete();
@@ -163,7 +175,6 @@ Widget build(BuildContext context) {
                       ),
                       title:  Text(document.data()['name'], style: kTextPageStyle),
                       subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
-
                     ));}
               else{
              return Text ("",style: TextStyle(fontSize: 0));
@@ -189,7 +200,7 @@ Widget build(BuildContext context) {
 //         emailVerified = user.emailVerified;
 //         uid = user.uid;
 //
-//         if (!email) {
+//         if
 //           email = user.providerData[0].email;
 //         }
 //

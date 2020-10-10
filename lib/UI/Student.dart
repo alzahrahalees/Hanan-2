@@ -59,9 +59,7 @@ class AddStudent extends StatelessWidget {
       CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
 
       //problem:the document must be have the same ID
-      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase())
-          .set({
-      });
+
 
       var addToStudent = Students.doc(email.toLowerCase()).set({
         "isAuth":false,

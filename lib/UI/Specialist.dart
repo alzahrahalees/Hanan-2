@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
+import 'package:hanan/UI/Admin/AdminSpecialist/SpecialistDetails.dart';
 import 'package:hanan/services/auth.dart';
 import 'Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -39,7 +40,7 @@ class AddSpecialist extends StatelessWidget {
 
 
     Future<void> addTeacher() async{
-      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase());
+      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase()).set({});
       //problem:the document must be have the same ID
       var addToAdminSpecialist=Admin_Specialists.doc(email.toLowerCase())
           .set({
@@ -54,10 +55,7 @@ class AddSpecialist extends StatelessWidget {
         "type": type,
         "typeOfSpechalist":typeOfSpechalist,
         "birthday": birthday.toString()
-      })
-          .then((value) => print("User Added in Admin/Specialist Collection"))
-          .catchError((error) => print("Failed to add in Admin/Specialist: $error"));
-
+      });
       var addToSpecialist=Specialists.doc(email.toLowerCase())
           .set({
         "isAuth":false,
@@ -142,6 +140,13 @@ class SpecialistCards extends StatelessWidget {
                        return Card(
                       borderOnForeground: true,
                       child: ListTile(
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                     SpecialistInfo(document.data()['uid'])));
+                        },
                         trailing: IconButton(icon: Icon (Icons.delete),
                             onPressed: () {
                               Specialists.doc(document.id).delete();

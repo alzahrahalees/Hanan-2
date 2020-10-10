@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,23 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   void initState() {
     super.initState();
   }
+List <String> l;
+
+// أخصائي تواصل
+ // cs() async {
+ //   await Admin.doc(userAdmin.email).collection('Specialists')
+  //      .where('typeOfSpechalist', isEqualTo: "أخصائي تخاطب")
+   //     .get()
+      //  .then((QuerySnapshot querySnapshot) {
+     // querySnapshot.docs
+     //     .forEach((doc) {
+
+    //    print('inside whoIs function $type');
+  //    });
+ //   }}
+
+
+
 
   final _formkey = GlobalKey<FormState>();
   final firestoreInstance = FirebaseFirestore.instance;
@@ -258,7 +276,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(
                               padding: new EdgeInsets.all(15),
                               child: StreamBuilder(
-                                  stream: Admin.doc(userAdmin.email).collection('Specialists').snapshots(),
+                                  stream: Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي نفسي" ).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     Center(
@@ -283,6 +301,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                       items: snapshot.data != null
                                           ? snapshot.data.docs
                                           .map((DocumentSnapshot document) {
+
                                         return new DropdownMenuItem<String>(
                                             value:  document
                                                 .data()["name"],
@@ -291,16 +310,15 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                                   .data()["uid"];
                                               print(_physiotherapySpecialistId);
                                             },
-                                            child: new Container(
-                                              height: 25,
+                                            child:
+                                            new Container(
+                                              height: 23,
                                               //color: primaryColor,
-                                              child:
-                                              new Text(
-                                               document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
-                                                  //document.data()["typeOfSpechalist"]=="أخصائي نفسي"?document.data()["name"]:"."
-                                              ),
-                                            ));
-                                      }).toList() : DropdownMenuItem(
+                                              child: new Text( document.data()["name"])
+                                            )
+                                        )
+                                        ;}
+                                      ).toList() : DropdownMenuItem(
                                         value: 'null',
                                         child: new Container(
                                           height: 23,
@@ -319,7 +337,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(
                               padding: new EdgeInsets.all(15),
                               child: StreamBuilder(
-                                  stream: Admin.doc(userAdmin.email).collection('Specialists').snapshots(),
+                                  stream: Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج وظيفي" ).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     Center(
@@ -352,7 +370,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                               //color: primaryColor,
                                               child:
                                               new Text(
-                                                document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
+                                                document.data()["name"],
                                               ),
                                             ));
                                       }).toList() : DropdownMenuItem(
@@ -374,7 +392,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(
                               padding: new EdgeInsets.all(15),
                               child: StreamBuilder(
-                                  stream: Admin.doc(userAdmin.email).collection('Specialists').snapshots(),
+                                  stream:Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج طبيعي" ).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     Center(
@@ -407,7 +425,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                               //color: primaryColor,
                                               child:
                                               new Text(
-                                                document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
+                                                document.data()["name"],
                                               ),
                                             ));
                                       }).toList() : DropdownMenuItem(
@@ -429,7 +447,11 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             new Padding(
                               padding: new EdgeInsets.all(15),
                               child: StreamBuilder(
-                                  stream: Admin.doc(userAdmin.email).collection('Specialists').snapshots(),
+
+
+
+                                  stream:
+                                  Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي تخاطب" ).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     Center(
@@ -462,7 +484,7 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                                               //color: primaryColor,
                                               child:
                                               new Text(
-                                                document.data()["name"]+" - "+document.data()["typeOfSpechalist"],
+                                                document.data()["name"],
                                               ),
                                             ));
                                       }).toList() : DropdownMenuItem(

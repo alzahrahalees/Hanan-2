@@ -100,7 +100,8 @@ class KNormalTextFormField extends StatelessWidget {
 
       controller: controller,
       decoration: InputDecoration(
-        hintText: "$hintText",
+
+        labelText:  "$hintText",
       ),
       validator: (value) {
         if (value.isEmpty) {
