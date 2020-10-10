@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:hanan/UI/Teacher.dart';
 import '../../Constance.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 class AddTeacherScreen extends StatefulWidget {
   @override
   _AddTeacherScreenState createState() => _AddTeacherScreenState();
@@ -180,3 +183,4 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
             ])])  )))   );
   }
 }
+
