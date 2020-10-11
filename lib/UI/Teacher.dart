@@ -123,6 +123,74 @@ class AddTeacher extends StatelessWidget {
   }
 }
 
+<<<<<<< HEAD
+=======
+class TeacherCards extends StatelessWidget {
+@override
+Widget build(BuildContext context) {
+  User userAdmin =  FirebaseAuth.instance.currentUser;
+  //Reference
+  CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
+  CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+  CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+  CollectionReference Admin_Teachers =Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers');
+  CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
+  AuthService _auth=AuthService();
+  return StreamBuilder<QuerySnapshot>(
+    stream:
+    Admin_Teachers.snapshots(),
+    builder: (BuildContext context,
+        AsyncSnapshot<QuerySnapshot> snapshot) {
+      if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(
+        color: kUnselectedItemColor,
+        size: 60,
+      )
+        ,);
+      switch (snapshot.connectionState) {
+        case ConnectionState.waiting:
+          return Center(child:SpinKitFoldingCube(
+            color: kUnselectedItemColor,
+            size: 60,
+          )
+            ,);
+        default:
+          return ListView(
+              children:
+              snapshot.data.docs.map((DocumentSnapshot document) {
+                if (document.data()["isAuth"]==true ){
+                return Card(
+                    borderOnForeground: true,
+                    child: ListTile(
+                      onTap: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    TeacherInfo (document.data()['uid']
+                                    )));},
+
+                      trailing: IconButton(icon: Icon (Icons.delete),
+                          onPressed: () {
+                          Teachers.doc(document.id).delete();
+                            Users.doc(document.id).delete();
+                            Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();
+
+                      }
+                      ),
+                      title:  Text(document.data()['name'], style: kTextPageStyle),
+                      subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
+                    ));}
+              else{
+             return Text ("",style: TextStyle(fontSize: 0));
+
+                }}).toList());
+      }
+    },
+  );
+
+
+}}
+>>>>>>> 7ef09e21e629408fdc72c0ff65fd7d7aea9235a9
 
 //document.data()['name']
 //componentDidMount() {

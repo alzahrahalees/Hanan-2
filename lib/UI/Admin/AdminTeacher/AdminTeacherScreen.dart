@@ -10,6 +10,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 
+import 'TeacherDetails.dart';
+
 class TeacherScreen extends StatefulWidget {
 
   Teacher newTeacher;
@@ -112,8 +114,10 @@ class TeacherCards extends StatelessWidget {
                 snapshot.data.docs.map((DocumentSnapshot document) {
                   if (document.data()["isAuth"]==true ){
                     return Card(
+
                         borderOnForeground: true,
                         child: ListTile(
+
                             onTap: (){
                               Navigator.push(
                                   context,
@@ -121,6 +125,15 @@ class TeacherCards extends StatelessWidget {
                                       builder: (context) =>
                                           TeacherInfo(document.data()['uid'])));
                             },
+
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TeacherInfo (document.data()['uid']
+                                        )));},
+
                           trailing: IconButton(icon: Icon (Icons.delete),
                               onPressed: () {
                                 return Alert(
@@ -144,7 +157,7 @@ class TeacherCards extends StatelessWidget {
                                         style: TextStyle(color: Colors.white, fontSize: 20),
                                       ),
                                       onPressed: ()
-                                      {
+
 
                                       Teachers.doc(document.id).delete();
                                       Users.doc(document.id).delete();
@@ -166,6 +179,7 @@ class TeacherCards extends StatelessWidget {
                       color: Color(0xffffd6d6),
                       borderOnForeground: true,
                       child: ListTile(
+<<<<<<< HEAD
                         trailing: IconButton(icon: Icon (Icons.delete),
                             onPressed: () {
                               return Alert(
@@ -200,6 +214,20 @@ class TeacherCards extends StatelessWidget {
                                 ],
                               ).show();
                             }
+=======
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      TeacherInfo (document.data()['uid']
+                                      )));},
+                        trailing: IconButton(icon: Icon (Icons.delete),
+                            onPressed: () {
+                              Teachers.doc(document.id).delete();
+                              Users.doc(document.id).delete();
+                              Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();}
+>>>>>>> 7ef09e21e629408fdc72c0ff65fd7d7aea9235a9
                         ),
                         title:  Text(document.data()['name'], style: kTextPageStyle),
                         subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
