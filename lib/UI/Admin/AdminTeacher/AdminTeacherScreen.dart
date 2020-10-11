@@ -87,6 +87,7 @@ class TeacherCards extends StatelessWidget {
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     CollectionReference Admin_Teachers =Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers');
     CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
+    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
 
     return StreamBuilder<QuerySnapshot>(
       stream:
@@ -149,7 +150,20 @@ class TeacherCards extends StatelessWidget {
                             onPressed: () {
                               Teachers.doc(document.id).delete();
                               Users.doc(document.id).delete();
-                              Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();}
+                              Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();
+
+                              Admin_Teachers.doc(document.id).collection("Students").get().then((value) =>
+                                  value.docs.forEach((element) {
+                                    Admin_Teachers.doc(document.id).collection('Students').doc(element.id).delete();
+                                  })
+                              );
+
+                              Teachers.doc(document.id).collection("Students").get().then((value) =>
+                                  value.docs.forEach((element) {
+                                    Teachers.doc(document.id).collection('Students').doc(element.id).delete();
+                                  })
+                              );
+                        }
                         ),
                         title:  Text(document.data()['name'], style: kTextPageStyle),
                         subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),

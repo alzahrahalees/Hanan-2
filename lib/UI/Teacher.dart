@@ -172,8 +172,14 @@ Widget build(BuildContext context) {
                           Teachers.doc(document.id).delete();
                             Users.doc(document.id).delete();
                             Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();
+                           //Admin_Students.doc('enam@gmail.com').collection('Teachers').doc(document.id).delete();
+                          Admin_Teachers.doc(document.id).collection("Students").get().then((value) =>
+                          value.docs.forEach((element) {
+                            Admin_Teachers.doc(document.id).collection('Students').doc(element.id).delete();
+                          })
+                          );
 
-                      }
+                          }
                       ),
                       title:  Text(document.data()['name'], style: kTextPageStyle),
                       subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),

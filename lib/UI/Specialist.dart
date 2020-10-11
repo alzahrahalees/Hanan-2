@@ -39,7 +39,7 @@ class AddSpecialist extends StatelessWidget {
 
 
 
-    Future<void> addTeacher() async{
+    Future<void> addSpecialist() async{
       var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase()).set({});
       //problem:the document must be have the same ID
       var addToAdminSpecialist=Admin_Specialists.doc(email.toLowerCase())
@@ -103,7 +103,7 @@ class AddSpecialist extends StatelessWidget {
             borderRadius: BorderRadius.circular(18.0)),
         onPressed:() {
           if (formkey.currentState.validate())
-          {addTeacher();}
+          {addSpecialist();}
         }
 
     );
@@ -119,6 +119,9 @@ class SpecialistCards extends StatelessWidget {
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
+    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+    CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
+
 
     AuthService _auth=AuthService();
 
@@ -136,7 +139,6 @@ class SpecialistCards extends StatelessWidget {
             return new ListView(
                 children:
                 snapshot.data.docs.map((DocumentSnapshot document) {
-                        if (document.data()["isAuth"]==true ){
                        return Card(
                       borderOnForeground: true,
                       child: ListTile(
@@ -151,21 +153,47 @@ class SpecialistCards extends StatelessWidget {
                             onPressed: () {
                               Specialists.doc(document.id).delete();
                               Users.doc(document.id).delete();
-                              Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists').doc(document.id).delete();}
+                              Admin.doc(userAdmin.email.toLowerCase()).collection('Specialist').doc(document.id).delete();
+
+                              Admin_Specialists.doc(document.id).collection("Students").get().then((value) =>
+                                  value.docs.forEach((element) {
+                                    Admin_Specialists.doc(document.id).collection('Students').doc(element.id).delete();
+                                  })
+                              );
+
+                              Specialists.doc(document.id).collection("Students").get().then((value) =>
+                                  value.docs.forEach((element) {
+                                    Specialists.doc(document.id).collection('Students').doc(element.id).delete();
+                                  })
+                              );
+                            }
                         ),
                         title:  Text(document.data()['name'], style: kTextPageStyle),
                         subtitle:  Text( document.data()["isAuth"]==true? document.data()["typeOfSpechalist"]:" لم تتم المصادقة",style: kTextPageStyle),
-
                       ));
-                }
-                        else{
-                          return Text ("",style: TextStyle(fontSize: 0));
-
                         }
-
-
-                }).toList());
+                ).toList());
         }
       },
-    );
-  }}
+    );}}
+
+
+/*
+Admin_Students.get().then((value) =>
+value.docs.forEach((element) {
+Admin_Students.doc(element.id).collection('psychologySpecialist').doc(document.id).delete();
+})
+);
+Admin_Students.get().then((value) =>
+value.docs.forEach((element) {
+Admin_Students.doc(element.id).collection('CommunicationSpecialist').doc(document.id).delete();
+})
+);
+Admin_Students.get().then((value) =>
+value.docs.forEach((element) {
+Admin_Students.doc(element.id).collection('OccupationalSpecialist').doc(document.id).delete();}));
+
+Admin_Students.get().then((value) =>
+value.docs.forEach((element) {
+Admin_Students.doc(element.id).collection('PhysiotherapySpecialist').doc(document.id).delete();}));*/
+

@@ -64,14 +64,11 @@ List <String> l;
   List<String> list = ["أنثى", "ذكر"];
   int selectedIndex;
 
-
-
   void changeIndex(int index) {
     setState(() {
       selectedIndex = index;
     });
   }
-
 
 
   Widget RadioButton(String txt, int index) {
@@ -220,12 +217,12 @@ List <String> l;
                                 style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
-                                padding: new EdgeInsets.all(15),
+                                padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
                                     stream: Admin.doc(userAdmin.email).collection('Teachers').snapshots(),
                                     builder: (context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
-                                      if (!snapshot.hasData)
+
                                         Center(
                                           child: const CupertinoActivityIndicator(),
                                         );
@@ -239,8 +236,9 @@ List <String> l;
                                           });
                                           print(_teacherName);
                                         },
-                                        items: snapshot.data != null
-                                            ? snapshot.data.docs
+                                        items:
+
+                                        snapshot.data.docs
                                             .map((DocumentSnapshot document) {
                                           return new DropdownMenuItem<String>(
                                               value: document.data()["name"],
@@ -257,12 +255,7 @@ List <String> l;
                                                       .toString(),
                                                 ),
                                               ));
-                                        }).toList() : DropdownMenuItem(
-                                          value: 'null',
-                                          child: new Container(
-                                            height: 30,
-                                          ),
-                                        ),
+                                        }).toList()
                                       );
                                     }),
                             ),
@@ -274,7 +267,7 @@ List <String> l;
                                 style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
-                              padding: new EdgeInsets.all(15),
+                              padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
                                   stream: Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي نفسي" ).snapshots(),
                                   builder: (context,
@@ -287,19 +280,12 @@ List <String> l;
                                       isDense: true,
                                       hint: Text('إختر'),
                                       onChanged: (newValue) {
-                                   /*s=   snapshot.data.docs.map((DocumentSnapshot document) {
-                                          if (document.data()["typeOfSpechalist"]=="أخصائي نفسي"){
-                                           for ()
-                                          }
-                                        }).toList();
-                                     print (s);*/
                                         setState(() {
                                           _psychologySpecialistName= newValue;
                                         });
                                         print(_psychologySpecialistName);
                                       },
-                                      items: snapshot.data != null
-                                          ? snapshot.data.docs
+                                      items:snapshot.data.docs
                                           .map((DocumentSnapshot document) {
 
                                         return new DropdownMenuItem<String>(
@@ -318,12 +304,7 @@ List <String> l;
                                             )
                                         )
                                         ;}
-                                      ).toList() : DropdownMenuItem(
-                                        value: 'null',
-                                        child: new Container(
-                                          height: 23,
-                                        ),
-                                      ),
+                                      ).toList()
                                     );
                                   }),
                             ),
@@ -335,7 +316,7 @@ List <String> l;
                                 style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
-                              padding: new EdgeInsets.all(15),
+                              padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
                                   stream: Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج وظيفي" ).snapshots(),
                                   builder: (context,
@@ -353,8 +334,7 @@ List <String> l;
                                         });
                                         print(_occupationalSpecialistName);
                                       },
-                                      items: snapshot.data != null
-                                          ? snapshot.data.docs
+                                      items: snapshot.data.docs
                                           .map((DocumentSnapshot document) {
 
                                         return new DropdownMenuItem<String>(
@@ -373,12 +353,7 @@ List <String> l;
                                                 document.data()["name"],
                                               ),
                                             ));
-                                      }).toList() : DropdownMenuItem(
-                                        value: 'null',
-                                        child: new Container(
-                                          height: 23,
-                                        ),
-                                      ),
+                                      }).toList()
                                     );
                                   }),
                             ),
@@ -390,7 +365,7 @@ List <String> l;
                                 style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
-                              padding: new EdgeInsets.all(15),
+                              padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
                                   stream:Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج طبيعي" ).snapshots(),
                                   builder: (context,
@@ -408,8 +383,7 @@ List <String> l;
                                         });
                                         print(_physiotherapySpecialistName);
                                       },
-                                      items: snapshot.data != null
-                                          ? snapshot.data.docs
+                                      items: snapshot.data.docs
                                           .map((DocumentSnapshot document) {
 
                                         return new DropdownMenuItem<String>(
@@ -428,12 +402,7 @@ List <String> l;
                                                 document.data()["name"],
                                               ),
                                             ));
-                                      }).toList() : DropdownMenuItem(
-                                        value: 'null',
-                                        child: new Container(
-                                          height: 23,
-                                        ),
-                                      ),
+                                      }).toList()
                                     );
                                   }),
                             ),
@@ -445,11 +414,8 @@ List <String> l;
                                 style: kTextPageStyle.copyWith(color: Colors
                                     .black38)),
                             new Padding(
-                              padding: new EdgeInsets.all(15),
+                              padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
-
-
-
                                   stream:
                                   Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي تخاطب" ).snapshots(),
                                   builder: (context,
@@ -467,8 +433,7 @@ List <String> l;
                                         });
                                         print(_communicationSpecialistName);
                                       },
-                                      items: snapshot.data != null
-                                          ? snapshot.data.docs
+                                      items: snapshot.data.docs
                                           .map((DocumentSnapshot document) {
 
                                         return new DropdownMenuItem<String>(
@@ -487,12 +452,7 @@ List <String> l;
                                                 document.data()["name"],
                                               ),
                                             ));
-                                      }).toList() : DropdownMenuItem(
-                                        value: 'null',
-                                        child: new Container(
-                                          height: 23,
-                                        ),
-                                      ),
+                                      }).toList()
                                     );
                                   }),
                             ),

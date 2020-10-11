@@ -58,6 +58,7 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
 
+
     String gender=gender1;
     String name;
     String age;
@@ -231,6 +232,9 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                                     if (gender!=null){
                                       Admin_Specialists.doc(uid).update({
                                         'gender':gender,
+                                        'name':name,
+                                        'age':age,
+                                        'phone':phone,
                                       });
                                     }
                                     if (typeOfSpechalist!=null){

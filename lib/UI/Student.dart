@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
+import 'Admin/AdminStudent/StudentDetails.dart';
 import 'Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -72,7 +73,18 @@ class AddStudent extends StatelessWidget {
         "gender": gender,
         "type": type,
         "birthday": birthday.toString(),
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
       });
+
       var addToAdminStudent = Admin_Students.doc(email.toLowerCase()).set({
         "isAuth":false,
         'center': userAdmin.email.toLowerCase(),
@@ -84,214 +96,118 @@ class AddStudent extends StatelessWidget {
         "gender": gender,
         "type": type,
         "birthday": birthday.toString(),
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+      'communicationSpecialistName':communicationSpecialistName,//تخاطب
+      'communicationSpecialistId':communicationSpecialistId,
+      'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+      'occupationalSpecialistId':occupationalSpecialistId,
+      'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+      'physiotherapySpecialistId':physiotherapySpecialistId,
       });
 
-
-      var addToAdminStudentTeacher = Admin_Students.doc(email.toLowerCase()).collection('Teachers').doc(teacherId).set(
+     /* var addToAdminStudentTeacher = Admin_Students.doc(email.toLowerCase()).collection('Teachers').doc(teacherId).set(
           {
              'name': teacherName,
               'uid': teacherId,
-          });
+          });*/
 
       var addToAdminTeacherStudent= Admin_Teachers.doc(teacherId).collection('Students').doc(email.toLowerCase()).
           set({
         'uid': email.toLowerCase(),
-        'name': name,
-        'age': age,
-        'email': email,
-        'phone': phone,
-        "gender": gender,
-        "type": type,
-        "birthday": birthday.toString(),
-        "psychologySpecialist": { 'name': psychologySpecialistName,
-          'uid': psychologySpecialistId},
-        "communicationSpecialist": { 'name': communicationSpecialistName,
-          'uid': communicationSpecialistId},
-        "occupationalSpecialist": { 'name': occupationalSpecialistName,
-          'uid': occupationalSpecialistId},
-        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-          'uid': physiotherapySpecialistId}
       });
 
-
-      var addToStudentTeacher = Students.doc(email.toLowerCase()).collection('Teachers').doc(teacherId).set(
+      /*var addToStudentTeacher = Students.doc(email.toLowerCase()).collection('Teachers').doc(teacherId).set(
           {
             'name': teacherName,
             'uid': teacherId,
-          });
+          });*/
 
       var addTeacherStudent= Teachers.doc(teacherId).collection('Students').doc(email.toLowerCase()).
       set({
         'uid': email.toLowerCase(),
-        'name': name,
-        'age': age,
-        'email': email,
-        'phone': phone,
-        "gender": gender,
-        "type": type,
-        "birthday": birthday.toString(),
-        "psychologySpecialist": { 'name': psychologySpecialistName,
-          'uid': psychologySpecialistId},
-        "communicationSpecialist": { 'name': communicationSpecialistName,
-          'uid': communicationSpecialistId},
-        "occupationalSpecialist": { 'name': occupationalSpecialistName,
-          'uid': occupationalSpecialistId},
-        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-          'uid': physiotherapySpecialistId}
       } );
 
-      var addToStudentPsychologyS = Students.doc(email.toLowerCase()).collection('psychologySpecialist').doc(psychologySpecialistId).set(
+    if (psychologySpecialistId != null){
+    /*  var addToStudentPsychologyS = Students.doc(email.toLowerCase()).collection('psychologySpecialist').doc(psychologySpecialistId).set(
           {
             'name': psychologySpecialistName,
             'uid': psychologySpecialistId,
-          });
+          });*/
 
       var addPsychologyStudent=Specialists.doc(psychologySpecialistId).collection('Students').doc(email.toLowerCase()).
       set({
           'uid': email.toLowerCase(),
-          'name': name,
-          'age': age,
-          'email': email,
-          'phone': phone,
-          "gender": gender,
-          "type": type,
-          "birthday": birthday.toString(),
-          "Teacher": { 'name': teacherName,
-            'uid': teacherId},
-          "communicationSpecialist": { 'name': communicationSpecialistName,
-            'uid': communicationSpecialistId},
-          "occupationalSpecialist": { 'name': occupationalSpecialistName,
-            'uid': occupationalSpecialistId},
-          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-            'uid': physiotherapySpecialistId}
         }
       );
-      var addToAdminStudentPsychologyS = Admin_Students.doc(email.toLowerCase())
+
+   /*   var addToAdminStudentPsychologyS = Admin_Students.doc(email.toLowerCase())
           .collection('psychologySpecialist').doc(psychologySpecialistId).set(
           {
             'name': psychologySpecialistName,
             'uid': psychologySpecialistId,
-          });
+          });*/
 
       var addAdminPsychologyStudent=Admin_Specialists.doc(psychologySpecialistId)
           .collection('Students').doc(email.toLowerCase()).
       set({
         'uid': email.toLowerCase(),
-        'name': name,
-        'age': age,
-        'email': email,
-        'phone': phone,
-        "gender": gender,
-        "type": type,
-        "birthday": birthday.toString(),
-        "Teacher": { 'name': teacherName,
-          'uid': teacherId},
-        "communicationSpecialist": { 'name': communicationSpecialistName,
-          'uid': communicationSpecialistId},
-        "occupationalSpecialist": { 'name': occupationalSpecialistName,
-          'uid': occupationalSpecialistId},
-        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-          'uid': physiotherapySpecialistId}
       }
-      );
+      );}
 
+     if (communicationSpecialistId != null){
 
-
-      var addToStudentCommunicationS = Students.doc(email.toLowerCase())
+      /*var addToStudentCommunicationS = Students.doc(email.toLowerCase())
           .collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
           {
             'name': communicationSpecialistName,
             'uid': communicationSpecialistId,
-          });
+          });*/
 
       var addCommunicationStudent=Specialists.doc(communicationSpecialistId)
           .collection('Students').doc(email.toLowerCase()).
       set({
-          'center':userAdmin.email.toLowerCase(),
           'uid': email.toLowerCase(),
-          'name': name,
-          'age': age,
-          'email': email,
-          'phone': phone,
-          "gender": gender,
-          "type": type,
-          "birthday": birthday.toString(),
-          "Teacher": { 'name': teacherName,
-            'uid': teacherId},
-          "psychologySpecialist": { 'name': psychologySpecialistName,
-            'uid': psychologySpecialistId},
-          "occupationalSpecialist": { 'name': occupationalSpecialistName,
-            'uid': occupationalSpecialistId},
-          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-            'uid': physiotherapySpecialistId}
         });
 
-      var addToAdminStudentCommunicationS = Admin_Students.doc(email.toLowerCase())
+      /*var addToAdminStudentCommunicationS = Admin_Students.doc(email.toLowerCase())
           .collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
           {
             'name': communicationSpecialistName,
             'uid': communicationSpecialistId,
-          });
+          });*/
 
       var addAdminCommunicationStudent=Admin_Specialists.doc(communicationSpecialistId)
           .collection('Students').doc(email.toLowerCase()).
       set({
-        'center':userAdmin.email.toLowerCase(),
         'uid': email.toLowerCase(),
-        'name': name,
-        'age': age,
-        'email': email,
-        'phone': phone,
-        "gender": gender,
-        "type": type,
-        "birthday": birthday.toString(),
-        "Teacher": { 'name': teacherName,
-          'uid': teacherId},
-        "psychologySpecialist": { 'name': psychologySpecialistName,
-          'uid': psychologySpecialistId},
-        "occupationalSpecialist": { 'name': occupationalSpecialistName,
-          'uid': occupationalSpecialistId},
-        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-          'uid': physiotherapySpecialistId}
-      });
+
+      });}
 
 
-      var addToStudentOccupationalS = Students.doc(email.toLowerCase())
+      if (occupationalSpecialistId != null){
+      /*var addToStudentOccupationalS = Students.doc(email.toLowerCase())
           .collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
           {
             'name': occupationalSpecialistName,
             'uid':occupationalSpecialistId,
-          });
+          });*/
 
 
       var addOccupationalStudent=Specialists.doc(occupationalSpecialistId)
           .collection('Students').doc(email.toLowerCase()).
       set({
-          'center':userAdmin.email.toLowerCase(),
           'uid': email.toLowerCase(),
-          'name': name,
-          'age': age,
-          'email': email,
-          'phone': phone,
-          "gender": gender,
-          "type": type,
-          "birthday": birthday.toString(),
-          "Teacher": { 'name': teacherName,
-            'uid': teacherId},
-          "psychologySpecialist": { 'name': psychologySpecialistName,
-            'uid': psychologySpecialistId},
-          "communicationSpecialist": { 'name': communicationSpecialistName,
-            'uid': communicationSpecialistId},
-          "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-            'uid': physiotherapySpecialistId}
         });
 
-      var addAdminToStudentOccupationalS = Admin_Students.doc(email.toLowerCase())
+     /* var addAdminToStudentOccupationalS = Admin_Students.doc(email.toLowerCase())
           .collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
           {
             'name': occupationalSpecialistName,
             'uid':occupationalSpecialistId,
-          });
+          });*/
 
 
       var addAdminOccupationalStudent=Admin_Specialists.doc(occupationalSpecialistId)
@@ -299,81 +215,35 @@ class AddStudent extends StatelessWidget {
       set({
         'center':userAdmin.email.toLowerCase(),
         'uid': email.toLowerCase(),
-        'name': name,
-        'age': age,
-        'email': email,
-        'phone': phone,
-        "gender": gender,
-        "type": type,
-        "birthday": birthday.toString(),
-        "Teacher": { 'name': teacherName,
-          'uid': teacherId},
-        "psychologySpecialist": { 'name': psychologySpecialistName,
-          'uid': psychologySpecialistId},
-        "communicationSpecialist": { 'name': communicationSpecialistName,
-          'uid': communicationSpecialistId},
-        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-          'uid': physiotherapySpecialistId}
-      });
+      });}
 
-
-      var addToStudentPhysiotherapyS = Students.doc(email.toLowerCase())
+      if (physiotherapySpecialistId != null){
+     /* var addToStudentPhysiotherapyS = Students.doc(email.toLowerCase())
           .collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
           {
             'name': physiotherapySpecialistName,
             'uid':physiotherapySpecialistId,
-          });
+          });*/
 
       var addPhysiotherapy=Specialists.doc(physiotherapySpecialistId).collection("Students")
           .doc(email.toLowerCase()).set({
           'center':userAdmin,
-          'name':name,
           'uid':email.toLowerCase(),
-          'age': age,
-          'email': email,
-          'phone': phone,
-          "gender": gender,
-          "type": type,
-          "birthday": birthday.toString(),
-          "Teacher": { 'name': teacherName,
-            'uid': teacherId},
-          "psychologySpecialist": { 'name': psychologySpecialistName,
-            'uid': psychologySpecialistId},
-          "communicationSpecialist": { 'name': communicationSpecialistName,
-            'uid': communicationSpecialistId},
-          "occupationalSpecialist": { 'name': occupationalSpecialistName,
-            'uid': occupationalSpecialistId},
         }
        );
 
-      var addToAdminStudentPhysiotherapyS = Admin_Students.doc(email.toLowerCase())
+      /*var addToAdminStudentPhysiotherapyS = Admin_Students.doc(email.toLowerCase())
           .collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
           {
             'name': physiotherapySpecialistName,
             'uid':physiotherapySpecialistId,
-          });
+          });*/
 
       var addToAdminPhysiotherapy=Admin_Specialists.doc(physiotherapySpecialistId)
           .collection("Students").doc(email.toLowerCase()).set({
-        'center':userAdmin,
-        'name':name,
         'uid':email.toLowerCase(),
-        'age': age,
-        'email': email,
-        'phone': phone,
-        "gender": gender,
-        "type": type,
-        "birthday": birthday.toString(),
-        "Teacher": { 'name': teacherName,
-          'uid': teacherId},
-        "psychologySpecialist": { 'name': psychologySpecialistName,
-          'uid': psychologySpecialistId},
-        "communicationSpecialist": { 'name': communicationSpecialistName,
-          'uid': communicationSpecialistId},
-        "occupationalSpecialist": { 'name': occupationalSpecialistName,
-          'uid': occupationalSpecialistId},
       }
-      );
+      );}
 
 
       var addToUsers=Users.doc(email.toLowerCase())
@@ -387,16 +257,16 @@ class AddStudent extends StatelessWidget {
         "gender": gender,
         "type": type,
         "birthday": birthday.toString(),
-        "Teacher": { 'name': teacherName,
-          'uid': teacherId},
-        "psychologySpecialist": { 'name': psychologySpecialistName,
-          'uid': psychologySpecialistId},
-        "communicationSpecialist": { 'name': communicationSpecialistName,
-          'uid': communicationSpecialistId},
-        "occupationalSpecialist": { 'name': occupationalSpecialistName,
-          'uid': occupationalSpecialistId},
-        "physiotherapySpecialist": { 'name': physiotherapySpecialistName,
-          'uid': physiotherapySpecialistId}
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
       });
 
       Navigator.pop(
@@ -428,13 +298,17 @@ class AddStudent extends StatelessWidget {
 class StudentCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     User userAdmin =  FirebaseAuth.instance.currentUser;
     //References
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
+    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
+    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers');
+    CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
+    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
+
     AuthService _auth=AuthService();
 
     return StreamBuilder<QuerySnapshot>(
@@ -442,10 +316,10 @@ class StudentCards extends StatelessWidget {
       Admin_Students.snapshots(),
       builder: (BuildContext context,
           AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+        if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60));
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+            return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60));
           default:
             return new ListView(
                 children:
@@ -453,13 +327,39 @@ class StudentCards extends StatelessWidget {
                   return Card(
                       borderOnForeground: true,
                       child: ListTile(
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                     StudentInfo(document.data()['uid'])));
+                        },
                         trailing: IconButton(icon: Icon (Icons.delete),
                           onPressed: () {
                             Students.doc(document.id).delete();
                             Users.doc(document.id).delete();
-                         Admin_Students.doc(document.id).delete();
-    }
-                        ),
+                            Admin_Students.doc(document.id).delete();
+
+                            Admin_Teachers.get().then((value) => value.docs.forEach((element) {
+                                  Admin_Teachers.doc(element.id).collection('Students').doc(document.id).delete();
+                                }));
+
+                            Teachers.get().then((value) =>
+                                value.docs.forEach((element) {
+                                  Teachers.doc(element.id).collection('Students').doc(document.id).delete();
+                                }));
+
+                            Admin_Specialists.get().then((value) =>
+                                value.docs.forEach((element) {
+                                  Admin_Specialists.doc(element.id).collection('Students').doc(document.id).delete();
+                                }));
+
+                            Specialists.get().then((value) =>
+                                value.docs.forEach((element) {
+                                  Specialists.doc(element.id).collection('Students').doc(document.id).delete();
+                                }));}),
+
+
                         title: new Text(document.data()['name'], style: kTextPageStyle),
                         subtitle: new Text("طالب", style: kTextPageStyle),
                       ));
@@ -470,34 +370,4 @@ class StudentCards extends StatelessWidget {
   }}
 
 
-/*items: snapshot.data.documents.map((DocumentSnapshot document) {
-// I do not know what fields you want to access, thus I am fetching "field"
-return DropdownMenuItem(child: Text(document.documentID)}),
-)*/
-/*new StreamBuilder<QuerySnapshot>(
-stream: Teachers.snapshots(),
-builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-var length = snapshot.data.docs.length;
-DocumentSnapshot ds = snapshot.data.docs[length - 1];
-if (!snapshot.hasData)
-Center(
-child: const CupertinoActivityIndicator(),
-);
-return new DropdownButton(
-items: snapshot.data.docs.map((DocumentSnapshot document) {
-return DropdownMenuItem(child: new Text(document.id),
 
-)
-;
-}).toList(),
-onChanged: (newValue) {
-setState(() {
-category = newValue;
-print(category);
-});
-},
-hint: new Text("المعلم المسؤول"),
-value: category
-);
-}
-);*/
