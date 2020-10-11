@@ -13,8 +13,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
 
-  final formkey = GlobalKey<FormState>();
-
   String uid;
   @override
   void initState() {
@@ -29,6 +27,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    final formkey = GlobalKey<FormState>();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -82,95 +81,101 @@ class _ProfileState extends State<Profile> {
               CollectionReference admin = FirebaseFirestore.instance.collection('Centers');
               String name =document.data()['name'];
               String phone = document.data()['phone'];
+              String newName;
+              String newPhone;
 
               bool isAdmin= type=='Admin';
 
-              return ListView(
-                children: [
-                  ProfileTile(
-                    readOnly: isAdmin? false:true ,
-                    color: kWolcomeBkg,
-                    icon: Icons.person,
-                    hintTitle: 'الاسم',
-                    title:document.data()['name'],
-                    onChanged: (value){
-                      name= value;
-                    },
-                  ),
-                  ProfileTile(
-                    readOnly: true,
-                    color: kWolcomeBkg,
-                    icon: Icons.email,
-                    hintTitle: 'الإيميل',
-                    title:document.data()['email'],
-                  ),
-                  ProfileTile(
-                    readOnly: isAdmin? false:true,
-                    color: kWolcomeBkg,
-                    icon: Icons.phone,
-                    hintTitle: 'رقم الهاتف',
-                    title:document.data()['phone'],
-                    onChanged: (value){
-                      phone=value;
-                    },
-                  ),
+              return Form(
+                key: formkey,
+                child: ListView(
+                  children: [
+                    ProfileTile(
+                      readOnly: isAdmin? false:true ,
+                      color: kWolcomeBkg,
+                      icon: Icons.person,
+                      hintTitle: 'الاسم',
+                      title:document.data()['name'],
+                      onChanged: (value){
+                        newName= value;
+                      },
+                    ),
+                    ProfileTile(
+                      readOnly: true,
+                      color: kWolcomeBkg,
+                      icon: Icons.email,
+                      hintTitle: 'الإيميل',
+                      title:document.data()['email'],
+                    ),
+                    ProfileTile(
+                      readOnly: isAdmin? false:true,
+                      color: kWolcomeBkg,
+                      icon: Icons.phone,
+                      hintTitle: 'رقم الهاتف',
+                      title:document.data()['phone'],
+                      onChanged: (value){
+                        newPhone=value;
+                      },
+                    ),
 
-                  (isAdmin)? SizedBox() : ProfileTile(
-                    readOnly: true,
-                    color: kWolcomeBkg,
-                    icon: Icons.assistant_outlined,
-                    hintTitle: 'العمر',
-                    title:document.data()['age'],
-                  ),
-                  (isAdmin)? SizedBox() : ProfileTile(
-                    readOnly: true,
-                    color: kWolcomeBkg,
-                    icon: Icons.accessibility,
-                    hintTitle: 'الجنس',
-                    title:document.data()['gender'],
-                  ),
-                  ProfileTile(
-                    readOnly: true,
-                    color: kWolcomeBkg,
-                    icon: Icons.info,
-                    hintTitle: 'الوظيفة',
-                    title:arabicTypeF(),
-                  ),
-                  (type=="Specialists")? ProfileTile(
-                    color: kWolcomeBkg,
-                    icon: Icons.info,
-                    hintTitle: 'التخصص',
-                    title:document.data()['typeOfSpechalist'],
-                  ):Text(''),
+                    (isAdmin)? SizedBox() : ProfileTile(
+                      readOnly: true,
+                      color: kWolcomeBkg,
+                      icon: Icons.assistant_outlined,
+                      hintTitle: 'العمر',
+                      title:document.data()['age'],
+                    ),
+                    (isAdmin)? SizedBox() : ProfileTile(
+                      readOnly: true,
+                      color: kWolcomeBkg,
+                      icon: Icons.accessibility,
+                      hintTitle: 'الجنس',
+                      title:document.data()['gender'],
+                    ),
+                    ProfileTile(
+                      readOnly: true,
+                      color: kWolcomeBkg,
+                      icon: Icons.info,
+                      hintTitle: 'الوظيفة',
+                      title:arabicTypeF(),
+                    ),
+                    (type=="Specialists")? ProfileTile(
+                      color: kWolcomeBkg,
+                      icon: Icons.info,
+                      hintTitle: 'التخصص',
+                      title:document.data()['typeOfSpechalist'],
+                    ):Text(''),
 
-                  isAdmin? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: 100,
-                        child: RaisedButton(
-                          color: kButtonColor,
-                          child: Text("تعديل", style: kTextButtonStyle),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0)),
-                          onPressed: (){
-                            if (formkey.currentState.validate()){
-                              users.doc(currentEmail).update({
-                                'name': name,
-                                'phone': phone,
-                              });
-                              admin.doc(currentEmail).update({
-                                'name': name,
-                                'phone': phone,
-                              });
-                            }
-                          },
+                    isAdmin? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10,bottom: 20),
+                        child: Container(
+                          width: 100,
+                          child: RaisedButton(
+                            color: kButtonColor,
+                            child: Text("تعديل", style: kTextButtonStyle),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0)),
+                            onPressed: (){
+                              if (formkey.currentState.validate()){
+                                users.doc(currentEmail).update({
+                                  'name': newName==null? name: newName,
+                                  'phone': newPhone==null? phone: newPhone,
+                                });
+                                admin.doc(currentEmail).update({
+                                  'name': newName==null? name: newName,
+                                  'phone': newPhone==null? phone: newPhone,
+                                });
+                                Navigator.pop(context);
+                              }
+                            },
 
+                          ),
                         ),
                       ),
-                    ),
-                  ):SizedBox(),
-                ],
+                    ):SizedBox(),
+                  ],
+                ),
               );
             },
           ),

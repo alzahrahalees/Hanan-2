@@ -140,7 +140,7 @@ class _MainAdminScreenState extends State<MainAdminScreen> {
           body: CustomScrollView(
             slivers:<Widget>[
               SliverAppBar(
-                iconTheme: IconThemeData(color: kSelectedItemColor),
+                iconTheme: IconThemeData(color: kUnselectedItemColor),
                 backgroundColor: kAppBarColor,
                 title: Text(_titles[_currentIndex], style: kTextAppBarStyle),
                 centerTitle: true,

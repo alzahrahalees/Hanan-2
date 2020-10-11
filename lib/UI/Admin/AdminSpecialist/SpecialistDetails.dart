@@ -90,6 +90,9 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                         age=document.data()['age'];
                         phone=document.data()['phone'];
                         email=document.data()['email'];
+                        String newName;
+                        String newAge;
+                        String newPhone;
                         //selectedIndex= document.data()['gender']=='ذكر'? 1:0;
 
 
@@ -101,7 +104,7 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                               title: document.data()['name'] ,
                               hintTitle:  "الإسم",
                               icon: Icons.person,
-                              onChanged: (value)=> name=value,
+                              onChanged: (value)=> newName=value,
                             ),
 
                             Padding(padding: EdgeInsets.all(5)),
@@ -112,7 +115,7 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                               title: document.data()['age'] ,
                               hintTitle:  "العمر",
                               icon: Icons.assistant_outlined,
-                              onChanged: (value)=> age=value,
+                              onChanged: (value)=> newAge=value,
                             ),
                             Padding(padding: EdgeInsets.all(5)),
                             ProfileTile(
@@ -130,7 +133,7 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                               title: document.data()['phone'] ,
                               hintTitle:  "رقم الهاتف",
                               icon: Icons.phone,
-                              onChanged: (value)=> phone=value,
+                              onChanged: (value)=> newPhone=value,
                             ),
 
                             Padding(padding: EdgeInsets.all(5)),
@@ -181,41 +184,59 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                               ),
                             ),
 
+                          Padding(padding: EdgeInsets.all(5)),
 
-                          new Padding(
-                              padding: new EdgeInsets.all(10)),
-                          Row(children: <Widget>[
-                            new Padding(padding: new EdgeInsets.all(5)),
-                            Text("التخصص", style: kTextPageStyle.copyWith(color: Colors.grey)),
-                            new Padding(padding: new EdgeInsets.all(7)),
-                            Expanded(
-                                child: SizedBox(
-                                  height: 40,
-                                  width: 200,
-                                  child: DropdownButton(
-                                    hint: Text(document.data()['typeOfSpechalist'],style: TextStyle(color: Colors.black),),
-                                    // Not necessary for Option 1
-                                    value: typeOfSpechalist,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        typeOfSpechalist = newValue;
-                                      });
-                                    },
-                                    items: items.map((location) {
-                                      return DropdownMenuItem(
-                                        child: new Text(location),
-                                        value: location,
-                                      );
-                                    }).toList(),
-                                  ),
-                                ))
-                          ]),
-                          new Padding(
-                              padding: new EdgeInsets.all(10)),
-                          Row(
-                            children: [
-                              Padding(padding: EdgeInsets.only(right:90)),
-                              RaisedButton(
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
+                            child: Row(children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Circle(
+                                  color: kWolcomeBkg,
+                                  child: Icon(Icons.info),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("التخصص", style: kTextPageStyle.copyWith(color: Colors.grey)),
+                                    SizedBox(
+                                      height: 40,
+                                      width: 200,
+                                      child: DropdownButton(
+                                        hint: Text(document.data()['typeOfSpechalist'],style: TextStyle(color: Colors.black),),
+                                        // Not necessary for Option 1
+                                        value: typeOfSpechalist,
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            typeOfSpechalist = newValue;
+                                          });
+                                        },
+                                        items: items.map((location) {
+                                          return DropdownMenuItem(
+                                            child:  Text(location),
+                                            value: location,
+                                          );
+                                        }).toList(),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+
+
+                            ]),
+                          ),
+                           Padding(
+                              padding:  EdgeInsets.all(10)),
+                          Padding(padding: EdgeInsets.only(right:90)),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RaisedButton(
                                 color: kButtonColor,
                                 child: Text("تعديل", style: kTextButtonStyle),
                                 shape: RoundedRectangleBorder(
@@ -223,9 +244,9 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                                 onPressed:() {
                                   if (formkey.currentState.validate()){
                                     Admin_Specialists.doc(uid).update({
-                                      'name':name,
-                                      'age':age,
-                                      'phone':phone,
+                                      'name':newName ==null? name: newName,
+                                      'age':newAge ==null? age: newAge,
+                                      'phone':newPhone ==null? phone: newPhone,
                                     });
                                     if (gender!=null){
                                       Admin_Specialists.doc(uid).update({
@@ -238,9 +259,9 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                                       });
                                     }
                                     Specialists.doc(uid).update({
-                                      'name':name,
-                                      'age':age,
-                                      'phone':phone,
+                                      'name':newName ==null? name: newName,
+                                      'age':newAge ==null? age: newAge,
+                                      'phone':newPhone ==null? phone: newPhone,
                                     });
                                     if (gender!=null){
                                       Specialists.doc(uid).update({
@@ -254,9 +275,9 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                                     }
 
                                     Users.doc(uid).update({
-                                      'name':name,
-                                      'age':age,
-                                      'phone':phone,
+                                      'name':newName ==null? name: newName,
+                                      'age':newAge ==null? age: newAge,
+                                      'phone':newPhone ==null? phone: newPhone,
                                     });
                                     if (gender!=null){
                                       Users.doc(uid).update({
@@ -278,8 +299,7 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                                 },
 
                               ),
-
-                              ],
+                            ),
                           ),
                         ]);
                       }).toList()

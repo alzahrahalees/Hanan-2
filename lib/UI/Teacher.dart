@@ -123,8 +123,7 @@ class AddTeacher extends StatelessWidget {
   }
 }
 
-<<<<<<< HEAD
-=======
+
 class TeacherCards extends StatelessWidget {
 @override
 Widget build(BuildContext context) {
@@ -188,9 +187,8 @@ Widget build(BuildContext context) {
     },
   );
 
-
 }}
->>>>>>> 7ef09e21e629408fdc72c0ff65fd7d7aea9235a9
+
 
 //document.data()['name']
 //componentDidMount() {
