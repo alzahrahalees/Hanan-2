@@ -425,50 +425,6 @@ class AddStudent extends StatelessWidget {
 }
 
 
-class StudentCards extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
-    User userAdmin =  FirebaseAuth.instance.currentUser;
-    //References
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
-    AuthService _auth=AuthService();
-
-    return StreamBuilder<QuerySnapshot>(
-      stream:
-      Admin_Students.snapshots(),
-      builder: (BuildContext context,
-          AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
-          default:
-            return new ListView(
-                children:
-                snapshot.data.docs.map((DocumentSnapshot document) {
-                  return Card(
-                      borderOnForeground: true,
-                      child: ListTile(
-                        trailing: IconButton(icon: Icon (Icons.delete),
-                          onPressed: () {
-                            Students.doc(document.id).delete();
-                            Users.doc(document.id).delete();
-                         Admin_Students.doc(document.id).delete();
-    }
-                        ),
-                        title: new Text(document.data()['name'], style: kTextPageStyle),
-                        subtitle: new Text("طالب", style: kTextPageStyle),
-                      ));
-                }).toList());
-        }
-      },
-    );
-  }}
-
 
 /*items: snapshot.data.documents.map((DocumentSnapshot document) {
 // I do not know what fields you want to access, thus I am fetching "field"

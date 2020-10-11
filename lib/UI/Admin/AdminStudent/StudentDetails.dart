@@ -4,12 +4,9 @@ import '../AdminMainScreen.dart';
 
 class StudentInfo extends StatelessWidget {
   String name;
-  String position;
 
-  StudentInfo(String name, String position) {
-    this.name = name;
-    this.position = position;
-  }
+
+  StudentInfo(String name);
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import '../../Constance.dart';
 import 'AddStudent.dart';
 import '../../Student.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'StudentDetails.dart';
 
 class StudentScreen extends StatefulWidget {
   @override
@@ -61,3 +66,80 @@ class _StudentScreenState extends State<StudentScreen> {
 
   }
 }
+
+
+class StudentCards extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    User userAdmin =  FirebaseAuth.instance.currentUser;
+    //References
+    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
+
+    return StreamBuilder<QuerySnapshot>(
+      stream:
+      Admin_Students.snapshots(),
+      builder: (BuildContext context,
+          AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+          default:
+            return new ListView(
+                children:
+                snapshot.data.docs.map((DocumentSnapshot document) {
+                  return Card(
+                      borderOnForeground: true,
+                      child: ListTile(
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        StudentInfo(document.data()['uid'])));
+                          },
+                        trailing: IconButton(icon: Icon (Icons.delete),
+                            onPressed: () {
+                              return Alert(
+                                context: context,
+                                type: AlertType.error,
+                                title: " هل أنت مـتأكد من حذف ${document.data()['name']} ؟ ",
+                                desc: "",
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "لا",
+                                      style: TextStyle(color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                    color: kButtonColor,
+                                  ),
+                                  DialogButton(
+                                    child: Text(
+                                      "نعم",
+                                      style: TextStyle(color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: ()
+                                    {
+                                      Students.doc(document.id).delete();
+                                      Users.doc(document.id).delete();
+                                      Admin_Students.doc(document.id).delete();
+                                    },
+                                    color: kButtonColor,
+                                  ),
+                                ],
+                              ).show();
+                            }
+                        ),
+                        title: new Text(document.data()['name'], style: kTextPageStyle),
+                        subtitle: new Text("طالب", style: kTextPageStyle),
+                      ));
+                }).toList());
+        }
+      },
+    );
+  }}

@@ -519,8 +519,12 @@ class ProfileTile extends StatelessWidget {
   final String hintTitle;
   final String title;
   final Color color;
+  final Function onChanged;
+  final Function validator;
+  final bool readOnly;
 
-  const ProfileTile({this.icon, this.hintTitle, this.title, this.color});
+
+  const ProfileTile({this.readOnly,this.validator,this.onChanged,this.icon, this.hintTitle, this.title, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -539,26 +543,23 @@ class ProfileTile extends StatelessWidget {
               SizedBox(width: 10),
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      hintTitle,
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                      ),
+                child: Container(
+                  width: 200,
+                  child: TextFormField(
+                    readOnly: readOnly,
+                    initialValue: title,
+                    decoration: InputDecoration(
+                        helperText: readOnly?  "لايمكن تغييره": '' ,
+                        labelText: hintTitle
                     ),
-                    Text(
-                      title,
-                      textAlign: TextAlign.right,
-                      style:TextStyle(
-                          color: Colors.black,
-                          fontSize: 20
-                      ) ,
-                    ),
-                  ],
+                    onChanged: onChanged,
+                    validator:  (value){
+                      if (value.isEmpty) {
+                        return "لا يمكن تركها فارغة";
+                      }
+                      else return null;
+                    },
+                  ),
                 ),
               )
             ],

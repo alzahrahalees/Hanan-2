@@ -5,20 +5,35 @@ import 'Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Profile extends StatefulWidget {
-  // final String type;
-  //
-  // Profile(this.type);
-
+  final String uid;
+  Profile({this.uid});
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+
+  final formkey = GlobalKey<FormState>();
+
+  String uid;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    uid= widget.uid;
+
+  }
+
+  //all Path
+  //get type
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
+          iconTheme: IconThemeData(color: kUnselectedItemColor),
           backgroundColor: kAppBarColor,
           title: Text('الصفحة الشخصية', style: kTextAppBarStyle,textAlign: TextAlign.center,),
           automaticallyImplyLeading: true,
@@ -43,53 +58,79 @@ class _ProfileState extends State<Profile> {
                   size: 60,
                 );
               }
-              DocumentSnapshot _userData= snapshot.data;
-              var type = _userData.data()['type'];
+              DocumentSnapshot document= snapshot.data;
+              var type = document.data()['type'];
 
                String arabicTypeF(){
                  var arabicType;
-                 var spcialistType;
-                if(_userData.data()['type']=='Admin'){
+                if(document.data()['type']=='Admin'){
                   arabicType='مدير/ة الحساب';
                 }
-                else if(_userData.data()['type']=='Teachers'){
+                else if(document.data()['type']=='Teachers'){
                   arabicType='معلم/ـة';
                 }
-                else if(_userData.data()['type']=='Specialists'){
+                else if(document.data()['type']=='Specialists'){
                   arabicType= 'اخصائي/ـة';
                 }
-                else if(_userData.data()['type']=='Students'){
+                else if(document.data()['type']=='Students'){
                   arabicType='طالب/ـة';
                 }
                 return arabicType;
-              }
+              };
+               String currentEmail = FirebaseAuth.instance.currentUser.email;
+              CollectionReference users = FirebaseFirestore.instance.collection('Users');
+              CollectionReference admin = FirebaseFirestore.instance.collection('Centers');
+              String name =document.data()['name'];
+              String phone = document.data()['phone'];
+
+              bool isAdmin= type=='Admin';
+
               return ListView(
                 children: [
                   ProfileTile(
+                    readOnly: isAdmin? false:true ,
                     color: kWolcomeBkg,
                     icon: Icons.person,
                     hintTitle: 'الاسم',
-                    title:_userData.data()['name'],
+                    title:document.data()['name'],
+                    onChanged: (value){
+                      name= value;
+                    },
                   ),
                   ProfileTile(
+                    readOnly: true,
                     color: kWolcomeBkg,
                     icon: Icons.email,
                     hintTitle: 'الإيميل',
-                    title:_userData.data()['email'],
+                    title:document.data()['email'],
                   ),
                   ProfileTile(
+                    readOnly: isAdmin? false:true,
                     color: kWolcomeBkg,
                     icon: Icons.phone,
                     hintTitle: 'رقم الهاتف',
-                    title:_userData.data()['phone'],
+                    title:document.data()['phone'],
+                    onChanged: (value){
+                      phone=value;
+                    },
                   ),
-                  (type=='Admin')? Text('') : ProfileTile(
+
+                  (isAdmin)? SizedBox() : ProfileTile(
+                    readOnly: true,
                     color: kWolcomeBkg,
-                    icon: Icons.phone,
+                    icon: Icons.assistant_outlined,
                     hintTitle: 'العمر',
-                    title:_userData.data()['age'],
+                    title:document.data()['age'],
+                  ),
+                  (isAdmin)? SizedBox() : ProfileTile(
+                    readOnly: true,
+                    color: kWolcomeBkg,
+                    icon: Icons.accessibility,
+                    hintTitle: 'الجنس',
+                    title:document.data()['gender'],
                   ),
                   ProfileTile(
+                    readOnly: true,
                     color: kWolcomeBkg,
                     icon: Icons.info,
                     hintTitle: 'الوظيفة',
@@ -99,8 +140,36 @@ class _ProfileState extends State<Profile> {
                     color: kWolcomeBkg,
                     icon: Icons.info,
                     hintTitle: 'التخصص',
-                    title:_userData.data()['typeOfSpechalist'],
+                    title:document.data()['typeOfSpechalist'],
                   ):Text(''),
+
+                  isAdmin? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        width: 100,
+                        child: RaisedButton(
+                          color: kButtonColor,
+                          child: Text("تعديل", style: kTextButtonStyle),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0)),
+                          onPressed: (){
+                            if (formkey.currentState.validate()){
+                              users.doc(currentEmail).update({
+                                'name': name,
+                                'phone': phone,
+                              });
+                              admin.doc(currentEmail).update({
+                                'name': name,
+                                'phone': phone,
+                              });
+                            }
+                          },
+
+                        ),
+                      ),
+                    ),
+                  ):SizedBox(),
                 ],
               );
             },

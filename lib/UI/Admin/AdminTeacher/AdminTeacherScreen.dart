@@ -1,13 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hanan/UI/Admin/AdminTeacher/TeacherDetails.dart';
 import '../../Constance.dart';
 import '../../Teacher.dart';
 import 'AddTeacher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 class TeacherScreen extends StatefulWidget {
 
@@ -113,11 +114,48 @@ class TeacherCards extends StatelessWidget {
                     return Card(
                         borderOnForeground: true,
                         child: ListTile(
+                            onTap: (){
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          TeacherInfo(document.data()['uid'])));
+                            },
                           trailing: IconButton(icon: Icon (Icons.delete),
                               onPressed: () {
-                                Teachers.doc(document.id).delete();
-                                Users.doc(document.id).delete();
-                                Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();}
+                                return Alert(
+                                  // content: Icon(Icons.clear, color: Colors.red,),
+                                  context: context,
+                                  type: AlertType.error,
+                                  title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
+                                  desc: "",
+                                  buttons: [
+                                    DialogButton(
+                                      child: Text(
+                                        "لا",
+                                        style: TextStyle(color: Colors.white, fontSize: 20),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      color: kButtonColor,
+                                    ),
+                                    DialogButton(
+                                      child: Text(
+                                        "نعم",
+                                        style: TextStyle(color: Colors.white, fontSize: 20),
+                                      ),
+                                      onPressed: ()
+                                      {
+
+                                      Teachers.doc(document.id).delete();
+                                      Users.doc(document.id).delete();
+                                      Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();
+                                      Navigator.pop(context);
+                                        },
+                                      color: kButtonColor,
+                                    ),
+                                  ],
+                                ).show();
+                              }
                           ),
                           title:  Text(document.data()['name'], style: kTextPageStyle),
                           subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
@@ -128,6 +166,41 @@ class TeacherCards extends StatelessWidget {
                       color: Color(0xffffd6d6),
                       borderOnForeground: true,
                       child: ListTile(
+                        trailing: IconButton(icon: Icon (Icons.delete),
+                            onPressed: () {
+                              return Alert(
+                                context: context,
+                                type: AlertType.error,
+                                title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
+                                desc: "",
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "لا",
+                                      style: TextStyle(color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                    color: kButtonColor,
+                                  ),
+                                  DialogButton(
+                                    child: Text(
+                                      "نعم",
+                                      style: TextStyle(color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: ()
+                                    {
+
+                                      Teachers.doc(document.id).delete();
+                                      Users.doc(document.id).delete();
+                                      Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();
+                                      Navigator.pop(context);
+                                    },
+                                    color: kButtonColor,
+                                  ),
+                                ],
+                              ).show();
+                            }
+                        ),
                         title:  Text(document.data()['name'], style: kTextPageStyle),
                         subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
                       ),
