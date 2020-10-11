@@ -128,11 +128,21 @@ class SpecialistCards extends StatelessWidget {
                                       ),
                                       onPressed: ()
                                       {
-                                      Specialists.doc(document.id).delete();
-                                      Users.doc(document.id).delete();
-                                      Admin.doc(userAdmin.email.toLowerCase())
-                                          .collection('Specialists')
-                                          .doc(document.id).delete();
+                                        Specialists.doc(document.id).delete();
+                                        Users.doc(document.id).delete();
+                                        Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists').doc(document.id).delete();
+
+                                        Admin_Specialists.doc(document.id).collection("Students").get().then((value) =>
+                                            value.docs.forEach((element) {
+                                              Admin_Specialists.doc(document.id).collection('Students').doc(element.id).delete();
+                                            })
+                                        );
+
+                                        Specialists.doc(document.id).collection("Students").get().then((value) =>
+                                            value.docs.forEach((element) {
+                                              Specialists.doc(document.id).collection('Students').doc(element.id).delete();
+                                            })
+                                        );
                                       Navigator.pop(context);
                                       },
                                       color: kButtonColor,
@@ -176,7 +186,7 @@ class SpecialistCards extends StatelessWidget {
                                     {
                                       Specialists.doc(document.id).delete();
                                       Users.doc(document.id).delete();
-                                      Admin.doc(userAdmin.email.toLowerCase()).collection('Specialist').doc(document.id).delete();
+                                      Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists').doc(document.id).delete();
 
                                       Admin_Specialists.doc(document.id).collection("Students").get().then((value) =>
                                           value.docs.forEach((element) {
@@ -189,6 +199,7 @@ class SpecialistCards extends StatelessWidget {
                                             Specialists.doc(document.id).collection('Students').doc(element.id).delete();
                                           })
                                       );
+
                                       Navigator.pop(context);
                                     },
                                     color: kButtonColor,

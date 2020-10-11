@@ -41,7 +41,6 @@ class _TeacherInfoState extends State<TeacherInfo> {
       onPressed: () {
         changeIndex(index);
         selectedIndex == 0 ? gender1 = list[0] : gender1 = list[1];
-        print (gender1);
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       borderSide: BorderSide(
