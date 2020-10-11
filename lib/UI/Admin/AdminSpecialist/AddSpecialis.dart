@@ -59,7 +59,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
         appBar: AppBar(
 
           actions: <Widget>[
-            KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(0))
+            KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(1))
           ],
           title: Text("إضافة أخصائي", style: kTextAppBarStyle),
           centerTitle: true,

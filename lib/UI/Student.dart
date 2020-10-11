@@ -295,6 +295,7 @@ class AddStudent extends StatelessWidget {
 }
 
 
+
 class StudentCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -368,6 +369,5 @@ class StudentCards extends StatelessWidget {
       },
     );
   }}
-
 
 

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/logIn.dart';
+import 'package:hanan/UI/selfProfile.dart';
 import 'package:hanan/services/auth.dart';
 import 'package:hanan/services/chang_password.dart';
 import '../Constance.dart';
@@ -110,6 +111,9 @@ class _MainTeacherScreenState extends State<MainTeacherScreen> {
                 ListTile(
                   leading: Icon(Icons.account_circle),
                   title: Text('الملف الشخصي', style: TextStyle(fontSize: 18),),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Profile()));
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.phonelink_lock),

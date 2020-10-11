@@ -94,7 +94,7 @@ List <String> l;
     return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
-            KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(0))
+            KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(2))
           ],
           title: Text("إضافة طالب", style: kTextAppBarStyle),
           centerTitle: true,
@@ -222,6 +222,7 @@ List <String> l;
                                     stream: Admin.doc(userAdmin.email).collection('Teachers').snapshots(),
                                     builder: (context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasData){
 
                                         Center(
                                           child: const CupertinoActivityIndicator(),
@@ -257,6 +258,10 @@ List <String> l;
                                               ));
                                         }).toList()
                                       );
+                                  }
+                              else{
+                                return Text('');
+                                      }
                                     }),
                             ),
                           ],
@@ -272,6 +277,7 @@ List <String> l;
                                   stream: Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي نفسي" ).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasData){
                                     Center(
                                       child: const CupertinoActivityIndicator(),
                                     );
@@ -285,6 +291,7 @@ List <String> l;
                                         });
                                         print(_psychologySpecialistName);
                                       },
+
                                       items:snapshot.data.docs
                                           .map((DocumentSnapshot document) {
 
@@ -306,6 +313,10 @@ List <String> l;
                                         ;}
                                       ).toList()
                                     );
+                                  }
+                                  else{
+                                    return Text("");
+                                    }
                                   }),
                             ),
                           ],
@@ -321,41 +332,44 @@ List <String> l;
                                   stream: Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج وظيفي" ).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    Center(
-                                      child: const CupertinoActivityIndicator(),
-                                    );
-                                    return DropdownButton<String>(
-                                      value: _occupationalSpecialistName,
-                                      isDense: true,
-                                      hint: Text('إختر'),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          _occupationalSpecialistName = newValue;
-                                        });
-                                        print(_occupationalSpecialistName);
-                                      },
-                                      items: snapshot.data.docs
-                                          .map((DocumentSnapshot document) {
-
-                                        return new DropdownMenuItem<String>(
-                                            value:  document
-                                                .data()["name"],
-                                            onTap: () {
-                                              _occupationalSpecialistId = document
-                                                  .data()["uid"];
-                                              print(_occupationalSpecialistId);
-                                            },
-                                            child: new Container(
-                                              height: 25,
-                                              //color: primaryColor,
-                                              child:
-                                              new Text(
-                                                document.data()["name"],
-                                              ),
-                                            ));
-                                      }).toList()
-                                    );
-                                  }),
+    if (snapshot.hasData) {
+      Center(
+        child: const CupertinoActivityIndicator(),
+      );
+      return DropdownButton<String>(
+          value: _occupationalSpecialistName,
+          isDense: true,
+          hint: Text('إختر'),
+          onChanged: (newValue) {
+            setState(() {
+              _occupationalSpecialistName = newValue;
+            });
+            print(_occupationalSpecialistName);
+          },
+          items: snapshot.data.docs
+              .map((DocumentSnapshot document) {
+            return new DropdownMenuItem<String>(
+                value: document
+                    .data()["name"],
+                onTap: () {
+                  _occupationalSpecialistId = document
+                      .data()["uid"];
+                  print(_occupationalSpecialistId);
+                },
+                child: new Container(
+                  height: 25,
+                  //color: primaryColor,
+                  child:
+                  new Text(
+                    document.data()["name"],
+                  ),
+                ));
+          }).toList()
+      );
+    }
+                                  else{
+                                    return Text('');
+    }}),
                             ),
                           ],
                         ),
@@ -370,40 +384,47 @@ List <String> l;
                                   stream:Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج طبيعي" ).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    Center(
-                                      child: const CupertinoActivityIndicator(),
-                                    );
-                                    return DropdownButton<String>(
-                                      value:_physiotherapySpecialistName,
-                                      isDense: true,
-                                      hint: Text('إختر'),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          _physiotherapySpecialistName = newValue;
-                                        });
-                                        print(_physiotherapySpecialistName);
-                                      },
-                                      items: snapshot.data.docs
-                                          .map((DocumentSnapshot document) {
-
-                                        return new DropdownMenuItem<String>(
-                                            value:  document
-                                                .data()["name"],
-                                            onTap: () {
-                                              _physiotherapySpecialistId = document
-                                                  .data()["uid"];
-                                              print(_physiotherapySpecialistId);
-                                            },
-                                            child: new Container(
-                                              height: 25,
-                                              //color: primaryColor,
-                                              child:
-                                              new Text(
-                                                document.data()["name"],
-                                              ),
-                                            ));
-                                      }).toList()
-                                    );
+                                   if (snapshot.hasData) {
+                                     Center(
+                                       child: const CupertinoActivityIndicator(),
+                                     );
+                                     return DropdownButton<String>(
+                                         value: _physiotherapySpecialistName,
+                                         isDense: true,
+                                         hint: Text('إختر'),
+                                         onChanged: (newValue) {
+                                           setState(() {
+                                             _physiotherapySpecialistName =
+                                                 newValue;
+                                           });
+                                           print(_physiotherapySpecialistName);
+                                         },
+                                         items: snapshot.data.docs
+                                             .map((DocumentSnapshot document) {
+                                           return new DropdownMenuItem<String>(
+                                               value: document
+                                                   .data()["name"],
+                                               onTap: () {
+                                                 _physiotherapySpecialistId =
+                                                 document
+                                                     .data()["uid"];
+                                                 print(
+                                                     _physiotherapySpecialistId);
+                                               },
+                                               child: new Container(
+                                                 height: 25,
+                                                 //color: primaryColor,
+                                                 child:
+                                                 new Text(
+                                                   document.data()["name"],
+                                                 ),
+                                               ));
+                                         }).toList()
+                                     );
+                                   }
+                                  else{
+                                    return Text('');
+                                   }
                                   }),
                             ),
                           ],
@@ -420,40 +441,48 @@ List <String> l;
                                   Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي تخاطب" ).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    Center(
-                                      child: const CupertinoActivityIndicator(),
-                                    );
-                                    return DropdownButton<String>(
-                                      value: _communicationSpecialistName,
-                                      isDense: true,
-                                      hint: Text('إختر'),
-                                      onChanged: (newValue) {
-                                        setState(() {
-                                          _communicationSpecialistName = newValue;
-                                        });
-                                        print(_communicationSpecialistName);
-                                      },
-                                      items: snapshot.data.docs
-                                          .map((DocumentSnapshot document) {
-
-                                        return new DropdownMenuItem<String>(
-                                            value:  document
-                                                .data()["name"],
-                                            onTap: () {
-                                              _communicationSpecialistId = document
-                                                  .data()["uid"];
-                                              print(_communicationSpecialistId);
-                                            },
-                                            child: new Container(
-                                              height: 25,
-                                              //color: primaryColor,
-                                              child:
-                                              new Text(
-                                                document.data()["name"],
-                                              ),
-                                            ));
-                                      }).toList()
-                                    );
+                                     if (snapshot.hasData) {
+                                       Center(
+                                         child: const CupertinoActivityIndicator(),
+                                       );
+                                       return DropdownButton<String>(
+                                           value: _communicationSpecialistName,
+                                           isDense: true,
+                                           hint: Text('إختر'),
+                                           onChanged: (newValue) {
+                                             setState(() {
+                                               _communicationSpecialistName =
+                                                   newValue;
+                                             });
+                                             print(
+                                                 _communicationSpecialistName);
+                                           },
+                                           items: snapshot.data.docs
+                                               .map((
+                                               DocumentSnapshot document) {
+                                             return new DropdownMenuItem<
+                                                 String>(
+                                                 value: document
+                                                     .data()["name"],
+                                                 onTap: () {
+                                                   _communicationSpecialistId =
+                                                   document
+                                                       .data()["uid"];
+                                                   print(
+                                                       _communicationSpecialistId);
+                                                 },
+                                                 child: new Container(
+                                                   height: 25,
+                                                   //color: primaryColor,
+                                                   child:
+                                                   new Text(
+                                                     document.data()["name"],
+                                                   ),
+                                                 ));
+                                           }).toList()
+                                       );
+                                     }
+                                  else return Text('');
                                   }),
                             ),
                           ],
