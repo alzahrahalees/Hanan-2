@@ -161,6 +161,13 @@ class SpecialistCards extends StatelessWidget {
                       color: Color(0xffffd6d6),
                       borderOnForeground: true,
                       child: ListTile(
+                        onTap: (){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SpecialistInfo(document.data()['uid'])));
+                        },
                         trailing: IconButton(icon: Icon (Icons.delete),
                             onPressed: () {
                               return Alert(

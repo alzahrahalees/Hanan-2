@@ -520,11 +520,11 @@ class ProfileTile extends StatelessWidget {
   final String title;
   final Color color;
   final Function onChanged;
-  final Function validator;
+
   final bool readOnly;
 
 
-  const ProfileTile({this.readOnly,this.validator,this.onChanged,this.icon, this.hintTitle, this.title, this.color});
+  const ProfileTile({this.readOnly,this.onChanged,this.icon, this.hintTitle, this.title, this.color});
 
   @override
   Widget build(BuildContext context) {

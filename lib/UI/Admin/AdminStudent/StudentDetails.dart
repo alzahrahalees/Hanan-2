@@ -87,6 +87,9 @@ class _StudentInfoState extends State<StudentInfo> {
     String age;
     String phone;
     String email;
+    String newName;
+    String newAge;
+    String newPhone;
 
     final formkey = GlobalKey<FormState>();
     return Scaffold(
@@ -103,7 +106,7 @@ class _StudentInfoState extends State<StudentInfo> {
                   if (snapshot.hasData) {
                     return Container(
                         padding: EdgeInsets.all(10),
-                        color: kBackgroundPageColor,
+                        color: Color(0xfff0eaf7),
                         alignment: Alignment.topRight,
                         child: Form(
                             key: formkey,
@@ -118,115 +121,100 @@ class _StudentInfoState extends State<StudentInfo> {
                                   email = document.data()['email'];
 
                                   return Column(children: <Widget>[
-                                    Padding(
-                                        padding: EdgeInsets.all(5),
-                                        child: TextFormField(
-                                          initialValue: document.data()['name'],
-                                          decoration: InputDecoration(
-                                              labelText: "الإسم",
-                                              labelStyle: TextStyle(
-                                                  color: Colors.deepPurple)),
-                                          onChanged: (value) {
-                                            name = value;
-                                          },
-                                          validator: (value) {
-                                            if (value.isEmpty) {
-                                              return "لا يمكن تركها فارغة";
-                                            }
-                                          },
-                                        )),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        initialValue: document.data()['age'],
-                                        decoration:
-                                            InputDecoration(labelText: "العمر"),
-                                        onChanged: (value) {
-                                          age = value;
-                                        },
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return "لا يمكن تركها فارغة";
-                                          }
-                                        },
-                                      ),
-                                    ),
 
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        initialValue: document.data()['email'],
-                                        readOnly: true,
-                                        decoration: InputDecoration(
-                                            helperText:
-                                                "لا يمكنك تغيير البريد الإلكتروني",
-                                            labelText: "االبريد الإلكتروني"),
-                                        onChanged: (value) {
-                                          email = value;
-                                        },
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return "لا يمكن تركها فارغة";
-                                          }
-                                        },
-                                      ),
+                                    ProfileTile(
+                                      title: document.data()['name'] ,
+                                      hintTitle: "الإسم",
+                                      readOnly: false,
+                                    icon: Icons.person,
+                                    color: kWolcomeBkg,
+                                    onChanged: (value)=> newName= value,
                                     ),
-
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        initialValue: document.data()['phone'],
-                                        decoration: InputDecoration(
-                                            labelText: "رقم الهاتف"),
-                                        onChanged: (value) {
-                                          phone = value;
-                                        },
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return "لا يمكن تركها فارغة";
-                                          }
-                                        },
-                                      ),
+                                    ProfileTile(
+                                      title: document.data()['age'] ,
+                                      hintTitle: "الععمر",
+                                      readOnly: false,
+                                      icon: Icons.assistant_outlined,
+                                      color: kWolcomeBkg,
+                                      onChanged: (value)=> newAge= value,
                                     ),
-
+                                    ProfileTile(
+                                      title: document.data()['email'] ,
+                                      hintTitle: "الإيميل",
+                                      readOnly: true,
+                                      icon: Icons.alternate_email_outlined,
+                                      color: kWolcomeBkg,
+                                      onChanged: (value){},
+                                    ),
+                                    ProfileTile(
+                                      title: document.data()['phone'] ,
+                                      hintTitle: "رقم الهاتف",
+                                      readOnly: false,
+                                      icon: Icons.phone,
+                                      color: kWolcomeBkg,
+                                      onChanged: (value)=> newPhone= value,
+                                    ),
                                     Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Row(children: <Widget>[
-                                        Text("الجنس",
-                                            style: kTextPageStyle.copyWith(
-                                                color: Colors.grey)),
-                                        new Padding(
-                                            padding: new EdgeInsets.all(5)),
-                                        Container(
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                              Container(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    RadioButton(list[0], 0),
-                                                    new Padding(
-                                                        padding:
-                                                            new EdgeInsets.all(
-                                                                10)),
-                                                    RadioButton(list[1], 1),
+                                      padding: const EdgeInsets.only(top: 10,
+                                          bottom: 10,
+                                          left: 5,
+                                          right: 8),
+                                      child: Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .start,
+                                              children: <Widget>[
+                                                Circle(
+                                                  child: Icon(
+                                                      Icons.accessibility),
+                                                  color: kWolcomeBkg,),
+                                                SizedBox(width: 10),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment
+                                                      .start,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .all(5.0),
+                                                      child: Text("الجنس",
+                                                          style: kTextPageStyle
+                                                              .copyWith(
+                                                              color: Colors
+                                                                  .grey)),
+                                                    ),
+                                                    Container(
+                                                      child: Container(
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment
+                                                              .spaceBetween,
+                                                          children: <Widget>[
+                                                            RadioButton(
+                                                                list[0], 0),
+                                                            Padding(
+                                                                padding: EdgeInsets
+                                                                    .all(10)),
+                                                            RadioButton(
+                                                                list[1], 1),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      // Padding(padding: EdgeInsets.all(30)),
+
+
+                                                    )
                                                   ],
                                                 ),
-                                              ),
-                                              Padding(
-                                                  padding: EdgeInsets.all(30)),
-                                            ]))
-                                      ]),
+
+                                              ]
+                                          ),
+                                        ),
+                                      ),
                                     ),
 
-                                    //
-                                    new Padding(
-                                        padding: new EdgeInsets.all(10)),
+                                    Padding(
+                                        padding: EdgeInsets.all(10)),
                                     Row(
                                       children: [
                                         Text("المعلم المسؤول",
@@ -582,15 +570,11 @@ class _StudentInfoState extends State<StudentInfo> {
                                         ),
                                       ],
                                     ),
-                                    new Padding(
-                                        padding: new EdgeInsets.all(10)),
 
-                                    Row(
-                                      children: [
-                                        Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 90)),
-                                        RaisedButton(
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: RaisedButton(
                                           color: kButtonColor,
                                           child: Text("تعديل",
                                               style: kTextButtonStyle),
@@ -601,9 +585,9 @@ class _StudentInfoState extends State<StudentInfo> {
                                             if (formkey.currentState
                                                 .validate()) {
                                               Admin_Students.doc(uid).update({
-                                                'name': name,
-                                                'age': age,
-                                                'phone': phone,
+                                                'name':newName==null? name: newName,
+                                                'age': newAge==null? age: newAge,
+                                                'phone': phone==null? phone: newPhone,
                                               });
                                               if (gender != null) {
                                                 Admin_Students.doc(uid).update({
@@ -659,9 +643,9 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
 
                                               Students.doc(uid).update({
-                                                'name': name,
-                                                'age': age,
-                                                'phone': phone,
+                                                'name':newName==null? name: newName,
+                                                'age': newAge==null? age: newAge,
+                                                'phone': phone==null? phone: newPhone,
                                               });
                                               if (gender != null) {
                                                 Students.doc(uid).update({
@@ -718,9 +702,9 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
 
                                               Users.doc(uid).update({
-                                                'name': name,
-                                                'age': age,
-                                                'phone': phone,
+                                                'name':newName==null? name: newName,
+                                                'age': newAge==null? age: newAge,
+                                                'phone': phone==null? phone: newPhone,
                                               });
                                               if (gender != null) {
                                                 Users.doc(uid).update({
@@ -1035,23 +1019,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                             }
                                           },
                                         ),
-                                        Padding(padding: EdgeInsets.all(5)),
-                                        RaisedButton(
-                                            color: kButtonColor,
-                                            child: Text("الغاء",
-                                                style: kTextButtonStyle),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        18.0)),
-                                            onPressed: () {
-                                              Navigator.pop(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          MainAdminScreen(0)));
-                                            })
-                                      ],
+                                      ),
                                     ),
                                   ]);
                                 }).toList())));
