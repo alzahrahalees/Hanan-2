@@ -777,14 +777,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
 
                                               if (teacherId != null) {
-                                                Admin_Teachers.get().then(
-                                                    (value) => value.docs
-                                                            .forEach((element) {
-                                                          Admin_Teachers.doc(
-                                                                  element.id)
-                                                              .collection(
-                                                                  'Students')
-                                                              .doc(uid)
+                                                Admin_Teachers.get().then((value) => value.docs.forEach((element) {
+                                                  Admin_Teachers.doc(element.id).collection('Students').doc(uid)
                                                               .delete()
                                                               .whenComplete(() {
                                                             Admin_Teachers.doc(
@@ -797,6 +791,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                                             });
                                                           });
                                                         }));
+
 
                                                 Teachers.get().then((value) =>
                                                     value.docs
@@ -978,8 +973,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   null) {
                                                 Admin_Specialists.where(
                                                         'typeOfSpechalist',
-                                                        isEqualTo:
-                                                            "أخصائي علاج طبيعي")
+                                                        isEqualTo: "أخصائي علاج طبيعي")
                                                     .get()
                                                     .then((value) => value.docs
                                                             .forEach((element) {
