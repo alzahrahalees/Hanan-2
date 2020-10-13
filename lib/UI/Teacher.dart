@@ -54,6 +54,10 @@ class AddTeacher extends StatelessWidget {
     Future<void> addTeacher() async{
       //problem:the document must be have the same ID
 
+      var exists = await FirebaseFirestore.instance.collection('Users')
+              .doc(email).get();
+      bool isExists = (exists.exists);
+        if(!isExists){
 
       var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase()).set({});
 
@@ -101,7 +105,7 @@ class AddTeacher extends StatelessWidget {
         "birthday": birthday.toString()
       });
 
-
+}
 
       Navigator.pop(
           context,

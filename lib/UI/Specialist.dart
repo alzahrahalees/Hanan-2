@@ -40,7 +40,12 @@ class AddSpecialist extends StatelessWidget {
 
 
     Future<void> addSpecialist() async{
-      var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase()).set({});
+      var exists = await FirebaseFirestore.instance.collection('Users')
+          .doc(email).get();
+      bool isExists = (exists.exists);
+
+     if (!isExists){
+       var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase()).set({});
       //problem:the document must be have the same ID
       var addToAdminSpecialist=Admin_Specialists.doc(email.toLowerCase())
           .set({
@@ -89,7 +94,7 @@ class AddSpecialist extends StatelessWidget {
       })
           .then((value) => print("User Added in Users Collection"))
           .catchError((error) => print("Failed to add user: $error"));
-
+}
       Navigator.pop(
           context,
           MaterialPageRoute(

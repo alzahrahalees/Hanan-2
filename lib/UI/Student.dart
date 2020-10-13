@@ -59,9 +59,12 @@ class AddStudent extends StatelessWidget {
       CollectionReference Admin_Specialists = Admin.doc(userAdmin.email).collection('Specialists');
       CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
 
+      var exists = await FirebaseFirestore.instance.collection('Users')
+          .doc(email).get();
+      bool isExists = (exists.exists);
       //problem:the document must be have the same ID
 
-
+       if(!isExists)   {
       var addToStudent = Students.doc(email.toLowerCase()).set({
         "isAuth":false,
         "center": userAdmin.email.toLowerCase(),
@@ -268,7 +271,7 @@ class AddStudent extends StatelessWidget {
         'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
         'physiotherapySpecialistId':physiotherapySpecialistId,
       });
-
+}
       Navigator.pop(
           context,
           MaterialPageRoute(

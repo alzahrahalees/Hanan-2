@@ -275,6 +275,7 @@ class _MainLogInState extends State<MainLogIn> {
         print('inside whoIs function $type');
       });
     }).catchError((err) => type = 'Not Valid');
+
     authReslute = await FirebaseFirestore.instance.collection('NoAuth')
         .doc(_email.text).get();
 
