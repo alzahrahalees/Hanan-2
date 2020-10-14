@@ -5,24 +5,24 @@ import 'package:hanan/UI/selfProfile.dart';
 import 'package:hanan/services/auth.dart';
 import 'package:hanan/services/chang_password.dart';
 import '../Constance.dart';
-import 'TeacherAllAppointments.dart';
-import 'TeacherStudentList.dart';
+import 'SpecailistAllAppointments.dart';
+import 'SpecialistStudentList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class TeacherMainScreen extends StatefulWidget {
+class SpecialistMainScreen extends StatefulWidget {
   AuthService _auth = AuthService();
   final int index;
-  TeacherMainScreen(this.index);
+  SpecialistMainScreen(this.index);
   @override
-  _TeacherMainScreenState createState() => _TeacherMainScreenState();
+  _SpecialistMainScreenState createState() => _SpecialistMainScreenState();
 }
 
-class _TeacherMainScreenState extends State<TeacherMainScreen> {
+class _SpecialistMainScreenState extends State<SpecialistMainScreen> {
 
   User user = FirebaseAuth.instance.currentUser;
   AuthService _authService= AuthService();
   int _currentIndex=0;
-  List<Widget> _screens=[TeacherStudentList(),AllAppointmentsTeacher()];
+  List<Widget> _screens=[SpecialistStudentList(),AllAppointmentsSpecialist()];
   List<String> _titles=[ "قائمة الطلاب", "جميع المواعيد"];
 
   @override

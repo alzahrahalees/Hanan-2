@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
 
-class DiariesTeacher extends StatefulWidget {
+class SpecialistDiariesScreen extends StatefulWidget {
   @override
-  _DiariesTeacherState createState() => _DiariesTeacherState();
+  _SpecialistDiariesScreenState createState() => _SpecialistDiariesScreenState();
 }
 
-class _DiariesTeacherState extends State<DiariesTeacher> {
+class _SpecialistDiariesScreenState extends State<SpecialistDiariesScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(

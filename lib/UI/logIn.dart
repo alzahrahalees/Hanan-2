@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
-import 'package:hanan/UI/Specialists/SpecialistMain.dart';
+import 'package:hanan/UI/Specialists/SpecialistMainScreen.dart';
 import 'package:hanan/UI/Parents/ParentMain.dart';
 import 'package:hanan/UI/firstLogIn.dart';
 import 'Constance.dart';
@@ -136,7 +136,7 @@ class _MainLogInState extends State<MainLogIn> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                MainTeacherScreen(0)));
+                                                TeacherMainScreen(0)));
                                   }
                                 }
                                 else if (type == 'Specialists') {
@@ -154,7 +154,7 @@ class _MainLogInState extends State<MainLogIn> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SpecialistMain()));
+                                                SpecialistMainScreen(0)));
                                   }
                                 }
                                 else if (type == 'Students') {
@@ -172,7 +172,7 @@ class _MainLogInState extends State<MainLogIn> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ParentMainScreen()));
+                                                ParentMain(0)));
                                   }
                                 }
                                 else if (type == 'Admin') {
@@ -279,7 +279,7 @@ class _MainLogInState extends State<MainLogIn> {
     authReslute = await FirebaseFirestore.instance.collection('NoAuth')
         .doc(_email.text).get();
 
-    bool isAdminReg = (authReslute.exists)& (type!='Admin') & (type!='Students');
+    bool isAdminReg = (authReslute.exists)& (type!='Admin') ;
     print ("#### inside isReg function $isAdminReg");
     return isAdminReg ;
   }

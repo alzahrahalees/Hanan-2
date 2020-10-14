@@ -22,7 +22,7 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
   int _currentIndex=0;
   String _name='';
 
-  List<Widget> _screens=[DiariesScreen(),AppointmentsScreen(),PlansScreen(),StudentInfo()];
+  List<Widget> _screens=[DiariesTeacher(),AppointmentsTeacher(),PlansTeacher(),TeacherStudentInfo()];
   List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
 
   @override

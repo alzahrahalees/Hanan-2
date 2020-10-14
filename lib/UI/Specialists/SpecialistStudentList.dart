@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
-import 'TeacherStudentMain.dart';
+import 'SpecialistStudentMain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -11,12 +11,12 @@ const kCardColor=Color(0xffededed);
 
 
 
-class TeacherStudentList extends StatefulWidget {
+class SpecialistStudentList extends StatefulWidget {
   @override
-  _TeacherStudentListState createState() => _TeacherStudentListState();
+  _SpecialistStudentListState createState() => _SpecialistStudentListState();
 }
 
-class _TeacherStudentListState extends State<TeacherStudentList> {
+class _SpecialistStudentListState extends State<SpecialistStudentList> {
   @override
   Widget build(BuildContext context) {
 
@@ -65,7 +65,7 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
               ),
               onTap: (){Navigator.push(context,
                   MaterialPageRoute(builder: (context)=>
-                      TeacherStudentMain(index: 0,centerId:centerId,name:studentName ,)));},
+                      SpecialistStudentMain(index: 0,centerId:centerId,name:studentName ,)));},
               title: Text(document.data()['name'], style: kTextPageStyle),
 
         )
