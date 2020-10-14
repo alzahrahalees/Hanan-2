@@ -7,23 +7,31 @@ import 'TeacherStudentInfo.dart';
 
 
 class TeacherStudentMain extends StatefulWidget {
+
+  final String centerId;
   final int index;
-  TeacherStudentMain(this.index);
+  final String name;
+  TeacherStudentMain({this.index,this.centerId,this.name});
   @override
   _TeacherStudentMainState createState() => _TeacherStudentMainState();
 }
 
 class _TeacherStudentMainState extends State<TeacherStudentMain> {
 
+  String _centerId= '';
   int _currentIndex=0;
+  String _name='';
+
   List<Widget> _screens=[DiariesScreen(),AppointmentsScreen(),PlansScreen(),StudentInfo()];
-  List<String> _titles=['اليوميات',"مواعيد الطالب","الخطط","معلومات الطالب"];
+  List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
 
   @override
   void initState() {
     super.initState();
     setState(() {
+      _centerId=widget.centerId;
       _currentIndex=widget.index;
+      _name=widget.name;
     });
 
   }
@@ -33,8 +41,6 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-
-
           type: BottomNavigationBarType.shifting,
           backgroundColor: kAppBarColor,
           selectedItemColor:kSelectedItemColor,
@@ -71,9 +77,8 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
         body:CustomScrollView(
             slivers:<Widget>[
               SliverAppBar(
-
                 backgroundColor: kAppBarColor,
-                title: Text(_titles[_currentIndex], style: kTextAppBarStyle),
+                title: Text('${_titles[_currentIndex]} $_name', style: kTextAppBarStyle),
                 centerTitle: true,
                 floating: false,
               ),
