@@ -24,6 +24,7 @@ class _StudentListState extends State<StudentList> {
     Color(0xffe89004),Color(0xfff45eff)];
 
     User user = FirebaseAuth.instance.currentUser;
+
     CollectionReference studentsInTeachrs = FirebaseFirestore.instance.collection('Teachers')
     .doc(user.email).collection('Students');
 
@@ -49,7 +50,8 @@ class _StudentListState extends State<StudentList> {
     children: snapshot.data.docs.map((DocumentSnapshot document) {
       var centerId= document.data()['center'];
       var studentName= document.data()['name'];
-      Random ran= Random();
+      print(studentName);
+      print(centerId);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Padding(
@@ -58,20 +60,18 @@ class _StudentListState extends State<StudentList> {
           color: kCardColor,
             borderOnForeground: true,
             child: ListTile(
+              title: Text("nn", style: kTextPageStyle),
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.star,color: colors[ran.nextInt(4)]),
               ),
               onTap: (){Navigator.push(context,
                   MaterialPageRoute(builder: (context)=>
                       TeacherStudentMain(index: 0,centerId:centerId,name:studentName ,)));},
-              title: Text(document.data()['name'], style: kTextPageStyle),
 
         )
         ),
       ),
-    )
-    ;}
+    );}
     ).toList()
     );
     }} );
