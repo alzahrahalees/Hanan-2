@@ -108,14 +108,10 @@ class TeacherCards extends StatelessWidget {
             )
               ,);
           default:
-            return new ListView(
-
-                children:
-
-                snapshot.data.docs.map((DocumentSnapshot document) {
-                  if (document.data()["isAuth"]==true ){
+            return  ListView(
+                children: snapshot.data.docs.map((DocumentSnapshot document) {
                     return Card(
-
+                        color:  document.data()["isAuth"]==false ?Color(0xffffd6d6): Colors.white,
                         borderOnForeground: true,
                         child: ListTile(
 
@@ -165,72 +161,8 @@ class TeacherCards extends StatelessWidget {
                           title:  Text(document.data()['name'], style: kTextPageStyle),
                           subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
 
-                        ));}
-                  else{
-                    return Card(
-                      color: Color(0xffffd6d6),
-                      borderOnForeground: true,
-                      child: ListTile(
-                        trailing: IconButton(icon: Icon (Icons.delete),
-                            onPressed: () {
-
-                              return Alert(
-                                context: context,
-                                type: AlertType.error,
-                                title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
-                                desc: "",
-                                buttons: [
-                                  DialogButton(
-                                    child: Text(
-                                      "لا",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: () => Navigator.pop(context),
-                                    color: kButtonColor,
-                                  ),
-                                  DialogButton(
-                                    child: Text(
-                                      "نعم",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: ()
-                                    {
-
-                                      Teachers.doc(document.id).delete();
-                                      Users.doc(document.id).delete();
-                                      Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();
-
-                                      Admin_Teachers.doc(document.id).collection("Students").get().then((value) =>
-                                          value.docs.forEach((element) {
-                                            Admin_Teachers.doc(document.id).collection('Students').doc(element.id).delete();
-                                          })
-                                      );
-
-                                      Teachers.doc(document.id).collection("Students").get().then((value) =>
-                                          value.docs.forEach((element) {
-                                            Teachers.doc(document.id).collection('Students').doc(element.id).delete();
-                                          })
-                                      );
-                                      Navigator.pop(context);
-                                    },
-                                    color: kButtonColor,
-                                  ),
-                                ],
-                              ).show();
-                            }),
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => TeacherInfo (document.data()['uid'])
-                          )
-                          );
-                          },
-
-                        title:  Text(document.data()['name'], style: kTextPageStyle),
-                        subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
-                      ),
-                    );
-                    //
-                  }}).toList());
+                        ));
+                 }).toList());
         }
       },
     );

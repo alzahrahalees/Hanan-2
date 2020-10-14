@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
 import 'TeacherStudentMain.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'dart:math';
 
-const kCardColor=Color(0xffc6c6c6);
+
+const kCardColor=Color(0xffededed);
 
 
 
@@ -14,49 +19,62 @@ class StudentList extends StatefulWidget {
 class _StudentListState extends State<StudentList> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body:  Container(
-          padding: EdgeInsets.all(10),
-          color: kBackgroundPageColor,
-          alignment: Alignment.topCenter,
-          // here we add the snapshot from database
-          child: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                Column(
-                  children: [
-                    ReusableCard(
-                      color: kCardColor,
-                      child: ListTile(
-                        title:Text( "الزهراء الهليس", style: kTextPageStyle),
-                        subtitle: Text( "طالب"),),
 
-                      onPress: () {
-                        Navigator.push(context, MaterialPageRoute(
-                        builder: (context) =>TeacherStudentMain(0))
-                        );
-                      }
-                    ),
+    List<Color> colors=[Color(0xff7e91cc),Color(0xffe8dc04),
+    Color(0xffe89004),Color(0xfff45eff)];
 
-                    ReusableCard(
-                        color: kCardColor,
-                        child: ListTile(
-                          title: Text("غنى الغلاييني", style: kTextPageStyle),
-                          subtitle: Text("طالب"),
-                        ),
-                        onPress: () {
-                          print("Tapped on teacher ");
-                        }
-                    ),
+    User user = FirebaseAuth.instance.currentUser;
+    CollectionReference studentsInTeachrs = FirebaseFirestore.instance.collection('Teachers')
+    .doc(user.email).collection('Students');
 
-                  ],
-                ),
+    return StreamBuilder<QuerySnapshot>(
+      stream: studentsInTeachrs.snapshots(),
+        builder: ( context, snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+              child: SpinKitFoldingCube(
+                color: kUnselectedItemColor,
+                size: 60,
+              ),
+            );
+          switch (snapshot.connectionState) {
+    case ConnectionState.waiting:
+    return Center(child: SpinKitFoldingCube(
+    color: kUnselectedItemColor,
+    size: 60,
+    )
+    ,);
+    default:
+    return ListView(
+    children: snapshot.data.docs.map((DocumentSnapshot document) {
+      var centerId= document.data()['center'];
+      var studentName= document.data()['name'];
+      Random ran= Random();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
+        child: Card(
+          color: kCardColor,
+            borderOnForeground: true,
+            child: ListTile(
+              leading: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(Icons.star,color: colors[ran.nextInt(4)]),
+              ),
+              onTap: (){Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=>
+                      TeacherStudentMain(index: 0,centerId:centerId,name:studentName ,)));},
+              title: Text(document.data()['name'], style: kTextPageStyle),
 
-              ]),
-
+        )
         ),
       ),
+    )
+    ;}
+    ).toList()
     );
+    }} );
+      }
   }
-}
+

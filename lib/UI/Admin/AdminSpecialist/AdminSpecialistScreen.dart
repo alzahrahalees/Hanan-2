@@ -94,8 +94,8 @@ class SpecialistCards extends StatelessWidget {
             return new ListView(
                 children:
                 snapshot.data.docs.map((DocumentSnapshot document) {
-                  if (document.data()["isAuth"]==true ){
                     return Card(
+                        color:  document.data()["isAuth"]==false ?Color(0xffffd6d6): Colors.white,
                         borderOnForeground: true,
                         child: ListTile(
                           onTap: (){
@@ -155,72 +155,7 @@ class SpecialistCards extends StatelessWidget {
                           subtitle:  Text( document.data()["isAuth"]==true? document.data()["typeOfSpechalist"]:" لم تتم المصادقة",style: kTextPageStyle),
 
                         ));
-                  }
-                  else{
-                    return Card(
-                      color: Color(0xffffd6d6),
-                      borderOnForeground: true,
-                      child: ListTile(
-                        onTap: (){
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      SpecialistInfo(document.data()['uid'])));
-                        },
-                        trailing: IconButton(icon: Icon (Icons.delete),
-                            onPressed: () {
-                              return Alert(
-                                context: context,
-                                type: AlertType.error,
-                                title: "هل أنت مـتأكد من حذف ${document.data()['name']} ؟ ",
-                                desc: "",
-                                buttons: [
-                                  DialogButton(
-                                    child: Text(
-                                      "لا",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: () => Navigator.pop(context),
-                                    color: kButtonColor,
-                                  ),
-                                  DialogButton(
-                                    child: Text(
-                                      "نعم",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: ()
-                                    {
-                                      Specialists.doc(document.id).delete();
-                                      Users.doc(document.id).delete();
-                                      Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists').doc(document.id).delete();
 
-                                      Admin_Specialists.doc(document.id).collection("Students").get().then((value) =>
-                                          value.docs.forEach((element) {
-                                            Admin_Specialists.doc(document.id).collection('Students').doc(element.id).delete();
-                                          })
-                                      );
-
-                                      Specialists.doc(document.id).collection("Students").get().then((value) =>
-                                          value.docs.forEach((element) {
-                                            Specialists.doc(document.id).collection('Students').doc(element.id).delete();
-                                          })
-                                      );
-
-                                      Navigator.pop(context);
-                                    },
-                                    color: kButtonColor,
-                                  ),
-                                ],
-                              ).show();
-                            }
-                        ),
-                        title:  Text(document.data()['name'], style: kTextPageStyle),
-                        subtitle:  Text( document.data()["isAuth"]==true? "أخصائي ${document.data()['typeOfSpechalist']}":" لم تتم المصادقة",style: kTextPageStyle),
-                      ),
-                    );
-                    //
-                  }
 
 
                 }).toList());
