@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Constance.dart';
 import '../AdminMainScreen.dart';
+import 'SpecialistStudents.dart';
 
 class SpecialistInfo extends StatefulWidget {
   String uid;
@@ -93,7 +94,7 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                   if (snapshot.hasData) {
                     return Container(
                         padding: EdgeInsets.all(10),
-                        color: kWolcomeBkg,
+                        color: Colors.white,
                         alignment: Alignment.topRight,
                         child: Form(
                             key: formkey,
@@ -264,7 +265,19 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                                         ),
                                       ]),
                                     ),
+
                                     Padding(padding: EdgeInsets.all(10)),
+                                    InkWell(
+                                      child: Text("إضغط هنا لعرض الطلاب",style: kTextPageStyle.copyWith(fontSize: 20),),
+                                      onTap:(){Navigator.push(context,
+                                          MaterialPageRoute(
+                                              builder: (
+                                                  context) =>
+                                                  SpecialistStudents(uid)));} ,
+                                    ),
+                                    Padding(padding: EdgeInsets.all(10)),
+
+
                                     Padding(
                                         padding: EdgeInsets.only(right: 90)),
                                     Center(

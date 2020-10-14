@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hanan/UI/Admin/AdminTeacher/TeacherStudents.dart';
 import '../../Constance.dart';
 import '../AdminMainScreen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -60,6 +61,9 @@ class _TeacherInfoState extends State<TeacherInfo> {
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
+    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
+    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+
 
     String gender=gender1;
     String name;
@@ -94,7 +98,7 @@ class _TeacherInfoState extends State<TeacherInfo> {
                     default:
                       return Container(
                           padding: EdgeInsets.all(10),
-                          color: kWolcomeBkg,
+                          color: Colors.white,
                           alignment: Alignment.topRight,
                           child: Form(
                               key: formkey,
@@ -104,6 +108,7 @@ class _TeacherInfoState extends State<TeacherInfo> {
                                   children:
                                   snapshot.data.docs.map((
                                       DocumentSnapshot document) {
+                                    String tu=document.data()['uid'];
                                     name = document.data()['name'];
                                     age = document.data()['age'];
                                     phone = document.data()['phone'];
@@ -216,6 +221,16 @@ class _TeacherInfoState extends State<TeacherInfo> {
                                           ),
                                         ),
                                       ),
+                                      Padding(padding: EdgeInsets.all(10)),
+                                      InkWell(
+                                        child: Text("إضغط هنا لعرض الطلاب",style: kTextPageStyle.copyWith(fontSize: 20),),
+                                        onTap:(){Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (
+                                                    context) =>
+                                                   TeacherStudents(uid)));} ,
+                                      ),
+                                      Padding(padding: EdgeInsets.all(10)),
                                       Center(
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment
@@ -326,3 +341,24 @@ class _TeacherInfoState extends State<TeacherInfo> {
     );
   }
 }
+
+
+/*
+Padding(padding: EdgeInsets.all(10),),
+StreamBuilder(
+stream: Admin_Students.where('teacherId',isEqualTo: uid).snapshots(),
+builder:  (BuildContext context,
+    AsyncSnapshot<QuerySnapshot> snapshot) {
+if (snapshot.hasData) {
+
+return ListView(
+children:
+snapshot.data.docs.map((DocumentSnapshot document) {
+
+return Text(document.data()['name']);
+
+}).toList()
+);
+}
+else{return Text("no");}
+}) ,*/

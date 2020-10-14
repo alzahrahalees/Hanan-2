@@ -105,8 +105,10 @@ class _StudentInfoState extends State<StudentInfo> {
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
                     return Container(
+
                         padding: EdgeInsets.all(10),
-                        color: Color(0xfff0eaf7),
+                      //  color: Color(0xfff0eaf7),
+                        color: Colors.white,
                         alignment: Alignment.topRight,
                         child: Form(
                             key: formkey,
@@ -587,7 +589,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                               Admin_Students.doc(uid).update({
                                                 'name':newName==null? name: newName,
                                                 'age': newAge==null? age: newAge,
-                                                'phone': phone==null? phone: newPhone,
+                                                'phone': newPhone==null? phone: newPhone,
                                               });
                                               if (gender != null) {
                                                 Admin_Students.doc(uid).update({
@@ -1004,6 +1006,25 @@ class _StudentInfoState extends State<StudentInfo> {
                                                           });
                                                         }));
                                               }
+
+                                              Specialists.get().then((value) =>
+                                                  value.docs.forEach((element) {
+                                                  Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                    'name':newName==null? name: newName,
+                                                  });
+                                                  })
+                                              );
+
+                                              Admin_Specialists.get().then((value) =>
+                                                  value.docs.forEach((element) {
+                                                    Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                      'name':newName==null? name: newName,
+                                                    });
+                                                  })
+                                              );
+
+
+
 
                                               Navigator.pop(
                                                   context,
