@@ -59,11 +59,11 @@ class _SpecialistMainScreenState extends State<SpecialistMainScreen> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.accessibility),
-              title: Text("الطلاب"),
+              label: "الطلاب",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today),
-              title: Text("المواعيد"),
+              label: "المواعيد"
             ),
           ],
         ),

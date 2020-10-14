@@ -143,6 +143,7 @@ class AddStudent extends StatelessWidget {
       var addPsychologyStudent=Specialists.doc(psychologySpecialistId).collection('Students').doc(email.toLowerCase()).
       set({
           'uid': email.toLowerCase(),
+        'name':name
         }
       );
 
@@ -157,6 +158,7 @@ class AddStudent extends StatelessWidget {
           .collection('Students').doc(email.toLowerCase()).
       set({
         'uid': email.toLowerCase(),
+        'name':name
       }
       );}
 
@@ -173,6 +175,7 @@ class AddStudent extends StatelessWidget {
           .collection('Students').doc(email.toLowerCase()).
       set({
           'uid': email.toLowerCase(),
+        'name':name
         });
 
       /*var addToAdminStudentCommunicationS = Admin_Students.doc(email.toLowerCase())
@@ -186,6 +189,7 @@ class AddStudent extends StatelessWidget {
           .collection('Students').doc(email.toLowerCase()).
       set({
         'uid': email.toLowerCase(),
+        'name':name
 
       });}
 
@@ -203,6 +207,7 @@ class AddStudent extends StatelessWidget {
           .collection('Students').doc(email.toLowerCase()).
       set({
           'uid': email.toLowerCase(),
+        'name':name
         });
 
      /* var addAdminToStudentOccupationalS = Admin_Students.doc(email.toLowerCase())
@@ -218,6 +223,7 @@ class AddStudent extends StatelessWidget {
       set({
         'center':userAdmin.email.toLowerCase(),
         'uid': email.toLowerCase(),
+        'name':name
       });}
 
       if (physiotherapySpecialistId != null){
@@ -232,6 +238,7 @@ class AddStudent extends StatelessWidget {
           .doc(email.toLowerCase()).set({
           'center':userAdmin,
           'uid':email.toLowerCase(),
+        'name':name
         }
        );
 
@@ -245,6 +252,7 @@ class AddStudent extends StatelessWidget {
       var addToAdminPhysiotherapy=Admin_Specialists.doc(physiotherapySpecialistId)
           .collection("Students").doc(email.toLowerCase()).set({
         'uid':email.toLowerCase(),
+        'name':name
       }
       );}
 

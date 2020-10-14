@@ -114,7 +114,6 @@ class _MainLogInState extends State<MainLogIn> {
                               if (_formKey.currentState.validate()) {
                                 setState(() {
                                   isLoading=true;
-
                                 });
                                 isInAuth= await isReg();
                                 if(!isInAuth){
@@ -136,6 +135,7 @@ class _MainLogInState extends State<MainLogIn> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
+
                                                 TeacherMainScreen(0)));
                                   }
                                 }
@@ -214,10 +214,14 @@ class _MainLogInState extends State<MainLogIn> {
                         //     height: 500,
                         //     child: MyCard()
                         // ),
-                        Text(
-                          warningText,
-                          style: kTextPageStyle.copyWith(
-                              color: Colors.red
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text(
+                            warningText,
+                            textAlign: TextAlign.center,
+                            style: kTextPageStyle.copyWith(
+                                color: Colors.red,
+                            ),
                           ),
                         ),
                          InkWell(
@@ -277,7 +281,7 @@ class _MainLogInState extends State<MainLogIn> {
     }).catchError((err) => type = 'Not Valid');
 
     authReslute = await FirebaseFirestore.instance.collection('NoAuth')
-        .doc(_email.text).get();
+        .doc(_email.text.toLowerCase()).get();
 
     bool isAdminReg = (authReslute.exists)& (type!='Admin') ;
     print ("#### inside isReg function $isAdminReg");
@@ -286,91 +290,3 @@ class _MainLogInState extends State<MainLogIn> {
 
 
 }
-
-
-// void subCollection()async{
-//   String name;
-//     // await FirebaseFirestore.instance
-//     //     .collection('Users')
-//     //     .doc().collection('subStudent').doc().set({'name':'SaharS'})
-//     //     .catchError((onError)=> print('####inside subcollectio $onError ####'));
-//         // .get()
-//       //   .then((QuerySnapshot querySnapshot) {
-//       // querySnapshot.docs.forEach((doc) {
-//       //   type = doc.data()['type'];
-//       //   print('subCollection Function $type');
-//   // await FirebaseFirestore.instance.collection('Users')
-//   //     .doc('MlU83kmD78g7mVJsGLrkThQfAp92')
-//   //     .collection('users-teachers')
-//   //     .doc()
-//   //     .snapshots();
-//
-//
-//       }
-
-//
-//   StreamBuilder<QuerySnapshot> subCollection2(){
-//     CollectionReference Teachers = FirebaseFirestore.instance.collection('Users')
-//         .doc()
-//         .collection('TeachersInAdmin');
-//     // CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-//
-//     return StreamBuilder<QuerySnapshot>(
-//       stream:
-//       Teachers.snapshots(),
-//       builder: (BuildContext context,
-//           AsyncSnapshot<QuerySnapshot> snapshot) {
-//         if (!snapshot.hasData) return Text('Loading');
-//         switch (snapshot.connectionState) {
-//           case ConnectionState.waiting:
-//             return Text('Loading..');
-//           default:return new ListView(
-//                 children:
-//                 snapshot.data.docs.map((DocumentSnapshot document) {
-//                   return Text(document.data()['name'], style: kTextPageStyle);
-//
-//                     // Card(
-//                     //   borderOnForeground: true,
-//                     //   child: ListTile(
-//                     //     title: new ,
-//                     //   ));
-//                 }).toList());
-//         }
-//       },
-//     );
-//   }
-//
-// }
-
-  // class MyCard extends StatelessWidget {
-  //
-  // @override
-  // Widget build(BuildContext context) {
-  // CollectionReference subCollectionVar = FirebaseFirestore.instance.collection('Users')
-  //     .doc('QRrwxezYrVkcTKfOEMkN')
-  //     .collection('TeachersInAdmin');
-  //
-  // return StreamBuilder<QuerySnapshot>(
-  // stream:
-  // subCollectionVar.snapshots(),
-  // builder: (BuildContext context,
-  // AsyncSnapshot<QuerySnapshot> snapshot) {
-  // if (!snapshot.hasData) return Text('Loading');
-  // switch (snapshot.connectionState) {
-  // case ConnectionState.waiting:
-  // return Text('Loading..');
-  // default:return new ListView(
-  // children:
-  // snapshot.data.docs.map((DocumentSnapshot document) {
-  // return Card(
-  // borderOnForeground: true,
-  // child: ListTile(
-  // title: new Text(document.data()['name'], style: kTextPageStyle),
-  // subtitle: new Text("معلم", style: kTextPageStyle),
-  // ));
-  // }).toList());
-  // }
-  // },
-  // );
-  // }
-  // }

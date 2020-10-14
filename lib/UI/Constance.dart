@@ -382,7 +382,7 @@ class _MultiSelectState extends State<MultiSelect> {
       child: MultiSelectFormField(
         fillColor: kBackgroundPageColor,
         autovalidate: false,
-        titleText: 'النمو الإنفعالي',
+        title: Text('النمو الإنفعالي'),
         validator: (value) {
           if (value == null || value.length == 0) {
             return 'مطلوب';
@@ -435,7 +435,7 @@ class _MultiSelectState extends State<MultiSelect> {
         valueField: 'value',
         okButtonLabel: 'تم',
         cancelButtonLabel: 'إلغاء',
-        hintText: ' الرجاء تحديد خيار أو أكثر',
+        // hintText: ' الرجاء تحديد خيار أو أكثر',
         initialValue: list,
         onSaved: (value) {
           if (value == null) return;

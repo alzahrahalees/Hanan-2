@@ -40,7 +40,8 @@ class AddTeacher extends StatelessWidget {
    final List<String>TeachersL=[];
   Future <void> TeacherListNames() async {
 
-      await Admin.doc(userAdmin.email).collection('Teachers').where('type',isEqualTo: "Teachers").get()
+      await Admin.doc(userAdmin.email).collection('Teachers')
+          .where('type',isEqualTo: "Teachers").get()
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs
             .forEach((doc) {
