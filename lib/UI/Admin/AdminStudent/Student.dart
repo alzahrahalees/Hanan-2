@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
-import 'Admin/AdminStudent/StudentDetails.dart';
-import 'Constance.dart';
+import 'StudentDetails.dart';
+import '../../Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Student{
@@ -71,7 +71,7 @@ class AddStudent extends StatelessWidget {
         'uid': email.toLowerCase(),
         'name': name,
         'age': age,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "gender": gender,
         "type": type,
@@ -94,7 +94,7 @@ class AddStudent extends StatelessWidget {
         'uid': email.toLowerCase(),
         'name': name,
         'age': age,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "gender": gender,
         "type": type,

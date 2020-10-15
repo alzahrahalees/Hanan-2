@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Constance.dart';
-import '../../Student.dart';
+import 'Student.dart';
 import '../AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
 
@@ -47,7 +47,7 @@ List <String> l;
   List<String>s;
   String _name;
   String _age;
-  String _email;
+  String _email='';
   String _phone;
   DateTime _Birthdate = DateTime.now();
   String _gender;
@@ -493,7 +493,7 @@ List <String> l;
                             formKey: _formkey,
                               name: _name,
                               age: _age,
-                              email: _email,
+                              email: _email.toLowerCase(),
                               phone: _phone,
                               gender: _gender,
                               type: "Students",

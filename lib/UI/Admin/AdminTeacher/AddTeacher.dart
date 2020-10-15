@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Teacher.dart';
+import 'file:///C:/Users/Zahraa/Documents/flutter_test/Hanan-2/lib/UI/Admin/AdminTeacher/Teacher.dart';
 import '../../Constance.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +25,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
 
   String _name;
   String _age;
-  String _email;
+  String _email='';
   String _phone;
   DateTime _Birthdate = DateTime.now();
   String _gender;
@@ -173,7 +173,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                             formkey: _formkey,
                               name: _name,
                               age: _age,
-                              email: _email,
+                              email: _email.toLowerCase(),
                               phone: _phone,
                               gender: _gender,
                               type: "Teachers",

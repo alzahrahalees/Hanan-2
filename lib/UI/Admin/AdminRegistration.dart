@@ -24,7 +24,7 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
   final AuthService _auth = AuthService();
   String _name;
   String _city;
-  String _email;
+  String _email='';
   String _phone;
   String _password;
   String _password2;
@@ -163,7 +163,7 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                             formKey: _formkey,
                               name: _name,
                               city: _city,
-                              email: _email,
+                              email: _email.toLowerCase(),
                               phone: _phone,
                               password:_password,
                               password2: _password2,
@@ -250,7 +250,7 @@ class AddAdmin extends StatelessWidget {
     Future<void> addAdmin() async{
 
         var result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: email, password: password);
+            email: email.toLowerCase(), password: password);
         var user = result.user;
 
 
@@ -261,10 +261,10 @@ class AddAdmin extends StatelessWidget {
 
       var addToAdmin=Admin.doc(user.email.toLowerCase())
           .set({
-        'uid':user.email,
+        'uid':user.email.toLowerCase(),
         'name': name,
         'city': city,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "type": type,
       })
@@ -273,9 +273,9 @@ class AddAdmin extends StatelessWidget {
 
       var addToUsers=Users.doc(user.email.toLowerCase())
           .set({
-        'uid':user.email,
+        'uid':user.email.toLowerCase(),
         'name': name,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "type": type,
       })

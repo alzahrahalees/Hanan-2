@@ -23,7 +23,7 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
 
 
     User user = FirebaseAuth.instance.currentUser;
-    CollectionReference studentsInTeachrs = FirebaseFirestore.instance.collection('Teachers')
+    CollectionReference studentsInTeachrs = FirebaseFirestore.instance.collection('Specialists')
     .doc(user.email).collection('Students');
 
     return StreamBuilder<QuerySnapshot>(
@@ -46,33 +46,45 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
     default:
     return ListView(
     children: snapshot.data.docs.map((DocumentSnapshot document) {
-      var centerId= document.data()['center'];
-      var studentName= document.data()['name'];
-      var gender= document.data()['gender'];
-      Random ran= Random();
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
-        child: Card(
-          color: kCardColor,
-            borderOnForeground: true,
-            child: ListTile(
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.star,
-                    color:gender=='ذكر'?Color(0xff7e91cc):Color(0xfff45eff)),
-              ),
-              onTap: (){Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>
-                      SpecialistStudentMain(index: 0,centerId:centerId,name:studentName ,)));},
-              title: Text(document.data()['name'], style: kTextPageStyle),
 
-        )
-        ),
-      ),
-    )
-    ;}
+      var centerId='';
+      var studentName='';
+      var gender='';
+
+      FirebaseFirestore.instance.collection('Students')
+          .doc(document.data()['uid']).get()
+          .then((doc){
+        setState(() {
+          centerId= doc.data()['center'];
+          studentName= doc.data()['name'];
+          gender= document.data()['gender'];
+        });
+      }).whenComplete(() {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
+            child: Card(
+                color: kCardColor,
+                borderOnForeground: true,
+                child: ListTile(
+                  leading: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(Icons.star,
+                        color:gender=='ذكر'?Color(0xff7e91cc):Color(0xfff45eff)),
+                  ),
+                  onTap: (){Navigator.push(context,
+                      MaterialPageRoute(builder: (context)=>
+                          SpecialistStudentMain(index: 0,centerId:centerId,name:studentName ,)));},
+                  title: Text(document.data()['name'], style: kTextPageStyle),
+
+                )
+            ),
+          ),
+        );
+      });
+
+    }
     ).toList()
     );
     }} );

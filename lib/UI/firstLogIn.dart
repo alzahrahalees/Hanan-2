@@ -103,7 +103,7 @@ class _FirstLogInState extends State<FirstLogIn> {
                   onPressed: ()async{
 
                     if(isValid()) {
-                      editisAuthInDB();
+                      editIsAuthInDB();
                     Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context)=> MainLogIn()
                     )
@@ -153,33 +153,38 @@ class _FirstLogInState extends State<FirstLogIn> {
 //     console.log("Error getting document:", error);
 // });
 
-   editisAuthInDB() async {
+   editIsAuthInDB() async {
     String type;
     var centerEmail;
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .where('email', isEqualTo: _email.text)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs
-          .forEach((doc) {
-        type = doc.data()['type'];
-        print('inside whoIs function $type');
-      });
-    }).catchError((err) => type = 'Not Valid')
-        .whenComplete(() async {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: _email.text, password: _password.text);
-      await FirebaseFirestore.instance.collection(type).doc(_email.text)
-          .get().then((doc){
-            if(doc.exists){centerEmail= doc.data()['center'];}
-      } );
-      await FirebaseFirestore.instance.collection('NoAuth').doc(_email.text.toLowerCase()).delete();
-      await FirebaseFirestore.instance.collection(type).doc(_email.text.toLowerCase()).update({"isAuth":true});
-      await FirebaseFirestore.instance.collection('Centers').doc(centerEmail)
-          .collection(type).doc(_email.text.toLowerCase()).update({'isAuth':true});
-      await FirebaseFirestore.instance.collection('Users').doc(_email.text.toLowerCase()).update({"isAuth":true});
+    await FirebaseFirestore.instance.
+    collection('Users')
+        .doc(_email.text.toLowerCase())
+        .get().then((doc){
+      type = doc.data()['type'];
+      print('Inside First Log in type = $type');
+    }).whenComplete(() async {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: _email.text.toLowerCase(), password: _password.text)
+        .catchError((err)=>print('### Not Regesterd Err :$err'))
+        .then((value) async {
+    await FirebaseFirestore.instance.collection(type)
+        .doc(_email.text.toLowerCase()).get().then((doc){
+    if(doc.exists){centerEmail= doc.data()['center'];}
+    } );
+    await FirebaseFirestore.instance.collection('NoAuth')
+        .doc(_email.text.toLowerCase()).delete();
+    await FirebaseFirestore.instance.collection(type)
+        .doc(_email.text.toLowerCase()).update({"isAuth":true});
+    await FirebaseFirestore.instance.collection('Centers').doc(centerEmail)
+        .collection(type).doc(_email.text.toLowerCase()).update({'isAuth':true});
+    await FirebaseFirestore.instance.collection('Users').
+    doc(_email.text.toLowerCase()).update({"isAuth":true});
     });
+
+
+    }).catchError((err) => print('****######### Err: $err ###########*********'));
+
+
   }
 
   bool isValid(){

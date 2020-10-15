@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Specialist.dart';
+import 'file:///C:/Users/Zahraa/Documents/flutter_test/Hanan-2/lib/UI/Admin/AdminSpecialist/Specialist.dart';
 import '../../Constance.dart';
 import 'AddSpecialis.dart';
 import 'package:firebase_auth/firebase_auth.dart';

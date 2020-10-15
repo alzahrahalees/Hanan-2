@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:hanan/UI/Admin/AdminSpecialist/SpecialistDetails.dart';
 import 'package:hanan/services/auth.dart';
-import 'Constance.dart';
+import '../../Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Specialist{
@@ -41,7 +41,7 @@ class AddSpecialist extends StatelessWidget {
 
     Future<void> addSpecialist() async{
       var exists = await FirebaseFirestore.instance.collection('Users')
-          .doc(email).get();
+          .doc(email.toLowerCase()).get();
       bool isExists = (exists.exists);
 
      if (!isExists){
@@ -51,10 +51,10 @@ class AddSpecialist extends StatelessWidget {
           .set({
         "isAuth":false,
         "center":userAdmin.email.toLowerCase(),
-        'uid':email,
+        'uid':email.toLowerCase(),
         'name': name,
         'age': age,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "gender": gender,
         "type": type,
@@ -68,7 +68,7 @@ class AddSpecialist extends StatelessWidget {
         'uid':email.toLowerCase(),
         'name': name,
         'age': age,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "gender": gender,
         "type": type,
@@ -85,7 +85,7 @@ class AddSpecialist extends StatelessWidget {
         'uid':email.toLowerCase(),
         'name': name,
         'age': age,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "gender": gender,
         "type": type,
@@ -126,7 +126,7 @@ class SpecialistCards extends StatelessWidget {
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email).collection('Students');
+    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
 
 
     AuthService _auth=AuthService();

@@ -8,6 +8,7 @@ const kTitleOfProject = "SECS Hanan";
 const Color kAppBarColor = Color(0xFFe1d0ed);
 const Color kWolcomeBkg = Color(0xFFede3fc);
 const Color kBackgroundPageColor = Color(0xFFeeeeee);
+const Color kCardColor = Color(0xffededed);
 const Color kButtonColor = Color(0xFFB39DDB);
 const kSelectedItemColor = Color(0xff5F3E60);
 const kUnselectedItemColor = Color(0xff9181bd);

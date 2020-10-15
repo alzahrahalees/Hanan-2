@@ -4,7 +4,7 @@ import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hanan/UI/Admin/AdminTeacher/TeacherDetails.dart';
 import 'package:hanan/services/auth.dart';
-import 'Constance.dart';
+import '../../Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
@@ -70,7 +70,7 @@ class AddTeacher extends StatelessWidget {
        "uid":email.toLowerCase(),
        'name': name,
        'age': age,
-       'email': email,
+       'email': email.toLowerCase(),
        'phone': phone,
        "gender": gender,
        "type": type,
@@ -86,7 +86,7 @@ class AddTeacher extends StatelessWidget {
        "uid":email.toLowerCase(),
        'name': name,
        'age': age,
-       'email': email,
+       'email': email.toLowerCase(),
        'phone': phone,
        "gender": gender,
        "type": type,
@@ -99,7 +99,7 @@ class AddTeacher extends StatelessWidget {
         'uid':email.toLowerCase(),
         'name': name,
         'age': age,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "gender": gender,
         "type": type,
