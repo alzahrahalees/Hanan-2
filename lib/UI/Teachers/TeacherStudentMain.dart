@@ -9,9 +9,10 @@ import 'TeacherStudentInfo.dart';
 class TeacherStudentMain extends StatefulWidget {
 
   final String centerId;
+  final String studentId;
   final int index;
   final String name;
-  TeacherStudentMain({this.index,this.centerId,this.name});
+  TeacherStudentMain({this.index,this.centerId,this.name,this.studentId});
   @override
   _TeacherStudentMainState createState() => _TeacherStudentMainState();
 }
@@ -19,16 +20,16 @@ class TeacherStudentMain extends StatefulWidget {
 class _TeacherStudentMainState extends State<TeacherStudentMain> {
 
   String _centerId= '';
+  String _studentId='';
   int _currentIndex=0;
   String _name='';
 
-  List<Widget> _screens=[DiariesTeacher(),AppointmentsTeacher(),PlansTeacher(),TeacherStudentInfo()];
-  List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
 
   @override
   void initState() {
     super.initState();
     setState(() {
+      _studentId=widget.studentId;
       _centerId=widget.centerId;
       _currentIndex=widget.index;
       _name=widget.name;
@@ -38,6 +39,11 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
 
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> _screens=[DiariesTeacher(),AppointmentsTeacher(widget.studentId),PlansTeacher(),TeacherStudentInfo()];
+    List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
+
+
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(

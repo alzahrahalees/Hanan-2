@@ -1,43 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:hanan/UI/Specialists/student.dart';
 import '../Constance.dart';
 import 'SpecialistDiaries.dart';
 import 'SpecialistPlans.dart';
 import 'SpecialistStudentAppointment.dart';
 import 'SpecialistStudentInfo.dart';
+import 'package:provider/provider.dart';
 
 
 class SpecialistStudentMain extends StatefulWidget {
 
-  final String centerId;
+
+  final BuildContext context;
+  final String studentId;
   final int index;
   final String name;
-  SpecialistStudentMain({this.index,this.centerId,this.name});
+  SpecialistStudentMain({this.index,this.name, this.studentId, this.context});
   @override
   _SpecialistStudentMainState createState() => _SpecialistStudentMainState();
 }
 
 class _SpecialistStudentMainState extends State<SpecialistStudentMain> {
 
-  String _centerId= '';
   int _currentIndex=0;
   String _name='';
+  String _studentId='';
 
-  List<Widget> _screens=[SpecialistDiariesScreen(),AppointmentsSpecialist(),PlansSpecialist(),SpecialistStudentInfo()];
-  List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
+
+
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      _centerId=widget.centerId;
       _currentIndex=widget.index;
       _name=widget.name;
+      _studentId=widget.studentId;
     });
 
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build( context) {
+
+    List<String> _titles=["مواعيد ","خطط","معلومات "];
+    List<Widget> _screens=[AppointmentsSpecialist(studentId: _studentId),PlansSpecialist(),SpecialistStudentInfo()];
+    StudentSp studentInfo= StudentSp();
+
+
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
@@ -56,10 +66,6 @@ class _SpecialistStudentMainState extends State<SpecialistStudentMain> {
           },
           currentIndex: _currentIndex,
           items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet),
-              title: Text("اليوميات"),
-            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today),
               title: Text("المواعيد"),

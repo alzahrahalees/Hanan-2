@@ -1,41 +1,37 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hanan/UI/Specialists/student.dart';
 import 'package:hanan/UI/logIn.dart';
 import 'package:hanan/UI/selfProfile.dart';
-import 'package:hanan/services/auth.dart';
 import 'package:hanan/services/chang_password.dart';
 import '../Constance.dart';
 import 'SpecailistAllAppointments.dart';
 import 'SpecialistStudentList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class SpecialistMainScreen extends StatefulWidget {
-  AuthService _auth = AuthService();
+
   final int index;
-  SpecialistMainScreen(this.index);
+  SpecialistMainScreen({this.index});
   @override
   _SpecialistMainScreenState createState() => _SpecialistMainScreenState();
 }
 
 class _SpecialistMainScreenState extends State<SpecialistMainScreen> {
 
-  User user = FirebaseAuth.instance.currentUser;
-  AuthService _authService= AuthService();
   int _currentIndex=0;
+
   List<Widget> _screens=[SpecialistStudentList(),AllAppointmentsSpecialist()];
   List<String> _titles=[ "قائمة الطلاب", "جميع المواعيد"];
 
   @override
   void initState() {
-
     super.initState();
     setState(() {
       _currentIndex=widget.index;
     });
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +63,7 @@ class _SpecialistMainScreenState extends State<SpecialistMainScreen> {
             ),
           ],
         ),
-        // drawerEnableOpenDragGesture: true,
+
         drawer: Drawer(
           child:Container(
             width:225,

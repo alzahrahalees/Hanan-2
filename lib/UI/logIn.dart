@@ -153,7 +153,7 @@ class _MainLogInState extends State<MainLogIn> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SpecialistMainScreen(0)));
+                                                SpecialistMainScreen(index: 0)));
                                   }
                                 }
                                 else if (type == 'Students') {

@@ -41,8 +41,6 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
     default:
     return ListView(
     children: snapshot.data.docs.map((DocumentSnapshot document) {
-      var centerId= document.data()['center'];
-      var studentName= document.data()['name'];
       var gender= document.data()['gender'];
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -55,11 +53,21 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Icon(Icons.star,
-                    color:gender=='ذكر'?Color(0xff7e91cc):Color(0xfff45eff)),
+                    color:gender=='ذكر'?Color(0xff7e91cc):Color(0xffdb9bd2)),
               ),
-              onTap: (){Navigator.push(context,
+              onTap: (){
+                Navigator.push(context,
                   MaterialPageRoute(builder: (context)=>
-                      TeacherStudentMain(index: 0,centerId:centerId,name:studentName ,)));},
+                      TeacherStudentMain(
+                        index: 0,
+                        centerId:document.data()['center'],
+                        name:document.data()['name'],
+                        studentId:document.id
+                        ,)
+                  )
+              );
+                print(document.id);
+                },
               title: Text(document.data()['name'], style: kTextPageStyle),
 
         )

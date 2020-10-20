@@ -90,8 +90,7 @@ class StudentCards extends StatelessWidget {
           AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
         switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+          case ConnectionState.waiting: return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
           default:
             return new ListView(
                 children:

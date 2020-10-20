@@ -22,6 +22,7 @@ class _FirstLogInState extends State<FirstLogIn> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   final _formKey = GlobalKey<FormState>();
+  bool isEx;
 
 
   @override
@@ -102,12 +103,14 @@ class _FirstLogInState extends State<FirstLogIn> {
                       borderRadius: BorderRadius.circular(18.0)),
                   onPressed: ()async{
 
-                    if(isValid()) {
+                    if(isValid())  {
+
                       editIsAuthInDB();
                     Navigator.pushReplacement(context, MaterialPageRoute(
                         builder: (context)=> MainLogIn()
                     )
                     );
+
                     }
                     else{setState(() {
                       textColor=Colors.red;
@@ -140,18 +143,6 @@ class _FirstLogInState extends State<FirstLogIn> {
     );
 }
 
-//var docRef = db.collection("cities").doc("SF");
-//
-// docRef.get().then(function(doc) {
-//     if (doc.exists) {
-//         console.log("Document data:", doc.data());
-//     } else {
-//         // doc.data() will be undefined in this case
-//         console.log("No such document!");
-//     }
-// }).catch(function(error) {
-//     console.log("Error getting document:", error);
-// });
 
    editIsAuthInDB() async {
     String type;
