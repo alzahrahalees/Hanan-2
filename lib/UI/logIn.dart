@@ -268,7 +268,7 @@ class _MainLogInState extends State<MainLogIn> {
   Future<bool> isReg() async{
     String type;
     await FirebaseFirestore.instance
-        .collection('Users')
+        .collection('Users ')
         .where('email', isEqualTo: _email.text.toLowerCase())
         .get()
         .then((QuerySnapshot querySnapshot) {

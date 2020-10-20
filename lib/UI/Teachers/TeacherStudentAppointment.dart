@@ -26,54 +26,65 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
   String whatDay(int index){
     String day;
     switch(index) {
-      case 0: { setState(() {day= 'sunday'; print(day);});}
+      case 0: { setState(() {day= 'sun'; print(day);});}
       break;
 
-      case 1: { setState(() {day= 'monday'; print(day);}); }
+      case 1: { setState(() {day= 'mon'; print(day);}); }
       break;
 
-      case 2: {setState(() {day= 'tuesday';print(day);});}
+      case 2: {setState(() {day= 'tue';print(day);});}
       break;
 
-      case 3: {setState(() {day= 'wednesday';print(day);});}
+      case 3: {setState(() {day= 'wed';print(day);});}
       break;
 
-      case 4: {setState(() {day= 'thursday';print(day);});}
+      case 4: {setState(() {day= 'thu';print(day);});}
       break;
 
-      default: {setState(() {day= 'sunday';print(day);});}
+      default: {setState(() {day= 'sun';print(day);});}
       break;
     }
 
     return day;
   }
 
-  Widget whatPage(int index){
 
-    switch(index) {
-      case 0: { return SundayStream(widget.studentId); }
-      break;
-
-      case 1: { return MondayStream(widget.studentId); }
-      break;
-
-      case 2: { return TuesdayStream(widget.studentId); }
-      break;
-
-      case 3: { return WednesdayStream(widget.studentId); }
-      break;
-
-      case 4: { return ThursdayStream(widget.studentId); }
-      break;
-
-      default: { return SundayStream(widget.studentId); }
-      break;
+  int hourEditor(int hour){
+    int newHour;
+    if(hour!= null){
+      if(hour>12) newHour= hour-12;
+      else newHour = hour;
+      return newHour;
     }
+    else return 0;
   }
+
+  String dayOrNight(int hour){
+    String time;
+    if(hour!= null) {
+      if(hour>=12) time='م';
+      else time = 'ص';
+      return time;
+    }
+    else return 'ص';
+  }
+
+
 
   Widget build(BuildContext context) {
 
-    String sDay = 'sunday';
+
+    var _studentName='';
+    var _specialistName='';
+    var _specialistType='';
+    int _hour=0;
+    int _min=0;
+    String _time='ص';
+
+
+    CollectionReference teacher= FirebaseFirestore.instance.collection('Students')
+        .doc(widget.studentId).collection('Appointments');
+
 
     return DefaultTabController(
       length: 5,
@@ -90,7 +101,6 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
               setState(() {
                 _currentIndex = index;
                 print(_currentIndex);
-                sDay = whatDay(index);
               });
             },
             tabs: [
@@ -105,7 +115,81 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
 
         body: Container(
           color: kBackgroundPageColor,
-          child: whatPage(_currentIndex),
+          child: StreamBuilder<QuerySnapshot>(
+              stream: teacher.where(whatDay(_currentIndex),isEqualTo: true).snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Center(child: SpinKitFoldingCube(
+                    color: kUnselectedItemColor, size: 60,),);
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Center(child: SpinKitFoldingCube(
+                      color: kUnselectedItemColor,
+                      size: 60,
+                    )
+                      ,);
+                  default:
+                    return ListView(
+                      children: snapshot.data.docs.map((DocumentSnapshot document){
+                        _studentName= document.data()['name'];
+                        _specialistName= document.data()['specialistName'];
+                        _specialistType= document.data()['specialistType'];
+                        _hour= hourEditor(document.data()['hour']);
+                        _min=document.data()['min'];
+                        _time= dayOrNight(_hour);
+                        return Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(_studentName, style: TextStyle(
+                                        fontSize: 18, fontWeight: FontWeight.bold,
+                                        color: Colors.black54
+                                    ),),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('$_min : $_hour    $_time', style: TextStyle(
+                                        fontSize: 18, fontWeight: FontWeight.bold,
+                                        color: Colors.black54
+                                    ),),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(_specialistName,style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black54
+                                        ),),
+                                        Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(_specialistType,style: TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w100,
+                                              color: Colors.black54
+                                          ),),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      ).toList(),
+                    );
+                }
+              }),
         ),
       ),
 
@@ -113,508 +197,3 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
   }
 }
 
-
-int hourEditor(int hour){
-  int newHour;
-  if(hour!= null){
-    if(hour>12) newHour= hour-12;
-    else newHour = hour;
-    return newHour;
-  }
-  else return 0;
-}
-
-String dayOrNight(int hour){
-  String time;
-  if(hour!= null) {
-    if(hour>=12) time='م';
-    else time = 'ص';
-    return time;
-  }
-  else return 'ص';
-}
-
-
-
-class SundayStream extends StatelessWidget {
-
-  final String studentId;
-
-  SundayStream(this.studentId);
-
-  var _studentName='';
-  var _specialistName='';
-  var _specialistType='';
-  int _hour=0;
-  int _min=0;
-  String _time='ص';
-
-
-  @override
-  Widget build(BuildContext context) {
-
-    CollectionReference teacher= FirebaseFirestore.instance.collection('Students')
-        .doc(studentId).collection('Appointments');
-
-    return StreamBuilder<QuerySnapshot>(
-        stream: teacher.where('sun',isEqualTo: true).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: SpinKitFoldingCube(
-              color: kUnselectedItemColor, size: 60,),);
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: SpinKitFoldingCube(
-                color: kUnselectedItemColor,
-                size: 60,
-              )
-                ,);
-            default:
-              return ListView(
-                children: snapshot.data.docs.map((DocumentSnapshot document){
-                  _studentName= document.data()['name'];
-                  _specialistName= document.data()['specialistName'];
-                  _specialistType= document.data()['specialistType'];
-                  _hour= hourEditor(document.data()['hour']);
-                  _min=document.data()['min'];
-                  _time= dayOrNight(_hour);
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(_studentName, style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('$_min : $_hour    $_time', style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(_specialistName,style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black54
-                                  ),),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(_specialistType,style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w100,
-                                        color: Colors.black54
-                                    ),),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                ).toList(),
-              );
-          }
-        });
-  }
-}
-
-class MondayStream extends StatelessWidget {
-
-  final String studentId;
-
-  MondayStream(this.studentId);
-
-  var _studentName='';
-  var _specialistName='';
-  var _specialistType='';
-  int _hour=0;
-  int _min=0;
-  String _time='ص';
-
-  @override
-  Widget build(BuildContext context) {
-
-    CollectionReference teacher= FirebaseFirestore.instance.collection('Students')
-        .doc(studentId).collection('Appointments');
-
-    return StreamBuilder<QuerySnapshot>(
-        stream: teacher.where('mon',isEqualTo: true).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: SpinKitFoldingCube(
-              color: kUnselectedItemColor, size: 60,),);
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: SpinKitFoldingCube(
-                color: kUnselectedItemColor,
-                size: 60,
-              )
-                ,);
-            default:
-              return ListView(
-                children: snapshot.data.docs.map((DocumentSnapshot document){
-                  _studentName= document.data()['name'];
-                  _specialistName= document.data()['specialistName'];
-                  _specialistType= document.data()['specialistType'];
-                  _hour= hourEditor(document.data()['hour']);
-                  _min=document.data()['min'];
-                  _time= dayOrNight(_hour);
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(_studentName, style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('$_min : $_hour $_time', style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(_specialistName,style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black54
-                                  ),),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(_specialistType,style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w100,
-                                        color: Colors.black54
-                                    ),),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                ).toList(),
-              );
-          }
-        });
-  }
-}
-
-class TuesdayStream extends StatelessWidget {
-
-  final String studentId;
-
-  TuesdayStream(this.studentId);
-
-  var _studentName='';
-  var _specialistName='';
-  var _specialistType='';
-  int _hour=0;
-  int _min=0;
-  String _time='ص';
-
-  @override
-  Widget build(BuildContext context) {
-
-    CollectionReference teacher= FirebaseFirestore.instance.collection('Students')
-        .doc(studentId).collection('Appointments');
-
-    return StreamBuilder<QuerySnapshot>(
-        stream: teacher.where('tue',isEqualTo: true).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: SpinKitFoldingCube(
-              color: kUnselectedItemColor, size: 60,),);
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: SpinKitFoldingCube(
-                color: kUnselectedItemColor,
-                size: 60,
-              )
-                ,);
-            default:
-              return ListView(
-                children: snapshot.data.docs.map((DocumentSnapshot document){
-                  _studentName= document.data()['name'];
-                  _specialistName= document.data()['specialistName'];
-                  _specialistType= document.data()['specialistType'];
-                  _hour= hourEditor(document.data()['hour']);
-                  _min=document.data()['min'];
-                  _time= dayOrNight(_hour);
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(_studentName, style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('$_min : $_hour    $_time', style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(_specialistName,style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black54
-                                  ),),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(_specialistType,style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w100,
-                                        color: Colors.black54
-                                    ),),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                ).toList(),
-              );
-          }
-        });
-  }
-}
-
-class WednesdayStream extends StatelessWidget {
-  final String studentId;
-
-  WednesdayStream(this.studentId);
-
-  var _studentName='';
-  var _specialistName='';
-  var _specialistType='';
-  int _hour=0;
-  int _min=0;
-  String _time='ص';
-
-  @override
-  Widget build(BuildContext context) {
-
-    CollectionReference teacher= FirebaseFirestore.instance.collection('Students')
-        .doc(studentId).collection('Appointments');
-
-    return StreamBuilder<QuerySnapshot>(
-        stream: teacher.where('wed',isEqualTo: true).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: SpinKitFoldingCube(
-              color: kUnselectedItemColor, size: 60,),);
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: SpinKitFoldingCube(
-                color: kUnselectedItemColor,
-                size: 60,
-              )
-                ,);
-            default:
-              return ListView(
-                children: snapshot.data.docs.map((DocumentSnapshot document){
-                  _studentName= document.data()['name'];
-                  _specialistName= document.data()['specialistName'];
-                  _specialistType= document.data()['specialistType'];
-                  _hour= hourEditor(document.data()['hour']);
-                  _min=document.data()['min'];
-                  _time= dayOrNight(_hour);
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(_studentName, style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('$_min : $_hour    $_time', style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(_specialistName,style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black54
-                                  ),),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(_specialistType,style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w100,
-                                        color: Colors.black54
-                                    ),),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                ).toList(),
-              );
-          }
-        });
-  }
-}
-
-class ThursdayStream extends StatelessWidget {
-  final String studentId;
-
-  ThursdayStream(this.studentId);
-
-  var _studentName='';
-  var _specialistName='';
-  var _specialistType='';
-  int _hour=0;
-  int _min=0;
-  String _time='ص';
-
-  @override
-  Widget build(BuildContext context) {
-
-    CollectionReference teacher= FirebaseFirestore.instance.collection('Students')
-        .doc(studentId).collection('Appointments');
-    return StreamBuilder<QuerySnapshot>(
-        stream: teacher.where('thu',isEqualTo: true).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(child: SpinKitFoldingCube(
-              color: kUnselectedItemColor, size: 60,),);
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: SpinKitFoldingCube(
-                color: kUnselectedItemColor,
-                size: 60,
-              )
-                ,);
-            default:
-              return ListView(
-                children: snapshot.data.docs.map((DocumentSnapshot document){
-                  _studentName= document.data()['name'];
-                  _specialistName= document.data()['specialistName'];
-                  _specialistType= document.data()['specialistType'];
-                  _hour= hourEditor(document.data()['hour']);
-                  _min=document.data()['min'];
-                  _time= dayOrNight(_hour);
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(_studentName, style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('$_min : $_hour    $_time', style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold,
-                                  color: Colors.black54
-                              ),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(_specialistName,style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black54
-                                  ),),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(_specialistType,style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w100,
-                                        color: Colors.black54
-                                    ),),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                ).toList(),
-              );
-          }
-        });
-  }
-}

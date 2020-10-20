@@ -878,7 +878,6 @@ class _AddCaseState extends State<AddCase> {
                             controller: _extraFamilyNotes,
                           ),
                         ),
-
                         //RaisedButton
                         Padding(
                           padding: const EdgeInsets.all(15),
