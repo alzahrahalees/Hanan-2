@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
-import 'TeacherDiaries.dart';
-import 'TeacherStudentMain.dart';
+import 'SpecialistStudentMain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:math';
 
 
+const kCardColor=Color(0xffededed);
 
 
-class TeacherStudentList extends StatefulWidget {
+
+class SpecialistStudentList extends StatefulWidget {
   @override
-  _TeacherStudentListState createState() => _TeacherStudentListState();
+  _SpecialistStudentListState createState() => _SpecialistStudentListState();
 }
 
-class _TeacherStudentListState extends State<TeacherStudentList> {
+class _SpecialistStudentListState extends State<SpecialistStudentList> {
   @override
   Widget build(BuildContext context) {
 
+
+
     User user = FirebaseAuth.instance.currentUser;
-    const kCardColor=Color(0xffededed);
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+    CollectionReference studentsInTeachrs = FirebaseFirestore.instance.collection('Teachers')
+    .doc(user.email).collection('Students');
+
     return StreamBuilder<QuerySnapshot>(
-      stream: Students.where('teacherId',isEqualTo: user.email).snapshots(),
+      stream: studentsInTeachrs.snapshots(),
         builder: ( context, snapshot) {
           if (!snapshot.hasData)
             return Center(
@@ -43,9 +47,7 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
     return ListView(
     children: snapshot.data.docs.map((DocumentSnapshot document) {
       var centerId= document.data()['center'];
-       var uid=document.data()['uid'];
-       print(user.email);
-      print(centerId);
+      var studentName= document.data()['name'];
       var gender= document.data()['gender'];
       Random ran= Random();
     return Padding(
@@ -56,22 +58,21 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
           color: kCardColor,
             borderOnForeground: true,
             child: ListTile(
-              title: Text(document.data()['name'],style: kTextPageStyle),
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
-
-
                 child: Icon(Icons.star,
                     color:gender=='ذكر'?Color(0xff7e91cc):Color(0xfff45eff)),
-
               ),
               onTap: (){Navigator.push(context,
                   MaterialPageRoute(builder: (context)=>
-                      TeacherStudentMain(uid:document.data()['uid'],centerId: document.data()['center'],name: document.data()['name'],index: 0,teacherName: document.data()['teacherName'],) ));},
+                      SpecialistStudentMain(index: 0,centerId:centerId,name:studentName ,)));},
+              title: Text(document.data()['name'], style: kTextPageStyle),
+
         )
         ),
       ),
-    );}
+    )
+    ;}
     ).toList()
     );
     }} );

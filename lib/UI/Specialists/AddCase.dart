@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'TeacherStudentInfo.dart';
+import 'SpecialistStudentInfo.dart';
 import '../Constance.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -893,7 +893,7 @@ class _AddCaseState extends State<AddCase> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => TeacherStudentInfo()));
+                                        builder: (context) => SpecialistStudentInfo()));
                               }
                             },
                           ),

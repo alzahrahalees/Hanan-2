@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
-import 'AddCase.dart';
-class TeacherStudentInfo extends StatefulWidget {
+
+
+class ParentStudentInfo extends StatefulWidget {
   @override
-  _TeacherStudentInfoState createState() => _TeacherStudentInfoState();
+  _ParentStudentInfoState createState() => _ParentStudentInfoState();
 }
 
-class _TeacherStudentInfoState extends State<TeacherStudentInfo> {
+class _ParentStudentInfoState extends State<ParentStudentInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,11 +15,6 @@ class _TeacherStudentInfoState extends State<TeacherStudentInfo> {
    child: new Column(children: <Widget>[
      GestureDetector(
         onTap: () {
-          Navigator.push(
-          context,
-          MaterialPageRoute(
-          builder: (context) => AddCase()),
-     );
         },
        child: Padding(
          padding: const EdgeInsets.all(8.0),

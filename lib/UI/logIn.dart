@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
-import 'package:hanan/UI/Specialists/SpecialistMain.dart';
+import 'package:hanan/UI/Specialists/SpecialistMainScreen.dart';
 import 'package:hanan/UI/Parents/ParentMain.dart';
 import 'package:hanan/UI/firstLogIn.dart';
 import 'Constance.dart';
@@ -114,7 +114,6 @@ class _MainLogInState extends State<MainLogIn> {
                               if (_formKey.currentState.validate()) {
                                 setState(() {
                                   isLoading=true;
-
                                 });
                                 isInAuth= await isReg();
                                 if(!isInAuth){
@@ -136,7 +135,8 @@ class _MainLogInState extends State<MainLogIn> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                MainTeacherScreen(1)));
+
+                                                TeacherMainScreen(0)));
                                   }
                                 }
                                 else if (type == 'Specialists') {
@@ -154,7 +154,7 @@ class _MainLogInState extends State<MainLogIn> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SpecialistMain()));
+                                                SpecialistMainScreen(0)));
                                   }
                                 }
                                 else if (type == 'Students') {
@@ -172,7 +172,7 @@ class _MainLogInState extends State<MainLogIn> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ParentMainScreen()));
+                                                ParentMain(0)));
                                   }
                                 }
                                 else if (type == 'Admin') {
@@ -214,10 +214,14 @@ class _MainLogInState extends State<MainLogIn> {
                         //     height: 500,
                         //     child: MyCard()
                         // ),
-                        Text(
-                          warningText,
-                          style: kTextPageStyle.copyWith(
-                              color: Colors.red
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text(
+                            warningText,
+                            textAlign: TextAlign.center,
+                            style: kTextPageStyle.copyWith(
+                                color: Colors.red,
+                            ),
                           ),
                         ),
                          InkWell(
@@ -277,100 +281,12 @@ class _MainLogInState extends State<MainLogIn> {
     }).catchError((err) => type = 'Not Valid');
 
     authReslute = await FirebaseFirestore.instance.collection('NoAuth')
-        .doc(_email.text).get();
+        .doc(_email.text.toLowerCase()).get();
 
-    bool isAdminReg = (authReslute.exists)& (type!='Admin') & (type!='Students');
+    bool isAdminReg = (authReslute.exists)& (type!='Admin') ;
     print ("#### inside isReg function $isAdminReg");
     return isAdminReg ;
   }
 
 
 }
-
-
-// void subCollection()async{
-//   String name;
-//     // await FirebaseFirestore.instance
-//     //     .collection('Users')
-//     //     .doc().collection('subStudent').doc().set({'name':'SaharS'})
-//     //     .catchError((onError)=> print('####inside subcollectio $onError ####'));
-//         // .get()
-//       //   .then((QuerySnapshot querySnapshot) {
-//       // querySnapshot.docs.forEach((doc) {
-//       //   type = doc.data()['type'];
-//       //   print('subCollection Function $type');
-//   // await FirebaseFirestore.instance.collection('Users')
-//   //     .doc('MlU83kmD78g7mVJsGLrkThQfAp92')
-//   //     .collection('users-teachers')
-//   //     .doc()
-//   //     .snapshots();
-//
-//
-//       }
-
-//
-//   StreamBuilder<QuerySnapshot> subCollection2(){
-//     CollectionReference Teachers = FirebaseFirestore.instance.collection('Users')
-//         .doc()
-//         .collection('TeachersInAdmin');
-//     // CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-//
-//     return StreamBuilder<QuerySnapshot>(
-//       stream:
-//       Teachers.snapshots(),
-//       builder: (BuildContext context,
-//           AsyncSnapshot<QuerySnapshot> snapshot) {
-//         if (!snapshot.hasData) return Text('Loading');
-//         switch (snapshot.connectionState) {
-//           case ConnectionState.waiting:
-//             return Text('Loading..');
-//           default:return new ListView(
-//                 children:
-//                 snapshot.data.docs.map((DocumentSnapshot document) {
-//                   return Text(document.data()['name'], style: kTextPageStyle);
-//
-//                     // Card(
-//                     //   borderOnForeground: true,
-//                     //   child: ListTile(
-//                     //     title: new ,
-//                     //   ));
-//                 }).toList());
-//         }
-//       },
-//     );
-//   }
-//
-// }
-
-  // class MyCard extends StatelessWidget {
-  //
-  // @override
-  // Widget build(BuildContext context) {
-  // CollectionReference subCollectionVar = FirebaseFirestore.instance.collection('Users')
-  //     .doc('QRrwxezYrVkcTKfOEMkN')
-  //     .collection('TeachersInAdmin');
-  //
-  // return StreamBuilder<QuerySnapshot>(
-  // stream:
-  // subCollectionVar.snapshots(),
-  // builder: (BuildContext context,
-  // AsyncSnapshot<QuerySnapshot> snapshot) {
-  // if (!snapshot.hasData) return Text('Loading');
-  // switch (snapshot.connectionState) {
-  // case ConnectionState.waiting:
-  // return Text('Loading..');
-  // default:return new ListView(
-  // children:
-  // snapshot.data.docs.map((DocumentSnapshot document) {
-  // return Card(
-  // borderOnForeground: true,
-  // child: ListTile(
-  // title: new Text(document.data()['name'], style: kTextPageStyle),
-  // subtitle: new Text("معلم", style: kTextPageStyle),
-  // ));
-  // }).toList());
-  // }
-  // },
-  // );
-  // }
-  // }

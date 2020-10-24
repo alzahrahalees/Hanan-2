@@ -1012,6 +1012,11 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   Specialists.doc(element.id).collection('Students').doc(uid).update({
                                                     'name':newName==null? name: newName,
                                                   });
+                                                  if (gender != null) {
+                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                      'gender': gender,
+                                                    });
+                                                  }
                                                   })
                                               );
 
@@ -1020,6 +1025,11 @@ class _StudentInfoState extends State<StudentInfo> {
                                                     Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
                                                       'name':newName==null? name: newName,
                                                     });
+                                                    if (gender != null) {
+                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                        'gender': gender,
+                                                      });
+                                                    }
                                                   })
                                               );
 

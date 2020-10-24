@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
 
-class AllAppointmentsTeacher extends StatefulWidget {
+class ParentAppointments extends StatefulWidget {
   @override
-  _AllAppointmentsTeacherState createState() => _AllAppointmentsTeacherState();
+  _ParentAppointmentsState createState() => _ParentAppointmentsState();
 }
 
-class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher> {
+class _ParentAppointmentsState extends State<ParentAppointments> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: kBackgroundPageColor,
       child: Text(
         "This is Appointments Screen",
         style: TextStyle(fontSize: 40),

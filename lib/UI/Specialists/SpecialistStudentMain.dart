@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
-import 'ParentDiaries.dart';
-import 'ParentPlans.dart';
-import 'ParentStudentAppointment.dart';
-import 'ParentStudentInfo.dart';
+import 'SpecialistDiaries.dart';
+import 'SpecialistPlans.dart';
+import 'SpecialistStudentAppointment.dart';
+import 'SpecialistStudentInfo.dart';
 
 
-class ParentMain extends StatefulWidget {
+class SpecialistStudentMain extends StatefulWidget {
 
-
+  final String centerId;
   final int index;
-
-  ParentMain(this.index);
+  final String name;
+  SpecialistStudentMain({this.index,this.centerId,this.name});
   @override
-  _ParentMainState createState() => _ParentMainState();
+  _SpecialistStudentMainState createState() => _SpecialistStudentMainState();
 }
 
-class _ParentMainState extends State<ParentMain> {
+class _SpecialistStudentMainState extends State<SpecialistStudentMain> {
 
-
+  String _centerId= '';
   int _currentIndex=0;
+  String _name='';
 
-  List<Widget> _screens=[ParentDiaries(),ParentAppointments(),PlansTeacher(),ParentStudentInfo()];
+  List<Widget> _screens=[SpecialistDiariesScreen(),AppointmentsSpecialist(),PlansSpecialist(),SpecialistStudentInfo()];
   List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
 
   @override
   void initState() {
     super.initState();
     setState(() {
-
+      _centerId=widget.centerId;
       _currentIndex=widget.index;
-
+      _name=widget.name;
     });
 
   }
@@ -77,7 +78,7 @@ class _ParentMainState extends State<ParentMain> {
             slivers:<Widget>[
               SliverAppBar(
                 backgroundColor: kAppBarColor,
-                title: Text(_titles[_currentIndex], style: kTextAppBarStyle),
+                title: Text('${_titles[_currentIndex]} $_name', style: kTextAppBarStyle),
                 centerTitle: true,
                 floating: false,
               ),

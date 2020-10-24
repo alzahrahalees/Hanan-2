@@ -39,23 +39,21 @@ class AddTeacher extends StatelessWidget {
 
    final List<String>TeachersL=[];
   Future <void> TeacherListNames() async {
-
-      await Admin.doc(userAdmin.email).collection('Teachers').where('type',isEqualTo: "Teachers").get()
+      await Admin.doc(userAdmin.email).collection('Teachers')
+          .where('type',isEqualTo: "Teachers").get()
           .then((QuerySnapshot querySnapshot) {
         querySnapshot.docs
             .forEach((doc) {
           TeachersL.add(doc.data()['name']);
         }
         )
-
-        ;});
-    }
+        ;});}
 
     Future<void> addTeacher() async{
       //problem:the document must be have the same ID
 
       var exists = await FirebaseFirestore.instance.collection('Users')
-              .doc(email).get();
+              .doc(email.toLowerCase()).get();
       bool isExists = (exists.exists);
         if(!isExists){
 

@@ -151,6 +151,7 @@ class StudentCards extends StatelessWidget {
                                           value.docs.forEach((element) {
                                             Specialists.doc(element.id).collection('Students').doc(document.id).delete();
                                           }));
+                                      Navigator.pop(context);
                                     },
                                     color: kButtonColor,
                                   ),

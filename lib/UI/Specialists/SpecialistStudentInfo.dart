@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
 import 'AddCase.dart';
-class TeacherStudentInfo extends StatefulWidget {
+class SpecialistStudentInfo extends StatefulWidget {
   @override
-  _TeacherStudentInfoState createState() => _TeacherStudentInfoState();
+  _SpecialistStudentInfoState createState() => _SpecialistStudentInfoState();
 }
 
-class _TeacherStudentInfoState extends State<TeacherStudentInfo> {
+class _SpecialistStudentInfoState extends State<SpecialistStudentInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

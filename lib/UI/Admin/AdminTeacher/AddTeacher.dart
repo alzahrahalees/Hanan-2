@@ -22,7 +22,6 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
   CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
   final _formkey = GlobalKey<FormState>();
 
-
   String _name;
   String _age;
   String _email;
