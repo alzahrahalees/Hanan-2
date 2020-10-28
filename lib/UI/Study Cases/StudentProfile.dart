@@ -31,7 +31,7 @@ class _StudentProfileState extends State<StudentProfile> {
           centerTitle: true,
           iconTheme: IconThemeData(color: kUnselectedItemColor),
           backgroundColor: kAppBarColor,
-          title: Text('الصفحة الشخصية', style: kTextAppBarStyle,textAlign: TextAlign.center,),
+          title: Text('معلومات الطالبـ/ـة الشخصية', style: kTextAppBarStyle,textAlign: TextAlign.center,),
           automaticallyImplyLeading: true,
         ),
         body: Container(

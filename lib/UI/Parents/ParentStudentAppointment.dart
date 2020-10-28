@@ -14,7 +14,7 @@ class ParentAppointments extends StatefulWidget {
   _ParentAppointmentsState createState() => _ParentAppointmentsState();
 }
 
-class _ParentAppointmentsState extends State<ParentAppointments> {
+class _ParentAppointmentsState extends State<ParentAppointments>  with TickerProviderStateMixin{
   @override
 
 
@@ -66,7 +66,58 @@ class _ParentAppointmentsState extends State<ParentAppointments> {
     else return 'ص';
   }
 
+  int whatDayIndex(){
+    int weekday;
+    int index= DateTime.now().weekday;
+    switch(index) {
+      case 1: { setState(() {weekday=1; }); }
+      break;
 
+      case 2: { setState(() {weekday= 2; }); }
+      break;
+
+      case 3: {setState(() {weekday=3 ;});}
+      break;
+
+      case 4: {setState(() {weekday=4 ;});}
+      break;
+
+      case 5: {setState(() {weekday=0 ;});}
+      break;
+
+      case 6: {setState(() {weekday=0 ;});}
+      break;
+
+      case 7: {setState(() {weekday=0 ;});}
+      break;
+
+      default: {setState(() {weekday=0 ;});}
+      break;
+    }
+
+    return weekday;
+  }
+
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _currentIndex=whatDayIndex();
+      _tabController = TabController(vsync: this, length: 5, initialIndex: whatDayIndex());
+    });
+  }
+
+
+  @override
   Widget build(BuildContext context) {
 
     User user = FirebaseAuth.instance.currentUser;
@@ -78,6 +129,7 @@ class _ParentAppointmentsState extends State<ParentAppointments> {
     int _hour=0;
     int _min=0;
     String _time='ص';
+    bool _isChecked;
 
 
     return DefaultTabController(
@@ -88,6 +140,7 @@ class _ParentAppointmentsState extends State<ParentAppointments> {
           automaticallyImplyLeading: false,
           toolbarHeight: 48,
           bottom: TabBar(
+            controller: _tabController,
             labelColor: kSelectedItemColor,
             indicatorColor: kSelectedItemColor,
             unselectedLabelColor: kUnselectedItemColor,
@@ -130,9 +183,11 @@ class _ParentAppointmentsState extends State<ParentAppointments> {
                         _hour= hourEditor(document.data()['hour']);
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
+                        _isChecked= document.data()['isChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
+                            color: _isChecked? Colors.white24 : Colors.white70,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
@@ -141,6 +196,7 @@ class _ParentAppointmentsState extends State<ParentAppointments> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(_studentName, style: TextStyle(
+                                        decoration: _isChecked? TextDecoration.lineThrough : null,
                                         fontSize: 18, fontWeight: FontWeight.bold,
                                         color: Colors.black54
                                     ),),
@@ -148,6 +204,7 @@ class _ParentAppointmentsState extends State<ParentAppointments> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text('$_min : $_hour  $_time', style: TextStyle(
+                                        decoration: _isChecked? TextDecoration.lineThrough : null,
                                         fontSize: 18, fontWeight: FontWeight.bold,
                                         color: Colors.black54
                                     ),),
@@ -158,6 +215,7 @@ class _ParentAppointmentsState extends State<ParentAppointments> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(_specialistName,style: TextStyle(
+                                            decoration: _isChecked? TextDecoration.lineThrough : null,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black54
