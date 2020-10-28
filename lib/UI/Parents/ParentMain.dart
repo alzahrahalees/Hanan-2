@@ -26,8 +26,6 @@ class _ParentMainState extends State<ParentMain> {
 
   int _currentIndex=0;
 
-  List<Widget> _screens=[ParentDiaries(),ParentAppointments(),PlansTeacher(),ParentStudentInfo()];
-  List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
 
   @override
   void initState() {
@@ -42,12 +40,13 @@ class _ParentMainState extends State<ParentMain> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _screens=[ParentDiaries(),ParentAppointments(),PlansTeacher(),ParentStudyCaseScreen()];
+    List<String> _titles=['اليوميات',"المواعيد ","الخطط","المعلومات "];
     String _name='';
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
-          backgroundColor: kAppBarColor,
           selectedItemColor:kSelectedItemColor,
           unselectedItemColor:kUnselectedItemColor,
           selectedFontSize: 20,
@@ -63,19 +62,19 @@ class _ParentMainState extends State<ParentMain> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.account_balance_wallet),
-              title: Text("اليوميات"),
+              label: "اليوميات",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today),
-              title: Text("المواعيد"),
+              label: "المواعيد",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.list),
-              title: Text("الخطط"),
+              label: "الخطط",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.info),
-              title: Text("معلومات الطالب"),
+              label: "معلومات الطالب",
             ),
           ],
         ),

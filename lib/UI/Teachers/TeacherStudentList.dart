@@ -21,63 +21,66 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
 
 
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: studentsInTeachrs.where('teacherId',isEqualTo: user.email).snapshots(),
-        builder: ( context, snapshot) {
-          if (!snapshot.hasData)
-            return Center(
-              child: SpinKitFoldingCube(
-                color: kUnselectedItemColor,
-                size: 60,
-              ),
-            );
-          switch (snapshot.connectionState) {
-    case ConnectionState.waiting:
-    return Center(child: SpinKitFoldingCube(
-    color: kUnselectedItemColor,
-    size: 60,
-    )
-    ,);
-    default:
-    return ListView(
-    children: snapshot.data.docs.map((DocumentSnapshot document) {
-      var gender= document.data()['gender'];
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
-        child: Card(
-          color: kCardColor,
-            borderOnForeground: true,
-            child: ListTile(
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.star,
-                    color:gender=='ذكر'?Color(0xff7e91cc):Color(0xffdb9bd2)),
-              ),
-              onTap: (){
-                Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>
-                      TeacherStudentMain(
-                        index: 0,
-                        centerId:document.data()['center'],
-                        name:document.data()['name'],
-                        studentId:document.id
-                        ,)
-                  )
+    return Container(
+      color: kBackgroundPageColor,
+      child: StreamBuilder<QuerySnapshot>(
+        stream: studentsInTeachrs.where('teacherId',isEqualTo: user.email).snapshots(),
+          builder: ( context, snapshot) {
+            if (!snapshot.hasData)
+              return Center(
+                child: SpinKitFoldingCube(
+                  color: kUnselectedItemColor,
+                  size: 60,
+                ),
               );
-                print(document.id);
-                },
-              title: Text(document.data()['name'], style: kTextPageStyle),
+            switch (snapshot.connectionState) {
+      case ConnectionState.waiting:
+      return Center(child: SpinKitFoldingCube(
+      color: kUnselectedItemColor,
+      size: 60,
+      )
+      ,);
+      default:
+      return ListView(
+      children: snapshot.data.docs.map((DocumentSnapshot document) {
+        var gender= document.data()['gender'];
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
+          child: Card(
+            color: Color(0xfff4f4f4),
+              borderOnForeground: true,
+              child: ListTile(
+                leading: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(Icons.star,
+                      color:gender=='ذكر'?Color(0xff7e91cc):Color(0xffdb9bd2)),
+                ),
+                onTap: (){
+                  Navigator.push(context,
+                    MaterialPageRoute(builder: (context)=>
+                        TeacherStudentMain(
+                          index: 0,
+                          centerId:document.data()['center'],
+                          name:document.data()['name'],
+                          studentId:document.id
+                          ,)
+                    )
+                );
+                  print(document.id);
+                  },
+                title: Text(document.data()['name'], style: kTextPageStyle),
 
-        )
+          )
+          ),
         ),
-      ),
-    )
-    ;}
-    ).toList()
+      )
+      ;}
+      ).toList()
+      );
+      }} ),
     );
-    }} );
       }
   }
 

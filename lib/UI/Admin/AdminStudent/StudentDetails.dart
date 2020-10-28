@@ -106,8 +106,8 @@ class _StudentInfoState extends State<StudentInfo> {
                   if (snapshot.hasData) {
                     return Container(
                         padding: EdgeInsets.all(10),
-                      //  color: Color(0xfff0eaf7),
-                        color: Colors.white,
+                        //  color: Color(0xfff0eaf7),
+                        color: kBackgroundPageColor,
                         alignment: Alignment.topRight,
                         child: Form(
                             key: formkey,
@@ -122,41 +122,41 @@ class _StudentInfoState extends State<StudentInfo> {
                                   email = document.data()['email'];
 
                                   return Column(children: <Widget>[
-
                                     ProfileTile(
-                                      title: document.data()['name'] ,
+                                      title: document.data()['name'],
                                       hintTitle: "الإسم",
                                       readOnly: false,
-                                    icon: Icons.person,
-                                    color: kWolcomeBkg,
-                                    onChanged: (value)=> newName= value,
+                                      icon: Icons.person,
+                                      color: kWolcomeBkg,
+                                      onChanged: (value) => newName = value,
                                     ),
                                     ProfileTile(
-                                      title: document.data()['age'] ,
+                                      title: document.data()['age'],
                                       hintTitle: "الععمر",
                                       readOnly: false,
                                       icon: Icons.assistant_outlined,
                                       color: kWolcomeBkg,
-                                      onChanged: (value)=> newAge= value,
+                                      onChanged: (value) => newAge = value,
                                     ),
                                     ProfileTile(
-                                      title: document.data()['email'] ,
+                                      title: document.data()['email'],
                                       hintTitle: "الإيميل",
                                       readOnly: true,
                                       icon: Icons.alternate_email_outlined,
                                       color: kWolcomeBkg,
-                                      onChanged: (value){},
+                                      onChanged: (value) {},
                                     ),
                                     ProfileTile(
-                                      title: document.data()['phone'] ,
+                                      title: document.data()['phone'],
                                       hintTitle: "رقم الهاتف",
                                       readOnly: false,
                                       icon: Icons.phone,
                                       color: kWolcomeBkg,
-                                      onChanged: (value)=> newPhone= value,
+                                      onChanged: (value) => newPhone = value,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10,
+                                      padding: const EdgeInsets.only(
+                                          top: 10,
                                           bottom: 10,
                                           left: 5,
                                           right: 8),
@@ -164,58 +164,57 @@ class _StudentInfoState extends State<StudentInfo> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Circle(
-                                                  child: Icon(
-                                                      Icons.accessibility),
-                                                  color: kWolcomeBkg,),
+                                                  child:
+                                                      Icon(Icons.accessibility),
+                                                  color: kWolcomeBkg,
+                                                ),
                                                 SizedBox(width: 10),
                                                 Column(
-                                                  crossAxisAlignment: CrossAxisAlignment
-                                                      .start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Padding(
-                                                      padding: const EdgeInsets
-                                                          .all(5.0),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
                                                       child: Text("الجنس",
                                                           style: kTextPageStyle
                                                               .copyWith(
-                                                              color: Colors
-                                                                  .grey)),
+                                                                  color: Colors
+                                                                      .grey)),
                                                     ),
                                                     Container(
                                                       child: Container(
                                                         child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment
-                                                              .spaceBetween,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                           children: <Widget>[
                                                             RadioButton(
                                                                 list[0], 0),
                                                             Padding(
-                                                                padding: EdgeInsets
-                                                                    .all(10)),
+                                                                padding:
+                                                                    EdgeInsets
+                                                                        .all(
+                                                                            10)),
                                                             RadioButton(
                                                                 list[1], 1),
                                                           ],
                                                         ),
                                                       ),
                                                       // Padding(padding: EdgeInsets.all(30)),
-
-
                                                     )
                                                   ],
                                                 ),
-
-                                              ]
-                                          ),
+                                              ]),
                                         ),
                                       ),
                                     ),
-
-                                    Padding(
-                                        padding: EdgeInsets.all(10)),
+                                    Padding(padding: EdgeInsets.all(10)),
                                     Row(
                                       children: [
                                         Text("المعلم المسؤول",
@@ -324,10 +323,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                                       items: snapshot.data.docs
                                                           .map((DocumentSnapshot
                                                               document) {
-                                                        return new DropdownMenuItem<
-                                                                String>(
-                                                            value: document
-                                                                .data()["name"],
+                                                        return new DropdownMenuItem<String>(
+                                                            value: document.data()["name"],
                                                             onTap: () {
                                                               psychologySpecialistId =
                                                                   document.data()[
@@ -349,7 +346,6 @@ class _StudentInfoState extends State<StudentInfo> {
                                         ),
                                       ],
                                     ),
-
                                     new Padding(
                                         padding: new EdgeInsets.all(10)),
                                     Row(
@@ -571,7 +567,6 @@ class _StudentInfoState extends State<StudentInfo> {
                                         ),
                                       ],
                                     ),
-
                                     Center(
                                       child: Padding(
                                         padding: const EdgeInsets.all(20.0),
@@ -586,9 +581,15 @@ class _StudentInfoState extends State<StudentInfo> {
                                             if (formkey.currentState
                                                 .validate()) {
                                               Admin_Students.doc(uid).update({
-                                                'name':newName==null? name: newName,
-                                                'age': newAge==null? age: newAge,
-                                                'phone': newPhone==null? phone: newPhone,
+                                                'name': newName == null
+                                                    ? name
+                                                    : newName,
+                                                'age': newAge == null
+                                                    ? age
+                                                    : newAge,
+                                                'phone': newPhone == null
+                                                    ? phone
+                                                    : newPhone,
                                               });
                                               if (gender != null) {
                                                 Admin_Students.doc(uid).update({
@@ -644,9 +645,15 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
 
                                               Students.doc(uid).update({
-                                                'name':newName==null? name: newName,
-                                                'age': newAge==null? age: newAge,
-                                                'phone': phone==null? phone: newPhone,
+                                                'name': newName == null
+                                                    ? name
+                                                    : newName,
+                                                'age': newAge == null
+                                                    ? age
+                                                    : newAge,
+                                                'phone': phone == null
+                                                    ? phone
+                                                    : newPhone,
                                               });
                                               if (gender != null) {
                                                 Students.doc(uid).update({
@@ -703,9 +710,15 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
 
                                               Users.doc(uid).update({
-                                                'name':newName==null? name: newName,
-                                                'age': newAge==null? age: newAge,
-                                                'phone': phone==null? phone: newPhone,
+                                                'name': newName == null
+                                                    ? name
+                                                    : newName,
+                                                'age': newAge == null
+                                                    ? age
+                                                    : newAge,
+                                                'phone': phone == null
+                                                    ? phone
+                                                    : newPhone,
                                               });
                                               if (gender != null) {
                                                 Users.doc(uid).update({
@@ -762,11 +775,15 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
 
                                               if (teacherId != null) {
-                                                Admin_Teachers.get().then((value) => value.docs.forEach((element) {
-                                                  Admin_Teachers.doc(element.id).collection('Students').doc(uid)
+                                                Admin_Teachers.get().then(
+                                                    (value) => value.docs
+                                                            .forEach((element) {Admin_Teachers.doc(element.id)
+                                                              .collection('Students')
+                                                              .doc(uid)
                                                               .delete()
                                                               .whenComplete(() {
-                                                            Admin_Teachers.doc(teacherId)
+                                                            Admin_Teachers.doc(
+                                                                    teacherId)
                                                                 .collection(
                                                                     'Students')
                                                                 .doc(uid)
@@ -775,7 +792,6 @@ class _StudentInfoState extends State<StudentInfo> {
                                                             });
                                                           });
                                                         }));
-
 
                                                 Teachers.get().then((value) =>
                                                     value.docs
@@ -957,7 +973,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   null) {
                                                 Admin_Specialists.where(
                                                         'typeOfSpechalist',
-                                                        isEqualTo: "أخصائي علاج طبيعي")
+                                                        isEqualTo:
+                                                            "أخصائي علاج طبيعي")
                                                     .get()
                                                     .then((value) => value.docs
                                                             .forEach((element) {
@@ -1007,30 +1024,51 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                               Specialists.get().then((value) =>
                                                   value.docs.forEach((element) {
-                                                  Specialists.doc(element.id).collection('Students').doc(uid).update({
-                                                    'name':newName==null? name: newName,
-                                                  });
-                                                  if (gender != null){Specialists.doc(element.id)
-                                                      .collection('Students').doc(uid).update({
-                                                    'gender':gender
-                                                  });}
-                                                  })
-                                              );
-
-                                              Admin_Specialists.get().then((value) =>
-                                                  value.docs.forEach((element) {
-                                                    Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
-                                                      'name':newName==null? name: newName,
+                                                    Specialists.doc(element.id)
+                                                        .collection('Students')
+                                                        .doc(uid)
+                                                        .update({
+                                                      'name': newName == null
+                                                          ? name
+                                                          : newName,
                                                     });
-                                                    if (gender != null){Specialists.doc(element.id)
-                                                        .collection('Students').doc(uid).update({
-                                                      'gender':gender
-                                                    });}
-                                                  })
-                                              );
+                                                    if (gender != null) {
+                                                      Specialists.doc(
+                                                              element.id)
+                                                          .collection(
+                                                              'Students')
+                                                          .doc(uid)
+                                                          .update({
+                                                        'gender': gender
+                                                      });
+                                                    }
+                                                  }));
 
-
-
+                                              Admin_Specialists.get().then(
+                                                  (value) => value.docs
+                                                          .forEach((element) {
+                                                        Admin_Specialists.doc(
+                                                                element.id)
+                                                            .collection(
+                                                                'Students')
+                                                            .doc(uid)
+                                                            .update({
+                                                          'name':
+                                                              newName == null
+                                                                  ? name
+                                                                  : newName,
+                                                        });
+                                                        if (gender != null) {
+                                                          Specialists.doc(
+                                                                  element.id)
+                                                              .collection(
+                                                                  'Students')
+                                                              .doc(uid)
+                                                              .update({
+                                                            'gender': gender
+                                                          });
+                                                        }
+                                                      }));
 
                                               Navigator.pop(
                                                   context,

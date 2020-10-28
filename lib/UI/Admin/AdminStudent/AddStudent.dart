@@ -21,19 +21,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
   }
 List <String> l;
 
-// أخصائي تواصل
- // cs() async {
- //   await Admin.doc(userAdmin.email).collection('Specialists')
-  //      .where('typeOfSpechalist', isEqualTo: "أخصائي تخاطب")
-   //     .get()
-      //  .then((QuerySnapshot querySnapshot) {
-     // querySnapshot.docs
-     //     .forEach((doc) {
-
-    //    print('inside whoIs function $type');
-  //    });
- //   }}
-
 
 
 
@@ -93,9 +80,7 @@ List <String> l;
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          actions: <Widget>[
-            KAppBarTextInkwell(text: "إلغاء", page: MainAdminScreen(2))
-          ],
+          iconTheme: IconThemeData(color: kUnselectedItemColor),
           title: Text("إضافة طالب", style: kTextAppBarStyle),
           centerTitle: true,
           backgroundColor: kAppBarColor,
