@@ -18,6 +18,8 @@ class _ParentDiariesState extends State<ParentDiaries> {
   String comment;
   DateTime dateSearch=DateTime.now();
   String dateSearch2=DateTime.now().toString().substring(0, 10);
+  TextEditingController c;
+  File SImage;
 
   Widget build(BuildContext context) {
     User userStudent = FirebaseAuth.instance.currentUser;
@@ -68,8 +70,9 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                     String Name = document.data()['studentName'];
                                     String CenterId = document.data()['centerId'];
                                     String Uid = document.data()['uid'];
+                                    String teachrtId=document.data()['teacherId'];
                                     String Writer = document.data()['studentName'];
-                                    User userTeacher = FirebaseAuth.instance.currentUser;
+
                                     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
                                     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
                                     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
@@ -93,9 +96,11 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                       var imageId = await ImageDownloader
                                                           .downloadImage(document
                                                           .data()['imageUrl']);
-                                                      var path = await ImageDownloader
-                                                          .findPath(imageId);
-                                                      File image = File(path);
+                                                      var path = await ImageDownloader.findPath(imageId);
+                                                      File image =File(path);
+                                                      setState(() {
+                                                        SImage=image;
+                                                      });
                                                         Scaffold.of(context).showSnackBar(SnackBar(
                                                             content: Text("تم حفظ الصورة بنجاح",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),
                                                             backgroundColor: Colors.white70,
@@ -129,8 +134,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                         color: Colors.grey)),
                                               ),
                                               Text("التعليقات"),
-                                              Padding(
-                                                  padding: EdgeInsets.all(0),
+                                              Padding(padding: EdgeInsets.all(0),
                                                   child: StreamBuilder<QuerySnapshot>(
                                                       stream: Students.doc(
                                                               userStudent.email)
@@ -155,7 +159,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                                       title: Text(
                                                                         document.data()[
                                                                                 'writer'] +
-                                                                            ": " +
+                                                                            (": ") +
                                                                             document.data()[
                                                                                 'comment'],
                                                                         style: TextStyle(
@@ -164,24 +168,8 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                                             color: Colors
                                                                                 .black),
                                                                       ),
-                                                                      trailing: Text(
-                                                                          document
-                                                                                  .data()[
-                                                                                      'hour']
-                                                                                  .toString() +
-                                                                              ":" +
-                                                                              document
-                                                                                  .data()[
-                                                                                      'minute']
-                                                                                  .toString() +
-                                                                              " " +
-                                                                              document.data()[
-                                                                                  'time'],
-                                                                          style: TextStyle(
-                                                                              fontSize:
-                                                                                  9,
-                                                                              color: Colors
-                                                                                  .grey)),
+                                                                      trailing: Text(document.data()['hour'].toString() + (":") + document.data()['minute'].toString() + (" ") + document.data()['time'],
+                                                                          style: TextStyle(fontSize: 9, color: Colors.grey)),
                                                                       onLongPress:
                                                                           () {
                                                                         if (document.data()[
@@ -206,11 +194,16 @@ class _ParentDiariesState extends State<ParentDiaries> {
 
                                                                                               var DeltoAdminStudentPost = Admin_Students.doc(Uid).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
 
-                                                                                              var DeltoTeacherStudentPost = Teachers.doc(userTeacher.email).collection("Students").doc(Uid).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
+                                                                                              var DeltoTeacherStudentPost = Teachers.doc(teachrtId).collection("Students").doc(Uid).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
 
-                                                                                              var DeltoAdminTeacherStudentPost = Admin_Teachers.doc(userTeacher.email).collection("Students").doc(Uid).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
+                                                                                              var DeltoAdminTeacherStudentPost = Admin_Teachers.doc(teachrtId).collection("Students").doc(Uid).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
+
+                                                                                              var DeltoTeacherNot= Teachers.doc(teachrtId).collection('Notifications').doc("${document.id} Notifications").delete();
+
+                                                                                              var DeltoAdminTeacherNot=  Admin_Teachers.doc(teachrtId).collection('Notifications').doc("${document.id} Notifications").delete();
 
                                                                                               Navigator.of(context).pop();
+
                                                                                             },
                                                                                           ),
                                                                                           FlatButton(
@@ -260,13 +253,15 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                       })),
                                               TextFormField(
                                                 //keyboardType: TextInputType.multiline,
+                                                controller: c,
                                                 minLines: 1,
                                                 maxLines: 5,
                                                 showCursor: true,
                                                 decoration: InputDecoration(
                                                   suffix: Padding(
                                                       padding: EdgeInsets.all(1),
-                                                      child: AddComment(
+                                                      child: AddCommentParent(
+                                                        c: c,
                                                         writer: Writer,
                                                         studentUid: Uid,
                                                         studentName: Name,
@@ -278,7 +273,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                         centerId: CenterId,
                                                         comment: comment,
                                                         postId: PostId,
-
+                                                        teacherId: teachrtId,
                                                       )),
                                                   prefixIcon: Icon(
                                                     Icons.comment,

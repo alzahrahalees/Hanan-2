@@ -105,7 +105,6 @@ class _StudentInfoState extends State<StudentInfo> {
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
                     return Container(
-
                         padding: EdgeInsets.all(10),
                       //  color: Color(0xfff0eaf7),
                         color: Colors.white,
@@ -320,13 +319,11 @@ class _StudentInfoState extends State<StudentInfo> {
                                                               newValue;
                                                         });
                                                         print(
-                                                            psychologySpecialistName);
-                                                      },
+                                                            psychologySpecialistName);},
                                                       items: snapshot.data.docs
                                                           .map((DocumentSnapshot
                                                               document) {
-                                                        return new DropdownMenuItem<
-                                                                String>(
+                                                        return new DropdownMenuItem<String>(
                                                             value: document
                                                                 .data()["name"],
                                                             onTap: () {
@@ -767,8 +764,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   Admin_Teachers.doc(element.id).collection('Students').doc(uid)
                                                               .delete()
                                                               .whenComplete(() {
-                                                            Admin_Teachers.doc(
-                                                                    teacherId)
+                                                            Admin_Teachers.doc(teacherId)
                                                                 .collection(
                                                                     'Students')
                                                                 .doc(uid)
@@ -1012,11 +1008,14 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   Specialists.doc(element.id).collection('Students').doc(uid).update({
                                                     'name':newName==null? name: newName,
                                                   });
+
                                                   if (gender != null) {
                                                     Specialists.doc(element.id).collection('Students').doc(uid).update({
                                                       'gender': gender,
                                                     });
                                                   }
+
+
                                                   })
                                               );
 
@@ -1025,16 +1024,15 @@ class _StudentInfoState extends State<StudentInfo> {
                                                     Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
                                                       'name':newName==null? name: newName,
                                                     });
+
                                                     if (gender != null) {
                                                       Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
                                                         'gender': gender,
                                                       });
                                                     }
+
                                                   })
                                               );
-
-
-
 
                                               Navigator.pop(
                                                   context,

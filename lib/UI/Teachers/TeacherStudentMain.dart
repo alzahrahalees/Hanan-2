@@ -7,17 +7,19 @@ import 'TeacherStudentInfo.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class TeacherStudentMain extends StatefulWidget {
+
   @override
   final  String centerId;
   final int index;
   final String name;
   final String uid;
   final String teacherName;
+  final String teacherId;
+  @override
+  TeacherStudentMain({this.index,this.centerId,this.name,this.uid,this.teacherName,this.teacherId});
 
-  TeacherStudentMain({this.index,this.centerId,this.name,this.uid,this.teacherName});
 
-
-  _TeacherStudentMainState createState() => _TeacherStudentMainState(centerId,index,name, uid,teacherName);
+  _TeacherStudentMainState createState() => _TeacherStudentMainState(centerId,index,name, uid,teacherName,teacherId);
 }
 
 class _TeacherStudentMainState extends State<TeacherStudentMain> {
@@ -27,19 +29,24 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
   String uid;
   int  currentIndex=0;
   String teacherName;
+  String teacherId;
+   _TeacherStudentMainState( String centerId,int index,String name,String uid,String teacherName,String teacherId){
+     this.centerId=centerId;
+     this.index=index;
+     this.name=name;
+     this.uid=uid;
+     this.teacherName=teacherName;
+     this.teacherId=teacherId;
+   }
 
-  _TeacherStudentMainState( String centerId,int index,String name,String uid,String teacherName){
-    this.centerId=centerId;
-    this.index=index;
-    this.name=name;
-    this.uid=uid;
-    this.teacherName=teacherName;
-  }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _screens=[DiariesTeacher(uid: uid,name: name,centerId: centerId,teacherName: teacherName,),AppointmentsTeacher(),PlansTeacher(),TeacherStudentInfo()];
+
+    List<Widget> _screens=[DiariesTeacher(uid: uid,name: name,centerId: centerId,teacherName: teacherName,teacherId:teacherId),AppointmentsTeacher(uid),PlansTeacher(),TeacherStudentInfo()];
     List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
+
+
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(

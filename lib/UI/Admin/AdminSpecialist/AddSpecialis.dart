@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Specialist.dart';
+import 'Specialist.dart';
 import '../../Constance.dart';
 import '../AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
@@ -23,7 +23,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
   final AuthService _auth = AuthService();
   String _name;
   String _age;
-  String _email;
+  String _email='';
   String _phone;
   String _typeOfSpechalist;
   List<String> items=["أخصائي علاج طبيعي","أخصائي علاج وظيفي","أخصائي نفسي","أخصائي تخاطب"];
@@ -206,7 +206,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                             formkey: _formkey,
                               name: _name,
                               age: _age,
-                              email: _email,
+                              email: _email.toLowerCase(),
                               phone: _phone,
                               gender: _gender,
                               type: "Specialists",

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +15,11 @@ class AddPostPage extends StatefulWidget {
   final String uid;
   final String centerId;
   final String name;
-  AddPostPage ({this.uid,this.centerId,this.name});
+  final String teacherId;
+  final String teacherName;
+  AddPostPage ({this.uid,this.centerId,this.name,this.teacherId,this.teacherName});
   @override
-  _AddPostPageState createState() => _AddPostPageState(uid,centerId,name);
+  _AddPostPageState createState() => _AddPostPageState(uid,centerId,name,teacherId);
 }
 
 class _AddPostPageState extends State<AddPostPage> {
@@ -30,26 +31,26 @@ class _AddPostPageState extends State<AddPostPage> {
   String centerId;
   String name;
   String _diary;
-
-  _AddPostPageState(String uid, String centerId, String name) {
+String teacherId;
+  _AddPostPageState(String uid, String centerId, String name,String teacherId) {
     this.uid = uid;
     this.centerId = centerId;
     this.name = name;
+    this.teacherId=teacherId;
   }
 
   final _formkey = GlobalKey<FormState>();
 
   File _Image;
   File _Vedio;
-  String _URL ;
-  var   _cameraVideoPlayerController ;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("إضافة يومية", style: kTextAppBarStyle),
+        title: Text("إضافة", style: kTextAppBarStyle),
         centerTitle: true,
         backgroundColor: Colors.white70,
       ),
@@ -70,11 +71,11 @@ class _AddPostPageState extends State<AddPostPage> {
                         Expanded(
                           child: TextFormField(
                             //keyboardType: TextInputType.multiline,
-                            focusNode: FocusNode(skipTraversal: false,
-                                canRequestFocus: false,
-                                descendantsAreFocusable: false),
-                            autofocus: true,
-                            maxLines: 24,
+                          //  focusNode: FocusNode(skipTraversal: false,
+                            //    canRequestFocus: false,
+                              //  descendantsAreFocusable: false),
+                            //autofocus: true,
+                            maxLines: 20,
                             showCursor: true,
                             decoration: InputDecoration(
                               hintText: "ماذا فعل/ت $name اليوم ؟ ",
@@ -111,10 +112,9 @@ class _AddPostPageState extends State<AddPostPage> {
                         radius: 20,
                       ),
                     ),
-
                     Padding(padding: EdgeInsets.all(5),),
                     Divider(color: Colors.deepPurple,
-                      thickness: 3,
+                      thickness: 2,
                     ),
                     Row(
                       children: [
@@ -124,6 +124,8 @@ class _AddPostPageState extends State<AddPostPage> {
                           AddPost(
                             video: _Vedio,
                             image: _Image,
+                            teacherId: teacherId,
+                            teacherName: widget.teacherName,
                             content: _diary!=null?_diary:" ",
                             centerId: centerId,
                             studentUid: uid,
@@ -136,17 +138,25 @@ class _AddPostPageState extends State<AddPostPage> {
                                 .hour,
                             date: DateTime.now().toString().substring(0, 10),
                           ),),
-
                         GestureDetector(
                           onTap: pickImageCamera,
                           child: IconButton(icon: Icon(Icons.camera_alt,
                             color: Colors.deepPurple.shade400,)),
                         ),
                         GestureDetector(
-                            onTap: pickImageGallery,
+                            onTap: (){print("Click Video");},
+                            child: IconButton(icon: Icon(Icons.video_call,
+                                size: 30,
+                                color: Colors.deepPurple.shade400),)),
+                        GestureDetector(
+                            onTap:(){ pickImageGallery();},
                             child: IconButton(icon: Icon(Icons.photo,
                                 color: Colors.deepPurple.shade400),)),
+
                       ],
+                    ),
+                    Divider(color: Colors.deepPurple,
+                      thickness: 2,
                     ),
                   ],
                 ),
@@ -167,15 +177,12 @@ class _AddPostPageState extends State<AddPostPage> {
     });
   }
 
-  /*void pickVideoCamera() async {
-    var Vedio = await ImagePicker.pickVideo(source:ImageSource.camera);
-    _Vedio=Vedio;
-    _cameraVideoPlayerController = VideoPlayerController.file(Vedio)..initialize().then((_) {
-      setState(() { });
-      _cameraVideoPlayerController.play();
+  void pickVideoCamera() async {
+    var Vedio = await ImagePicker.pickVideo(source:ImageSource.camera,maxDuration: const Duration(seconds: 10));
+    setState(() {
+      _Vedio = Vedio;
     });
-  }*/
-
+  }
 
   void pickImageGallery() async {
     var Image = await ImagePicker.pickImage(source: ImageSource.gallery);

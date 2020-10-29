@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Constance.dart';
 import 'AddStudent.dart';
-import '../../Student.dart';
+import 'Student.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -90,8 +90,7 @@ class StudentCards extends StatelessWidget {
           AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
         switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+          case ConnectionState.waiting: return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
           default:
             return new ListView(
                 children:

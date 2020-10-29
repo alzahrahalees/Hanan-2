@@ -9,6 +9,8 @@ import 'TeacherAllAppointments.dart';
 import 'TeacherStudentList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'notifications.dart';
+
 class TeacherMainScreen extends StatefulWidget {
   AuthService _auth = AuthService();
   final int index;
@@ -34,8 +36,6 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
     });
 
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +140,13 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
               SliverAppBar(
                 iconTheme: IconThemeData(color: Colors.black54),
                 backgroundColor: kAppBarColor,
+               actions : [IconButton (icon:Icon(Icons.notifications,color: Colors.deepPurple.shade400,),
+               onPressed: (){
+                 Navigator.push(
+                   context,
+                   MaterialPageRoute(
+                       builder: (context) => notifications() ));}
+               ),],
                 title: Text(_titles[_currentIndex], style: kTextAppBarStyle),
                 centerTitle: true,
                 floating: false,

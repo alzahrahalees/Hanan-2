@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,9 +16,11 @@ class DiariesTeacher extends StatefulWidget {
   final String centerId;
   final String name;
   final String teacherName;
-  DiariesTeacher ({this.uid,this.centerId,this.name,this.teacherName});
+  final String teacherId;
 
-  _DiariesTeacherState createState() => _DiariesTeacherState(uid,centerId,name,teacherName);
+  DiariesTeacher ({this.uid,this.centerId,this.name,this.teacherName,this.teacherId});
+
+  _DiariesTeacherState createState() => _DiariesTeacherState(uid,centerId,name,teacherName,teacherId);
 }
 
 class _DiariesTeacherState extends State<DiariesTeacher> {
@@ -28,17 +29,17 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
   String centerId;
   String name;
   String teacherName;
-
-  _DiariesTeacherState (String uid, String centerId ,String name,String teacherName) {
+  String teacherId;
+  _DiariesTeacherState (String uid, String centerId ,String name,String teacherName,String teacherId) {
     this.uid=uid;
     this.centerId=centerId;
     this.name=name;
-    this.teacherName=teacherName;}
+    this.teacherName=teacherName;
+    this.teacherId=teacherId;
+  }
   TextEditingController c = new TextEditingController();
 
   List <TextEditingController> cs=[];
-
-
 
   @override
 
@@ -54,17 +55,11 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
   Widget build(BuildContext context) {
     List <TextEditingController> cs=[];
 
-    User userTeacher = FirebaseAuth.instance.currentUser;
-    CollectionReference Students =
-    FirebaseFirestore.instance.collection('Students');
-    CollectionReference Teachers =
-    FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Admin =
-    FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Teachers =
-    Admin.doc(centerId).collection('Teachers');
-    CollectionReference Admin_Students =
-    Admin.doc(centerId).collection('Students');
+    User userTeacher = FirebaseAuth.instance.currentUser;CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
+    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+    CollectionReference Admin_Teachers = Admin.doc(centerId).collection('Teachers');
+    CollectionReference Admin_Students = Admin.doc(centerId).collection('Students');
     return Scaffold(
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
@@ -136,7 +131,6 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
                             String  PostId=document.id;
                             cs.add(new TextEditingController());
                             return Column(children:[
-
                               Card(
                                 shape: BeveledRectangleBorder(
                                   borderRadius: BorderRadius.circular(5),
@@ -149,8 +143,8 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
                                     child:  DeletePost(centerId: centerId,postId: document.id,studentUid: uid,imageUrl: document.data()['imageUrl'] ,),),
                                     document.data()['imageUrl']!=null ?
                                     Image.network(document.data()['imageUrl'],
-                                      width: 1500,
-                                      height: 500,
+                                      width: 2000,
+                                      height: 450,
                                     )  :
                                         Text("",style:TextStyle(fontSize: 0),),
                                      ListTile(
@@ -293,17 +287,17 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
             onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddPostPage(uid: uid,centerId: centerId,name: name)),
+                MaterialPageRoute(builder: (context) => AddPostPage(uid: uid,centerId: centerId,name: name,teacherName: teacherName,)),
               );
             },
             child: Icon(Icons.edit,size: 30,),
             elevation: 10, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, highlightElevation: 20,
-              mini: false,
             backgroundColor: Colors.deepPurple.shade200,
               foregroundColor: Colors.white60,
           ),
-          Padding(padding: EdgeInsets.only(right: 60)),
+          Padding(padding: EdgeInsets.only(right: 20)),
           FloatingActionButton(
+            mini:true,
             heroTag: "btn2",
             onPressed: (){
               showDatePicker(
@@ -339,9 +333,8 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
               });
 
             },
-            child: Icon(Icons.search,size: 30,),
+            child: Icon(Icons.search,size: 23,),
             elevation: 10, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, highlightElevation: 20,
-            mini: false,
             backgroundColor: Colors.deepPurple.shade200,
             foregroundColor: Colors.white60,
           ),

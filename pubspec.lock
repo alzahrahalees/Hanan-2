@@ -308,6 +308,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   path:
     dependency: "direct main"
     description:
@@ -371,6 +378,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.13"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.3.2+2"
   quiver:
     dependency: transitive
     description:
@@ -509,6 +523,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
+  weekday_selector_formfield:
+    dependency: "direct main"
+    description:
+      name: weekday_selector_formfield
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   win32:
     dependency: transitive
     description:

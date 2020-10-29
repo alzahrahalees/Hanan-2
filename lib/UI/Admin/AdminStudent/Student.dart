@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
-import 'Admin/AdminStudent/StudentDetails.dart';
-import 'Constance.dart';
+import 'StudentDetails.dart';
+import '../../Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Student{
@@ -65,13 +65,17 @@ class AddStudent extends StatelessWidget {
       //problem:the document must be have the same ID
 
        if(!isExists)   {
+
+         var addTpNoAuth =FirebaseFirestore.instance.collection('NoAuth')
+             .doc(email.toLowerCase()).set({});
+
       var addToStudent = Students.doc(email.toLowerCase()).set({
         "isAuth":false,
         "center": userAdmin.email.toLowerCase(),
         'uid': email.toLowerCase(),
         'name': name,
         'age': age,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "gender": gender,
         "type": type,
@@ -94,7 +98,7 @@ class AddStudent extends StatelessWidget {
         'uid': email.toLowerCase(),
         'name': name,
         'age': age,
-        'email': email,
+        'email': email.toLowerCase(),
         'phone': phone,
         "gender": gender,
         "type": type,
@@ -130,6 +134,7 @@ class AddStudent extends StatelessWidget {
 
       var addTeacherStudent= Teachers.doc(teacherId).collection('Students').doc(email.toLowerCase()).
       set({
+        'name': name,
         'uid': email.toLowerCase(),
       } );
 
@@ -142,8 +147,10 @@ class AddStudent extends StatelessWidget {
 
       var addPsychologyStudent=Specialists.doc(psychologySpecialistId).collection('Students').doc(email.toLowerCase()).
       set({
-          'uid': email.toLowerCase(),
-        'name':name
+
+        'uid': email.toLowerCase(),
+        'name':name,
+        'gender':gender,
         }
       );
 
@@ -158,7 +165,8 @@ class AddStudent extends StatelessWidget {
           .collection('Students').doc(email.toLowerCase()).
       set({
         'uid': email.toLowerCase(),
-        'name':name
+        'name':name,
+        'gender':gender,
       }
       );}
 
@@ -175,7 +183,8 @@ class AddStudent extends StatelessWidget {
           .collection('Students').doc(email.toLowerCase()).
       set({
           'uid': email.toLowerCase(),
-        'name':name
+        'name':name,
+        'gender':gender,
         });
 
       /*var addToAdminStudentCommunicationS = Admin_Students.doc(email.toLowerCase())
@@ -189,7 +198,8 @@ class AddStudent extends StatelessWidget {
           .collection('Students').doc(email.toLowerCase()).
       set({
         'uid': email.toLowerCase(),
-        'name':name
+        'name':name,
+        'gender':gender,
 
       });}
 
@@ -207,7 +217,8 @@ class AddStudent extends StatelessWidget {
           .collection('Students').doc(email.toLowerCase()).
       set({
           'uid': email.toLowerCase(),
-        'name':name
+        'name':name,
+        'gender':gender,
         });
 
      /* var addAdminToStudentOccupationalS = Admin_Students.doc(email.toLowerCase())
@@ -223,7 +234,8 @@ class AddStudent extends StatelessWidget {
       set({
         'center':userAdmin.email.toLowerCase(),
         'uid': email.toLowerCase(),
-        'name':name
+        'name':name,
+        'gender':gender,
       });}
 
       if (physiotherapySpecialistId != null){
@@ -238,7 +250,8 @@ class AddStudent extends StatelessWidget {
           .doc(email.toLowerCase()).set({
           'center':userAdmin,
           'uid':email.toLowerCase(),
-        'name':name
+        'name':name,
+        'gender':gender,
         }
        );
 
@@ -252,7 +265,8 @@ class AddStudent extends StatelessWidget {
       var addToAdminPhysiotherapy=Admin_Specialists.doc(physiotherapySpecialistId)
           .collection("Students").doc(email.toLowerCase()).set({
         'uid':email.toLowerCase(),
-        'name':name
+        'name':name,
+        'gender':gender,
       }
       );}
 

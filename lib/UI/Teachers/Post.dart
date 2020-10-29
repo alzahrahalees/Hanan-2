@@ -1,14 +1,13 @@
-
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Parents/ParentMain.dart';
 import 'dart:math';
 import 'package:path/path.dart' as p;
 import '../Constance.dart';
+
 
 
 class AddPost extends StatefulWidget {
@@ -21,14 +20,16 @@ class AddPost extends StatefulWidget {
   final int minute;
   final int hour;
   final String date;
-
+  final String teacherId;
+  final String teacherName;
   AddPost(
-      {
+      {this.teacherName,
+        this.teacherId,
         this.video,
         this.image,
-      this.content,
-      this.studentUid,
-      this.date,
+        this.content,
+         this.studentUid,
+       this.date,
         this.minute,
         this.hour,
       this.centerId,
@@ -38,7 +39,8 @@ class AddPost extends StatefulWidget {
   _AddPostState createState() => _AddPostState();
 }
 class _AddPostState extends State<AddPost> {
-  String url;
+  String Imageurl;
+  String Videourl;
   Widget build(BuildContext context) {
     User userTeacher = FirebaseAuth.instance.currentUser;
     CollectionReference Students =
@@ -91,7 +93,7 @@ class _AddPostState extends State<AddPost> {
         print("........ $Url ..........");
         if (!mounted) return;
         setState(() {
-          url = Url;
+          Imageurl = Url;
         });
       }
 
@@ -106,14 +108,16 @@ class _AddPostState extends State<AddPost> {
         print("........ $Url ..........");
         if (!mounted) return;
         setState(() {
-          url = Url;
+          Videourl = Url;
         });
       }
 
 
    var addtoStudentPost=  Students.doc(widget.studentUid).collection("Posts").doc("${widget.studentUid}$documentId").set({
-        'video':url,
-        'imageUrl':url,
+        'video':Videourl,
+        'imageUrl':Imageurl,
+         'teacherId':userTeacher.email,
+          'teacherName': widget.teacherName,
         'content': widget.content,
         'uid': widget.studentUid,
          'date': widget.date,
@@ -123,13 +127,17 @@ class _AddPostState extends State<AddPost> {
         'centerId': widget.centerId,
         'studentName': widget.studentName,
         'createdAt':Timestamp.now(),
+        'postId':"${widget.studentUid}$documentId",
+
       });
 
 
       var addtoAdminStudentPost= Admin_Students.doc(widget.studentUid).collection('Posts').doc("${widget.studentUid}$documentId").set({
 
-        'video':url,
-        'imageUrl':url,
+        'video':Videourl,
+        'imageUrl':Imageurl,
+        'teacherId':userTeacher.email,
+        'teacherName': widget.teacherName,
         'content': widget.content,
         'uid': widget.studentUid,
         'date': widget.date,
@@ -139,6 +147,7 @@ class _AddPostState extends State<AddPost> {
         'centerId': widget.centerId,
         'studentName': widget.studentName,
         'createdAt':Timestamp.now(),
+        'postId':"${widget.studentUid}$documentId",
       });
 
 
@@ -147,8 +156,10 @@ class _AddPostState extends State<AddPost> {
         .collection('Posts').doc("${widget.studentUid}$documentId")
         .set({
 
-     'video':url,
-     'imageUrl':url,
+     'video':Videourl,
+     'imageUrl':Imageurl,
+     'teacherId':userTeacher.email,
+     'teacherName': widget.teacherName,
       'content': widget.content,
       'uid': widget.studentUid,
      'date': widget.date,
@@ -158,6 +169,7 @@ class _AddPostState extends State<AddPost> {
       'centerId': widget.centerId,
       'studentName': widget.studentName,
      'createdAt':Timestamp.now(),
+     'postId':"${widget.studentUid}$documentId",
     });
 
 
@@ -165,8 +177,10 @@ class _AddPostState extends State<AddPost> {
         .doc(widget.studentUid)
         .collection('Posts').doc("${widget.studentUid}$documentId")
         .set({
-      'video':url,
-      'imageUrl':url,
+     'video':Videourl,
+     'imageUrl':Imageurl,
+     'teacherId':userTeacher.email,
+     'teacherName': widget.teacherName,
       'content': widget.content,
       'uid': widget.studentUid,
       'date': widget.date,
@@ -176,6 +190,7 @@ class _AddPostState extends State<AddPost> {
       'centerId': widget.centerId,
       'studentName': widget.studentName,
       'createdAt':Timestamp.now(),
+     'postId':"${widget.studentUid}$documentId",
     });
 
     Navigator.of(context).pop();}
@@ -284,6 +299,23 @@ class AddComment extends StatelessWidget {
         'studentName': studentName,
         'writer' :writer,
         'createdAt':Timestamp.now(),
+        'read':false,
+      });
+
+      var addtoStudentPostCommentNo = Students.doc(studentUid).collection("Posts")
+          .doc(postId).collection("Comments").doc("$studentUid$documentId").set({
+        'comment': comment,
+        'uid': studentUid,
+        'date': date,
+        'time':dayOrNight(hour),
+        'hour':hourEditor(hour),
+        'minute':minute,
+        'centerId': centerId,
+        'postId': postId,
+        'studentName': studentName,
+        'writer' :writer,
+        'createdAt':Timestamp.now(),
+        'read':false,
       });
 
       var addtoAdminStudentPostComment = Admin_Students.doc(studentUid)
@@ -299,6 +331,7 @@ class AddComment extends StatelessWidget {
         'studentName': studentName,
         'writer' :writer,
         'createdAt':Timestamp.now(),
+        'read':false,
       });
 
       var addtoTeacherStudentPostComment = Teachers.doc(userTeacher.email)
@@ -316,6 +349,7 @@ class AddComment extends StatelessWidget {
         'studentName': studentName,
         'writer' :writer,
         'createdAt':Timestamp.now(),
+        'read':false,
       });
 
       var addtoAdminTeacherStudentPostComment = Admin_Teachers.doc(
@@ -333,13 +367,15 @@ class AddComment extends StatelessWidget {
         'studentName': studentName,
         'writer' :writer,
         'createdAt':Timestamp.now(),
+        'read':false,
       });
     }
+
+
 
     return FlatButton  (
       child: Text('نشر', style: kTextPageStyle.copyWith(
           color:comment==null || comment=="" ? Colors.white10:Colors.deepPurpleAccent.shade700)),
-
       onPressed: () {
         if (comment!=null && comment.isNotEmpty && comment!="") {
           print(comment);
@@ -394,6 +430,7 @@ class ShowComments extends StatelessWidget {
 
 class AddCommentParent extends StatelessWidget {
   final String comment;
+  final String teacherId;
   final String studentUid;
   final int minute;
   final int hour;
@@ -402,9 +439,10 @@ class AddCommentParent extends StatelessWidget {
   final String studentName;
   final String postId;
   final String writer;
-
+final TextEditingController c;
 
   AddCommentParent({
+    this.c,
     this.comment,
     this.minute,
     this.hour,
@@ -414,6 +452,7 @@ class AddCommentParent extends StatelessWidget {
     this.postId,
     this.studentName,
     this.writer,
+    this.teacherId,
 
   });
 
@@ -463,6 +502,7 @@ class AddCommentParent extends StatelessWidget {
       var addtoStudentPostComment = Students.doc(studentUid).collection("Posts")
           .doc(postId).collection("Comments").doc("$studentUid$documentId").set({
         'comment': comment,
+        'teacherId':teacherId,
         'uid': studentUid,
         'date': date,
         'time':dayOrNight(hour),
@@ -478,6 +518,7 @@ class AddCommentParent extends StatelessWidget {
       var addtoAdminStudentPostComment = Admin_Students.doc(studentUid)
           .collection('Posts').doc(postId).collection("Comments").doc("$studentUid$documentId").set({
         'comment': comment,
+        'teacherId':teacherId,
         'uid': studentUid,
         'date': date,
         'time':dayOrNight(hour),
@@ -490,11 +531,12 @@ class AddCommentParent extends StatelessWidget {
         'createdAt':Timestamp.now(),
       });
 
-      var addtoTeacherStudentPostComment = Teachers.doc(userTeacher.email)
+      var addtoTeacherStudentPostComment = Teachers.doc(teacherId)
           .collection("Students")
           .doc(studentUid).collection('Posts').doc(postId).collection(
           "Comments").doc("$studentUid$documentId").set({
         'comment': comment,
+        'teacherId':teacherId,
         'uid': studentUid,
         'date': date,
         'time':dayOrNight(hour),
@@ -508,10 +550,11 @@ class AddCommentParent extends StatelessWidget {
       });
 
       var addtoAdminTeacherStudentPostComment = Admin_Teachers.doc(
-          userTeacher.email).collection("Students")
+          teacherId).collection("Students")
           .doc(studentUid)
           .collection('Posts').doc(postId).collection("Comments").doc("$studentUid$documentId").set({
         'comment': comment,
+        'teacherId':teacherId,
         'uid': studentUid,
         'date': date,
         'time':dayOrNight(hour),
@@ -524,10 +567,42 @@ class AddCommentParent extends StatelessWidget {
         'createdAt':Timestamp.now(),
       });
 
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context)=>
-              ParentMain(0)));
+      var addtoAdminTeacherNotification = Admin_Teachers.doc(
+          teacherId).collection('Notifications').doc("$studentUid$documentId Notifications").set({
+        'commentId':  "$studentUid$documentId",
+        'comment': comment,
+        'uid': studentUid,
+        'date': date,
+        'time':dayOrNight(hour),
+        'hour':hourEditor(hour),
+        'minute':minute,
+        'centerId': centerId,
+        'postId': postId,
+        'studentName': studentName,
+        'writer' :writer,
+        'createdAt':Timestamp.now(),
+        'read':false,
+        'NotificationUid':"$studentUid$documentId Notifications",
+      });
+      var addtoTeacherNotification = Teachers.doc(
+          teacherId).collection('Notifications').doc("$studentUid$documentId Notifications").set({
+        'commentId':  "$studentUid$documentId",
+        'comment': comment,
+        'uid': studentUid,
+        'date': date,
+        'time':dayOrNight(hour),
+        'hour':hourEditor(hour),
+        'minute':minute,
+        'centerId': centerId,
+        'postId': postId,
+        'studentName': studentName,
+        'writer' :writer,
+        'createdAt':Timestamp.now(),
+        'read':false,
+        'NotificationUid':"$studentUid$documentId Notifications",
+      });
     }
+
     return FlatButton  (
       child: Text('نشر', style: kTextPageStyle.copyWith(
           color:comment==null || comment=="" ? Colors.white10:Colors.deepPurpleAccent.shade700)),
@@ -538,6 +613,9 @@ class AddCommentParent extends StatelessWidget {
           print(comment);
           print(postId);
           AddCommentParent();
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context)=>
+                  ParentMain(0)));
         }
       },
     );
@@ -620,6 +698,15 @@ class DeletePost extends StatelessWidget {
                 .collection('Comments')
                 .doc(element.id)
                 .delete();
+          }));
+      var DeltoAdminTeacherNot= Admin_Teachers.doc(userTeacher.email).collection('Notifications').where('postId', isEqualTo: postId).get().then((value) =>
+          value.docs.forEach((element) {
+            Admin_Teachers.doc(userTeacher.email).collection('Notifications').doc(element.id).delete();
+          }));
+
+      var DelttoTeacherNot= Teachers.doc(userTeacher.email).collection('Notifications').where('postId', isEqualTo: postId).get().then((value) =>
+          value.docs.forEach((element) {
+            Teachers.doc(userTeacher.email).collection('Notifications').doc(element.id).delete();
           }));
 
       if (imageUrl != null) {

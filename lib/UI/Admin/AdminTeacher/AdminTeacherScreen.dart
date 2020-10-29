@@ -98,8 +98,8 @@ class TeacherCards extends StatelessWidget {
         if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(
           color: kUnselectedItemColor,
           size: 60,
-        )
-          ,);
+        ),
+        );
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return Center(child:SpinKitFoldingCube(

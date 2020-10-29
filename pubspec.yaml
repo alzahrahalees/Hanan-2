@@ -40,6 +40,8 @@ dependencies:
   path: ^1.7.0
   image_downloader: ^0.20.1
   video_player: ^0.11.1+2
+  weekday_selector_formfield: ^1.0.4
+  provider: ^4.3.2+2
 
 
 dev_dependencies:

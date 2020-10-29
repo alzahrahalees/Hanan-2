@@ -5,8 +5,8 @@ import 'TeacherStudentMain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'dart:math';
 
+import 'dart:math';
 
 
 
@@ -20,10 +20,13 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
   Widget build(BuildContext context) {
 
     User user = FirebaseAuth.instance.currentUser;
+
     const kCardColor=Color(0xffededed);
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+
+    CollectionReference studentsInTeachrs = FirebaseFirestore.instance.collection('Students');
+
     return StreamBuilder<QuerySnapshot>(
-      stream: Students.where('teacherId',isEqualTo: user.email).snapshots(),
+      stream: studentsInTeachrs.where('teacherId',isEqualTo: user.email).snapshots(),
         builder: ( context, snapshot) {
           if (!snapshot.hasData)
             return Center(
@@ -42,12 +45,12 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
     default:
     return ListView(
     children: snapshot.data.docs.map((DocumentSnapshot document) {
+
       var centerId= document.data()['center'];
        var uid=document.data()['uid'];
+       var gender=document.data()['gender'];
        print(user.email);
       print(centerId);
-      var gender= document.data()['gender'];
-      Random ran= Random();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Padding(
@@ -59,18 +62,20 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
               title: Text(document.data()['name'],style: kTextPageStyle),
               leading: Padding(
                 padding: const EdgeInsets.all(8.0),
-
-
                 child: Icon(Icons.star,
-                    color:gender=='ذكر'?Color(0xff7e91cc):Color(0xfff45eff)),
 
-              ),
-              onTap: (){Navigator.push(context,
+                    color:gender=='ذكر'?Color(0xff7e91cc):Color(0xfff45eff)),),
+              onTap: (){
+                Navigator.push(context,
                   MaterialPageRoute(builder: (context)=>
-                      TeacherStudentMain(uid:document.data()['uid'],centerId: document.data()['center'],name: document.data()['name'],index: 0,teacherName: document.data()['teacherName'],) ));},
+                      TeacherStudentMain(uid:document.data()['uid'],centerId: document.data()['center'],name: document.data()['name'],index: 0,teacherName: document.data()['teacherName'],teacherId: document.data()['teacherId'],) ));},
+    ),
+
+
+
         )
         ),
-      ),
+
     );}
     ).toList()
     );

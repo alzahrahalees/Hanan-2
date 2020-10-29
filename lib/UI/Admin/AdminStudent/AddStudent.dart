@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Constance.dart';
-import '../../Student.dart';
+import 'Student.dart';
 import '../AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';
 
@@ -47,7 +47,7 @@ List <String> l;
   List<String>s;
   String _name;
   String _age;
-  String _email;
+  String _email='';
   String _phone;
   DateTime _Birthdate = DateTime.now();
   String _gender;
@@ -332,44 +332,41 @@ List <String> l;
                                   stream: Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج وظيفي" ).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
-    if (snapshot.hasData) {
-      Center(
-        child: const CupertinoActivityIndicator(),
-      );
-      return DropdownButton<String>(
-          value: _occupationalSpecialistName,
-          isDense: true,
-          hint: Text('إختر'),
-          onChanged: (newValue) {
-            setState(() {
-              _occupationalSpecialistName = newValue;
-            });
-            print(_occupationalSpecialistName);
-          },
-          items: snapshot.data.docs
-              .map((DocumentSnapshot document) {
-            return new DropdownMenuItem<String>(
-                value: document
-                    .data()["name"],
-                onTap: () {
-                  _occupationalSpecialistId = document
-                      .data()["uid"];
-                  print(_occupationalSpecialistId);
-                },
-                child: new Container(
-                  height: 25,
-                  //color: primaryColor,
-                  child:
-                  new Text(
-                    document.data()["name"],
-                  ),
-                ));
-          }).toList()
-      );
-    }
-                                  else{
+                                    if (snapshot.hasData) {
+                                      Center(
+                                         child: const CupertinoActivityIndicator(),
+                                      );
+                                      return DropdownButton<String>(
+                                          value: _occupationalSpecialistName,
+                                          isDense: true,
+                                          hint: Text('إختر'),
+                                          onChanged: (newValue) {
+                                            setState(() {
+                                            _occupationalSpecialistName = newValue;
+                                          });
+                                          print(_occupationalSpecialistName);
+                                          },
+                                          items: snapshot.data.docs.map((DocumentSnapshot document) {
+                                                return new DropdownMenuItem<String>(
+                                                    value: document.data()["name"],
+                                                    onTap: () {
+                                                      _occupationalSpecialistId = document.data()["uid"];
+                                                      print(_occupationalSpecialistId);
+                                                      },
+                                                    child: new Container(
+                                                      height: 25,
+                                                      //color: primaryColor,
+                                                      child:
+                                                      new Text(
+                                                        document.data()["name"],
+                                                      ),
+                                                    ));
+                                              }).toList()
+                                      );
+                                    }
+                                    else{
                                     return Text('');
-    }}),
+                                    }}),
                             ),
                           ],
                         ),
@@ -406,8 +403,7 @@ List <String> l;
                                                    .data()["name"],
                                                onTap: () {
                                                  _physiotherapySpecialistId =
-                                                 document
-                                                     .data()["uid"];
+                                                 document.data()["uid"];
                                                  print(
                                                      _physiotherapySpecialistId);
                                                },
@@ -460,8 +456,7 @@ List <String> l;
                                            items: snapshot.data.docs
                                                .map((
                                                DocumentSnapshot document) {
-                                             return new DropdownMenuItem<
-                                                 String>(
+                                             return new DropdownMenuItem<String>(
                                                  value: document
                                                      .data()["name"],
                                                  onTap: () {
@@ -493,7 +488,7 @@ List <String> l;
                             formKey: _formkey,
                               name: _name,
                               age: _age,
-                              email: _email,
+                              email: _email.toLowerCase(),
                               phone: _phone,
                               gender: _gender,
                               type: "Students",

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+
+
+
+
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -8,17 +12,17 @@ class HomePage extends StatefulWidget {
   }
 }
 
-
 class _HomePageState extends State<HomePage> {
   VideoPlayerController _videoController;
   int _playbackTime = 0;
   double _volume = 0.5;
 
   void _initPlayer() async {
-    _videoController = VideoPlayerController.network(
-        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4');
+    _videoController = VideoPlayerController.network('https://firebasestorage.googleapis.com/v0/b/hananz-5ffb9.appspot.com/o/0603422b-f493-4c50-875f-8961cf387490272372295182648310.mp4?alt=media&token=5f7b6313-f781-4cc5-9527-64e7ea45ff55');
     await _videoController.initialize();
-    setState(() {});
+    setState(() {
+
+    });
   }
 
   @override
@@ -36,8 +40,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _videoController.value.initialized ? _playerWidget() : Container(),
+      body: _videoController.value.initialized ?
+      SafeArea(child: _playerWidget()) : Text(
+          "لا يوجد"),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.deepPurple.shade200,
         onPressed: () {
           _videoController.value.isPlaying
               ? _videoController.pause()
@@ -52,32 +59,59 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _playerWidget() {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        AspectRatio(
-          aspectRatio: _videoController.value.aspectRatio,
-          child: VideoPlayer(_videoController),
-        ),
-        Slider(
-          value: _playbackTime.toDouble(),
-          max: _videoController.value.duration.inSeconds.toDouble(),
-          min: 0,
-          onChanged: (v) {
-            _videoController.seekTo(Duration(seconds: v.toInt()));
-          },
-        ),
-        Slider(
-          value: _volume,
-          max: 1,
-          min: 0,
-          onChanged: (v) {
-            _videoController.setVolume(v);
-          },
-        )
-      ],
+    return Container(
+      width: 500,
+      height: 500,
+      child: ListView(shrinkWrap: true,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(padding: EdgeInsets.all(8),),
+              AspectRatio(
+                aspectRatio: _videoController.value.aspectRatio,
+                child: VideoPlayer(_videoController),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.play_arrow
+                    ,color: Colors.deepPurple,
+                  ),
+                  Slider(
+                    activeColor: Colors.deepPurple,
+                    inactiveColor: Colors.deepPurple.shade50,
+                    value: _playbackTime.toDouble(),
+                    max: _videoController.value.duration.inSeconds.toDouble(),
+                    min: 0,
+                    onChanged: (v) {
+                      _videoController.seekTo(Duration(seconds: v.toInt()));
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.play_arrow
+                    ,color: Colors.deepPurple,
+                  ),
+                  Slider(
+                    activeColor: Colors.deepPurple,
+                    inactiveColor: Colors.deepPurple.shade50,
+                    value: _volume,
+                    max: 1,
+                    min: 0,
+                    onChanged: (v) {
+                      _videoController.setVolume(v);
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
+
 }
+

@@ -117,13 +117,12 @@ class _MainLogInState extends State<MainLogIn> {
                                 });
                                 isInAuth= await isReg();
                                 if(!isInAuth){
-                               dynamic type = await whoIs(
-                                    _email.text);
+                               dynamic type = await whoIs(_email.text.toLowerCase());
                                 print('inside onPress function $type');
                                 if (type == 'Teachers') {
                                   result =
                                   await _auth.signInWithEmailAndPassword(
-                                      email: _email.text,
+                                      email: _email.text.toLowerCase(),
                                       password: _password.text)
                                       .catchError((onError) =>
                                       setState(() {
@@ -143,7 +142,7 @@ class _MainLogInState extends State<MainLogIn> {
                                   result =
                                   await _auth.signInWithEmailAndPassword(
                                       email: _email.text,
-                                      password: _password.text)
+                                      password: _password.text.toLowerCase())
                                       .catchError((onError) =>
                                       setState(() {
                                         warningText =
@@ -154,13 +153,13 @@ class _MainLogInState extends State<MainLogIn> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SpecialistMainScreen(0)));
+                                                SpecialistMainScreen(index: 0)));
                                   }
                                 }
                                 else if (type == 'Students') {
                                   result =
                                   await _auth.signInWithEmailAndPassword(
-                                      email: _email.text,
+                                      email: _email.text.toLowerCase(),
                                       password: _password.text)
                                       .catchError((onError) =>
                                       setState(() {
@@ -178,7 +177,7 @@ class _MainLogInState extends State<MainLogIn> {
                                 else if (type == 'Admin') {
                                   result =
                                   await _auth.signInWithEmailAndPassword(
-                                      email: _email.text,
+                                      email: _email.text.toLowerCase(),
                                       password: _password.text)
                                       .catchError((onError) =>
                                       setState(() {
@@ -201,8 +200,8 @@ class _MainLogInState extends State<MainLogIn> {
                                 }
                                 }
                                 else{
-                                  isLoading=false;
                                   setState(() {
+                                    isLoading=false;
                                     warningText= 'الرجاء االضغط على التسجيل لأول مره لاستكمال التسجيل وتعيين كلمة سر جديدة';
                                   });
                                 }
@@ -269,8 +268,8 @@ class _MainLogInState extends State<MainLogIn> {
   Future<bool> isReg() async{
     String type;
     await FirebaseFirestore.instance
-        .collection('Users')
-        .where('email', isEqualTo: _email.text)
+        .collection('Users ')
+        .where('email', isEqualTo: _email.text.toLowerCase())
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs
@@ -283,7 +282,7 @@ class _MainLogInState extends State<MainLogIn> {
     authReslute = await FirebaseFirestore.instance.collection('NoAuth')
         .doc(_email.text.toLowerCase()).get();
 
-    bool isAdminReg = (authReslute.exists)& (type!='Admin') ;
+    bool isAdminReg = (authReslute.exists) & (type!='Admin') ;
     print ("#### inside isReg function $isAdminReg");
     return isAdminReg ;
   }
