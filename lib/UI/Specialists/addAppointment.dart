@@ -113,7 +113,11 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
-      'isChecked': false,
+      'sunIsChecked': false,
+      'monIsChecked': false,
+      'tueIsChecked': false,
+      'wedIsChecked': false,
+      'thuIsChecked': false,
     }).whenComplete(() => print('appointment added to specialist'))
         .catchError((err)=> print('### Err : $err ###'));
 
@@ -133,7 +137,11 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
-      'isChecked': false,
+      'sunIsChecked': false,
+      'monIsChecked': false,
+      'tueIsChecked': false,
+      'wedIsChecked': false,
+      'thuIsChecked': false,
     }).whenComplete(() => print('appointment added to student'))
         .catchError((err)=> print('### Err : $err ###'));
 
@@ -153,7 +161,11 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
-      'isChecked': false,
+      'sunIsChecked': false,
+      'monIsChecked': false,
+      'tueIsChecked': false,
+      'wedIsChecked': false,
+      'thuIsChecked': false,
     }).whenComplete(() {print('appointment added to teacher');
     })
         .catchError((err)=> print('### Err : $err ###'));
@@ -175,7 +187,11 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
-      'isChecked': false,
+      'sunIsChecked': false,
+      'monIsChecked': false,
+      'tueIsChecked': false,
+      'wedIsChecked': false,
+      'thuIsChecked': false,
     }).whenComplete(() => print('appointment added to teacher'))
         .catchError((err)=> print('### Err : $err ###'));
 

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hanan/UI/Specialists/Timer.dart';
 import '../Constance.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -119,7 +120,9 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
   @override
   Widget build(BuildContext context) {
 
+    String sDay = whatDay(_currentIndex);
     User user = FirebaseAuth.instance.currentUser;
+    DaysTimer _daysTimer = DaysTimer();
     var _studentName='';
     int _hour=0;
     int _min=0;
@@ -128,6 +131,34 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
     CollectionReference student=FirebaseFirestore.instance.collection('Students')
         .doc(widget.studentId).collection('Appointments');
 
+    void _updateIsChecked(String teacherId, String studentId, appointmentId) async{
+
+      //update in teacher
+      await FirebaseFirestore.instance.collection('Teachers')
+          .doc(teacherId).collection('Appointments').doc(appointmentId)
+          .update({'${sDay}IsChecked': _isChecked,})
+          .whenComplete(() => print('isChecked updated in teachers'))
+          .catchError((e)=> print('### Err: $e ####'));
+
+      //update in specialist
+      await FirebaseFirestore.instance.collection('Specialists')
+          .doc(FirebaseAuth.instance.currentUser.email)
+          .collection('Appointments').doc(appointmentId)
+          .update({'${sDay}IsChecked': _isChecked,})
+          .whenComplete(() => print('isChecked updated in Specialists'))
+          .catchError((e)=> print('### Err: $e ####'));
+
+      //update in student
+      await FirebaseFirestore.instance.collection('Students')
+          .doc(studentId).collection('Appointments').doc(appointmentId)
+          .update({'${sDay}IsChecked': _isChecked,})
+          .whenComplete(() {
+        print('isChecked updated in Students');
+
+      })
+          .catchError((e)=> print('### Err: $e ####'));
+
+    }
 
 
     return DefaultTabController(
@@ -145,6 +176,7 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
+                sDay=whatDay(_currentIndex);
               });
             },
             tabs: [
@@ -178,7 +210,7 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
                         _hour= hourEditor(document.data()['hour']);
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
-                        _isChecked= document.data()['isChecked'];
+                        _isChecked= document.data()['${sDay}IsChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
@@ -188,6 +220,35 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Checkbox(
+                                      activeColor: kUnselectedItemColor,
+                                      checkColor: Colors.white70 ,
+                                      value: _isChecked,
+                                      onChanged: (check)  {
+
+                                        setState(() {
+                                          _isChecked = check;
+                                          print(_isChecked);
+                                        });
+
+                                        _updateIsChecked( document.data()['teacherId'],
+                                            document.data()['studentId'],
+                                            document.id);
+
+                                        _daysTimer.startTimer(document.data()['teacherId'],
+                                            document.data()['studentId'],
+                                            FirebaseAuth.instance.currentUser.email,
+                                            document.id, sDay);
+
+
+
+
+                                      },
+                                    ),
+                                  ),
+
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(_studentName, style: TextStyle(

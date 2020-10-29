@@ -124,13 +124,14 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher>  with TickerP
   Widget build(BuildContext context) {
 
 
+    String sDay = whatDay(_currentIndex);
     var _studentName='';
     var _specialistName='';
     var _specialistType='';
     int _hour=0;
     int _min=0;
     String _time='ص';
-    bool _isChecked;
+    bool _isChecked=false;
 
     CollectionReference teacher= FirebaseFirestore.instance.collection('Students')
         .doc(widget.studentId).collection('Appointments');
@@ -151,7 +152,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher>  with TickerP
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
-                print(_currentIndex);
+                sDay=whatDay(_currentIndex);
               });
             },
             tabs: [
@@ -188,7 +189,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher>  with TickerP
                         _hour= hourEditor(document.data()['hour']);
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
-                        _isChecked= document.data()['isChecked'];
+                        _isChecked= document.data()['${sDay}IsChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
