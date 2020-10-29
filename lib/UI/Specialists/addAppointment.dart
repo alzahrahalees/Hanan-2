@@ -20,7 +20,7 @@ class _AddAppointmentState extends State<AddAppointment> {
   bool _tue;
   bool _wed;
   bool _thu;
-  List<String> _theDays =[];
+
   String _studentName;
   String _studentId = '';
   String _teacherId;
@@ -154,7 +154,8 @@ class _AddAppointmentState extends State<AddAppointment> {
       'wed': _wed,
       'thu': _thu,
       'isChecked': false,
-    }).whenComplete(() => print('appointment added to teacher'))
+    }).whenComplete(() {print('appointment added to teacher');
+    })
         .catchError((err)=> print('### Err : $err ###'));
 
     // add To Student In Center
@@ -182,19 +183,23 @@ class _AddAppointmentState extends State<AddAppointment> {
 
 
   // call all functions
-  _addAppointment()async{
-    _teacherId = await _teacherUID(_studentId);
-    _specialistName= await _getSpecialistName();
-    _specialistType= await _getSpecialistType();
-    _centerId = await _getCenterID();
-    _addToDB(_teacherId,_specialistName,_specialistType,_centerId);
-    _theDays.clear();
-    Navigator.pop(context);
-  }
+
 
 
   @override
   Widget build(BuildContext context) {
+    List<String> _theDays;
+
+    _addAppointment()async{
+      _teacherId = await _teacherUID(_studentId);
+      _specialistName= await _getSpecialistName();
+      _specialistType= await _getSpecialistType();
+      _centerId = await _getCenterID();
+      _addToDB(_teacherId,_specialistName,_specialistType,_centerId);
+      _theDays.clear();
+      Navigator.pop(context);
+
+    }
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -340,7 +345,8 @@ class _AddAppointmentState extends State<AddAppointment> {
                         });
                       }
                       else{
-                        _theDays.isEmpty == true?
+                        print(_theDays.isNotEmpty);
+                        _theDays.isNotEmpty == false?
                         setState(() {
                           warningText='الرجاء اختيار الأيام';})
                             : _addAppointment();

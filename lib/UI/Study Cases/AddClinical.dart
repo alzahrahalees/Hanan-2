@@ -264,8 +264,25 @@ class _AddClinicalState extends State<AddClinical> {
                              '_HospitalExtPhone':_HospitalExtPhone ,
                              'editBy' :_currentUserName,
                             })
-                                .whenComplete(() => Navigator.pop(context))
-                                .catchError((err) => print(err));
+                                .whenComplete(()  {Navigator.pop(context);
+                            Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                    backgroundColor: Colors.white70,
+                                    content: Text(
+                                      'تم إضافة المعلومات',
+                                      style: TextStyle(color: Colors.deepPurple, fontSize: 12),
+                                    )
+                                ));
+                                })
+                                .catchError((err)  {print(err);
+                                Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                    backgroundColor: Colors.red[200],
+                                    content: Text(
+                                      'يوجد خطأ الرجاء المحاولة في وقت لاحق',
+                                      style: TextStyle(color: Colors.deepPurple, fontSize: 12),
+                                    )
+                                ));});
                           },
                         ),
                       ),

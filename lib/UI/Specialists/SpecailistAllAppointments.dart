@@ -200,7 +200,10 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
       await FirebaseFirestore.instance.collection('Students')
           .doc(studentId).collection('Appointments').doc(appointmentId)
           .update({'isChecked': _isChecked,})
-          .whenComplete(() => print('isChecked updated in Students'))
+          .whenComplete(() {
+            print('isChecked updated in Students');
+
+          })
           .catchError((e)=> print('### Err: $e ####'));
 
     }
@@ -310,6 +313,9 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                                             FirebaseAuth.instance.currentUser.email,
                                             document.id);
 
+
+
+
                                       },
                                     ),
                                   ),
@@ -358,7 +364,18 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                                                   sudentId:  document.data()['studentId'],
                                                   teacherId: document.data()['teacherId'],
                                                   appointmentId: document.id);
+                                              Scaffold.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor: Colors.white70,
+                                                      elevation: 15,
+                                                      content: Text(
+                                                        'تم حذف الموعد',
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(color: Colors.deepPurple, fontSize: 15,fontWeight: FontWeight.bold),
+                                                      )
+                                                  ));
                                               Navigator.pop(context);
+
                                               },
 
                                               color: kButtonColor,
