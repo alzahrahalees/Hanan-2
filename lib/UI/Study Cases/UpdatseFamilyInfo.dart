@@ -347,7 +347,10 @@ class _UpdateFamilyInfoState extends State<UpdateFamilyInfo> {
                             height: 30,
                             width: 250,
                             child: CupertinoDatePicker(
-                              initialDateTime: DateTime(_fatherBirthYear,_fatherBirthMonth,_fatherBirthDay),
+                              initialDateTime: DateTime(
+                                 _fatherBirthYear==null? DateTime.now().year: _fatherBirthYear,
+                                  _fatherBirthMonth==null? DateTime.now().month: _fatherBirthMonth,
+                                  _fatherBirthDay==null? DateTime.now().day: _fatherBirthDay),
                               mode: CupertinoDatePickerMode.date,
                               onDateTimeChanged: (dateTime) {
                                 setState(() {
@@ -883,9 +886,9 @@ class _UpdateFamilyInfoState extends State<UpdateFamilyInfo> {
                                 ? _data.data()['_motherNumChildren']
                                 : _motherNumChildren,
 
-                            '_motherBirthYear': _motherBirthYear,
-                            '_motherBirthMonth': _motherBirthMonth,
-                            '_motherBirthDay': _motherBirthDay,
+                            '_motherBirthYear': _motherBirthYear==null? DateTime.now().year: _motherBirthYear,
+                            '_motherBirthMonth': _motherBirthMonth==null? DateTime.now().month: _motherBirthMonth,
+                            '_motherBirthDay': _motherBirthDay==null? DateTime.now().day: _motherBirthDay,
 
                             '_motherEducation': _motherEducation == null
                                 ? _data.data()['_motherEducation']
@@ -918,9 +921,9 @@ class _UpdateFamilyInfoState extends State<UpdateFamilyInfo> {
                                 ? _data.data()['_fatherNumMarried']
                                 : _fatherNumChildren,
 
-                            '_fatherBirthYear': _fatherBirthYear,
-                            '_fatherBirthMonth': _fatherBirthMonth,
-                            '_fatherBirthDay': _fatherBirthDay,
+                            '_fatherBirthYear': _fatherBirthYear==null? DateTime.now().year: _fatherBirthYear,
+                            '_fatherBirthMonth': _fatherBirthMonth==null? DateTime.now().month: _fatherBirthMonth,
+                            '_fatherBirthDay': _fatherBirthDay==null? DateTime.now().day: _fatherBirthDay,
 
                             '_fatherEducation': _fatherEducation == null
                                 ? _data.data()['_fatherEducation']

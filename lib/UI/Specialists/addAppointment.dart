@@ -15,11 +15,11 @@ class _AddAppointmentState extends State<AddAppointment> {
 
 
   User user = FirebaseAuth.instance.currentUser;
-  bool _sun;
-  bool _mon;
-  bool _tue;
-  bool _wed;
-  bool _thu;
+  bool _sun= false;
+  bool _mon= false;
+  bool _tue= false;
+  bool _wed= false;
+  bool _thu= false;
 
   String _studentName;
   String _studentId = '';
@@ -188,7 +188,8 @@ class _AddAppointmentState extends State<AddAppointment> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> _theDays;
+    List<String> _theDays=[];
+    List<String> _empty=[];
 
     _addAppointment()async{
       _teacherId = await _teacherUID(_studentId);
@@ -196,7 +197,9 @@ class _AddAppointmentState extends State<AddAppointment> {
       _specialistType= await _getSpecialistType();
       _centerId = await _getCenterID();
       _addToDB(_teacherId,_specialistName,_specialistType,_centerId);
-      _theDays.clear();
+      print('Before:  $_theDays');
+      _theDays=[];
+      print(_theDays);
       Navigator.pop(context);
 
     }
@@ -342,15 +345,16 @@ class _AddAppointmentState extends State<AddAppointment> {
                       if(_studentName==null)  {
                         setState(() {
                           warningText='الرجاء اختيار اسم';
+                          // print(_theDays);
                         });
                       }
-                      else{
-                        print(_theDays.isNotEmpty);
-                        _theDays.isNotEmpty == false?
-                        setState(() {
-                          warningText='الرجاء اختيار الأيام';})
-                            : _addAppointment();
+                      else if (_theDays.isEmpty){
 
+                        setState(() {
+                          warningText='الرجاء اختيار الأيام';});
+                      }
+                      else{
+                        _addAppointment();
                       }
                     },
                   ),
