@@ -55,6 +55,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(color: kUnselectedItemColor),
           title: Text("إضافة معلم ", style: kTextAppBarStyle),
           centerTitle: true,
           backgroundColor: kAppBarColor,

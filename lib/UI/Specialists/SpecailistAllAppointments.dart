@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,45 +7,57 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'addAppointment.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'Timer.dart';
 
 
 
 
 class AllAppointmentsSpecialist extends StatefulWidget {
+
+
+  const AllAppointmentsSpecialist({Key key}) : super(key: key);
   @override
   _AllAppointmentsSpecialistState createState() => _AllAppointmentsSpecialistState();
 }
 
-class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> {
-  @override
+class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> with TickerProviderStateMixin{
+
 
   CollectionReference specialist= FirebaseFirestore.instance.collection('Specialists')
       .doc(FirebaseAuth.instance.currentUser.email).collection('Appointments');
-  int _currentIndex=0;
 
-  String whatDay(int index){
-    String day;
+
+
+  int whatDayIndex(){
+    int weekday;
+    int index= DateTime.now().weekday;
     switch(index) {
-      case 0: { setState(() {day= 'sun'; print(day);});}
+      case 1: { setState(() {weekday=1; }); }
       break;
 
-      case 1: { setState(() {day= 'mon'; print(day);}); }
+      case 2: { setState(() {weekday= 2; }); }
       break;
 
-      case 2: {setState(() {day= 'tue';print(day);});}
+      case 3: {setState(() {weekday=3 ;});}
       break;
 
-      case 3: {setState(() {day= 'wed';print(day);});}
+      case 4: {setState(() {weekday=4 ;});}
       break;
 
-      case 4: {setState(() {day= 'thu';print(day);});}
+      case 5: {setState(() {weekday=0 ;});}
       break;
 
-      default: {setState(() {day= 'sunday';print(day);});}
+      case 6: {setState(() {weekday=0 ;});}
+      break;
+
+      case 7: {setState(() {weekday=0 ;});}
+      break;
+
+      default: {setState(() {weekday=0 ;});}
       break;
     }
 
-    return day;
+    return weekday;
   }
 
 
@@ -109,14 +122,90 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> {
     else return true;
   }
 
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+   setState(() {
+     _currentIndex=whatDayIndex();
+     _tabController = TabController(vsync: this, length: 5, initialIndex: whatDayIndex());
+   });
+  }
+
+
+  int _currentIndex;
+  String whatDay(int index){
+    String day;
+    switch(index) {
+      case 0: { setState(() {day= 'sun'; }); }
+      break;
+
+      case 1: { setState(() {day= 'mon'; }); }
+      break;
+
+      case 2: {setState(() {day= 'tue';});}
+      break;
+
+      case 3: {setState(() {day= 'wed';});}
+      break;
+
+      case 4: {setState(() {day= 'thu';});}
+      break;
+
+      default: {setState(() {day= 'sunday';});}
+      break;
+    }
+
+    return day;
+  }
+
+
+
+  @override
   Widget build(BuildContext context) {
 
-    String sDay = 'sunday';
+    DaysTimer _daysTimer = DaysTimer();
     var studentName='';
     int hour=0;
     int min=0;
     String time='ص';
+
+    bool _isChecked ;
+
+    void _updateIsChecked(String teacherId, String studentId, appointmentId) async{
+
+      //update in teacher
+       await FirebaseFirestore.instance.collection('Teachers')
+           .doc(teacherId).collection('Appointments').doc(appointmentId)
+           .update({'isChecked': _isChecked,})
+           .whenComplete(() => print('isChecked updated in teachers'))
+           .catchError((e)=> print('### Err: $e ####'));
+
+       //update in specialist
+      await FirebaseFirestore.instance.collection('Specialists')
+          .doc(FirebaseAuth.instance.currentUser.email)
+          .collection('Appointments').doc(appointmentId)
+          .update({'isChecked': _isChecked,})
+          .whenComplete(() => print('isChecked updated in Specialists'))
+          .catchError((e)=> print('### Err: $e ####'));
+
+      //update in student
+      await FirebaseFirestore.instance.collection('Students')
+          .doc(studentId).collection('Appointments').doc(appointmentId)
+          .update({'isChecked': _isChecked,})
+          .whenComplete(() => print('isChecked updated in Students'))
+          .catchError((e)=> print('### Err: $e ####'));
+
+    }
+
+
 
     return DefaultTabController(
       length: 5,
@@ -148,13 +237,13 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> {
           automaticallyImplyLeading: false,
           toolbarHeight: 48,
           bottom: TabBar(
+            controller: _tabController,
             labelColor: kSelectedItemColor,
             indicatorColor: kSelectedItemColor,
             unselectedLabelColor: kUnselectedItemColor,
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
-                print(_currentIndex);
               });
             },
             tabs: [
@@ -189,9 +278,11 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> {
                         hour= hourEditor(document.data()['hour']);
                         min=document.data()['min'];
                         time= dayOrNight(hour);
+                        _isChecked= document.data()['isChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
+                            color: _isChecked? Colors.white24 : Colors.white70,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
@@ -199,16 +290,45 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
+                                    child: Checkbox(
+                                      activeColor: kUnselectedItemColor,
+                                      checkColor: Colors.white70 ,
+                                      value: _isChecked,
+                                      onChanged: (check)  {
+
+                                        setState(() {
+                                          _isChecked = check;
+                                          print(_isChecked);
+                                        });
+
+                                       _updateIsChecked( document.data()['teacherId'],
+                                          document.data()['studentId'],
+                                          document.id);
+
+                                        _daysTimer.startTimer(document.data()['teacherId'],
+                                            document.data()['studentId'],
+                                            FirebaseAuth.instance.currentUser.email,
+                                            document.id);
+
+                                      },
+                                    ),
+                                  ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Text(studentName, style: TextStyle(
-                                        fontSize: 18, fontWeight: FontWeight.bold,
-                                        color: Colors.black54
+                                        decoration: _isChecked? TextDecoration.lineThrough : null,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: _isChecked? Colors.black38 : Colors.black54
                                     ),),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text('$min : $hour    $time', style: TextStyle(
+                                        decoration: _isChecked? TextDecoration.lineThrough : null,
                                         fontSize: 18, fontWeight: FontWeight.bold,
-                                        color: Colors.black54
+                                        color: _isChecked? Colors.black38 : Colors.black54
                                     ),),
                                   ),
                                   GestureDetector(
@@ -234,7 +354,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> {
                                                 style: TextStyle(color: Colors.white, fontSize: 20),
                                               ),
                                               onPressed: () {  deleteFromDB(
-                                                  day: 'sun',
+                                                  day: whatDay(_currentIndex),
                                                   sudentId:  document.data()['studentId'],
                                                   teacherId: document.data()['teacherId'],
                                                   appointmentId: document.id);

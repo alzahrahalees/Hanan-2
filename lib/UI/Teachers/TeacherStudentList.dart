@@ -25,6 +25,7 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
 
     CollectionReference studentsInTeachrs = FirebaseFirestore.instance.collection('Students');
 
+
     return StreamBuilder<QuerySnapshot>(
       stream: studentsInTeachrs.where('teacherId',isEqualTo: user.email).snapshots(),
         builder: ( context, snapshot) {
@@ -72,14 +73,18 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
     ),
 
 
+          )
+          ),
+        );
 
-        )
-        ),
-
-    );}
+    }
     ).toList()
+
+      )
+      ;}
+
+      }
     );
-    }} );
       }
   }
 

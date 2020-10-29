@@ -238,9 +238,7 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                                                 height: 40,
                                                 width: 200,
                                                 child: DropdownButton(
-                                                  hint: Text(
-                                                    document.data()[
-                                                        'typeOfSpechalist'],
+                                                  hint: Text(document.data()['typeOfSpechalist'],
                                                     style: TextStyle(
                                                         color: Colors.black),
                                                   ),

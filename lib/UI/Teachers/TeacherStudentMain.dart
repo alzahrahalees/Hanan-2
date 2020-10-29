@@ -4,7 +4,12 @@ import 'TeacherDiaries.dart';
 import 'TeacherPlans.dart';
 import 'TeacherStudentAppointment.dart';
 import 'TeacherStudentInfo.dart';
+
 import 'package:flutter/src/widgets/framework.dart';
+
+import '../Study Cases/mainStudyCasesScreen.dart';
+
+
 
 class TeacherStudentMain extends StatefulWidget {
 
@@ -43,7 +48,10 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> _screens=[DiariesTeacher(uid: uid,name: name,centerId: centerId,teacherName: teacherName,teacherId:teacherId),AppointmentsTeacher(uid),PlansTeacher(),TeacherStudentInfo()];
+
+    List<Widget> _screens=[DiariesTeacher(uid: uid,name: name,centerId: centerId,teacherName: teacherName,teacherId:teacherId),AppointmentsTeacher(uid),PlansTeacher(),StudyCaseScreen(uid)];
+
+
     List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
 
 
@@ -51,7 +59,7 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
-          backgroundColor: kAppBarColor,
+          backgroundColor: kBackgroundPageColor,
           selectedItemColor:kSelectedItemColor,
           unselectedItemColor:kUnselectedItemColor,
           selectedFontSize: 20,
@@ -88,6 +96,7 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
               SliverAppBar(
                 backgroundColor: kAppBarColor,
                 title: Text('${_titles[currentIndex]} $name', style: kTextAppBarStyle),
+                elevation: 10,
                 centerTitle: true,
                 floating: false,
               ),

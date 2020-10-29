@@ -8,7 +8,6 @@ import '../Constance.dart';
 import 'TeacherAllAppointments.dart';
 import 'TeacherStudentList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'notifications.dart';
 
 class TeacherMainScreen extends StatefulWidget {
@@ -140,7 +139,7 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
               SliverAppBar(
                 iconTheme: IconThemeData(color: Colors.black54),
                 backgroundColor: kAppBarColor,
-               actions : [IconButton (icon:Icon(Icons.notifications,color: Colors.deepPurple.shade400,),
+               actions : [IconButton (icon:Icon(Icons.notifications,color: Colors.yellow.shade100,),
                onPressed: (){
                  Navigator.push(
                    context,

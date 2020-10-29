@@ -8,7 +8,7 @@ const kTitleOfProject = "SECS Hanan";
 const Color kAppBarColor = Color(0xFFe1d0ed);
 const Color kWolcomeBkg = Color(0xFFede3fc);
 const Color kBackgroundPageColor = Color(0xFFeeeeee);
-const Color kCardColor = Color(0xffededed);
+const Color kCardColor = Color(0xfff4f4f4);
 const Color kButtonColor = Color(0xFFB39DDB);
 const kSelectedItemColor = Color(0xff5F3E60);
 const kUnselectedItemColor = Color(0xff9181bd);
@@ -91,17 +91,20 @@ class KNormalTextFormField extends StatelessWidget {
   final String validatorText;
   final String hintText;
   final Function onChanged;
+  String title = '';
+  bool readOnly = false;
 
 
   KNormalTextFormField(
-      {this.hintText, this.validatorText, this.controller, this.onChanged});
+      {this.hintText, this.validatorText, this.controller, this.onChanged,this.title,this.readOnly});
 
   Widget build(BuildContext context) {
     return TextFormField(
 
+      readOnly: readOnly==null? false: readOnly,
+      initialValue: title,
       controller: controller,
       decoration: InputDecoration(
-
         labelText:  "$hintText",
       ),
       validator: (value) {
@@ -119,12 +122,16 @@ class KNormalTextFormFieldLines extends StatelessWidget {
   final String validatorText;
   final String hintText;
   final Function onChanged;
+  final String initialValue;
+  bool readOnly;
 
   KNormalTextFormFieldLines(
-      {this.hintText, this.validatorText, this.controller, this.onChanged});
+      {this.hintText, this.validatorText, this.controller, this.onChanged, this.initialValue,this.readOnly});
 
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly==null? false: readOnly,
+      initialValue: initialValue,
       maxLines: 6,
       minLines: 1,
       controller: controller,
@@ -322,14 +329,16 @@ class _KDropDownListState extends State<KDropDownList> {
   @override
   Widget build(BuildContext context) {
     return Row(children: <Widget>[
-      new Padding(padding: new EdgeInsets.all(5)),
-      Text("$textBehind", style: kTextPageStyle.copyWith(color: Colors.grey)),
+      textBehind==null?
+      SizedBox()
+          :Text("$textBehind", style: kTextPageStyle.copyWith(color: Colors.grey)),
       new Padding(padding: new EdgeInsets.all(7)),
       Expanded(
           child: SizedBox(
         height: 40,
         width: 200,
         child: DropdownButton(
+
           hint: Text('$hintText'),
           // Not necessary for Option 1
           value: selected,
@@ -381,6 +390,8 @@ class _MultiSelectState extends State<MultiSelect> {
     return Container(
       padding: EdgeInsets.all(16),
       child: MultiSelectFormField(
+
+        hintWidget: Center(child: Text('اضغط لاختيار واحدة أو أكثر')),
         fillColor: kBackgroundPageColor,
         autovalidate: false,
         title:Text('النمو الإنفعالي'),
@@ -439,7 +450,7 @@ class _MultiSelectState extends State<MultiSelect> {
         // hintText: ' الرجاء تحديد خيار أو أكثر',
         initialValue: list,
         onSaved: (value) {
-          if (value == null) return;
+          if (value == null)
           setState(() {
             list = value;
           });

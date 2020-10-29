@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
-import 'AddCase.dart';
+import '../Study Cases/AddCase.dart';
 class TeacherStudentInfo extends StatefulWidget {
   @override
   _TeacherStudentInfoState createState() => _TeacherStudentInfoState();

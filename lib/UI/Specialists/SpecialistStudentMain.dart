@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Specialists/student.dart';
+import 'package:hanan/UI/Study%20Cases/mainStudyCasesScreen.dart';
 import '../Constance.dart';
 import 'SpecialistDiaries.dart';
 import 'SpecialistPlans.dart';
@@ -44,7 +45,7 @@ class _SpecialistStudentMainState extends State<SpecialistStudentMain> {
   Widget build( context) {
 
     List<String> _titles=["مواعيد ","خطط","معلومات "];
-    List<Widget> _screens=[AppointmentsSpecialist(studentId: _studentId),PlansSpecialist(),SpecialistStudentInfo()];
+    List<Widget> _screens=[AppointmentsSpecialist(studentId: _studentId),PlansSpecialist(),StudyCaseScreen(widget.studentId)];
     StudentSp studentInfo= StudentSp();
 
 
@@ -52,7 +53,7 @@ class _SpecialistStudentMainState extends State<SpecialistStudentMain> {
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
-          backgroundColor: kAppBarColor,
+          backgroundColor: kBackgroundPageColor,
           selectedItemColor:kSelectedItemColor,
           unselectedItemColor:kUnselectedItemColor,
           selectedFontSize: 20,

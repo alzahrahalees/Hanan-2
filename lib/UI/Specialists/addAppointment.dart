@@ -26,6 +26,7 @@ class _AddAppointmentState extends State<AddAppointment> {
   String _teacherId;
   String _specialistName;
   String _specialistType;
+  String _centerId;
   int _hour=DateTime.now().hour;
   int _min= DateTime.now().minute;
   Color _color= Colors.black54;
@@ -77,12 +78,25 @@ class _AddAppointmentState extends State<AddAppointment> {
     return type;
 
   }
+  Future<String> _getCenterID() async{
+    String centerId;
+    await FirebaseFirestore.instance.collection('Specialists')
+        .doc(user.email).get()
+        .then((doc)  {
+      centerId= doc.data()['center'];
+      print('insid get center Id function : $centerId');
+    });
+    return centerId;
+
+  }
 
   //add the appointment to DB
-  _addToDB(String teacherId, String specialistName, String specialistType){
+  _addToDB(String teacherId, String specialistName, String specialistType, String _centerId){
     Random ran=Random();
-    int num=ran.nextInt(1000000);
+    int num=ran.nextInt(100000000);
     String docId= _studentId+num.toString();
+
+
     //add to Specialists
     FirebaseFirestore.instance.collection('Specialists')
         .doc(user.email).collection('Appointments').doc(docId).set({
@@ -99,6 +113,7 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
+      'isChecked': false,
     }).whenComplete(() => print('appointment added to specialist'))
         .catchError((err)=> print('### Err : $err ###'));
 
@@ -118,6 +133,7 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
+      'isChecked': false,
     }).whenComplete(() => print('appointment added to student'))
         .catchError((err)=> print('### Err : $err ###'));
 
@@ -137,6 +153,28 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
+      'isChecked': false,
+    }).whenComplete(() => print('appointment added to teacher'))
+        .catchError((err)=> print('### Err : $err ###'));
+
+    // add To Student In Center
+    FirebaseFirestore.instance.collection('Centers')
+        .doc(_centerId).collection('Students')
+        .doc(_studentId).collection('Appointments').doc(docId).set({
+      'name': _studentName,
+      'studentId': _studentId,
+      'specialistId': user.email,
+      'teacherId': teacherId,
+      'specialistName':specialistName,
+      'specialistType':specialistType,
+      'hour': _hour,
+      'min':_min,
+      'sun': _sun,
+      'mon': _mon,
+      'tue': _tue,
+      'wed': _wed,
+      'thu': _thu,
+      'isChecked': false,
     }).whenComplete(() => print('appointment added to teacher'))
         .catchError((err)=> print('### Err : $err ###'));
 
@@ -148,7 +186,8 @@ class _AddAppointmentState extends State<AddAppointment> {
     _teacherId = await _teacherUID(_studentId);
     _specialistName= await _getSpecialistName();
     _specialistType= await _getSpecialistType();
-    _addToDB(_teacherId,_specialistName,_specialistType);
+    _centerId = await _getCenterID();
+    _addToDB(_teacherId,_specialistName,_specialistType,_centerId);
     _theDays.clear();
     Navigator.pop(context);
   }
@@ -301,10 +340,11 @@ class _AddAppointmentState extends State<AddAppointment> {
                         });
                       }
                       else{
-                        _theDays.isNotEmpty? _addAppointment() :
+                        _theDays.isEmpty == true?
                         setState(() {
-                          warningText='الرجاء اختيار الأيام';
-                        });
+                          warningText='الرجاء اختيار الأيام';})
+                            : _addAppointment();
+
                       }
                     },
                   ),

@@ -17,8 +17,58 @@ class AppointmentsTeacher extends StatefulWidget {
   _AppointmentsTeacherState createState() => _AppointmentsTeacherState();
 }
 
-class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
+class _AppointmentsTeacherState extends State<AppointmentsTeacher>  with TickerProviderStateMixin{
+
+
+  int whatDayIndex(){
+    int weekday;
+    int index= DateTime.now().weekday;
+    switch(index) {
+      case 1: { setState(() {weekday=1; }); }
+      break;
+
+      case 2: { setState(() {weekday= 2; }); }
+      break;
+
+      case 3: {setState(() {weekday=3 ;});}
+      break;
+
+      case 4: {setState(() {weekday=4 ;});}
+      break;
+
+      case 5: {setState(() {weekday=0 ;});}
+      break;
+
+      case 6: {setState(() {weekday=0 ;});}
+      break;
+
+      case 7: {setState(() {weekday=0 ;});}
+      break;
+
+      default: {setState(() {weekday=0 ;});}
+      break;
+    }
+
+    return weekday;
+  }
+
+
   @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _currentIndex=whatDayIndex();
+      _tabController = TabController(vsync: this, length: 5, initialIndex: whatDayIndex());
+    });
+  }
 
 
 
@@ -80,7 +130,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
     int _hour=0;
     int _min=0;
     String _time='ص';
-
+    bool _isChecked;
 
     CollectionReference teacher= FirebaseFirestore.instance.collection('Students')
         .doc(widget.studentId).collection('Appointments');
@@ -94,6 +144,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
           automaticallyImplyLeading: false,
           toolbarHeight: 48,
           bottom: TabBar(
+            controller: _tabController,
             labelColor: kSelectedItemColor,
             indicatorColor: kSelectedItemColor,
             unselectedLabelColor: kUnselectedItemColor,
@@ -137,9 +188,11 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
                         _hour= hourEditor(document.data()['hour']);
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
+                        _isChecked= document.data()['isChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
+                            color: _isChecked? Colors.white24 : Colors.white70,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
@@ -148,6 +201,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(_studentName, style: TextStyle(
+                                        decoration: _isChecked? TextDecoration.lineThrough : null,
                                         fontSize: 18, fontWeight: FontWeight.bold,
                                         color: Colors.black54
                                     ),),
@@ -155,6 +209,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text('$_min : $_hour    $_time', style: TextStyle(
+                                        decoration: _isChecked? TextDecoration.lineThrough : null,
                                         fontSize: 18, fontWeight: FontWeight.bold,
                                         color: Colors.black54
                                     ),),
@@ -165,6 +220,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher> {
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(_specialistName,style: TextStyle(
+                                            decoration: _isChecked? TextDecoration.lineThrough : null,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black54

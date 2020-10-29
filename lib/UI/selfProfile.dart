@@ -38,7 +38,7 @@ class _ProfileState extends State<Profile> {
           automaticallyImplyLeading: true,
         ),
         body: Container(
-          color: kWolcomeBkg,
+          color: kBackgroundPageColor,
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('Users')

@@ -92,6 +92,10 @@ class AddStudent extends StatelessWidget {
         'physiotherapySpecialistId':physiotherapySpecialistId,
       });
 
+      var addStudyCasesF= Students.doc(email.toLowerCase()).collection('StudyCases').doc(email.toLowerCase()+'family').set({});
+      var addStudyCasesC= Students.doc(email.toLowerCase()).collection('StudyCases').doc(email.toLowerCase()+'clinical').set({});
+      var addStudyCasesS= Students.doc(email.toLowerCase()).collection('StudyCases').doc(email.toLowerCase()+'info').set({});
+
       var addToAdminStudent = Admin_Students.doc(email.toLowerCase()).set({
         "isAuth":false,
         'center': userAdmin.email.toLowerCase(),

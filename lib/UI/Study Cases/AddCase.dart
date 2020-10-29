@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'TeacherStudentInfo.dart';
+import '../Teachers/TeacherStudentInfo.dart';
 import '../Constance.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -156,7 +156,8 @@ class _AddCaseState extends State<AddCase> {
                 alignment: Alignment.topCenter,
                 child: Form(
                     key: _formkey,
-                    child: ListView(shrinkWrap: true, children: <Widget>[
+                    child: ListView(
+                        shrinkWrap: true, children: <Widget>[
                       new Column(children: <Widget>[
                         kDatePicker(_interviewDate, "تاريخ المقابلة"),
                         //mother info
