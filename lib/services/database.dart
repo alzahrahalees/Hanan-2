@@ -1,7 +1,7 @@
 // import 'package:brew_crew/models/brew.dart';
 // import 'package:brew_crew/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'file:///C:/Users/Zahraa/Documents/flutter_test/Hanan-2/lib/UI/Admin/AdminTeacher/Teacher.dart';
+
 //
 class DatabaseService {
 

@@ -394,7 +394,7 @@ class _MultiSelectState extends State<MultiSelect> {
         hintWidget: Center(child: Text('اضغط لاختيار واحدة أو أكثر')),
         fillColor: kBackgroundPageColor,
         autovalidate: false,
-        title: Text('النمو الإنفعالي'),
+        title:Text('النمو الإنفعالي'),
         validator: (value) {
           if (value == null || value.length == 0) {
             return 'مطلوب';
@@ -562,6 +562,63 @@ class ProfileTile extends StatelessWidget {
                     initialValue: title,
                     decoration: InputDecoration(
                         helperText: readOnly?  "لايمكن تغييره": '' ,
+                        labelText: hintTitle
+                    ),
+                    onChanged: onChanged,
+                    validator:  (value){
+                      if (value.isEmpty) {
+                        return "لا يمكن تركها فارغة";
+                      }
+                      else return null;
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileTileTwo extends StatelessWidget {
+
+  final  icon;
+  final String hintTitle;
+  final String title;
+  final Color color;
+  final Function onChanged;
+
+  final bool readOnly;
+
+
+  const ProfileTileTwo({this.readOnly,this.onChanged,this.icon, this.hintTitle, this.title, this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
+      child: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Circle(
+                child: Icon(icon),
+                color: color,
+              ),
+              SizedBox(width: 10),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Container(
+                  width: 200,
+                  child: TextFormField(
+                    readOnly: readOnly,
+                    initialValue: title,
+                    decoration: InputDecoration(
+                        //helperText: readOnly?  "لايمكن تغييره": '' ,
                         labelText: hintTitle
                     ),
                     onChanged: onChanged,

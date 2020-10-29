@@ -4,7 +4,7 @@ import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hanan/UI/Admin/AdminTeacher/TeacherDetails.dart';
 import 'package:hanan/services/auth.dart';
-import '../../Constance.dart';
+import 'Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
@@ -39,7 +39,6 @@ class AddTeacher extends StatelessWidget {
 
    final List<String>TeachersL=[];
   Future <void> TeacherListNames() async {
-
       await Admin.doc(userAdmin.email).collection('Teachers')
           .where('type',isEqualTo: "Teachers").get()
           .then((QuerySnapshot querySnapshot) {
@@ -48,15 +47,13 @@ class AddTeacher extends StatelessWidget {
           TeachersL.add(doc.data()['name']);
         }
         )
-
-        ;});
-    }
+        ;});}
 
     Future<void> addTeacher() async{
       //problem:the document must be have the same ID
 
       var exists = await FirebaseFirestore.instance.collection('Users')
-              .doc(email).get();
+              .doc(email.toLowerCase()).get();
       bool isExists = (exists.exists);
         if(!isExists){
 

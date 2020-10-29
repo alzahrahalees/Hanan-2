@@ -75,6 +75,7 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
       ).toList()
       );
       }} ),
+
     );
       }
 

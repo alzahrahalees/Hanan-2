@@ -4,44 +4,54 @@ import 'TeacherDiaries.dart';
 import 'TeacherPlans.dart';
 import 'TeacherStudentAppointment.dart';
 import 'TeacherStudentInfo.dart';
+
+import 'package:flutter/src/widgets/framework.dart';
+
 import '../Study Cases/mainStudyCasesScreen.dart';
+
 
 
 class TeacherStudentMain extends StatefulWidget {
 
-  final String centerId;
-  final String studentId;
+  @override
+  final  String centerId;
   final int index;
   final String name;
-  TeacherStudentMain({this.index,this.centerId,this.name,this.studentId});
+  final String uid;
+  final String teacherName;
+  final String teacherId;
   @override
-  _TeacherStudentMainState createState() => _TeacherStudentMainState();
+  TeacherStudentMain({this.index,this.centerId,this.name,this.uid,this.teacherName,this.teacherId});
+
+
+  _TeacherStudentMainState createState() => _TeacherStudentMainState(centerId,index,name, uid,teacherName,teacherId);
 }
 
 class _TeacherStudentMainState extends State<TeacherStudentMain> {
+   String centerId;
+   int index;
+   String name;
+  String uid;
+  int  currentIndex=0;
+  String teacherName;
+  String teacherId;
+   _TeacherStudentMainState( String centerId,int index,String name,String uid,String teacherName,String teacherId){
+     this.centerId=centerId;
+     this.index=index;
+     this.name=name;
+     this.uid=uid;
+     this.teacherName=teacherName;
+     this.teacherId=teacherId;
+   }
 
-  String _centerId= '';
-  String _studentId='';
-  int _currentIndex=0;
-  String _name='';
-
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      _studentId=widget.studentId;
-      _centerId=widget.centerId;
-      _currentIndex=widget.index;
-      _name=widget.name;
-    });
-
-  }
 
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> _screens=[DiariesTeacher(),AppointmentsTeacher(widget.studentId),PlansTeacher(),StudyCaseScreen(widget.studentId)];
+
+    List<Widget> _screens=[DiariesTeacher(uid: uid,name: name,centerId: centerId,teacherName: teacherName,teacherId:teacherId),AppointmentsTeacher(uid),PlansTeacher(),StudyCaseScreen(uid)];
+
+
     List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
 
 
@@ -58,10 +68,10 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
 //          unselectedIconTheme: IconThemeData(size: 25),
           onTap: (index){
             setState(() {
-              _currentIndex=index;
+              currentIndex=index;
             });
           },
-          currentIndex: _currentIndex,
+          currentIndex: currentIndex,
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.account_balance_wallet),
@@ -85,13 +95,13 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
             slivers:<Widget>[
               SliverAppBar(
                 backgroundColor: kAppBarColor,
+                title: Text('${_titles[currentIndex]} $name', style: kTextAppBarStyle),
                 elevation: 10,
-                title: Text('${_titles[_currentIndex]} $_name', style: kTextAppBarStyle),
                 centerTitle: true,
                 floating: false,
               ),
               SliverFillRemaining(
-                child:_screens[_currentIndex],
+                child:_screens[currentIndex],
               ),
             ]
         )

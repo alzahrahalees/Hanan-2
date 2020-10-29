@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hanan/services/chang_password.dart';
 import 'package:hanan/UI/selfProfile.dart';
 import 'package:hanan/UI/logIn.dart';
+import 'ParentCaretakerInformation.dart';
 
 
 class ParentMain extends StatefulWidget {
@@ -27,6 +28,7 @@ class _ParentMainState extends State<ParentMain> {
   int _currentIndex=0;
 
 
+
   @override
   void initState() {
     super.initState();
@@ -40,8 +42,8 @@ class _ParentMainState extends State<ParentMain> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _screens=[ParentDiaries(),ParentAppointments(),PlansTeacher(),ParentStudyCaseScreen()];
-    List<String> _titles=['اليوميات',"المواعيد ","الخطط","المعلومات "];
+    List<Widget> _screens=[ParentDiaries(),ParentAppointments(),PlansTeacher(),ParentStudyCaseScreen(),ParentCaretakerInformation()];
+    List<String> _titles=['اليوميات',"المواعيد ","الخطط","المعلومات ","فريق العمل"];
     String _name='';
     return SafeArea(
       child: Scaffold(
@@ -75,6 +77,10 @@ class _ParentMainState extends State<ParentMain> {
             BottomNavigationBarItem(
               icon: Icon(Icons.info),
               label: "معلومات الطالب",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people_alt_rounded),
+              label: "فريق العمل",
             ),
           ],
         ),

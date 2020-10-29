@@ -322,7 +322,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                   fillColor: kWolcomeBkg,
                   selectedFillColor: kUnselectedItemColor,
                   borderSide: BorderSide(color: kUnselectedItemColor, width: 2),
-                  language: lang.ar,
+                    language: lang.ar,
                   onChange: _onChangeDays,
                 ),
                 Padding(

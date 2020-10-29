@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminTeacher/TeacherDetails.dart';
 import '../../Constance.dart';
-import 'Teacher.dart';
+import '../../Teacher.dart';
 import 'AddTeacher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -8,6 +8,7 @@ import '../Constance.dart';
 import 'TeacherAllAppointments.dart';
 import 'TeacherStudentList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'notifications.dart';
 
 class TeacherMainScreen extends StatefulWidget {
   AuthService _auth = AuthService();
@@ -35,8 +36,6 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
 
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,7 +44,7 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
           elevation: 50,
           showUnselectedLabels: false,
           showSelectedLabels: true,
-          backgroundColor: kBackgroundPageColor,
+          backgroundColor: Colors.white60,
           selectedItemColor:kSelectedItemColor,
           unselectedItemColor:kUnselectedItemColor,
           selectedIconTheme: IconThemeData(size: 35),
@@ -140,6 +139,13 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
               SliverAppBar(
                 iconTheme: IconThemeData(color: Colors.black54),
                 backgroundColor: kAppBarColor,
+               actions : [IconButton (icon:Icon(Icons.notifications,color: Colors.yellow.shade100,),
+               onPressed: (){
+                 Navigator.push(
+                   context,
+                   MaterialPageRoute(
+                       builder: (context) => notifications() ));}
+               ),],
                 title: Text(_titles[_currentIndex], style: kTextAppBarStyle),
                 centerTitle: true,
                 floating: false,

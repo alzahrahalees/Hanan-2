@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/Zahraa/Documents/flutter_test/Hanan-2/lib/UI/Admin/AdminSpecialist/Specialist.dart';
+import 'Specialist.dart';
 import '../../Constance.dart';
 import '../AdminMainScreen.dart';
 import 'package:hanan/services/auth.dart';

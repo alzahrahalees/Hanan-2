@@ -318,13 +318,17 @@ class _StudentInfoState extends State<StudentInfo> {
                                                               newValue;
                                                         });
                                                         print(
-                                                            psychologySpecialistName);
-                                                      },
+                                                            psychologySpecialistName);},
                                                       items: snapshot.data.docs
                                                           .map((DocumentSnapshot
                                                               document) {
                                                         return new DropdownMenuItem<String>(
-                                                            value: document.data()["name"],
+
+                                                            value: document
+                                                                .data()["name"],
+
+
+
                                                             onTap: () {
                                                               psychologySpecialistId =
                                                                   document.data()[
@@ -1024,51 +1028,34 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                               Specialists.get().then((value) =>
                                                   value.docs.forEach((element) {
-                                                    Specialists.doc(element.id)
-                                                        .collection('Students')
-                                                        .doc(uid)
-                                                        .update({
-                                                      'name': newName == null
-                                                          ? name
-                                                          : newName,
+                                                  Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                    'name':newName==null? name: newName,
+                                                  });
+
+                                                  if (gender != null) {
+                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                      'gender': gender,
                                                     });
+                                                  }
+
+                                                  })
+                                              );
+
+                                              Admin_Specialists.get().then((value) =>
+                                                  value.docs.forEach((element) {
+                                                    Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                      'name':newName==null? name: newName,
+                                                    });
+
                                                     if (gender != null) {
-                                                      Specialists.doc(
-                                                              element.id)
-                                                          .collection(
-                                                              'Students')
-                                                          .doc(uid)
-                                                          .update({
-                                                        'gender': gender
+                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                        'gender': gender,
                                                       });
                                                     }
-                                                  }));
 
-                                              Admin_Specialists.get().then(
-                                                  (value) => value.docs
-                                                          .forEach((element) {
-                                                        Admin_Specialists.doc(
-                                                                element.id)
-                                                            .collection(
-                                                                'Students')
-                                                            .doc(uid)
-                                                            .update({
-                                                          'name':
-                                                              newName == null
-                                                                  ? name
-                                                                  : newName,
-                                                        });
-                                                        if (gender != null) {
-                                                          Specialists.doc(
-                                                                  element.id)
-                                                              .collection(
-                                                                  'Students')
-                                                              .doc(uid)
-                                                              .update({
-                                                            'gender': gender
-                                                          });
-                                                        }
-                                                      }));
+                                                  })
+                                              );
+
 
                                               Navigator.pop(
                                                   context,
