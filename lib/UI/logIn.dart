@@ -38,14 +38,11 @@ class _MainLogInState extends State<MainLogIn> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return isLoading?  LoadingScreen() :Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: kSelectedItemColor),
           elevation: 0,
-          backgroundColor: kWolcomeBkg,
+          backgroundColor: Colors.white70,
           centerTitle: true,
           title: Hero(
             tag: 'login',
@@ -58,19 +55,19 @@ class _MainLogInState extends State<MainLogIn> {
         ),
         body: SafeArea(
             child: Container(
-                color: kWolcomeBkg,
+              //  color: kWolcomeBkg,
+              color: Colors.white70,
                 alignment: Alignment.center,
                 child: Form(
                     key: _formKey,
                     child: ListView(shrinkWrap: true, children: [
                       Column(children: <Widget>[
                         Hero(
-
                           tag: 'logo',
                           child: Image.asset(
-                            'assets/images/testLogo.jpg',
-                            width: 150,
-                            height: 150,
+                            'assets/images/logo.png',
+                            width: 225,
+                            height: 225,
                           ),
                         ),
                         new Padding(padding: new EdgeInsets.all(10)),

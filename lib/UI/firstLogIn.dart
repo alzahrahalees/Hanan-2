@@ -93,9 +93,9 @@ class _FirstLogInState extends State<FirstLogIn> {
                     else return null;
                   },
                 ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
                   color: kButtonColor,
                   child: Text(
                       "استكمال التسجيل", style: kTextButtonStyle),
@@ -106,10 +106,7 @@ class _FirstLogInState extends State<FirstLogIn> {
                     if(isValid())  {
 
                       editIsAuthInDB();
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context)=> MainLogIn()
-                    )
-                    );
+
 
                     }
                     else{setState(() {
@@ -173,6 +170,12 @@ class _FirstLogInState extends State<FirstLogIn> {
     });
 
 
+    }).whenComplete((){
+
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context)=> MainLogIn()
+      )
+      );
     }).catchError((err) => print('****######### Err: $err ###########*********'));
 
 

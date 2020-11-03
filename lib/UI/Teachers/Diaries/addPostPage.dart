@@ -30,7 +30,7 @@ class _AddPostPageState extends State<AddPostPage> {
   String centerId;
   String name;
   String _diary;
-String teacherId;
+  String teacherId;
   _AddPostPageState(String uid, String centerId, String name,String teacherId) {
     this.uid = uid;
     this.centerId = centerId;
@@ -44,7 +44,7 @@ String teacherId;
   Image _Image2;
 
   File _Vedio;
-   List<Image> Images;
+  List<Image> Images;
 
 
 
@@ -74,9 +74,9 @@ String teacherId;
                         Expanded(
                           child: TextFormField(
                             //keyboardType: TextInputType.multiline,
-                          //  focusNode: FocusNode(skipTraversal: false,
+                            //  focusNode: FocusNode(skipTraversal: false,
                             //    canRequestFocus: false,
-                              //  descendantsAreFocusable: false),
+                            //  descendantsAreFocusable: false),
                             //autofocus: true,
                             maxLines: 20,
                             showCursor: true,
@@ -107,9 +107,9 @@ String teacherId;
                       ],
                     ),
                     Padding(padding: EdgeInsets.all(5),),
-                   Row(
-                     children: [
-                       Container(
+                    Row(
+                      children: [
+                        Container(
                           alignment: Alignment.centerLeft,
                           child: CircleAvatar(
                             backgroundImage: _Image == null ? null : FileImage(_Image),
@@ -118,16 +118,16 @@ String teacherId;
                           ),
                         ),
 
-                   _Vedio != null ?
-               Row(
-                 children: [
-                   Padding(padding: EdgeInsets.only(right: 50)),
-                   Text("تم تحميل المقطع بنجاح",style: TextStyle(color: Colors.deepPurple,fontSize: 15),),
-                   Padding(padding: EdgeInsets.only(right: 10)),
-                   Icon(Icons.thumb_up_alt_rounded,color: Colors.green,),
-                 ],
-               ) : Text(""),   ],
-                   ),
+                        _Vedio != null ?
+                        Row(
+                          children: [
+                            Padding(padding: EdgeInsets.only(right: 50)),
+                            Text("تم تحميل المقطع بنجاح",style: TextStyle(color: Colors.deepPurple,fontSize: 15),),
+                            Padding(padding: EdgeInsets.only(right: 10)),
+                            Icon(Icons.thumb_up_alt_rounded,color: Colors.green,),
+                          ],
+                        ) : Text(""),   ],
+                    ),
                     Padding(padding: EdgeInsets.all(5),),
                     Divider(color: Colors.deepPurple,
                       thickness: 2,
@@ -189,49 +189,49 @@ String teacherId;
                                   titlePadding: EdgeInsets.only(right:90),
                                 ));
 
-
                           },
-                          child: IconButton(icon: Icon(Icons.camera_enhance_rounded,
+                          child: IconButton(
+                              icon: Icon(Icons.camera_enhance_rounded,
                             color: Colors.deepPurple.shade400,)),
                         ),
                         GestureDetector(
                             onTap: (){
-                                showDialog(
-                                    context: context,
-                                    builder: (_) => new AlertDialog(
-                                      title: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Center(
-                                                child: FlatButton(
-                                                  child: Text('  الكاميرا',style: TextStyle(color: Colors.deepPurple),),
-                                                  onPressed: () {
-                                                    pickVideoCamera();
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => new AlertDialog(
+                                    title: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Center(
+                                              child: FlatButton(
+                                                child: Text('  الكاميرا',style: TextStyle(color: Colors.deepPurple),),
+                                                onPressed: () {
+                                                  pickVideoCamera();
+                                                  Navigator.pop(context);
+                                                },
                                               ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Center(
-                                                child: FlatButton(
-                                                  child: Text('مكتبة الصور',style: TextStyle(color: Colors.deepPurple),),
-                                                  onPressed: () {
-                                                    pickVideoGallery();
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Center(
+                                              child: FlatButton(
+                                                child: Text('مكتبة الصور',style: TextStyle(color: Colors.deepPurple),),
+                                                onPressed: () {
+                                                  pickVideoGallery();
+                                                  Navigator.pop(context);
+                                                },
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      titlePadding: EdgeInsets.only(right: 90),
-                                    ));
-                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    titlePadding: EdgeInsets.only(right: 90),
+                                  ));
+                            },
                             child: IconButton(icon: Icon(Icons.video_call,
                                 size: 30,
                                 color: Colors.deepPurple.shade400),)),
@@ -262,16 +262,16 @@ String teacherId;
   }
 
   void pickVideoCamera() async {
-  //  var _isClean = false;
+    //  var _isClean = false;
     var Vedio = await ImagePicker.pickVideo(source:ImageSource.camera,maxDuration: const Duration(seconds: 10));
     setState(() {
       _Vedio = Vedio;
     });
   }
   void exportImage() async {
-      var _isClean = false;
+    var _isClean = false;
     var images = await ExportVideoFrame.exportImage(p.basename(_Vedio.path),10,10);
-      var result = images.map((file) => Image.file(file)).toList();
+    var result = images.map((file) => Image.file(file)).toList();
     setState(() {
       Images.addAll(result);
       _Image2=Images.first;
@@ -284,12 +284,12 @@ String teacherId;
       _Image = Image;});
   }
 
-    void pickVideoGallery() async {
+  void pickVideoGallery() async {
     var Vedio = await ImagePicker.pickVideo(source: ImageSource.gallery);
     setState(() {
       _Vedio = Vedio;
     });
-    }
+  }
 
   void loadImage(String url) async {
     var imageId = await ImageDownloader.downloadImage(url);

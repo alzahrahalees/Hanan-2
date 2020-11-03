@@ -120,14 +120,15 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
   @override
   Widget build(BuildContext context) {
 
-    String sDay = whatDay(_currentIndex);
-    User user = FirebaseAuth.instance.currentUser;
+    String _sDay = whatDay(_currentIndex);
+    User _user = FirebaseAuth.instance.currentUser;
     DaysTimer _daysTimer = DaysTimer();
     var _studentName='';
     int _hour=0;
     int _min=0;
     String _time='ص';
     bool _isChecked;
+
     CollectionReference student=FirebaseFirestore.instance.collection('Students')
         .doc(widget.studentId).collection('Appointments');
 
@@ -136,7 +137,7 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
       //update in teacher
       await FirebaseFirestore.instance.collection('Teachers')
           .doc(teacherId).collection('Appointments').doc(appointmentId)
-          .update({'${sDay}IsChecked': _isChecked,})
+          .update({'${_sDay}IsChecked': _isChecked,})
           .whenComplete(() => print('isChecked updated in teachers'))
           .catchError((e)=> print('### Err: $e ####'));
 
@@ -144,14 +145,14 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
       await FirebaseFirestore.instance.collection('Specialists')
           .doc(FirebaseAuth.instance.currentUser.email)
           .collection('Appointments').doc(appointmentId)
-          .update({'${sDay}IsChecked': _isChecked,})
+          .update({'${_sDay}IsChecked': _isChecked,})
           .whenComplete(() => print('isChecked updated in Specialists'))
           .catchError((e)=> print('### Err: $e ####'));
 
       //update in student
       await FirebaseFirestore.instance.collection('Students')
           .doc(studentId).collection('Appointments').doc(appointmentId)
-          .update({'${sDay}IsChecked': _isChecked,})
+          .update({'${_sDay}IsChecked': _isChecked,})
           .whenComplete(() {
         print('isChecked updated in Students');
 
@@ -176,7 +177,7 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
-                sDay=whatDay(_currentIndex);
+                _sDay=whatDay(_currentIndex);
               });
             },
             tabs: [
@@ -192,7 +193,7 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
         body: Container(
           color: kBackgroundPageColor,
           child:  StreamBuilder<QuerySnapshot>(
-              stream: student.where(whatDay(_currentIndex),isEqualTo: true).where('specialistId',isEqualTo: user.email).snapshots(),
+              stream: student.where(whatDay(_currentIndex),isEqualTo: true).where('specialistId',isEqualTo: _user.email).snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData)
                   return Center(child:Text('لا يوجد أي مواعيد هنا',style: TextStyle(fontSize: 18, color: Colors.black38),),);
@@ -210,7 +211,7 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
                         _hour= hourEditor(document.data()['hour']);
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
-                        _isChecked= document.data()['${sDay}IsChecked'];
+                        _isChecked= document.data()['${_sDay}IsChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
@@ -240,7 +241,7 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>  with T
                                         _daysTimer.startTimer(document.data()['teacherId'],
                                             document.data()['studentId'],
                                             FirebaseAuth.instance.currentUser.email,
-                                            document.id, sDay);
+                                            document.id, _sDay);
 
 
 

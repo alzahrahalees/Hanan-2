@@ -124,7 +124,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher>  with TickerP
   Widget build(BuildContext context) {
 
 
-    String sDay = whatDay(_currentIndex);
+    String _sDay = whatDay(_currentIndex);
     var _studentName='';
     var _specialistName='';
     var _specialistType='';
@@ -152,7 +152,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher>  with TickerP
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
-                sDay=whatDay(_currentIndex);
+                _sDay=whatDay(_currentIndex);
               });
             },
             tabs: [
@@ -189,7 +189,7 @@ class _AppointmentsTeacherState extends State<AppointmentsTeacher>  with TickerP
                         _hour= hourEditor(document.data()['hour']);
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
-                        _isChecked= document.data()['${sDay}IsChecked'];
+                        _isChecked= document.data()['${_sDay}IsChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(

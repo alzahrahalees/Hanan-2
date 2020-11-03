@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/logIn.dart';
 import 'package:hanan/UI/selfProfile.dart';
@@ -9,6 +10,7 @@ import 'TeacherAllAppointments.dart';
 import 'TeacherStudentList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'notifications.dart';
+
 
 class TeacherMainScreen extends StatefulWidget {
   AuthService _auth = AuthService();
@@ -139,7 +141,7 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
               SliverAppBar(
                 iconTheme: IconThemeData(color: Colors.black54),
                 backgroundColor: kAppBarColor,
-               actions : [IconButton (icon:Icon(Icons.notifications,color: Colors.yellow.shade100,),
+               actions : [IconButton (icon:Icon(Icons.notifications,color: Color(0xfff7e876),),
                onPressed: (){
                  Navigator.push(
                    context,

@@ -205,7 +205,7 @@ class _AddAppointmentState extends State<AddAppointment> {
   @override
   Widget build(BuildContext context) {
     List<String> _theDays=[];
-    List<String> _empty=[];
+
 
     _addAppointment()async{
       _teacherId = await _teacherUID(_studentId);

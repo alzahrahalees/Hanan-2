@@ -69,7 +69,13 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
               onTap: (){
                 Navigator.push(context,
                   MaterialPageRoute(builder: (context)=>
-                      TeacherStudentMain(uid:document.data()['uid'],centerId: document.data()['center'],name: document.data()['name'],index: 0,teacherName: document.data()['teacherName'],teacherId: document.data()['teacherId'],
+                      TeacherStudentMain(
+                        uid:document.data()['uid'],
+                        centerId: document.data()['center'],
+                        name: document.data()['name'],
+                        index: 0,
+                        teacherName: document.data()['teacherName'],
+                        teacherId: document.data()['teacherId'],
                         communicationSpecialistName:document.data()['communicationSpecialistName'] ,
                         communicationSpecialistId: document.data()['communicationSpecialistId'],
                         physiotherapySpecialistId:document.data()['physiotherapySpecialistId'] ,

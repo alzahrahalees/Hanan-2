@@ -39,10 +39,7 @@ class _ParentInfoStudyState extends State<ParentInfoStudy> {
                   if (snapshot.hasData) {
                     DocumentSnapshot _data = snapshot.data;
                     if (_data.exists) {
-                      _emotionalGrowth =
-                          _data.data()['_emotionalGrowth'] == null
-                              ? []
-                              : _data.data()['_emotionalGrowth'];
+                      _emotionalGrowth = _data.data()['_emotionalGrowth'];
                       _oldUser = _data.data()['_editedBy'] == null
                           ? 'لا يوجد بيانات'
                           : _data.data()['_editedBy'];
@@ -361,17 +358,23 @@ class _ParentInfoStudyState extends State<ParentInfoStudy> {
                                 ),
                                 _emotionalGrowth.isNotEmpty
                                     ? Container(
-                                        width: 15,
-                                        height: 15,
+                                        width: 300,
+                                        height: 70,
                                         child: ListView(
-                                          scrollDirection: Axis.horizontal,
-                                          children:
-                                              _emotionalGrowth.map((location) {
-                                            return Container(
-                                              width: 15,
-                                              height: 15,
-                                              child: Text(location),
-                                              color: Colors.black12,
+                                          scrollDirection:  Axis.horizontal,
+                                          children: _emotionalGrowth.map((location) {
+                                            return Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black12,
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Center(child: Text(location)),
+                                                ),
+                                              ),
                                             );
                                           }).toList(),
                                         ),

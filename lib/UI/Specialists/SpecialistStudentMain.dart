@@ -6,7 +6,6 @@ import '../Constance.dart';
 import 'SpecialistDiaries.dart';
 import 'SpecialistPlans.dart';
 import 'SpecialistStudentAppointment.dart';
-import 'SpecialistStudentInfo.dart';
 import 'package:provider/provider.dart';
 
 
