@@ -169,20 +169,21 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
   @override
   Widget build(BuildContext context) {
 
+    String sDay= whatDay(_currentIndex);
     DaysTimer _daysTimer = DaysTimer();
     var studentName='';
     int hour=0;
     int min=0;
     String time='ص';
 
-    bool _isChecked ;
+    bool _isChecked= false ;
 
     void _updateIsChecked(String teacherId, String studentId, appointmentId) async{
 
       //update in teacher
        await FirebaseFirestore.instance.collection('Teachers')
            .doc(teacherId).collection('Appointments').doc(appointmentId)
-           .update({'isChecked': _isChecked,})
+           .update({'${sDay}IsChecked': _isChecked,})
            .whenComplete(() => print('isChecked updated in teachers'))
            .catchError((e)=> print('### Err: $e ####'));
 
@@ -190,15 +191,18 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
       await FirebaseFirestore.instance.collection('Specialists')
           .doc(FirebaseAuth.instance.currentUser.email)
           .collection('Appointments').doc(appointmentId)
-          .update({'isChecked': _isChecked,})
+          .update({'${sDay}IsChecked': _isChecked,})
           .whenComplete(() => print('isChecked updated in Specialists'))
           .catchError((e)=> print('### Err: $e ####'));
 
       //update in student
       await FirebaseFirestore.instance.collection('Students')
           .doc(studentId).collection('Appointments').doc(appointmentId)
-          .update({'isChecked': _isChecked,})
-          .whenComplete(() => print('isChecked updated in Students'))
+          .update({'${sDay}IsChecked': _isChecked,})
+          .whenComplete(() {
+            print('isChecked updated in Students');
+
+          })
           .catchError((e)=> print('### Err: $e ####'));
 
     }
@@ -242,6 +246,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
+                sDay=whatDay(_currentIndex);
               });
             },
             tabs: [
@@ -276,7 +281,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                         hour= hourEditor(document.data()['hour']);
                         min=document.data()['min'];
                         time= dayOrNight(hour);
-                        _isChecked= document.data()['isChecked'];
+                        _isChecked= document.data()['${sDay}IsChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
@@ -306,7 +311,10 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                                         _daysTimer.startTimer(document.data()['teacherId'],
                                             document.data()['studentId'],
                                             FirebaseAuth.instance.currentUser.email,
-                                            document.id);
+                                            document.id, sDay);
+
+
+
 
                                       },
                                     ),
@@ -356,7 +364,18 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                                                   sudentId:  document.data()['studentId'],
                                                   teacherId: document.data()['teacherId'],
                                                   appointmentId: document.id);
+                                              Scaffold.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor: Colors.white70,
+                                                      elevation: 15,
+                                                      content: Text(
+                                                        'تم حذف الموعد',
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(color: Colors.deepPurple, fontSize: 15,fontWeight: FontWeight.bold),
+                                                      )
+                                                  ));
                                               Navigator.pop(context);
+
                                               },
 
                                               color: kButtonColor,

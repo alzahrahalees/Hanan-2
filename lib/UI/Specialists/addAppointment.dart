@@ -15,12 +15,12 @@ class _AddAppointmentState extends State<AddAppointment> {
 
 
   User user = FirebaseAuth.instance.currentUser;
-  bool _sun;
-  bool _mon;
-  bool _tue;
-  bool _wed;
-  bool _thu;
-  List<String> _theDays =[];
+  bool _sun= false;
+  bool _mon= false;
+  bool _tue= false;
+  bool _wed= false;
+  bool _thu= false;
+
   String _studentName;
   String _studentId = '';
   String _teacherId;
@@ -113,7 +113,11 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
-      'isChecked': false,
+      'sunIsChecked': false,
+      'monIsChecked': false,
+      'tueIsChecked': false,
+      'wedIsChecked': false,
+      'thuIsChecked': false,
     }).whenComplete(() => print('appointment added to specialist'))
         .catchError((err)=> print('### Err : $err ###'));
 
@@ -133,7 +137,11 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
-      'isChecked': false,
+      'sunIsChecked': false,
+      'monIsChecked': false,
+      'tueIsChecked': false,
+      'wedIsChecked': false,
+      'thuIsChecked': false,
     }).whenComplete(() => print('appointment added to student'))
         .catchError((err)=> print('### Err : $err ###'));
 
@@ -153,8 +161,13 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
-      'isChecked': false,
-    }).whenComplete(() => print('appointment added to teacher'))
+      'sunIsChecked': false,
+      'monIsChecked': false,
+      'tueIsChecked': false,
+      'wedIsChecked': false,
+      'thuIsChecked': false,
+    }).whenComplete(() {print('appointment added to teacher');
+    })
         .catchError((err)=> print('### Err : $err ###'));
 
     // add To Student In Center
@@ -174,7 +187,11 @@ class _AddAppointmentState extends State<AddAppointment> {
       'tue': _tue,
       'wed': _wed,
       'thu': _thu,
-      'isChecked': false,
+      'sunIsChecked': false,
+      'monIsChecked': false,
+      'tueIsChecked': false,
+      'wedIsChecked': false,
+      'thuIsChecked': false,
     }).whenComplete(() => print('appointment added to teacher'))
         .catchError((err)=> print('### Err : $err ###'));
 
@@ -182,19 +199,26 @@ class _AddAppointmentState extends State<AddAppointment> {
 
 
   // call all functions
-  _addAppointment()async{
-    _teacherId = await _teacherUID(_studentId);
-    _specialistName= await _getSpecialistName();
-    _specialistType= await _getSpecialistType();
-    _centerId = await _getCenterID();
-    _addToDB(_teacherId,_specialistName,_specialistType,_centerId);
-    _theDays.clear();
-    Navigator.pop(context);
-  }
+
 
 
   @override
   Widget build(BuildContext context) {
+    List<String> _theDays=[];
+    List<String> _empty=[];
+
+    _addAppointment()async{
+      _teacherId = await _teacherUID(_studentId);
+      _specialistName= await _getSpecialistName();
+      _specialistType= await _getSpecialistType();
+      _centerId = await _getCenterID();
+      _addToDB(_teacherId,_specialistName,_specialistType,_centerId);
+      print('Before:  $_theDays');
+      _theDays=[];
+      print(_theDays);
+      Navigator.pop(context);
+
+    }
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -337,14 +361,16 @@ class _AddAppointmentState extends State<AddAppointment> {
                       if(_studentName==null)  {
                         setState(() {
                           warningText='الرجاء اختيار اسم';
+                          // print(_theDays);
                         });
                       }
-                      else{
-                        _theDays.isEmpty == true?
-                        setState(() {
-                          warningText='الرجاء اختيار الأيام';})
-                            : _addAppointment();
+                      else if (_theDays.isEmpty){
 
+                        setState(() {
+                          warningText='الرجاء اختيار الأيام';});
+                      }
+                      else{
+                        _addAppointment();
                       }
                     },
                   ),

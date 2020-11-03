@@ -100,7 +100,8 @@ class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with T
 
   Widget build(BuildContext context) {
 
-    String sDay = 'sun';
+
+    String sDay= whatDay(_currentIndex);
     bool _isChecked;
 
     return DefaultTabController(
@@ -116,10 +117,10 @@ class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with T
             indicatorColor: kSelectedItemColor,
             unselectedLabelColor: kUnselectedItemColor,
             onTap: (index) {
-              sDay = whatDay(index);
+
               setState(() {
                 _currentIndex = index;
-                print(_currentIndex);
+                sDay=whatDay(_currentIndex);
               });
             },
             tabs: [
@@ -156,7 +157,7 @@ class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with T
                         _hour= hourEditor(document.data()['hour']);
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
-                        _isChecked= document.data()['isChecked'];
+                        _isChecked= document.data()['${sDay}IsChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(

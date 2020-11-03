@@ -7,7 +7,7 @@ class DaysTimer {
   int _counter;
   bool _isChecked;
 
-  startTimer (String teacherId, String studentId,String specialistId, appointmentId) {
+  startTimer (String teacherId, String studentId,String specialistId, appointmentId, String day) {
     print('start timer is called');
     _counter = 6;
     if (_timer != null) {
@@ -20,18 +20,18 @@ class DaysTimer {
         } else {
           _timer.cancel();
           _isChecked = false;
-          _updateIsChecked(teacherId, studentId,specialistId ,appointmentId);
+          _updateIsChecked(teacherId, studentId,specialistId ,appointmentId, day);
 
         }
     });
   }
 
-  void _updateIsChecked(String teacherId, String studentId,String specialistId, appointmentId) async{
+  void _updateIsChecked(String teacherId, String studentId,String specialistId, appointmentId, String day) async{
 
     //update in teacher
     await FirebaseFirestore.instance.collection('Teachers')
         .doc(teacherId).collection('Appointments').doc(appointmentId)
-        .update({'isChecked': _isChecked,})
+        .update({'${day}isChecked': _isChecked,})
         .whenComplete(() => print('isChecked updated in teachers'))
         .catchError((e)=> print('### Err: $e ####'));
 
@@ -39,14 +39,14 @@ class DaysTimer {
     await FirebaseFirestore.instance.collection('Specialists')
         .doc(specialistId)
         .collection('Appointments').doc(appointmentId)
-        .update({'isChecked': _isChecked,})
+        .update({'${day}isChecked': _isChecked,})
         .whenComplete(() => print('isChecked updated in Specialists'))
         .catchError((e)=> print('### Err: $e ####'));
 
     //update in student
     await FirebaseFirestore.instance.collection('Students')
         .doc(studentId).collection('Appointments').doc(appointmentId)
-        .update({'isChecked': _isChecked,})
+        .update({'${day}isChecked': _isChecked,})
         .whenComplete(() => print('isChecked updated in Students'))
         .catchError((e)=> print('### Err: $e ####'));
 

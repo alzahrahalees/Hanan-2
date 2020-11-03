@@ -252,9 +252,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                                           style: TextStyle(fontSize: 9, color: Colors.grey)),
                                                                       onLongPress:
                                                                           () {
-                                                                        if (document.data()[
-                                                                                'writer'] ==
-                                                                            Name) {
+                                                                        if (document.data()['writer'] == Name) {
                                                                           showDialog(
                                                                               context:
                                                                                   context,
@@ -382,6 +380,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                   if (value.isEmpty) {
                                                     return ' يجب إضافة تعليق لنشره';
                                                   }
+                                                  else return '';
                                                 },
                                               ),
                                             ],

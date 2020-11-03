@@ -56,12 +56,12 @@ class _ParentFamilyStudyState extends State<ParentFamilyStudy> {
             if (snapshot.hasData) {
               DocumentSnapshot _data = snapshot.data;
               if (_data.exists) {
-               _motherBirthYear = _data.data()['_motherBirthYear'];
-                _motherBirthMonth = _data.data()['_motherBirthMonth'];
-                _motherBirthDay = _data.data()['_motherBirthDay'];
-                _fatherBirthYear = _data.data()['_fatherBirthYear'];
-                _fatherBirthMonth = _data.data()['_fatherBirthMonth'];
-                _fatherBirthDay = _data.data()['_fatherBirthDay'];
+               _motherBirthYear = _data.data()['_motherBirthYear']==null? DateTime.now().year:_data.data()['_motherBirthYear'] ;
+                _motherBirthMonth = _data.data()['_motherBirthMonth']==null? DateTime.now().month:_data.data()['_motherBirthMonth'];
+                _motherBirthDay = _data.data()['_motherBirthDay']==null? DateTime.now().day:_data.data()['_motherBirthDay'];
+                _fatherBirthYear = _data.data()['_fatherBirthYear']==null? DateTime.now().year:_data.data()['_fatherBirthYear'];
+                _fatherBirthMonth = _data.data()['_fatherBirthMonth']==null? DateTime.now().month:_data.data()['_fatherBirthMonth'];
+                _fatherBirthDay = _data.data()['_fatherBirthDay']==null? DateTime.now().day:_data.data()['_fatherBirthDay'];
 
                 _oldUserName = _data.data()['_editedBy']==null? 'لا يوجد بيانات': _data.data()['_editedBy'] ;
 
@@ -90,8 +90,8 @@ class _ParentFamilyStudyState extends State<ParentFamilyStudy> {
                         padding: const EdgeInsets.all(15),
                         child:
                         Row(children: <Widget>[
-                          Text("تاريخ الميلاد: ", style: kTextPageStyle.copyWith(color: Colors.grey)),
-                          Text('$_motherBirthYear / $_motherBirthMonth /  $_motherBirthDay'),
+                          Text("تاريخ الميلاد:   ", style: kTextPageStyle.copyWith(color: Colors.grey)),
+                          Text(' $_motherBirthDay/ $_motherBirthMonth /  $_motherBirthYear'),
                         ])
                     ),
 
@@ -232,7 +232,7 @@ class _ParentFamilyStudyState extends State<ParentFamilyStudy> {
                         child:
                         Row(children: <Widget>[
                           Text("تاريخ الميلاد:  ", style: kTextPageStyle.copyWith(color: Colors.grey)),
-                          Text('$_fatherBirthYear / $_fatherBirthMonth / $_fatherBirthDay'),
+                          Text('$_fatherBirthDay / $_fatherBirthMonth / $_fatherBirthYear '),
                         ])
                     ),
 
