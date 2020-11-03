@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../Constance.dart';
+import 'package:hanan/UI/Constance.dart';
 
 
 //plan pages for 6 majors
-class PlanPage extends StatefulWidget {
+class SpecialMajorsPage extends StatefulWidget {
   @override
-  _PlanPageState createState() => _PlanPageState();
+  _SpecialMajorsPageState createState() => _SpecialMajorsPageState();
 }
 
-class _PlanPageState extends State<PlanPage>  with TickerProviderStateMixin{
+class _SpecialMajorsPageState extends State<SpecialMajorsPage>  with TickerProviderStateMixin{
   int _currentIndex =0;
 
 

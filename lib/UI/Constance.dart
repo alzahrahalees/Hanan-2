@@ -100,7 +100,7 @@ class KNormalTextFormField extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return TextFormField(
-
+      autofocus: true,
       readOnly: readOnly==null? false: readOnly,
       initialValue: title,
       controller: controller,

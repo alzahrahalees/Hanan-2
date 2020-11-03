@@ -171,12 +171,12 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
   @override
   Widget build(BuildContext context) {
 
-    String sDay= whatDay(_currentIndex);
+    String _sDay= whatDay(_currentIndex);
     DaysTimer _daysTimer = DaysTimer();
-    var studentName='';
-    int hour=0;
-    int min=0;
-    String time='ص';
+    var _studentName='';
+    int _hour=0;
+    int _min=0;
+    String _time='ص';
 
     bool _isChecked= false ;
 
@@ -185,7 +185,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
       //update in teacher
        await FirebaseFirestore.instance.collection('Teachers')
            .doc(teacherId).collection('Appointments').doc(appointmentId)
-           .update({'${sDay}IsChecked': _isChecked,})
+           .update({'${_sDay}IsChecked': _isChecked,})
            .whenComplete(() => print('isChecked updated in teachers'))
            .catchError((e)=> print('### Err: $e ####'));
 
@@ -193,14 +193,14 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
       await FirebaseFirestore.instance.collection('Specialists')
           .doc(FirebaseAuth.instance.currentUser.email)
           .collection('Appointments').doc(appointmentId)
-          .update({'${sDay}IsChecked': _isChecked,})
+          .update({'${_sDay}IsChecked': _isChecked,})
           .whenComplete(() => print('isChecked updated in Specialists'))
           .catchError((e)=> print('### Err: $e ####'));
 
       //update in student
       await FirebaseFirestore.instance.collection('Students')
           .doc(studentId).collection('Appointments').doc(appointmentId)
-          .update({'${sDay}IsChecked': _isChecked,})
+          .update({'${_sDay}IsChecked': _isChecked,})
           .whenComplete(() {
             print('isChecked updated in Students');
 
@@ -248,7 +248,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
-                sDay=whatDay(_currentIndex);
+                _sDay=whatDay(_currentIndex);
               });
             },
             tabs: [
@@ -278,12 +278,17 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                       ,);
                   default:
                     return ListView(
-                      children: snapshot.data.docs.map((DocumentSnapshot document){
-                        studentName= document.data()['name'];
-                        hour= hourEditor(document.data()['hour']);
-                        min=document.data()['min'];
-                        time= dayOrNight(hour);
-                        _isChecked= document.data()['${sDay}IsChecked'];
+                      children: snapshot.data.docs.map((DocumentSnapshot document) {
+                        try{
+                        _studentName= document.data()['name'];
+                        _hour= hourEditor(document.data()['hour']);
+                        _min=document.data()['min'];
+                        _time= dayOrNight(_hour);
+                        _isChecked= document.data()['${_sDay}IsChecked'];
+                        }
+                        catch(e){
+                          print('#### Appointment Err: $e  ####');
+                        }
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(
@@ -313,7 +318,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                                         _daysTimer.startTimer(document.data()['teacherId'],
                                             document.data()['studentId'],
                                             FirebaseAuth.instance.currentUser.email,
-                                            document.id, sDay);
+                                            document.id, _sDay);
 
 
 
@@ -324,7 +329,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
 
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(studentName, style: TextStyle(
+                                    child: Text(_studentName, style: TextStyle(
                                         decoration: _isChecked? TextDecoration.lineThrough : null,
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -333,7 +338,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text('$min : $hour    $time', style: TextStyle(
+                                    child: Text('$_min : $_hour    $_time', style: TextStyle(
                                         decoration: _isChecked? TextDecoration.lineThrough : null,
                                         fontSize: 18, fontWeight: FontWeight.bold,
                                         color: _isChecked? Colors.black38 : Colors.black54
@@ -361,12 +366,13 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                                                 "نعم",
                                                 style: TextStyle(color: Colors.white, fontSize: 20),
                                               ),
-                                              onPressed: () {  deleteFromDB(
-                                                  day: whatDay(_currentIndex),
-                                                  sudentId:  document.data()['studentId'],
-                                                  teacherId: document.data()['teacherId'],
-                                                  appointmentId: document.id);
-                                              Scaffold.of(context).showSnackBar(
+                                              onPressed: () {
+                                                deleteFromDB(
+                                                    day: whatDay(_currentIndex),
+                                                    sudentId:  document.data()['studentId'],
+                                                    teacherId: document.data()['teacherId'],
+                                                    appointmentId: document.id);
+                                                Scaffold.of(context).showSnackBar(
                                                   SnackBar(
                                                     backgroundColor: Colors.white70,
                                                       elevation: 15,

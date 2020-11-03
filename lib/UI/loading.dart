@@ -12,7 +12,7 @@ class LoadingScreen extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/testLogo.jpg',
+              'assets/images/logo.png',
               width: 200,
               height: 180,
             ),

@@ -124,7 +124,7 @@ class _UpdateStudentInfoState extends State<UpdateStudentInfo> {
                   if (snapshot.hasData) {
                     DocumentSnapshot _data = snapshot.data;
                     if (_data.exists) {
-                      _emotionalGrowth= _data.data()['_emotionalGrowth']==null? [] : _data.data()['_emotionalGrowth'];
+                      _emotionalGrowth= _data.data()['_emotionalGrowth'];
                       _oldUser= _data.data()['_editedBy']==null? 'لم يتم إضافة بيانات' : _data.data()['_editedBy'];
                       return Container(
                           padding: EdgeInsets.all(10),
@@ -554,6 +554,7 @@ class _UpdateStudentInfoState extends State<UpdateStudentInfo> {
                                           "value": "خمول",
                                         },
                                       ],
+                                      dialogTextStyle: TextStyle(color: kSelectedItemColor),
                                       textField: 'display',
                                       valueField: 'value',
                                       okButtonLabel: 'تم',
@@ -561,11 +562,13 @@ class _UpdateStudentInfoState extends State<UpdateStudentInfo> {
                                       // hintText: ' الرجاء تحديد خيار أو أكثر',
                                       initialValue: _emotionalGrowth,
                                       onSaved: (value) {
-                                        if (value == null)
-                                          setState(() {
-                                            _emotionalGrowth = value;
-                                          });
+                                        print(value);
+                                        _emotionalGrowth = value;
+                                        print(_emotionalGrowth);
                                       },
+                                      checkBoxActiveColor: kSelectedItemColor,
+                                      checkBoxCheckColor: Colors.white70,
+
                                     ),
                                   ),
                                 ),

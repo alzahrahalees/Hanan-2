@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../Constance.dart';
+import 'package:hanan/UI/Constance.dart';
 import 'dart:math';
 
 
@@ -62,27 +62,27 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
     _semesterValue = 'first';
   }
 
-  snackBarErr(){
-    Scaffold.of(context).showSnackBar(
-        SnackBar(
-            backgroundColor: Colors.red[200],
-            content: Text(
-              'يوجد خطأ الرجاء المحاولة في وقت لاحق',
-              style: TextStyle(color: Colors.deepPurple, fontSize: 12),
-            )
-        ));
-  }
-
-  snackBarDone(){
-    Scaffold.of(context).showSnackBar(
-        SnackBar(
-            backgroundColor: Colors.white70,
-            content: Text(
-              'تم إضافة الخطة',
-              style: TextStyle(color: Colors.deepPurple, fontSize: 12),
-            )
-        ));
-  }
+  // snackBarErr(){
+  //   Scaffold.of(context).showSnackBar(
+  //       SnackBar(
+  //           backgroundColor: Colors.red[200],
+  //           content: Text(
+  //             'يوجد خطأ الرجاء المحاولة في وقت لاحق',
+  //             style: TextStyle(color: Colors.deepPurple, fontSize: 12),
+  //           )
+  //       ));
+  // }
+  //
+  // snackBarDone(){
+  //   Scaffold.of(context).showSnackBar(
+  //       SnackBar(
+  //           backgroundColor: Colors.white70,
+  //           content: Text(
+  //             'تم إضافة الخطة',
+  //             style: TextStyle(color: Colors.deepPurple, fontSize: 12),
+  //           )
+  //       ));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,6 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
     int _endMonth=DateTime.now().month;
     int _endDay=DateTime.now().day;
 
-    Random ran=Random();
     User _user = FirebaseAuth.instance.currentUser;
     TextEditingController subjectController = TextEditingController();
 
@@ -184,7 +183,6 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                           width: 250,
                           child: CupertinoDatePicker(
                             initialDateTime: DateTime.now(),
-                            maximumDate: DateTime.now(),
                             mode: CupertinoDatePickerMode.date,
                             onDateTimeChanged: (dateTime) {
                               setState(() {
@@ -209,7 +207,6 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                           width: 250,
                           child: CupertinoDatePicker(
                             initialDateTime: DateTime.now(),
-                            maximumDate: DateTime.now(),
                             mode: CupertinoDatePickerMode.date,
                             onDateTimeChanged: (dateTime) {
                               setState(() {
@@ -292,8 +289,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                             ',');
                         print(subjects);
 
-                        int num=ran.nextInt(100000000);
-                        String docId= widget.studentId+num.toString();
+                        String docId= widget.studentId+DateTime.now().year.toString()+_semesterValue;
                         bool isDone = await setUIds();
                         if (isDone) {
 
@@ -305,6 +301,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                               .doc(widget.studentId).collection('Plans')
                               .doc(docId).set({
                             'planTitle': _title,
+                            'major': _selectedMajorValue,
                             'semester': _semesterValue,
                             'beginYear': _beginYear,
                             'beginMonth': _beginMonth,
@@ -320,6 +317,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                                 .doc(widget.studentId).collection('Plans')
                                 .doc(docId).set({
                               'planTitle': _title,
+                              'major': _selectedMajorValue,
                               'semester': _semesterValue,
                               'beginYear': _beginYear,
                               'beginMonth': _beginMonth,
@@ -335,6 +333,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                                 .doc(widget.studentId).collection('Plans')
                                 .doc(docId).set({
                               'planTitle': _title,
+                              'major': _selectedMajorValue,
                               'semester': _semesterValue,
                               'beginYear': _beginYear,
                               'beginMonth': _beginMonth,
@@ -350,6 +349,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                                 .doc(widget.studentId).collection('Plans')
                                 .doc(docId).set({
                               'planTitle': _title,
+                              'major': _selectedMajorValue,
                               'semester': _semesterValue,
                               'beginYear': _beginYear,
                               'beginMonth': _beginMonth,
@@ -365,6 +365,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                               .doc(widget.studentId).collection('Plans')
                               .doc(docId).set({
                             'planTitle': _title,
+                            'major': _selectedMajorValue,
                             'semester': _semesterValue,
                             'beginYear': _beginYear,
                             'beginMonth': _beginMonth,
@@ -380,6 +381,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                               .doc(widget.studentId).collection('Plans')
                               .doc(docId).set({
                             'planTitle': _title,
+                            'major': _selectedMajorValue,
                             'semester': _semesterValue,
                             'beginYear': _beginYear,
                             'beginMonth': _beginMonth,
@@ -388,13 +390,8 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                             'endMoth': _endMonth,
                             'endDay': _endDay,
                             'subjects': subjects,
-                          })     .whenComplete(()  {
-                            Navigator.pop(context);
-                            snackBarDone();
-                          })
-                              .catchError((err)  {print(err);
-                              snackBarErr();
-                              });
+                          }).whenComplete(() => Navigator.pop(context))
+                              .catchError((err) => print(err));
 
                         }
                       }

@@ -101,7 +101,7 @@ class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with T
   Widget build(BuildContext context) {
 
 
-    String sDay= whatDay(_currentIndex);
+    String _sDay= whatDay(_currentIndex);
     bool _isChecked;
 
     return DefaultTabController(
@@ -120,7 +120,7 @@ class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with T
 
               setState(() {
                 _currentIndex = index;
-                sDay=whatDay(_currentIndex);
+                _sDay=whatDay(_currentIndex);
               });
             },
             tabs: [
@@ -151,13 +151,18 @@ class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with T
                   default:
                     return ListView(
                       children: snapshot.data.docs.map((DocumentSnapshot document){
+                        try{
                         _studentName= document.data()['name'];
                         _specialistName= document.data()['specialistName'];
                         _specialistType= document.data()['specialistType'];
                         _hour= hourEditor(document.data()['hour']);
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
-                        _isChecked= document.data()['${sDay}IsChecked'];
+                        _isChecked= document.data()['${_sDay}IsChecked'] ;
+                        }
+                        catch(e){
+                          print('#### Appointment Err: $e  ####');
+                        }
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(

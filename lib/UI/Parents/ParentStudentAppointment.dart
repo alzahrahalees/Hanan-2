@@ -120,10 +120,10 @@ class _ParentAppointmentsState extends State<ParentAppointments>  with TickerPro
   @override
   Widget build(BuildContext context) {
 
-    String sDay = whatDay(_currentIndex);
-    User user = FirebaseAuth.instance.currentUser;
+    String _sDay = whatDay(_currentIndex);
+    User _user = FirebaseAuth.instance.currentUser;
     CollectionReference teacher= FirebaseFirestore.instance.collection('Students')
-        .doc(user.email).collection('Appointments');
+        .doc(_user.email).collection('Appointments');
     var _studentName='';
     var _specialistName='';
     var _specialistType='';
@@ -148,7 +148,7 @@ class _ParentAppointmentsState extends State<ParentAppointments>  with TickerPro
             onTap: (index) {
               setState(() {
                 _currentIndex = index;
-                sDay=whatDay(_currentIndex);
+                _sDay=whatDay(_currentIndex);
               });
             },
             tabs: [
@@ -185,7 +185,7 @@ class _ParentAppointmentsState extends State<ParentAppointments>  with TickerPro
                         _hour= hourEditor(document.data()['hour']);
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
-                        _isChecked= document.data()['${sDay}IsChecked'];
+                        _isChecked= document.data()['${_sDay}IsChecked'];
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(

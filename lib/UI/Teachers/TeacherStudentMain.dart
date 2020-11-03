@@ -3,7 +3,6 @@ import '../Constance.dart';
 import 'TeacherDiaries.dart';
 import 'TeacherPlans.dart';
 import 'TeacherStudentAppointment.dart';
-import 'TeacherStudentInfo.dart';
 
 import 'package:flutter/src/widgets/framework.dart';
 
@@ -49,7 +48,11 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
   Widget build(BuildContext context) {
 
 
-    List<Widget> _screens=[DiariesTeacher(uid: uid,name: name,centerId: centerId,teacherName: teacherName,teacherId:teacherId),AppointmentsTeacher(uid),PlansTeacher(),StudyCaseScreen(uid)];
+    List<Widget> _screens=[
+      DiariesTeacher(uid: uid,name: name, centerId: centerId, teacherName: teacherName, teacherId:teacherId),
+      AppointmentsTeacher(uid),
+      PlansTeacherFirstPage(uid),
+      StudyCaseScreen(uid)];
 
 
     List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
@@ -64,8 +67,6 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
           unselectedItemColor:kUnselectedItemColor,
           selectedFontSize: 20,
           unselectedFontSize: 17,
-//          selectedIconTheme: IconThemeData(size: 35),
-//          unselectedIconTheme: IconThemeData(size: 25),
           onTap: (index){
             setState(() {
               currentIndex=index;

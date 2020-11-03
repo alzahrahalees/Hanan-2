@@ -19,12 +19,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Hero(
-                tag: 'logo',
-                child: Image.asset(
-                  'assets/images/testLogo.jpg',
-                  width: 300,
-                  height: 300,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Hero(
+                  tag: 'logo',
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    width: 300,
+                    height: 300,
+                  ),
                 ),
               ),
               Padding(

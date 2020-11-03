@@ -65,12 +65,11 @@ class _MainLogInState extends State<MainLogIn> {
                     child: ListView(shrinkWrap: true, children: [
                       Column(children: <Widget>[
                         Hero(
-
                           tag: 'logo',
                           child: Image.asset(
-                            'assets/images/testLogo.jpg',
-                            width: 150,
-                            height: 150,
+                            'assets/images/logo.png',
+                            width: 225,
+                            height: 225,
                           ),
                         ),
                         new Padding(padding: new EdgeInsets.all(10)),

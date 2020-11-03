@@ -140,18 +140,22 @@ String teacherId;
                           ),),
                         GestureDetector(
                           onTap: pickImageCamera,
-                          child: IconButton(icon: Icon(Icons.camera_alt,
-                            color: Colors.deepPurple.shade400,)),
+                          child: IconButton(
+                            icon: Icon(Icons.camera_alt,
+                                color: Colors.deepPurple.shade400,),
+                            onPressed: () {  },),
                         ),
                         GestureDetector(
                             onTap: (){print("Click Video");},
                             child: IconButton(icon: Icon(Icons.video_call,
                                 size: 30,
-                                color: Colors.deepPurple.shade400),)),
+                                color: Colors.deepPurple.shade400),
+                              onPressed: () {  },)),
                         GestureDetector(
                             onTap:(){ pickImageGallery();},
                             child: IconButton(icon: Icon(Icons.photo,
-                                color: Colors.deepPurple.shade400),)),
+                                color: Colors.deepPurple.shade400),
+                              onPressed: () {  },)),
 
                       ],
                     ),
