@@ -6,12 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'file:///C:/Users/Sahar%20Al-Ghalayeeni/AndroidStudioProjects/Hanan-2%20-%20Copy%20(2)/lib/UI/Teachers/Diaries/Post.dart';
 import 'file:///C:/Users/Sahar%20Al-Ghalayeeni/AndroidStudioProjects/Hanan-2%20-%20Copy%20(2)/lib/UI/Teachers/Diaries/Video.dart';
-import 'package:image_downloader/image_downloader.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:storage_path/storage_path.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../Constance.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 

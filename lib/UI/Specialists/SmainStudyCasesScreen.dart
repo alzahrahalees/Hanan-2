@@ -8,7 +8,6 @@ import 'package:hanan/UI/Study%20Cases/SpecialistFiles.dart';
 import 'package:hanan/UI/Study%20Cases/StudentProfile.dart';
 import 'package:hanan/UI/Study%20Cases/UpdateClinical.dart';
 import 'package:hanan/UI/Study%20Cases/UpdateStudentInfo.dart';
-import 'package:hanan/UI/Study%20Cases/TeacherFiles.dart';
 import 'package:hanan/UI/Study%20Cases/UpdatseFamilyInfo.dart';
 import '../Constance.dart';
 
