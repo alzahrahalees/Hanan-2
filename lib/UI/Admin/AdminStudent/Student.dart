@@ -165,6 +165,7 @@ class AddStudent extends StatelessWidget {
         'occupationalSpecialistId':occupationalSpecialistId,
         'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
         'physiotherapySpecialistId':physiotherapySpecialistId,
+        "center": userAdmin.email.toLowerCase(),
         }
       );
 
@@ -191,6 +192,7 @@ class AddStudent extends StatelessWidget {
         'occupationalSpecialistId':occupationalSpecialistId,
         'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
         'physiotherapySpecialistId':physiotherapySpecialistId,
+        "center": userAdmin.email.toLowerCase(),
       }
       );}
 
@@ -219,6 +221,7 @@ class AddStudent extends StatelessWidget {
         'occupationalSpecialistId':occupationalSpecialistId,
         'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
         'physiotherapySpecialistId':physiotherapySpecialistId,
+        "center": userAdmin.email.toLowerCase(),
         });
 
       /*var addToAdminStudentCommunicationS = Admin_Students.doc(email.toLowerCase())
@@ -244,6 +247,7 @@ class AddStudent extends StatelessWidget {
         'occupationalSpecialistId':occupationalSpecialistId,
         'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
         'physiotherapySpecialistId':physiotherapySpecialistId,
+        "center": userAdmin.email.toLowerCase(),
 
       });}
 
@@ -273,6 +277,7 @@ class AddStudent extends StatelessWidget {
         'occupationalSpecialistId':occupationalSpecialistId,
         'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
         'physiotherapySpecialistId':physiotherapySpecialistId,
+        "center": userAdmin.email.toLowerCase(),
         });
 
      /* var addAdminToStudentOccupationalS = Admin_Students.doc(email.toLowerCase())
@@ -300,6 +305,7 @@ class AddStudent extends StatelessWidget {
         'occupationalSpecialistId':occupationalSpecialistId,
         'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
         'physiotherapySpecialistId':physiotherapySpecialistId,
+        "center": userAdmin.email.toLowerCase(),
       });}
 
       if (physiotherapySpecialistId != null){
@@ -326,6 +332,7 @@ class AddStudent extends StatelessWidget {
         'occupationalSpecialistId':occupationalSpecialistId,
         'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
         'physiotherapySpecialistId':physiotherapySpecialistId,
+        "center": userAdmin.email.toLowerCase(),
         }
        );
 
@@ -351,6 +358,7 @@ class AddStudent extends StatelessWidget {
         'occupationalSpecialistId':occupationalSpecialistId,
         'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
         'physiotherapySpecialistId':physiotherapySpecialistId,
+        "center": userAdmin.email.toLowerCase(),
       }
       );}
 

@@ -41,6 +41,7 @@ class SFiles extends StatefulWidget {
 
 class _SFilesState extends State<SFiles> {
 
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String fileUrl;
   File _File;
