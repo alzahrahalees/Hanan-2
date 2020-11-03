@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-import '../Constance.dart';
+import '../../Constance.dart';
 import 'Post.dart';
+import 'Video.dart';
+
+
 class OnePostNot extends StatefulWidget {
   final String postId;
   final String notificationId;
@@ -57,7 +59,6 @@ class _OnePostNotState extends State<OnePostNot> {
     Padding(padding: new EdgeInsets.all(8)),
     Column( children:
     snapshot.data.docs.map((DocumentSnapshot document) {
-
     String  PostId=document.id;
     String teacherName=document.data()['teacherName'];
     return Column(children:[
@@ -73,6 +74,18 @@ class _OnePostNotState extends State<OnePostNot> {
     child:
     Column(
     children:[
+       Padding(padding: EdgeInsets.all(8),),
+      document.data()['video']!=null ?
+      Video(document.data()['video'],):Text("",style:TextStyle(fontSize: 0),),
+      document.data()['imageUrl']!=null ?
+      Image.network(document.data()['imageUrl'],loadingBuilder: (BuildContext context, Widget child,
+          ImageChunkEvent loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Center(
+            child: CircularProgressIndicator(valueColor:  AlwaysStoppedAnimation<Color>(Colors.grey),backgroundColor: Colors.deepPurple));},
+        width: 2000,
+        height: 450,
+      ):Text("",style:TextStyle(fontSize: 0),),
     ListTile(
     title: Text(document.data()['content'],),),
     Padding(padding: EdgeInsets.only(right: 280),

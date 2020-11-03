@@ -155,6 +155,16 @@ class AddStudent extends StatelessWidget {
         'uid': email.toLowerCase(),
         'name':name,
         'gender':gender,
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
         }
       );
 
@@ -171,6 +181,16 @@ class AddStudent extends StatelessWidget {
         'uid': email.toLowerCase(),
         'name':name,
         'gender':gender,
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
       }
       );}
 
@@ -189,6 +209,16 @@ class AddStudent extends StatelessWidget {
           'uid': email.toLowerCase(),
         'name':name,
         'gender':gender,
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
         });
 
       /*var addToAdminStudentCommunicationS = Admin_Students.doc(email.toLowerCase())
@@ -204,6 +234,16 @@ class AddStudent extends StatelessWidget {
         'uid': email.toLowerCase(),
         'name':name,
         'gender':gender,
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
 
       });}
 
@@ -223,6 +263,16 @@ class AddStudent extends StatelessWidget {
           'uid': email.toLowerCase(),
         'name':name,
         'gender':gender,
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
         });
 
      /* var addAdminToStudentOccupationalS = Admin_Students.doc(email.toLowerCase())
@@ -240,6 +290,16 @@ class AddStudent extends StatelessWidget {
         'uid': email.toLowerCase(),
         'name':name,
         'gender':gender,
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
       });}
 
       if (physiotherapySpecialistId != null){
@@ -256,6 +316,16 @@ class AddStudent extends StatelessWidget {
           'uid':email.toLowerCase(),
         'name':name,
         'gender':gender,
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
         }
        );
 
@@ -271,6 +341,16 @@ class AddStudent extends StatelessWidget {
         'uid':email.toLowerCase(),
         'name':name,
         'gender':gender,
+        'teacherName':teacherName,
+        'teacherId':teacherId,
+        'psychologySpecialistName':psychologySpecialistName,//نفسي
+        'psychologySpecialistId':psychologySpecialistId,
+        'communicationSpecialistName':communicationSpecialistName,//تخاطب
+        'communicationSpecialistId':communicationSpecialistId,
+        'occupationalSpecialistName':occupationalSpecialistName,//,ظيفي
+        'occupationalSpecialistId':occupationalSpecialistId,
+        'physiotherapySpecialistName':physiotherapySpecialistName,//علاج طبيعي
+        'physiotherapySpecialistId':physiotherapySpecialistId,
       }
       );}
 

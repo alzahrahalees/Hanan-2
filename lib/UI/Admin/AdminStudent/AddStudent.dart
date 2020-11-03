@@ -22,8 +22,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
 List <String> l;
 
 
-
-
   final _formkey = GlobalKey<FormState>();
   final firestoreInstance = FirebaseFirestore.instance;
   User userAdmin =  FirebaseAuth.instance.currentUser;

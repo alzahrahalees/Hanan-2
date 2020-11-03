@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hanan/UI/Specialists/SmainStudyCasesScreen.dart';
 import 'package:hanan/UI/Specialists/student.dart';
 import 'package:hanan/UI/Study%20Cases/mainStudyCasesScreen.dart';
 import '../Constance.dart';
@@ -10,12 +11,26 @@ import 'package:provider/provider.dart';
 
 class SpecialistStudentMain extends StatefulWidget {
 
-
-  final BuildContext context;
-  final String studentId;
+  final  String centerId;
   final int index;
   final String name;
-  SpecialistStudentMain({this.index,this.name, this.studentId, this.context});
+  final String uid;
+  final String teacherName;
+  final String teacherId;
+  final String psychologySpecialistName;//نفسي
+  final String psychologySpecialistId;
+  final String communicationSpecialistName;//تخاطب
+  final String communicationSpecialistId;
+  final String occupationalSpecialistName; //,ظيفي
+  final String occupationalSpecialistId;
+  final String physiotherapySpecialistName;//علاج طبيعي
+  final String physiotherapySpecialistId;
+
+  SpecialistStudentMain({this.index,this.centerId,this.name,this.uid,this.teacherName,this.teacherId,
+    this.communicationSpecialistId,this.communicationSpecialistName,
+    this.physiotherapySpecialistId,this.physiotherapySpecialistName,
+    this.psychologySpecialistId,this.psychologySpecialistName,
+    this.occupationalSpecialistId,this.occupationalSpecialistName});
   @override
   _SpecialistStudentMainState createState() => _SpecialistStudentMainState();
 }
@@ -23,28 +38,23 @@ class SpecialistStudentMain extends StatefulWidget {
 class _SpecialistStudentMainState extends State<SpecialistStudentMain> {
 
   int _currentIndex=0;
-  String _name='';
-  String _studentId='';
-
-
-
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      _currentIndex=widget.index;
-      _name=widget.name;
-      _studentId=widget.studentId;
-    });
-
-  }
 
   @override
   Widget build( context) {
 
     List<String> _titles=["مواعيد ","خطط","معلومات "];
-    List<Widget> _screens=[AppointmentsSpecialist(studentId: _studentId),PlansSpecialist(),StudyCaseScreen(widget.studentId)];
+    List<Widget> _screens=[AppointmentsSpecialist(studentId: widget.uid),PlansSpecialist(),SpechalistStudyCaseScreen(studentId: widget.uid,centerId: widget.centerId,
+        communicationSpecialistName:widget.communicationSpecialistName,
+        communicationSpecialistId: widget.communicationSpecialistId,
+        physiotherapySpecialistId:widget.physiotherapySpecialistId,
+        physiotherapySpecialistName:widget.physiotherapySpecialistName ,
+        psychologySpecialistId:widget.psychologySpecialistId ,
+        psychologySpecialistName:widget.psychologySpecialistName ,
+        occupationalSpecialistId: widget.occupationalSpecialistId,
+        occupationalSpecialistName:widget.occupationalSpecialistName ,
+        teacherName: widget.teacherName,
+        teacherId: widget.teacherId
+    )];
     StudentSp studentInfo= StudentSp();
 
 
@@ -84,7 +94,7 @@ class _SpecialistStudentMainState extends State<SpecialistStudentMain> {
             slivers:<Widget>[
               SliverAppBar(
                 backgroundColor: kAppBarColor,
-                title: Text('${_titles[_currentIndex]} $_name', style: kTextAppBarStyle),
+                title: Text('${_titles[_currentIndex]} ${widget.name}', style: kTextAppBarStyle),
                 centerTitle: true,
                 floating: false,
               ),

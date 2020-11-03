@@ -171,16 +171,7 @@ class _FirstLogInState extends State<FirstLogIn> {
 
 
     }).whenComplete((){
-      Scaffold.of(context).showSnackBar(
-          SnackBar(
-              backgroundColor: Colors.white70,
-              elevation: 15,
-              content: Text(
-                'تم استكمال التسجيل، سمكنك تسجيل الدخول',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.deepPurple, fontSize: 15,fontWeight: FontWeight.bold),
-              )
-          ));
+
       Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context)=> MainLogIn()
       )

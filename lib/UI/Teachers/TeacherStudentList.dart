@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
-import 'TeacherDiaries.dart';
+import 'Diaries/TeacherDiaries.dart';
 import 'TeacherStudentMain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -69,14 +69,26 @@ class _TeacherStudentListState extends State<TeacherStudentList> {
               onTap: (){
                 Navigator.push(context,
                   MaterialPageRoute(builder: (context)=>
-                      TeacherStudentMain(uid:document.data()['uid'],centerId: document.data()['center'],name: document.data()['name'],index: 0,teacherName: document.data()['teacherName'],teacherId: document.data()['teacherId'],) ));},
+                      TeacherStudentMain(
+                        uid:document.data()['uid'],
+                        centerId: document.data()['center'],
+                        name: document.data()['name'],
+                        index: 0,
+                        teacherName: document.data()['teacherName'],
+                        teacherId: document.data()['teacherId'],
+                        communicationSpecialistName:document.data()['communicationSpecialistName'] ,
+                        communicationSpecialistId: document.data()['communicationSpecialistId'],
+                        physiotherapySpecialistId:document.data()['physiotherapySpecialistId'] ,
+                        physiotherapySpecialistName:document.data()['physiotherapySpecialistName'] ,
+                        psychologySpecialistId:document.data()['psychologySpecialistId'] ,
+                        psychologySpecialistName:document.data()['psychologySpecialistName'] ,
+                        occupationalSpecialistId: document.data()['occupationalSpecialistId'],
+                        occupationalSpecialistName:document.data()['occupationalSpecialistName'] ,
+                      ) ));},
     ),
-
-
           )
           ),
         );
-
     }
     ).toList()
 

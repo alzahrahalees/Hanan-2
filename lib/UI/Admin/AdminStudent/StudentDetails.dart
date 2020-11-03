@@ -1037,6 +1037,53 @@ class _StudentInfoState extends State<StudentInfo> {
                                                       'gender': gender,
                                                     });
                                                   }
+                                                  if (teacherId != null) {
+                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                      'teacherId': teacherId,
+                                                      'teacherName': teacherName,
+                                                    });
+                                                  }
+                                                  if (psychologySpecialistId !=
+                                                      null) {
+                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                      'psychologySpecialistName':
+                                                      psychologySpecialistName,
+                                                      //نفسي
+                                                      'psychologySpecialistId':
+                                                      psychologySpecialistId,
+                                                    });
+                                                  }
+                                                  if (occupationalSpecialistId !=
+                                                      null) {
+                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                      'occupationalSpecialistName':
+                                                      occupationalSpecialistName,
+                                                      //,ظيفي
+                                                      'occupationalSpecialistId':
+                                                      occupationalSpecialistId,
+                                                    });
+                                                  }
+                                                  if (physiotherapySpecialistId !=
+                                                      null) {
+                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                      'physiotherapySpecialistName':
+                                                      physiotherapySpecialistName,
+                                                      //علاج طبيعي
+                                                      'physiotherapySpecialistId':
+                                                      physiotherapySpecialistId,
+                                                    });
+                                                  }
+
+                                                  if (communicationSpecialistId !=
+                                                      null) {
+                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                      'communicationSpecialistName':
+                                                      communicationSpecialistName,
+                                                      //تخاطب
+                                                      'communicationSpecialistId':
+                                                      communicationSpecialistId,
+                                                    });
+                                                  }
 
                                                   })
                                               );
@@ -1052,11 +1099,51 @@ class _StudentInfoState extends State<StudentInfo> {
                                                         'gender': gender,
                                                       });
                                                     }
+                                                    if (teacherId != null) {
+                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                        'teacherId': teacherId,
+                                                        'teacherName': teacherName,
+                                                      });
+                                                    }
+                                                    if (psychologySpecialistId != null) {
+                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                        'psychologySpecialistName':
+                                                        psychologySpecialistName,
+                                                        //نفسي
+                                                        'psychologySpecialistId':
+                                                        psychologySpecialistId,
+                                                      });
+                                                    }
+                                                    if (occupationalSpecialistId != null) {
+                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                        'occupationalSpecialistName':
+                                                        occupationalSpecialistName,
+                                                        //,ظيفي
+                                                        'occupationalSpecialistId':
+                                                        occupationalSpecialistId,
+                                                      });
+                                                    }
+                                                    if (physiotherapySpecialistId != null) {
+                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                        'physiotherapySpecialistName':
+                                                        physiotherapySpecialistName,
+                                                        //علاج طبيعي
+                                                        'physiotherapySpecialistId':
+                                                        physiotherapySpecialistId,
+                                                      });
+                                                    }
 
+                                                    if (communicationSpecialistId != null) {
+                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                        'communicationSpecialistName':
+                                                        communicationSpecialistName,
+                                                        //تخاطب
+                                                        'communicationSpecialistId':
+                                                        communicationSpecialistId,
+                                                      });
+                                                    }
                                                   })
                                               );
-
-
                                               Navigator.pop(
                                                   context,
                                                   MaterialPageRoute(

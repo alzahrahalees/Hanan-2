@@ -1,17 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hanan/UI/Study%20Cases/AddClinical.dart';
+import 'package:hanan/UI/Study%20Cases/AddFamilyInfo.dart';
 import 'package:hanan/UI/Study%20Cases/AddStudentInfo.dart';
+import 'package:hanan/UI/Study%20Cases/SpecialistFiles.dart';
+import 'package:hanan/UI/Study%20Cases/StudentProfile.dart';
 import 'package:hanan/UI/Study%20Cases/UpdateClinical.dart';
 import 'package:hanan/UI/Study%20Cases/UpdateStudentInfo.dart';
-import 'package:hanan/UI/Study%20Cases/TeacherFiles.dart';
+import 'package:hanan/UI/Study%20Cases/UpdatseFamilyInfo.dart';
 import '../Constance.dart';
-import 'StudentProfile.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'AddFamilyInfo.dart';
-import 'UpdatseFamilyInfo.dart';
 
-class StudyCaseScreen extends StatefulWidget {
+
+class SpechalistStudyCaseScreen extends StatefulWidget {
   final String studentId;
   final String centerId;
   final String psychologySpecialistName;//نفسي
@@ -26,17 +27,17 @@ class StudyCaseScreen extends StatefulWidget {
   final String teacherId;
 
 
-  StudyCaseScreen({this.teacherId,this.studentId,this.centerId,this.teacherName,
+  SpechalistStudyCaseScreen ({this.teacherId,this.studentId,this.centerId,this.teacherName,
     this.communicationSpecialistId,this.communicationSpecialistName,
     this.physiotherapySpecialistId,this.physiotherapySpecialistName,
     this.psychologySpecialistId,this.psychologySpecialistName,
     this.occupationalSpecialistId,this.occupationalSpecialistName,});
 
   @override
-  _StudyCaseScreenState createState() => _StudyCaseScreenState();
+  _SpechalistStudyCaseScreen  createState() => _SpechalistStudyCaseScreen ();
 }
 
-class _StudyCaseScreenState extends State<StudyCaseScreen> {
+class _SpechalistStudyCaseScreen  extends State<SpechalistStudyCaseScreen > {
   Future<bool> hasData() {}
   @override
   Widget build(BuildContext context) {
@@ -83,7 +84,7 @@ class _StudyCaseScreenState extends State<StudyCaseScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TFiles(studentId: widget.studentId,centerId: widget.centerId,
+                          builder: (context) => SFiles(studentId: widget.studentId,centerId: widget.centerId,
                             communicationSpecialistName:widget.communicationSpecialistName,
                             communicationSpecialistId: widget.communicationSpecialistId,
                             physiotherapySpecialistId:widget.physiotherapySpecialistId,
@@ -93,6 +94,7 @@ class _StudyCaseScreenState extends State<StudyCaseScreen> {
                             occupationalSpecialistId: widget.occupationalSpecialistId,
                             occupationalSpecialistName:widget.occupationalSpecialistName ,
                             teacherName: widget.teacherName,
+                            teacherId: widget.teacherId,
                           )));},
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
