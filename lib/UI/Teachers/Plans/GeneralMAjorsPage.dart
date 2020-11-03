@@ -43,6 +43,7 @@ class _GeneralMajorsPageState extends State<GeneralMajorsPage>  with TickerProvi
           backgroundColor: kAppBarColor,
           toolbarHeight: 75,
           bottom: TabBar(
+            physics: ScrollPhysics(),
             isScrollable: true,
             controller:_tabController,
             labelColor: kSelectedItemColor,

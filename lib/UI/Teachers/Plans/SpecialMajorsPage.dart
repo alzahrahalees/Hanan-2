@@ -76,21 +76,10 @@ class _SpecialMajorsPageState extends State<SpecialMajorsPage>  with TickerProvi
     );
   }
 }
-
-class AddGoal extends StatefulWidget {
-  @override
-  _AddGoalState createState() => _AddGoalState();
-}
-
-class _AddGoalState extends State<AddGoal> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
+// to add gaol
 // showModalBottomSheet(
 //                 enableDrag: false,
-//                 isScrollControlled: false,
+//                 isScrollControlled: true,
 //                 shape: RoundedRectangleBorder(
 //                   borderRadius: BorderRadius.only(
 //                     topLeft: Radius.circular(10.0),
