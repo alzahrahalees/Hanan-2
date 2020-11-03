@@ -31,7 +31,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
   bool downloading = false;
   var progressString = "";
 
-
+  List<TextEditingController> _controllers = new List();
 
   Future<void> downloadFile(String url) async {
     Dio dio = Dio();
@@ -60,8 +60,6 @@ class _ParentDiariesState extends State<ParentDiaries> {
   Widget build(BuildContext context) {
     User userStudent = FirebaseAuth.instance.currentUser;
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     return Scaffold(
         body: SafeArea(
           child: StreamBuilder<QuerySnapshot>(
@@ -89,32 +87,34 @@ class _ParentDiariesState extends State<ParentDiaries> {
                             scale: 100,
                             matchTextDirection: false),
                       ),
-                      child: Form(
-                          key: _formkey,
-                          child:ListView(
-                            physics: const AlwaysScrollableScrollPhysics(),
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          Center(
+                            //alignment: Alignment.bottomLeft,
+                            child:Text(dateSearch2,style:TextStyle(color: Colors.grey) ,),),
+                          Padding(padding: new EdgeInsets.all(8)),
+                          ListView.builder(
+                              physics: ScrollPhysics(),
+                              itemCount: snapshot.data.docs.length,
                             shrinkWrap: true,
-                            children: [
-                              Center(
-                                //alignment: Alignment.bottomLeft,
-                                child:Text(dateSearch2,style:TextStyle(color: Colors.grey) ,),),
-                              Padding(padding: new EdgeInsets.all(8)),
-                             Column(
-                                  children: snapshot.data.docs
-                                      .map((DocumentSnapshot document) {
-                                    String PostId = document.id;
-                                    String Name = document.data()['studentName'];
-                                    String CenterId = document.data()['centerId'];
-                                    String Uid = document.data()['uid'];
-                                    String teachrtId=document.data()['teacherId'];
-                                    String Writer = document.data()['studentName'];
-                                    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-                                    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-                                    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-                                    CollectionReference Admin_Teachers = Admin.doc(CenterId).collection('Teachers');
-                                    CollectionReference Admin_Students = Admin.doc(CenterId).collection('Students');
-
-                                    return Column(
+                              itemBuilder: (context,index){
+                                DocumentSnapshot documentSnapshot=snapshot.data.docs[index];
+                                String  PostId=documentSnapshot.id;
+                                _controllers.add(TextEditingController());
+                                String Name = documentSnapshot['studentName'];
+                                String CenterId = documentSnapshot['centerId'];
+                                String Uid = documentSnapshot['uid'];
+                                String teachrtId=documentSnapshot['teacherId'];
+                                String Writer = documentSnapshot['studentName'];
+                                CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+                                CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
+                                CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+                                CollectionReference Admin_Teachers = Admin.doc(CenterId).collection('Teachers');
+                                CollectionReference Admin_Students = Admin.doc(CenterId).collection('Students');
+                             return Column(
+                                 children:[
+                                   Column(
                                       children: [
                                         Card(
                                           shape: BeveledRectangleBorder(
@@ -124,12 +124,12 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                           child: Column(
                                             children: [
                                               Padding(padding: EdgeInsets.all(8),),
-                                              document.data()['video']!=null ?
+                                            documentSnapshot['video']!=null ?
                                               Column(
                                                 children: [
                                                   Container(
                                     child:IconButton(icon: Icon(Icons.file_download,color: Colors.deepPurpleAccent.shade100,), onPressed:() async {
-                                      String path =document.data()['video'];
+                                      String path =documentSnapshot['video'];
                                       GallerySaver.saveVideo(path, albumName: "Hanan").then((bool success) {
                                         setState(() {
                                           print('Video is saved');
@@ -149,17 +149,17 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                     }),
                                     alignment: Alignment.centerLeft,
                                     ),
-                                                  Video(document.data()['video'],),
+                                                  Video(documentSnapshot['video'],),
 
                                                 ],
                                               ):Text("",style:TextStyle(fontSize: 0),),
 
-                                              document.data()['imageUrl']!=null ?
+                                              documentSnapshot['imageUrl']!=null ?
                                               Column(
                                                 children: [
                                                   Container(
                                                     child: IconButton(icon: Icon(Icons.file_download,color: Colors.deepPurpleAccent.shade100,), onPressed:() async {
-                                                      String path =document.data()['imageUrl'];
+                                                      String path =documentSnapshot['imageUrl'];
                                                       GallerySaver.saveImage(path, albumName: "Hanan").then((bool success) {
                                                         setState(() {
                                                           print('Image is saved');
@@ -179,7 +179,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                       }),
                                                     alignment: Alignment.centerLeft,
                                                   ),
-                                                    Image.network(document.data()['imageUrl'],loadingBuilder: (BuildContext context, Widget child,
+                                                    Image.network(documentSnapshot['imageUrl'],loadingBuilder: (BuildContext context, Widget child,
                                                         ImageChunkEvent loadingProgress) {
                                                       if (loadingProgress == null) return child;
                                                       return Center(
@@ -192,18 +192,16 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                               Text("\n"),
                                               ListTile(
                                                 title: Text(
-                                                  document.data()['content'],
+                                                  documentSnapshot['content'],
                                                 ),
                                                 trailing: Text(
-                                                    document
-                                                            .data()['hour']
+                                                    documentSnapshot['hour']
                                                             .toString() +
                                                         ":" +
-                                                        document
-                                                            .data()['minute']
+                                                        documentSnapshot['minute']
                                                             .toString() +
                                                         " " +
-                                                        document.data()['time'],
+                                                        documentSnapshot['time'],
                                                     style: TextStyle(
                                                         fontSize: 9,
                                                         color: Colors.grey)),
@@ -326,15 +324,14 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                       })),
                                               TextFormField(
                                                 //keyboardType: TextInputType.multiline,
-                                                controller: c,
+                                                controller: _controllers[index],
                                                 minLines: 1,
                                                 maxLines: 5,
-                                                showCursor: true,
                                                 decoration: InputDecoration(
                                                   suffix: Padding(
                                                       padding: EdgeInsets.all(1),
                                                       child: AddCommentParent(
-                                                        c: c,
+                                                        c: _controllers[index],
                                                         writer: Writer,
                                                         studentUid: Uid,
                                                         studentName: Name,
@@ -364,8 +361,6 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                             Colors.deepPurpleAccent),
                                                   ),
                                                 ),
-                                                textInputAction:
-                                                    TextInputAction.unspecified,
                                                 onChanged: (value) {
                                                   setState(() {
                                                     comment = value;
@@ -385,10 +380,12 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                           padding: EdgeInsets.all(10),
                                         ),
                                       ],
-                                    );
-                                  }).toList()),
-                            ],
-                          )));
+                                    ),
+                                 ]);
+
+    }),
+                        ],
+                      ));
                 }
 
               })

@@ -3,7 +3,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Parents/ParentMain.dart';
 import 'dart:math';
 import 'package:path/path.dart' as p;
 import '../../Constance.dart';
@@ -439,7 +438,7 @@ class AddCommentParent extends StatelessWidget {
   final String studentName;
   final String postId;
   final String writer;
-final TextEditingController c;
+  final TextEditingController c;
 
   AddCommentParent({
     this.c,
@@ -457,31 +456,33 @@ final TextEditingController c;
   });
 
 
-  int hourEditor (int hour){
+  int hourEditor(int hour) {
     int newHour;
-    if (hour!=null) {
+    if (hour != null) {
       if (hour > 12)
         newHour = hour - 12;
       else
         newHour = hour;
       return newHour;
     }
-    else return 0;
-
+    else
+      return 0;
   }
 
-  String dayOrNight(int hour){
+  String dayOrNight(int hour) {
     String time;
-    if (hour!= null){
-      if(hour>=12) time='م';
-      else time ="ص";
+    if (hour != null) {
+      if (hour >= 12)
+        time = 'م';
+      else
+        time = "ص";
       return time;
     }
-    else return "ص";
+    else
+      return "ص";
   }
 
   @override
-
   Widget build(BuildContext context) {
     User userTeacher = FirebaseAuth.instance.currentUser;
     CollectionReference Students =
@@ -495,40 +496,42 @@ final TextEditingController c;
     CollectionReference Admin_Students =
     Admin.doc(centerId).collection('Students');
 
-    var random= new Random();
-    int documentId=random.nextInt(1000000000);
+    var random = new Random();
+    int documentId = random.nextInt(1000000000);
 
     Future<void> AddCommentParent() async {
       var addtoStudentPostComment = Students.doc(studentUid).collection("Posts")
-          .doc(postId).collection("Comments").doc("$studentUid$documentId").set({
-        'comment': comment,
-        'teacherId':teacherId,
-        'uid': studentUid,
-        'date': date,
-        'time':dayOrNight(hour),
-        'hour':hourEditor(hour),
-        'minute':minute,
-        'centerId': centerId,
-        'postId': postId,
-        'studentName': studentName,
-        'writer' :writer,
-        'createdAt':Timestamp.now(),
-      });
+          .doc(postId).collection("Comments").doc("$studentUid$documentId").set(
+          {
+            'comment': comment,
+            'teacherId': teacherId,
+            'uid': studentUid,
+            'date': date,
+            'time': dayOrNight(hour),
+            'hour': hourEditor(hour),
+            'minute': minute,
+            'centerId': centerId,
+            'postId': postId,
+            'studentName': studentName,
+            'writer': writer,
+            'createdAt': Timestamp.now(),
+          });
 
       var addtoAdminStudentPostComment = Admin_Students.doc(studentUid)
-          .collection('Posts').doc(postId).collection("Comments").doc("$studentUid$documentId").set({
+          .collection('Posts').doc(postId).collection("Comments").doc(
+          "$studentUid$documentId").set({
         'comment': comment,
-        'teacherId':teacherId,
+        'teacherId': teacherId,
         'uid': studentUid,
         'date': date,
-        'time':dayOrNight(hour),
-        'hour':hourEditor(hour),
-        'minute':minute,
+        'time': dayOrNight(hour),
+        'hour': hourEditor(hour),
+        'minute': minute,
         'centerId': centerId,
         'postId': postId,
         'studentName': studentName,
-        'writer' :writer,
-        'createdAt':Timestamp.now(),
+        'writer': writer,
+        'createdAt': Timestamp.now(),
       });
 
       var addtoTeacherStudentPostComment = Teachers.doc(teacherId)
@@ -536,86 +539,85 @@ final TextEditingController c;
           .doc(studentUid).collection('Posts').doc(postId).collection(
           "Comments").doc("$studentUid$documentId").set({
         'comment': comment,
-        'teacherId':teacherId,
+        'teacherId': teacherId,
         'uid': studentUid,
         'date': date,
-        'time':dayOrNight(hour),
-        'hour':hourEditor(hour),
-        'minute':minute,
+        'time': dayOrNight(hour),
+        'hour': hourEditor(hour),
+        'minute': minute,
         'centerId': centerId,
         'postId': postId,
         'studentName': studentName,
-        'writer' :writer,
-        'createdAt':Timestamp.now(),
+        'writer': writer,
+        'createdAt': Timestamp.now(),
       });
 
       var addtoAdminTeacherStudentPostComment = Admin_Teachers.doc(
           teacherId).collection("Students")
           .doc(studentUid)
-          .collection('Posts').doc(postId).collection("Comments").doc("$studentUid$documentId").set({
+          .collection('Posts').doc(postId).collection("Comments").doc(
+          "$studentUid$documentId").set({
         'comment': comment,
-        'teacherId':teacherId,
+        'teacherId': teacherId,
         'uid': studentUid,
         'date': date,
-        'time':dayOrNight(hour),
-        'hour':hourEditor(hour),
-        'minute':minute,
+        'time': dayOrNight(hour),
+        'hour': hourEditor(hour),
+        'minute': minute,
         'centerId': centerId,
         'postId': postId,
         'studentName': studentName,
-        'writer' :writer,
-        'createdAt':Timestamp.now(),
+        'writer': writer,
+        'createdAt': Timestamp.now(),
       });
 
       var addtoAdminTeacherNotification = Admin_Teachers.doc(
-          teacherId).collection('Notifications').doc("$studentUid$documentId Notifications").set({
-        'commentId':  "$studentUid$documentId",
+          teacherId).collection('Notifications').doc(
+          "$studentUid$documentId Notifications").set({
+        'commentId': "$studentUid$documentId",
         'comment': comment,
         'uid': studentUid,
         'date': date,
-        'time':dayOrNight(hour),
-        'hour':hourEditor(hour),
-        'minute':minute,
+        'time': dayOrNight(hour),
+        'hour': hourEditor(hour),
+        'minute': minute,
         'centerId': centerId,
         'postId': postId,
         'studentName': studentName,
-        'writer' :writer,
-        'createdAt':Timestamp.now(),
-        'read':false,
-        'NotificationUid':"$studentUid$documentId Notifications",
+        'writer': writer,
+        'createdAt': Timestamp.now(),
+        'read': false,
+        'NotificationUid': "$studentUid$documentId Notifications",
       });
       var addtoTeacherNotification = Teachers.doc(
-          teacherId).collection('Notifications').doc("$studentUid$documentId Notifications").set({
-        'commentId':  "$studentUid$documentId",
+          teacherId).collection('Notifications').doc(
+          "$studentUid$documentId Notifications").set({
+        'commentId': "$studentUid$documentId",
         'comment': comment,
         'uid': studentUid,
         'date': date,
-        'time':dayOrNight(hour),
-        'hour':hourEditor(hour),
-        'minute':minute,
+        'time': dayOrNight(hour),
+        'hour': hourEditor(hour),
+        'minute': minute,
         'centerId': centerId,
         'postId': postId,
         'studentName': studentName,
-        'writer' :writer,
-        'createdAt':Timestamp.now(),
-        'read':false,
-        'NotificationUid':"$studentUid$documentId Notifications",
+        'writer': writer,
+        'createdAt': Timestamp.now(),
+        'read': false,
+        'NotificationUid': "$studentUid$documentId Notifications",
       });
     }
 
-    return FlatButton  (
+    return FlatButton(
       child: Text('نشر', style: kTextPageStyle.copyWith(
-          color:comment==null || comment=="" ? Colors.white10:Colors.deepPurpleAccent.shade700)),
-
+          color: comment == null || comment == "" ? Colors.white10 : Colors
+              .deepPurpleAccent.shade700)),
       onPressed: () {
-        if (comment!=null && comment.isNotEmpty && comment!="") {
-
+        if (comment != null && comment.isNotEmpty && comment != "") {
           print(comment);
-          print(postId);
           AddCommentParent();
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context)=>
-                  ParentMain(0)));
+          c.clear();
         }
       },
     );

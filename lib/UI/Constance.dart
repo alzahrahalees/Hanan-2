@@ -74,6 +74,8 @@ class KCircularTextFormField extends StatelessWidget {
           textAlign: TextAlign.center,
             controller: controller,
             decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
                 border:  OutlineInputBorder(
                     borderRadius: const BorderRadius.all(
               const Radius.circular(18.0),
@@ -100,12 +102,14 @@ class KNormalTextFormField extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return TextFormField(
-
       readOnly: readOnly==null? false: readOnly,
       initialValue: title,
       controller: controller,
       decoration: InputDecoration(
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
         labelText:  "$hintText",
+        labelStyle: TextStyle(color: Colors.grey),
       ),
       validator: (value) {
         if (value.isEmpty) {
@@ -136,6 +140,8 @@ class KNormalTextFormFieldLines extends StatelessWidget {
       minLines: 1,
       controller: controller,
       decoration: InputDecoration(
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
         hintText: "$hintText",
       ),
       validator: (value) {
@@ -158,11 +164,15 @@ class KNormalTextFormFieldLinesNoV extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return TextFormField(
+
       maxLines: 6,
       minLines: 1,
       controller: controller,
       decoration: InputDecoration(
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
         hintText: "$hintText",
+
       ),
       onChanged: onChanged,
     );
@@ -179,6 +189,8 @@ class KNormalTextFormFieldNoV extends StatelessWidget {
     return TextFormField(
         controller: controller,
         decoration: InputDecoration(
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
           hintText: "$hintText",
         ));
   }
@@ -561,8 +573,11 @@ class ProfileTile extends StatelessWidget {
                     readOnly: readOnly,
                     initialValue: title,
                     decoration: InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
                         helperText: readOnly?  "لايمكن تغييره": '' ,
-                        labelText: hintTitle
+                        labelText: hintTitle,
+                      labelStyle: TextStyle(color: Colors.deepPurple),
                     ),
                     onChanged: onChanged,
                     validator:  (value){
@@ -618,8 +633,11 @@ class ProfileTileTwo extends StatelessWidget {
                     readOnly: readOnly,
                     initialValue: title,
                     decoration: InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
                         //helperText: readOnly?  "لايمكن تغييره": '' ,
-                        labelText: hintTitle
+                        labelText: hintTitle,
+                        labelStyle: TextStyle(color: Colors.deepPurple),
                     ),
                     onChanged: onChanged,
                     validator:  (value){

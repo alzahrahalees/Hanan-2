@@ -77,8 +77,10 @@ class _MainLogInState extends State<MainLogIn> {
                         new TextFormField(
                           controller: _email,
                           decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
                             hintText: "البريد الإلكتروني",
-                            prefixIcon: new Icon(Icons.person),
+                            prefixIcon: new IconButton(icon:Icon(Icons.person),focusColor: Colors.deepPurple,),
                           ),
                           validator: (value) {
                             if (value.isEmpty) {
@@ -92,7 +94,9 @@ class _MainLogInState extends State<MainLogIn> {
                           controller: _password,
                           obscureText: true,
                           decoration: InputDecoration(
-                              prefixIcon: new Icon(Icons.lock),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
+                              prefixIcon: new IconButton(icon:Icon(Icons.lock),focusColor: Colors.deepPurple,),
                               hintText: "كلمة المرور",
                               helperStyle: TextStyle(fontSize: 10)),
                           validator: (value) {
