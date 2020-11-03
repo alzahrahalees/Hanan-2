@@ -10,8 +10,6 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'Timer.dart';
 
 
-
-
 class AllAppointmentsSpecialist extends StatefulWidget {
 
 

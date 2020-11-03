@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:video_player/video_player.dart';
-import '../Constance.dart';
+import '../../Constance.dart';
 import 'addPostPage.dart';
 import 'Post.dart';
+import 'Video.dart';
 class DiariesTeacher extends StatefulWidget {
   @override
   final String uid;
@@ -54,7 +55,6 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
 
   Widget build(BuildContext context) {
     List <TextEditingController> cs=[];
-
     User userTeacher = FirebaseAuth.instance.currentUser;CollectionReference Students = FirebaseFirestore.instance.collection('Students');
     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
@@ -91,42 +91,11 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         shrinkWrap: true,
                         children: [
-                           /*  snapshot.connectionState == ConnectionState.done?
-                                   AspectRatio(
-                                    aspectRatio: _controller.value.aspectRatio,
-                                    child: VideoPlayer(_controller),
-                                  )
-                                :
-                                Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                          GestureDetector(
-                            onTap: () {
-                              // Wrap the play or pause in a call to `setState`. This ensures the
-                              // correct icon is shown
-                              setState(() {
-                                // If the video is playing, pause it.
-                                if (_controller.value.isPlaying) {
-                                  _controller.pause();
-                                } else {
-                                  // If the video is paused, play it.
-                                  _controller.play();
-                                }
-                              });
-                            },
-                            // Display the correct icon depending on the state of the player.
-                            child: Icon(
-                              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                            ),
-                          ),*/
-
                           Center(
                             //alignment: Alignment.bottomLeft,
                             child:Text(dateSearch2,style:TextStyle(color: Colors.grey) ,),),
                           Padding(padding: new EdgeInsets.all(8)),
-
                           Column( children:
-
                           snapshot.data.docs.map((DocumentSnapshot document) {
                             String  PostId=document.id;
                             cs.add(new TextEditingController());
@@ -139,14 +108,19 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
                                 child:
                                 Column(
                                   children:[
-                                    Padding(padding: EdgeInsets.only(right: 300),
-                                    child:  DeletePost(centerId: centerId,postId: document.id,studentUid: uid,imageUrl: document.data()['imageUrl'] ,),),
+                                    Padding(padding: EdgeInsets.only(right: 280),
+                                    child:  DeletePost(centerId: centerId,postId: document.id,studentUid: uid,imageUrl: document.data()['imageUrl'] ,videoUrl: document.data()['video'],),),
+                                    document.data()['video']!=null ?
+                                    Video(document.data()['video'],):Text("",style:TextStyle(fontSize: 0),),
                                     document.data()['imageUrl']!=null ?
-                                    Image.network(document.data()['imageUrl'],
+                                    Image.network(document.data()['imageUrl'],loadingBuilder: (BuildContext context, Widget child,
+                                      ImageChunkEvent loadingProgress) {
+                                     if (loadingProgress == null) return child;
+                                         return Center(
+                                     child: CircularProgressIndicator(valueColor:  AlwaysStoppedAnimation<Color>(Colors.grey),backgroundColor: Colors.deepPurple));},
                                       width: 2000,
                                       height: 450,
-                                    )  :
-                                        Text("",style:TextStyle(fontSize: 0),),
+                                    ):Text("",style:TextStyle(fontSize: 0),),
                                      ListTile(
                                       title: Text(document.data()['content'],),),
                                     Padding(padding: EdgeInsets.only(right: 280),

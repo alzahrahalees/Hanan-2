@@ -39,9 +39,23 @@ dependencies:
   image_picker: ^0.6.7+12
   path: ^1.7.0
   image_downloader: ^0.20.1
-  video_player: ^0.11.1+2
+  video_player: ^0.10.2+3
   weekday_selector_formfield: ^1.0.4
   provider: ^4.3.2+2
+  chewie: ^0.9.8+1
+  export_video_frame: ^0.0.1
+  url_launcher: ^5.4.2
+  flutter_downloader: ^1.5.2
+  dio: ^3.0.10
+  storage_path: ^0.2.0
+  path_provider: ^1.6.22
+  gallery_saver: ^2.0.1
+  file_picker: ^1.4.3+1
+  group_radio_button: ^1.0.1
+  media_file_saver: ^0.1.1
+  media_saver: ^1.0.2
+  permission_handler: 4.4.0
+  ext_storage: ^1.0.3
 
 
 dev_dependencies:

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hanan/UI/Parents/ParentMain.dart';
 import 'dart:math';
 import 'package:path/path.dart' as p;
-import '../Constance.dart';
+import '../../Constance.dart';
 
 
 
@@ -199,13 +199,13 @@ class _AddPostState extends State<AddPost> {
       child: Text('نشر', style: kTextPageStyle.copyWith(
           color: Colors.deepPurpleAccent.shade700)),
       onPressed: () {
-        if (widget.content!=" " || widget.image!=null ) {
+        if (widget.content!=" " || widget.image!=null || widget.video !=null) {
           print(widget.content);
           addPost();
        }
        else{
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("مطلوب كتابة يومية أو إضافة صورة",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),
+            content: Text(" مطلوب كتابة يومية أو إضافة صورة أو فيديو",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),
             backgroundColor: Colors.white70,
             duration: Duration(seconds: 1),
           ));
@@ -630,8 +630,9 @@ class DeletePost extends StatelessWidget {
   final String postId;
   final String centerId;
   final String imageUrl;
+  final String videoUrl;
 
-  DeletePost({this.centerId,this.postId,this.studentUid,this.imageUrl});
+  DeletePost({this.centerId,this.postId,this.studentUid,this.imageUrl,this.videoUrl});
 
   Widget build(BuildContext context) {
     User userTeacher = FirebaseAuth.instance.currentUser;
@@ -723,7 +724,22 @@ class DeletePost extends StatelessWidget {
         String chaildName =imageUrl.substring(71,imageUrl.indexOf('?'));
         await storage.ref().child('$chaildName').delete();}
       }
+
+    if (videoUrl != null) {
+      if (videoUrl .contains('im',71)){
+        FirebaseStorage storage = FirebaseStorage(
+            storageBucket: 'gs://hananz-5ffb9.appspot.com');
+        String chaildName =videoUrl.substring(71,videoUrl.indexOf('?'));
+        print(chaildName);
+        await storage.ref().child('$chaildName').delete();
+      }
+      else{
+        FirebaseStorage storage = FirebaseStorage(
+            storageBucket: 'gs://hananz-5ffb9.appspot.com');
+        String chaildName =videoUrl.substring(71,videoUrl .indexOf('?'));
+        await storage.ref().child('$chaildName').delete();}
     }
+  }
 
        return IconButton  (
       icon:Icon( Icons.clear,color: Colors.deepPurple.shade100,size: 18,),

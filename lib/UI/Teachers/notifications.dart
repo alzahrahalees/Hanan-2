@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:hanan/UI/Teachers/readPostNotification.dart';
+import 'file:///C:/Users/Sahar%20Al-Ghalayeeni/AndroidStudioProjects/Hanan-2%20-%20Copy%20(2)/lib/UI/Teachers/Diaries/readPostNotification.dart';
 import '../Constance.dart';
 
 

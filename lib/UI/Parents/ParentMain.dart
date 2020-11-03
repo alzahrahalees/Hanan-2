@@ -13,8 +13,6 @@ import 'ParentCaretakerInformation.dart';
 
 
 class ParentMain extends StatefulWidget {
-
-
   final int index;
 
   ParentMain(this.index);

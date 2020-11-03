@@ -29,7 +29,6 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
     User user = FirebaseAuth.instance.currentUser;
     CollectionReference studentsInSpecia = FirebaseFirestore.instance.collection('Specialists')
     .doc(user.email).collection('Students');
-
     return Container(
       color: kBackgroundPageColor,
       child: StreamBuilder<QuerySnapshot>(
@@ -66,7 +65,15 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
                                     ),
                                     onTap: (){Navigator.push(context,
                                         MaterialPageRoute(builder: (context)=>
-                                            SpecialistStudentMain(index: 0,name:document.data()['name'] ,studentId: document.data()['uid'],)));},
+                                            SpecialistStudentMain(uid:document.data()['uid'],centerId: document.data()['center'],name: document.data()['name'],index: 0,teacherName: document.data()['teacherName'],teacherId: document.data()['teacherId'],
+                                              communicationSpecialistName:document.data()['communicationSpecialistName'] ,
+                                              communicationSpecialistId: document.data()['communicationSpecialistId'],
+                                              physiotherapySpecialistId:document.data()['physiotherapySpecialistId'] ,
+                                              physiotherapySpecialistName:document.data()['physiotherapySpecialistName'] ,
+                                              psychologySpecialistId:document.data()['psychologySpecialistId'] ,
+                                              psychologySpecialistName:document.data()['psychologySpecialistName'] ,
+                                              occupationalSpecialistId: document.data()['occupationalSpecialistId'],
+                                              occupationalSpecialistName:document.data()['occupationalSpecialistName'] ,)));},
                                     title: Text(document.data()['name'] , style: kTextPageStyle))
                             )
                         );

@@ -1,11 +1,19 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:hanan/UI/Teachers/Post.dart';
+import 'file:///C:/Users/Sahar%20Al-Ghalayeeni/AndroidStudioProjects/Hanan-2%20-%20Copy%20(2)/lib/UI/Teachers/Diaries/Post.dart';
+import 'file:///C:/Users/Sahar%20Al-Ghalayeeni/AndroidStudioProjects/Hanan-2%20-%20Copy%20(2)/lib/UI/Teachers/Diaries/Video.dart';
 import 'package:image_downloader/image_downloader.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:storage_path/storage_path.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Constance.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 class ParentDiaries extends StatefulWidget {
   @override
@@ -14,12 +22,45 @@ class ParentDiaries extends StatefulWidget {
 
 class _ParentDiariesState extends State<ParentDiaries> {
   @override
+
+
+
   final _formkey = GlobalKey<FormState>();
   String comment;
   DateTime dateSearch=DateTime.now();
   String dateSearch2=DateTime.now().toString().substring(0, 10);
   TextEditingController c;
   File SImage;
+  File Video1;
+
+  bool downloading = false;
+  var progressString = "";
+
+
+
+  Future<void> downloadFile(String url) async {
+    Dio dio = Dio();
+    try {
+      var dir = await  getExternalStorageDirectory();
+      print(dir.path);
+      await dio.download(url, "${dir.path}/v.mp4",
+          onReceiveProgress: (rec, total) {
+            print("Rec: $rec , Total: $total");
+            setState(() {
+              downloading = true;
+              progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
+            });
+          });
+    } catch (e) {
+      print(e);
+    }
+    setState(() {
+      downloading = false;
+      progressString = "Completed";
+    });
+    print("Download completed");
+  }
+
 
   Widget build(BuildContext context) {
     User userStudent = FirebaseAuth.instance.currentUser;
@@ -72,7 +113,6 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                     String Uid = document.data()['uid'];
                                     String teachrtId=document.data()['teacherId'];
                                     String Writer = document.data()['studentName'];
-
                                     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
                                     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
                                     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
@@ -88,27 +128,67 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                           elevation: 5,
                                           child: Column(
                                             children: [
+                                              Padding(padding: EdgeInsets.all(8),),
+                                              document.data()['video']!=null ?
+                                              Column(
+                                                children: [
+                                                  Container(
+                                    child:IconButton(icon: Icon(Icons.file_download,color: Colors.deepPurpleAccent.shade100,), onPressed:() async {
+                                      String path =document.data()['video'];
+                                      GallerySaver.saveVideo(path, albumName: "Hanan").then((bool success) {
+                                        setState(() {
+                                          print('Video is saved');
+                                          Scaffold.of(context).showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      "تم حفظ المقطع بنجاح",
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .deepPurple,
+                                                          fontSize: 12)),
+                                                  backgroundColor: Colors.white70,
+                                                  duration: Duration(
+                                                      seconds: 1)));
+                                        });
+                                      });
+                                    }),
+                                    alignment: Alignment.centerLeft,
+                                    ),
+                                                  Video(document.data()['video'],),
+
+                                                ],
+                                              ):Text("",style:TextStyle(fontSize: 0),),
+
                                               document.data()['imageUrl']!=null ?
                                               Column(
                                                 children: [
                                                   Container(
                                                     child: IconButton(icon: Icon(Icons.file_download,color: Colors.deepPurpleAccent.shade100,), onPressed:() async {
-                                                      var imageId = await ImageDownloader
-                                                          .downloadImage(document
-                                                          .data()['imageUrl']);
-                                                      var path = await ImageDownloader.findPath(imageId);
-                                                      File image =File(path);
-                                                      setState(() {
-                                                        SImage=image;
+                                                      String path =document.data()['imageUrl'];
+                                                      GallerySaver.saveImage(path, albumName: "Hanan").then((bool success) {
+                                                        setState(() {
+                                                          print('Image is saved');
+                                                          Scaffold.of(context).showSnackBar(
+                                                              SnackBar(
+                                                                  content: Text(
+                                                                      "تم حفظ الصورة بنجاح",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .deepPurple,
+                                                                          fontSize: 12)),
+                                                                  backgroundColor: Colors.white70,
+                                                                  duration: Duration(
+                                                                      seconds: 1)));
+                                                        });
                                                       });
-                                                        Scaffold.of(context).showSnackBar(SnackBar(
-                                                            content: Text("تم حفظ الصورة بنجاح",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),
-                                                            backgroundColor: Colors.white70,
-                                                            duration: Duration(seconds: 1)));
                                                       }),
                                                     alignment: Alignment.centerLeft,
                                                   ),
-                                                    Image.network(document.data()['imageUrl'],
+                                                    Image.network(document.data()['imageUrl'],loadingBuilder: (BuildContext context, Widget child,
+                                                        ImageChunkEvent loadingProgress) {
+                                                      if (loadingProgress == null) return child;
+                                                      return Center(
+                                                          child: CircularProgressIndicator(valueColor:  AlwaysStoppedAnimation<Color>(Colors.grey),backgroundColor: Colors.deepPurple));},
                                                       width: 1500,
                                                       height: 500,
                                                     ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
-import 'TeacherDiaries.dart';
+import 'Diaries/TeacherDiaries.dart';
 import 'TeacherPlans.dart';
 import 'TeacherStudentAppointment.dart';
 import 'TeacherStudentInfo.dart';
@@ -20,36 +20,44 @@ class TeacherStudentMain extends StatefulWidget {
   final String uid;
   final String teacherName;
   final String teacherId;
+  final String psychologySpecialistName;//نفسي
+  final String psychologySpecialistId;
+  final String communicationSpecialistName;//تخاطب
+  final String communicationSpecialistId;
+  final String occupationalSpecialistName; //,ظيفي
+  final String occupationalSpecialistId;
+  final String physiotherapySpecialistName;//علاج طبيعي
+  final String physiotherapySpecialistId;
   @override
-  TeacherStudentMain({this.index,this.centerId,this.name,this.uid,this.teacherName,this.teacherId});
+  TeacherStudentMain({this.index,this.centerId,this.name,this.uid,this.teacherName,this.teacherId,
+    this.communicationSpecialistId,this.communicationSpecialistName,
+    this.physiotherapySpecialistId,this.physiotherapySpecialistName,
+    this.psychologySpecialistId,this.psychologySpecialistName,
+    this.occupationalSpecialistId,this.occupationalSpecialistName});
 
 
-  _TeacherStudentMainState createState() => _TeacherStudentMainState(centerId,index,name, uid,teacherName,teacherId);
+  _TeacherStudentMainState createState() => _TeacherStudentMainState();
 }
 
 class _TeacherStudentMainState extends State<TeacherStudentMain> {
-   String centerId;
-   int index;
-   String name;
-  String uid;
   int  currentIndex=0;
-  String teacherName;
-  String teacherId;
-   _TeacherStudentMainState( String centerId,int index,String name,String uid,String teacherName,String teacherId){
-     this.centerId=centerId;
-     this.index=index;
-     this.name=name;
-     this.uid=uid;
-     this.teacherName=teacherName;
-     this.teacherId=teacherId;
-   }
-
-
   @override
   Widget build(BuildContext context) {
 
+    List<Widget> _screens=[DiariesTeacher(uid: widget.uid,name: widget.name,centerId: widget.centerId,teacherName: widget.teacherName,teacherId:widget.teacherName),AppointmentsTeacher(widget.uid),PlansTeacher(),StudyCaseScreen(studentId: widget.uid,centerId: widget.centerId,
+      communicationSpecialistName:widget.communicationSpecialistName,
+      communicationSpecialistId: widget.communicationSpecialistId,
+      physiotherapySpecialistId:widget.physiotherapySpecialistId,
+      physiotherapySpecialistName:widget.physiotherapySpecialistName ,
+      psychologySpecialistId:widget.psychologySpecialistId ,
+      psychologySpecialistName:widget.psychologySpecialistName ,
+      occupationalSpecialistId: widget.occupationalSpecialistId,
+      occupationalSpecialistName:widget.occupationalSpecialistName ,
+        teacherName: widget.teacherName
 
-    List<Widget> _screens=[DiariesTeacher(uid: uid,name: name,centerId: centerId,teacherName: teacherName,teacherId:teacherId),AppointmentsTeacher(uid),PlansTeacher(),StudyCaseScreen(uid)];
+
+    )];
+
 
 
     List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
@@ -95,7 +103,7 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
             slivers:<Widget>[
               SliverAppBar(
                 backgroundColor: kAppBarColor,
-                title: Text('${_titles[currentIndex]} $name', style: kTextAppBarStyle),
+                title: Text('${_titles[currentIndex]} ${widget.name}', style: kTextAppBarStyle),
                 elevation: 10,
                 centerTitle: true,
                 floating: false,
