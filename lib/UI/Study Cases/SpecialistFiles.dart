@@ -41,6 +41,7 @@ class SFiles extends StatefulWidget {
 
 class _SFilesState extends State<SFiles> {
 
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String fileUrl;
   File _File;
@@ -126,7 +127,8 @@ class _SFilesState extends State<SFiles> {
                                                             ],
                                                           ),
                                                           Padding(padding: EdgeInsets.all(3)) ,
-                                                          showMassage==true?Text("تم إختيار ${p.basename(_File.path)}",style:kTextPageStyle.copyWith(fontSize: 10,color: Colors.grey) ,):Text(""),
+                                                          _File!=null?
+                                                          showMassage==true?Text("تم إختيار ${p.basename(_File.path)}",style:kTextPageStyle.copyWith(fontSize: 10,color: Colors.grey) ,):Text(""):Text(""),
                                                           Padding(padding: EdgeInsets.all(5)) ,
                                                           Text("مشاركة مع : ",style: kTextPageStyle),
                                                           Padding(padding: EdgeInsets.all(5)),

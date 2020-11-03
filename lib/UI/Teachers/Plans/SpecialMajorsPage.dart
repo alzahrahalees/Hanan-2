@@ -33,6 +33,11 @@ class _SpecialMajorsPageState extends State<SpecialMajorsPage>  with TickerProvi
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: kAppBarColor,
+          onPressed: (){},
+        ),
         appBar: AppBar(
           automaticallyImplyLeading: true,
           backgroundColor: kAppBarColor,
@@ -71,5 +76,29 @@ class _SpecialMajorsPageState extends State<SpecialMajorsPage>  with TickerProvi
     );
   }
 }
+
+class AddGoal extends StatefulWidget {
+  @override
+  _AddGoalState createState() => _AddGoalState();
+}
+
+class _AddGoalState extends State<AddGoal> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+// showModalBottomSheet(
+//                 enableDrag: false,
+//                 isScrollControlled: false,
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.only(
+//                     topLeft: Radius.circular(10.0),
+//                     topRight: Radius.circular(10.0),
+//                   ),
+//                 ),
+//                 context: context,
+//                 builder: (BuildContext buildContext) => AddAppointment(),
+//               );
 
 

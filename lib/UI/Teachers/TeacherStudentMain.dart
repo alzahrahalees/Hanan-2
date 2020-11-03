@@ -64,7 +64,6 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
         occupationalSpecialistName:widget.occupationalSpecialistName ,
         teacherName: widget.teacherName
 
-
     )];
 
 
