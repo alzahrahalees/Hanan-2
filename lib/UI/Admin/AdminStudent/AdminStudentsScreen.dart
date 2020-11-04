@@ -15,10 +15,23 @@ class StudentScreen extends StatefulWidget {
 }
 
 class _StudentScreenState extends State<StudentScreen> {
-  List<Student> students= [];
-  List<Student> FilteringStudents = [];
+
+
+  String searchResult = '';
 
   Widget build(BuildContext context) {
+
+    User userAdmin =  FirebaseAuth.instance.currentUser;
+    //References
+    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
+    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
+    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers');
+    CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
+    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
+
     return SafeArea(
         child: Scaffold(
           body: Container(
@@ -28,15 +41,15 @@ class _StudentScreenState extends State<StudentScreen> {
               child: Column(children: <Widget>[
                 TextField(
                   decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
                     contentPadding: EdgeInsets.all(10),
                     hintText: "أدخل اسم الطالب",
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(Icons.search,color: Colors.deepPurple,),
                   ),
                   onChanged: (string) {
                     setState(() {
-                      FilteringStudents= (students.where((element) =>
-                      element.name.contains(string) ||
-                          element.position.contains(string))).toList();
+                      searchResult = string;
                     });
                   },
                 ),
@@ -60,109 +73,97 @@ class _StudentScreenState extends State<StudentScreen> {
                     child: Padding(
                         padding: EdgeInsets.all(8),
                         child:
-                        StudentCards())) // here we add the snapshot from database
+                        StreamBuilder<QuerySnapshot>(
+                          stream:
+                          Admin_Students.snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting: return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+                              default:
+                                return  ListView.builder(
+                                    physics: ScrollPhysics(),
+                                    itemCount: snapshot.data.docs.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context,index){
+                                      DocumentSnapshot document =snapshot.data.docs[index];
+                                      String name = document.data()['name'];
+                                      if(name.toLowerCase().contains(searchResult) || name.toUpperCase().contains(searchResult.toUpperCase())){
+                                        return Card(
+                                          borderOnForeground: true,
+                                          child: ListTile(
+                                            onTap: (){
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          StudentInfo(document.data()['uid'])));
+                                            },
+                                            trailing: IconButton(icon: Icon (Icons.delete),
+                                                onPressed: () {
+                                                  return Alert(
+                                                    context: context,
+                                                    type: AlertType.error,
+                                                    title: " هل أنت مـتأكد من حذف ${document.data()['name']} ؟ ",
+                                                    desc: "",
+                                                    buttons: [
+                                                      DialogButton(
+                                                        child: Text(
+                                                          "لا",
+                                                          style: TextStyle(color: Colors.white, fontSize: 20),
+                                                        ),
+                                                        onPressed: () => Navigator.pop(context),
+                                                        color: kButtonColor,
+                                                      ),
+                                                      DialogButton(
+                                                        child: Text(
+                                                          "نعم",
+                                                          style: TextStyle(color: Colors.white, fontSize: 20),
+                                                        ),
+                                                        onPressed: ()
+                                                        {
+                                                          Students.doc(document.id).delete();
+                                                          Users.doc(document.id).delete();
+                                                          Admin_Students.doc(document.id).delete();
+
+                                                          Admin_Teachers.get().then((value) => value.docs.forEach((element) {
+                                                            Admin_Teachers.doc(element.id).collection('Students').doc(document.id).delete();
+                                                          }));
+
+                                                          Teachers.get().then((value) =>
+                                                              value.docs.forEach((element) {
+                                                                Teachers.doc(element.id).collection('Students').doc(document.id).delete();
+                                                              }));
+
+                                                          Admin_Specialists.get().then((value) =>
+                                                              value.docs.forEach((element) {
+                                                                Admin_Specialists.doc(element.id).collection('Students').doc(document.id).delete();
+                                                              }));
+
+                                                          Specialists.get().then((value) =>
+                                                              value.docs.forEach((element) {
+                                                                Specialists.doc(element.id).collection('Students').doc(document.id).delete();
+                                                              }));
+                                                          Navigator.pop(context);
+                                                        },
+                                                        color: kButtonColor,
+                                                      ),
+                                                    ],
+                                                  ).show();
+                                                }
+                                            ),
+                                            title: new Text(document.data()['name'], style: kTextPageStyle),
+                                            subtitle: new Text("طالب", style: kTextPageStyle),
+                                          ));}
+                                      else return SizedBox();
+                                    });
+                            }
+                          },
+                        )
+                    )) // here we add the snapshot from database
               ])),
         ));
 
   }
 }
-
-
-class StudentCards extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
-    User userAdmin =  FirebaseAuth.instance.currentUser;
-    //References
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
-    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers');
-    CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
-
-    return StreamBuilder<QuerySnapshot>(
-      stream:
-      Admin_Students.snapshots(),
-      builder: (BuildContext context,
-          AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting: return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
-          default:
-            return new ListView(
-                children:
-                snapshot.data.docs.map((DocumentSnapshot document) {
-                  return Card(
-                      borderOnForeground: true,
-                      child: ListTile(
-                          onTap: (){
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        StudentInfo(document.data()['uid'])));
-                          },
-                        trailing: IconButton(icon: Icon (Icons.delete),
-                            onPressed: () {
-                              return Alert(
-                                context: context,
-                                type: AlertType.error,
-                                title: " هل أنت مـتأكد من حذف ${document.data()['name']} ؟ ",
-                                desc: "",
-                                buttons: [
-                                  DialogButton(
-                                    child: Text(
-                                      "لا",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: () => Navigator.pop(context),
-                                    color: kButtonColor,
-                                  ),
-                                  DialogButton(
-                                    child: Text(
-                                      "نعم",
-                                      style: TextStyle(color: Colors.white, fontSize: 20),
-                                    ),
-                                    onPressed: ()
-                                    {
-                                      Students.doc(document.id).delete();
-                                      Users.doc(document.id).delete();
-                                      Admin_Students.doc(document.id).delete();
-
-                                      Admin_Teachers.get().then((value) => value.docs.forEach((element) {
-                                        Admin_Teachers.doc(element.id).collection('Students').doc(document.id).delete();
-                                      }));
-
-                                      Teachers.get().then((value) =>
-                                          value.docs.forEach((element) {
-                                            Teachers.doc(element.id).collection('Students').doc(document.id).delete();
-                                          }));
-
-                                      Admin_Specialists.get().then((value) =>
-                                          value.docs.forEach((element) {
-                                            Admin_Specialists.doc(element.id).collection('Students').doc(document.id).delete();
-                                          }));
-
-                                      Specialists.get().then((value) =>
-                                          value.docs.forEach((element) {
-                                            Specialists.doc(element.id).collection('Students').doc(document.id).delete();
-                                          }));
-                                      Navigator.pop(context);
-                                    },
-                                    color: kButtonColor,
-                                  ),
-                                ],
-                              ).show();
-                            }
-                        ),
-                        title: new Text(document.data()['name'], style: kTextPageStyle),
-                        subtitle: new Text("طالب", style: kTextPageStyle),
-                      ));
-                }).toList());
-        }
-      },
-    );
-  }}

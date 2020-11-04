@@ -144,11 +144,11 @@ class _FirstLogInState extends State<FirstLogIn> {
    editIsAuthInDB() async {
     String type;
     var centerEmail;
-    await FirebaseFirestore.instance.
-    collection('Users')
-        .doc(_email.text.toLowerCase())
-        .get().then((doc){
+
+    await FirebaseFirestore.instance.collection('Users')
+        .doc(_email.text.toLowerCase()).get().then((doc){
       type = doc.data()['type'];
+      centerEmail = doc.data()['center']==null? '' : doc.data()['center'] ;
       print('Inside First Log in type = $type');
     }).whenComplete(() async {
     await FirebaseAuth.instance
@@ -168,21 +168,17 @@ class _FirstLogInState extends State<FirstLogIn> {
     await FirebaseFirestore.instance.collection('Users').
     doc(_email.text.toLowerCase()).update({"isAuth":true});
     });
-
-
     }).whenComplete((){
 
       Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context)=> MainLogIn()
-      )
-      );
+      ));
     }).catchError((err) => print('****######### Err: $err ###########*********'));
 
 
   }
 
   bool isValid(){
-
     bool hasDigits = _password.text.contains( RegExp(r'[0-9]'));
     bool hasLowercase = _password.text.contains( RegExp(r'[a-z]')) || _password.text.contains( RegExp(r'[A-Z]'));
     bool hasMinLength = _password.text.length > 6;

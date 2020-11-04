@@ -4,7 +4,7 @@ import 'package:hanan/UI/Admin/AdminMainScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hanan/UI/Admin/AdminTeacher/TeacherDetails.dart';
 import 'package:hanan/services/auth.dart';
-import 'Constance.dart';
+import '../../Constance.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
@@ -37,17 +37,7 @@ class AddTeacher extends StatelessWidget {
     CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
 
 
-   final List<String>TeachersL=[];
-  Future <void> TeacherListNames() async {
-      await Admin.doc(userAdmin.email).collection('Teachers')
-          .where('type',isEqualTo: "Teachers").get()
-          .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs
-            .forEach((doc) {
-          TeachersL.add(doc.data()['name']);
-        }
-        )
-        ;});}
+
 
     Future<void> addTeacher() async{
       //problem:the document must be have the same ID
@@ -92,6 +82,7 @@ class AddTeacher extends StatelessWidget {
 
       var addToUsers=Users.doc(email.toLowerCase())
           .set({
+        "center": userAdmin.email.toLowerCase(),
         "isAuth":false,
         'uid':email.toLowerCase(),
         'name': name,

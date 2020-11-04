@@ -62,13 +62,3 @@ class TeacherStudents extends StatelessWidget {
         })) );
   }
 }
-//     Admin_Teachers.doc(uid).collection("Students").get().then((value) {
-//           value.docs.forEach((element) {
-//           Admin_Students.doc(element.data()['uid']).snapshots()
-//           });
-//           }),
-
-// Admin_Students.doc(document.data()['uid']).get().then((value) {
-//                       Studentname=value.data()['name'];
-//                       
-//                   } );

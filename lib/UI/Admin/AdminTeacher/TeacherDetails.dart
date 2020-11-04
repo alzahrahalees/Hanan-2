@@ -116,7 +116,6 @@ class _TeacherInfoState extends State<TeacherInfo> {
                                     String newName;
                                     String newAge;
                                     String newPhone;
-
                                     return Column(children: <Widget>[
                                       ProfileTile(
                                         readOnly: false,
@@ -128,9 +127,7 @@ class _TeacherInfoState extends State<TeacherInfo> {
                                           newName = value;
                                         },
                                       ),
-
                                       Padding(padding: EdgeInsets.all(5)),
-
                                       ProfileTile(
                                         readOnly: false,
                                         color: kWolcomeBkg,
@@ -209,13 +206,9 @@ class _TeacherInfoState extends State<TeacherInfo> {
                                                             ],
                                                           ),
                                                         ),
-                                                        // Padding(padding: EdgeInsets.all(30)),
-
-
                                                       )
                                                     ],
                                                   ),
-
                                                 ]
                                             ),
                                           ),
@@ -247,36 +240,21 @@ class _TeacherInfoState extends State<TeacherInfo> {
                                                     borderRadius: BorderRadius
                                                         .circular(18.0)),
                                                 onPressed: () {
-                                                  if (formkey.currentState
-                                                      .validate()) {
-                                                    Admin_Teachers.doc(uid)
-                                                        .update({
-                                                      'name': newName == null
-                                                          ? name
-                                                          : newName,
-                                                      'age': newAge == null
-                                                          ? age
-                                                          : newAge,
-                                                      'phone': newPhone == null
-                                                          ? phone
-                                                          : newPhone,
+                                                  if (formkey.currentState.validate()) {
+                                                    Admin_Teachers.doc(uid).update({
+                                                      'name': newName == null ? name : newName,
+                                                      'age': newAge == null ? age : newAge,
+                                                      'phone': newPhone == null ? phone : newPhone,
                                                     });
                                                     if (gender != null) {
-                                                      Admin_Teachers.doc(uid)
-                                                          .update({
+                                                      Admin_Teachers.doc(uid).update({
                                                         'gender': gender,
                                                       });
                                                     }
                                                     Teachers.doc(uid).update({
-                                                      'name': newName == null
-                                                          ? name
-                                                          : newName,
-                                                      'age': newAge == null
-                                                          ? age
-                                                          : newAge,
-                                                      'phone': newPhone == null
-                                                          ? phone
-                                                          : newPhone,
+                                                      'name': newName == null ? name : newName,
+                                                      'age': newAge == null ? age : newAge,
+                                                      'phone': newPhone == null ? phone : newPhone,
                                                     });
                                                     if (gender != null) {
                                                       Teachers.doc(uid).update({
@@ -285,15 +263,9 @@ class _TeacherInfoState extends State<TeacherInfo> {
                                                     }
 
                                                     Users.doc(uid).update({
-                                                      'name': newName == null
-                                                          ? name
-                                                          : newName,
-                                                      'age': newAge == null
-                                                          ? age
-                                                          : newAge,
-                                                      'phone': newPhone == null
-                                                          ? phone
-                                                          : newPhone,
+                                                      'name': newName == null ? name : newName,
+                                                      'age': newAge == null ? age : newAge,
+                                                      'phone': newPhone == null ? phone : newPhone,
                                                     });
                                                     if (gender != null) {
                                                       Users.doc(uid).update({
@@ -311,20 +283,6 @@ class _TeacherInfoState extends State<TeacherInfo> {
 
                                               ),
                                             ),
-
-
-                                            //     RaisedButton(
-                                            // color: kButtonColor,
-                                            // child: Text("الغاء", style: kTextButtonStyle),
-                                            // shape: RoundedRectangleBorder(
-                                            // borderRadius: BorderRadius.circular(18.0)),
-                                            // onPressed:(){
-                                            //   Navigator.pop(
-                                            //     context,
-                                            //     MaterialPageRoute(
-                                            //         builder: (context) =>
-                                            //             MainAdminScreen(0)));}
-                                            //             )
                                           ],
                                         ),
                                       ),
@@ -341,24 +299,3 @@ class _TeacherInfoState extends State<TeacherInfo> {
     );
   }
 }
-
-
-/*
-Padding(padding: EdgeInsets.all(10),),
-StreamBuilder(
-stream: Admin_Students.where('teacherId',isEqualTo: uid).snapshots(),
-builder:  (BuildContext context,
-    AsyncSnapshot<QuerySnapshot> snapshot) {
-if (snapshot.hasData) {
-
-return ListView(
-children:
-snapshot.data.docs.map((DocumentSnapshot document) {
-
-return Text(document.data()['name']);
-
-}).toList()
-);
-}
-else{return Text("no");}
-}) ,*/
