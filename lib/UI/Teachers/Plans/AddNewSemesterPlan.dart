@@ -270,7 +270,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                           //Add to data base
 
                           if(_occupationalSpecialistId != null)
-                          await FirebaseFirestore.instance.collection('Teachers')
+                          await FirebaseFirestore.instance.collection('Specialists')
                               .doc(_occupationalSpecialistId).collection('Students')
                               .doc(widget.studentId).collection('Plans')
                               .doc(docId).set({
@@ -286,7 +286,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                             'subjects': subjects,
                           });
                           if(_communicationSpecialistId != null)
-                            await FirebaseFirestore.instance.collection('Teachers')
+                            await FirebaseFirestore.instance.collection('Specialists')
                                 .doc(_communicationSpecialistId).collection('Students')
                                 .doc(widget.studentId).collection('Plans')
                                 .doc(docId).set({
@@ -302,7 +302,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                               'subjects': subjects,
                             });
                           if(_physiotherapySpecialistId != null)
-                            await FirebaseFirestore.instance.collection('Teachers')
+                            await FirebaseFirestore.instance.collection('Specialists')
                                 .doc(_physiotherapySpecialistId).collection('Students')
                                 .doc(widget.studentId).collection('Plans')
                                 .doc(docId).set({
@@ -318,7 +318,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                               'subjects': subjects,
                             });
                           if(_psychologySpecialistId != null)
-                            await FirebaseFirestore.instance.collection('Teachers')
+                            await FirebaseFirestore.instance.collection('Specialists')
                                 .doc(_psychologySpecialistId).collection('Students')
                                 .doc(widget.studentId).collection('Plans')
                                 .doc(docId).set({
@@ -334,8 +334,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                               'subjects': subjects,
                             });
 
-                          await FirebaseFirestore.instance.collection(
-                              'Students')
+                          await FirebaseFirestore.instance.collection('Students')
                               .doc(widget.studentId).collection('Plans')
                               .doc(docId).set({
                             'planTitle': _title,

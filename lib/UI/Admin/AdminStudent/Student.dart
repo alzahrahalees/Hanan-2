@@ -119,22 +119,12 @@ class AddStudent extends StatelessWidget {
       'physiotherapySpecialistId':physiotherapySpecialistId,
       });
 
-     /* var addToAdminStudentTeacher = Admin_Students.doc(email.toLowerCase()).collection('Teachers').doc(teacherId).set(
-          {
-             'name': teacherName,
-              'uid': teacherId,
-          });*/
 
       var addToAdminTeacherStudent= Admin_Teachers.doc(teacherId).collection('Students').doc(email.toLowerCase()).
           set({
         'uid': email.toLowerCase(),
       });
 
-      /*var addToStudentTeacher = Students.doc(email.toLowerCase()).collection('Teachers').doc(teacherId).set(
-          {
-            'name': teacherName,
-            'uid': teacherId,
-          });*/
 
       var addTeacherStudent= Teachers.doc(teacherId).collection('Students').doc(email.toLowerCase()).
       set({
@@ -143,11 +133,7 @@ class AddStudent extends StatelessWidget {
       } );
 
     if (psychologySpecialistId != null){
-    /*  var addToStudentPsychologyS = Students.doc(email.toLowerCase()).collection('psychologySpecialist').doc(psychologySpecialistId).set(
-          {
-            'name': psychologySpecialistName,
-            'uid': psychologySpecialistId,
-          });*/
+
 
       var addPsychologyStudent=Specialists.doc(psychologySpecialistId).collection('Students').doc(email.toLowerCase()).
       set({
@@ -169,12 +155,7 @@ class AddStudent extends StatelessWidget {
         }
       );
 
-   /*   var addToAdminStudentPsychologyS = Admin_Students.doc(email.toLowerCase())
-          .collection('psychologySpecialist').doc(psychologySpecialistId).set(
-          {
-            'name': psychologySpecialistName,
-            'uid': psychologySpecialistId,
-          });*/
+
 
       var addAdminPsychologyStudent=Admin_Specialists.doc(psychologySpecialistId)
           .collection('Students').doc(email.toLowerCase()).
@@ -198,12 +179,6 @@ class AddStudent extends StatelessWidget {
 
      if (communicationSpecialistId != null){
 
-      /*var addToStudentCommunicationS = Students.doc(email.toLowerCase())
-          .collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
-          {
-            'name': communicationSpecialistName,
-            'uid': communicationSpecialistId,
-          });*/
 
       var addCommunicationStudent=Specialists.doc(communicationSpecialistId)
           .collection('Students').doc(email.toLowerCase()).
@@ -224,12 +199,6 @@ class AddStudent extends StatelessWidget {
         "center": userAdmin.email.toLowerCase(),
         });
 
-      /*var addToAdminStudentCommunicationS = Admin_Students.doc(email.toLowerCase())
-          .collection('CommunicationSpecialist').doc(communicationSpecialistId).set(
-          {
-            'name': communicationSpecialistName,
-            'uid': communicationSpecialistId,
-          });*/
 
       var addAdminCommunicationStudent=Admin_Specialists.doc(communicationSpecialistId)
           .collection('Students').doc(email.toLowerCase()).
@@ -253,12 +222,6 @@ class AddStudent extends StatelessWidget {
 
 
       if (occupationalSpecialistId != null){
-      /*var addToStudentOccupationalS = Students.doc(email.toLowerCase())
-          .collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
-          {
-            'name': occupationalSpecialistName,
-            'uid':occupationalSpecialistId,
-          });*/
 
 
       var addOccupationalStudent=Specialists.doc(occupationalSpecialistId)
@@ -279,13 +242,6 @@ class AddStudent extends StatelessWidget {
         'physiotherapySpecialistId':physiotherapySpecialistId,
         "center": userAdmin.email.toLowerCase(),
         });
-
-     /* var addAdminToStudentOccupationalS = Admin_Students.doc(email.toLowerCase())
-          .collection('OccupationalSpecialist').doc(occupationalSpecialistId).set(
-          {
-            'name': occupationalSpecialistName,
-            'uid':occupationalSpecialistId,
-          });*/
 
 
       var addAdminOccupationalStudent=Admin_Specialists.doc(occupationalSpecialistId)
@@ -309,12 +265,6 @@ class AddStudent extends StatelessWidget {
       });}
 
       if (physiotherapySpecialistId != null){
-     /* var addToStudentPhysiotherapyS = Students.doc(email.toLowerCase())
-          .collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
-          {
-            'name': physiotherapySpecialistName,
-            'uid':physiotherapySpecialistId,
-          });*/
 
       var addPhysiotherapy=Specialists.doc(physiotherapySpecialistId).collection("Students")
           .doc(email.toLowerCase()).set({
@@ -336,12 +286,6 @@ class AddStudent extends StatelessWidget {
         }
        );
 
-      /*var addToAdminStudentPhysiotherapyS = Admin_Students.doc(email.toLowerCase())
-          .collection('PhysiotherapySpecialist').doc(physiotherapySpecialistId).set(
-          {
-            'name': physiotherapySpecialistName,
-            'uid':physiotherapySpecialistId,
-          });*/
 
       var addToAdminPhysiotherapy=Admin_Specialists.doc(physiotherapySpecialistId)
           .collection("Students").doc(email.toLowerCase()).set({
@@ -365,6 +309,7 @@ class AddStudent extends StatelessWidget {
 
       var addToUsers=Users.doc(email.toLowerCase())
           .set({
+        "center": userAdmin.email.toLowerCase(),
         "isAuth":false,
         'uid': email.toLowerCase(),
         'name': name,

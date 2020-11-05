@@ -16,10 +16,21 @@ class SpecialistScreen extends StatefulWidget {
   _SpecialistScreenState createState() => _SpecialistScreenState();
 }
 class _SpecialistScreenState extends State<SpecialistScreen> {
-  List<Specialist> specialists= [];
-  List<Specialist> FilteringSpecialists = [];
+
+  String searchResult = '';
 
   Widget build(BuildContext context) {
+
+    User userAdmin =  FirebaseAuth.instance.currentUser;
+    //ReferenceS
+    CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
+    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
+    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
+
+
+
+
     return SafeArea(
         child: Scaffold(
           body: Container(
@@ -29,16 +40,17 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
               child: Column(children: <Widget>[
                 TextField(
                   decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.deepPurple,width: 2),
+                    ),
                     contentPadding: EdgeInsets.all(10),
                     hintText: "أدخل اسم الأخصائي",
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: Icon(Icons.search,color: Colors.deepPurple,)
                   ),
 
                   onChanged: (string) {
                     setState(() {
-                      FilteringSpecialists  = (specialists .where((element) =>
-                      element.name.contains(string) ||
-                          element.position.contains(string))).toList();
+                      searchResult = string;
                     });
                   },
                 ),
@@ -62,104 +74,94 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                     child: Padding(
                         padding: EdgeInsets.all(8),
                         child:
-                       SpecialistCards())) // here we add the snapshot from database
+                        StreamBuilder<QuerySnapshot>(
+                          stream:
+                          Admin_Specialists.snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
+                              default:
+                                return  ListView.builder(
+                                    physics: ScrollPhysics(),
+                                    itemCount: snapshot.data.docs.length,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context,index){
+                                      DocumentSnapshot document =snapshot.data.docs[index];
+                                      String name = document.data()['name'];
+                                      if(name.toLowerCase().contains(searchResult) || name.toUpperCase().contains(searchResult.toUpperCase())){
+                                        return Card(
+                                          color:  document.data()["isAuth"]==false ?Color(0xffffd6d6): Colors.white,
+                                          borderOnForeground: true,
+                                          child: ListTile(
+                                            onTap: (){
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SpecialistInfo(document.data()['uid'])));
+                                            },
+                                            trailing: IconButton(icon: Icon (Icons.delete),
+                                                onPressed: () {
+                                                  return Alert(
+                                                    context: context,
+                                                    type: AlertType.error,
+                                                    title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
+                                                    desc: "",
+                                                    buttons: [
+                                                      DialogButton(
+                                                        child: Text(
+                                                          "لا",
+                                                          style: TextStyle(color: Colors.white, fontSize: 20),
+                                                        ),
+                                                        onPressed: () => Navigator.pop(context),
+                                                        color: kButtonColor,
+                                                      ),
+                                                      DialogButton(
+                                                        child: Text(
+                                                          "نعم",
+                                                          style: TextStyle(color: Colors.white, fontSize: 20),
+                                                        ),
+                                                        onPressed: ()
+                                                        {
+                                                          Specialists.doc(document.id).delete();
+                                                          Users.doc(document.id).delete();
+                                                          Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists').doc(document.id).delete();
+
+                                                          Admin_Specialists.doc(document.id).collection("Students").get().then((value) =>
+                                                              value.docs.forEach((element) {
+                                                                Admin_Specialists.doc(document.id).collection('Students').doc(element.id).delete();
+                                                              })
+                                                          );
+
+                                                          Specialists.doc(document.id).collection("Students").get().then((value) =>
+                                                              value.docs.forEach((element) {
+                                                                Specialists.doc(document.id).collection('Students').doc(element.id).delete();
+                                                              })
+                                                          );
+                                                          Navigator.pop(context);
+                                                        },
+                                                        color: kButtonColor,
+                                                      ),
+                                                    ],
+                                                  ).show();
+                                                }
+                                            ),
+                                            title:  Text(document.data()['name'], style: kTextPageStyle),
+                                            subtitle:  Text( document.data()["isAuth"]==true? document.data()["typeOfSpechalist"]:" لم تتم المصادقة",style: kTextPageStyle),
+
+                                          ));}
+                                      else return SizedBox();
+                                    });
+                            }
+                          },
+                        )
+                    )
+                ) // here we add the snapshot from database
               ])),
         ));
   }
 }
 
-
-class SpecialistCards extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    User userAdmin =  FirebaseAuth.instance.currentUser;
-    //ReferenceS
-    CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
-
-
-
-    return StreamBuilder<QuerySnapshot>(
-      stream:
-      Admin_Specialists.snapshots(),
-      builder: (BuildContext context,
-          AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
-          default:
-            return new ListView(
-                children:
-                snapshot.data.docs.map((DocumentSnapshot document) {
-                    return Card(
-                        color:  document.data()["isAuth"]==false ?Color(0xffffd6d6): Colors.white,
-                        borderOnForeground: true,
-                        child: ListTile(
-                          onTap: (){
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        SpecialistInfo(document.data()['uid'])));
-                          },
-                          trailing: IconButton(icon: Icon (Icons.delete),
-                              onPressed: () {
-                                return Alert(
-                                  context: context,
-                                  type: AlertType.error,
-                                  title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
-                                  desc: "",
-                                  buttons: [
-                                    DialogButton(
-                                      child: Text(
-                                        "لا",
-                                        style: TextStyle(color: Colors.white, fontSize: 20),
-                                      ),
-                                      onPressed: () => Navigator.pop(context),
-                                      color: kButtonColor,
-                                    ),
-                                    DialogButton(
-                                      child: Text(
-                                        "نعم",
-                                        style: TextStyle(color: Colors.white, fontSize: 20),
-                                      ),
-                                      onPressed: ()
-                                      {
-                                        Specialists.doc(document.id).delete();
-                                        Users.doc(document.id).delete();
-                                        Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists').doc(document.id).delete();
-
-                                        Admin_Specialists.doc(document.id).collection("Students").get().then((value) =>
-                                            value.docs.forEach((element) {
-                                              Admin_Specialists.doc(document.id).collection('Students').doc(element.id).delete();
-                                            })
-                                        );
-
-                                        Specialists.doc(document.id).collection("Students").get().then((value) =>
-                                            value.docs.forEach((element) {
-                                              Specialists.doc(document.id).collection('Students').doc(element.id).delete();
-                                            })
-                                        );
-                                      Navigator.pop(context);
-                                      },
-                                      color: kButtonColor,
-                                    ),
-                                  ],
-                                ).show();
-                              }
-                          ),
-                          title:  Text(document.data()['name'], style: kTextPageStyle),
-                          subtitle:  Text( document.data()["isAuth"]==true? document.data()["typeOfSpechalist"]:" لم تتم المصادقة",style: kTextPageStyle),
-
-                        ));
-
-
-
-                }).toList());
-        }
-      },
-    );
-  }}

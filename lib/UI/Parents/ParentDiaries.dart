@@ -101,7 +101,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                 DocumentSnapshot documentSnapshot=snapshot.data.docs[index];
                                 String  PostId=documentSnapshot.id;
                                 _controllers.add(TextEditingController());
-                                String Name = documentSnapshot['studentName'];
+                                String name = documentSnapshot['studentName'];
                                 String CenterId = documentSnapshot['centerId'];
                                 String Uid = documentSnapshot['uid'];
                                 String teachrtId=documentSnapshot['teacherId'];
@@ -197,14 +197,8 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                 trailing: Text(
 
                                                     documentSnapshot['hour']
-                                                            .toString() +
-
-
-                                                        ":" +
-                                                        documentSnapshot['minute']
-                                                            .toString() +
-                                                        " " +
-                                                        documentSnapshot['time'],
+                                                            .toString() + ":" + documentSnapshot['minute']
+                                                            .toString() + " " + documentSnapshot['time'],
                                                     style: TextStyle(
                                                         fontSize: 9,
                                                         color: Colors.grey)),
@@ -213,12 +207,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                               Padding(padding: EdgeInsets.all(0),
                                                   child: StreamBuilder<QuerySnapshot>(
                                                       stream: Students.doc(
-                                                          userStudent.email)
-                                                          .collection('Posts')
-                                                          .doc(PostId)
-                                                          .collection('Comments')
-                                                          .orderBy('createdAt',
-                                                          descending: false)
+                                                          userStudent.email).collection('Posts').doc(PostId).collection('Comments').orderBy('createdAt', descending: false)
                                                           .snapshots(),
                                                       builder: (BuildContext context,
                                                           AsyncSnapshot<QuerySnapshot>
@@ -233,11 +222,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                                 children: [
                                                                   ListTile(
                                                                       title: Text(
-                                                                        document.data()[
-                                                                        'writer'] +
-                                                                            (": ") +
-                                                                            document.data()[
-                                                                            'comment'],
+                                                                        document.data()['writer'] + (": ") + document.data()['comment'],
                                                                         style: TextStyle(
                                                                             fontSize:
                                                                             13,
@@ -248,7 +233,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                                           style: TextStyle(fontSize: 9, color: Colors.grey)),
                                                                       onLongPress:
                                                                           () {
-                                                                        if (document.data()['writer'] == Name) {
+                                                                        if (document.data()['writer'] == name) {
                                                                           showDialog(
                                                                               context:
                                                                               context,
@@ -337,7 +322,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                         c: _controllers[index],
                                                         writer: Writer,
                                                         studentUid: Uid,
-                                                        studentName: Name,
+                                                        studentName: name,
                                                         minute: DateTime.now().minute,
                                                         hour: DateTime.now().hour,
                                                         date: DateTime.now()
