@@ -30,43 +30,23 @@ class _PlansTeacherFirstPageState extends State<PlansTeacherFirstPage> {
 
     return Scaffold(
       floatingActionButton:
-      Container(
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          children: [
-            Padding(padding: EdgeInsets.only(right: 60)),
-            FloatingActionButton(
-              mini: true
-              ,
-              onPressed: (){
-              },
-              child: Icon(Icons.add,size: 30,),
-              elevation: 10,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              highlightElevation: 20,
-              backgroundColor: Colors.deepPurple.shade200,
-              foregroundColor: Colors.white60,
-            ),
-            Padding(padding: EdgeInsets.only(right: 20)),
+          FloatingActionButton(
+            heroTag: 'planB',
+            mini: true
+            ,
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context)=> AddNewSemesterPlan(widget._studentId)
+              ));
+            },
+            child: Icon(Icons.add,size: 30,),
+            elevation: 10,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            highlightElevation: 20,
+            backgroundColor: Colors.deepPurple.shade200,
+            foregroundColor: Colors.white60,
+          ),
 
-            FloatingActionButton(
-              mini:true,
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context)=> AddNewSemesterPlan(widget._studentId)
-                ));
-
-                },
-              child: Icon(Icons.search,size: 23,),
-              elevation: 10,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              highlightElevation: 20,
-              backgroundColor: Colors.deepPurple.shade200,
-              foregroundColor: Colors.white60,
-            ),
-          ],
-        ),
-      ),
       body: ListView(
         children: [
           SizedBox(

@@ -191,15 +191,26 @@ class _AddPostState extends State<AddPost> {
       'createdAt':Timestamp.now(),
      'postId':"${widget.studentUid}$documentId",
     });
-
     Navigator.of(context).pop();}
 
     return FlatButton  (
+
       child: Text('نشر', style: kTextPageStyle.copyWith(
           color: Colors.deepPurpleAccent.shade700)),
       onPressed: () {
         if (widget.content!=" " || widget.image!=null || widget.video !=null) {
-          print(widget.content);
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Row(
+            children: [CircularProgressIndicator(valueColor:  AlwaysStoppedAnimation<Color>(Colors.grey),backgroundColor: Colors.deepPurple),
+              Padding (padding: EdgeInsets.all(5)),
+              Text("جاري التحميل..",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),
+
+            ],
+          ),
+          duration: Duration(hours: 1),
+          backgroundColor: Colors.white70,
+        ));
+        print(widget.content);
           addPost();
        }
        else{

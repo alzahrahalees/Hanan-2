@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../Constance.dart';
 
 
 class AddGoal extends StatefulWidget {
@@ -18,6 +17,7 @@ class _AddGoalState extends State<AddGoal> {
     var _goalType;
     var _image;
     List<String> whoCanSee;
+
 
 
     return Container(

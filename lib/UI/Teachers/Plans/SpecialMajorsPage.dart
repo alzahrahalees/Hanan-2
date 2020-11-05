@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Constance.dart';
 
-
 //plan pages for 6 majors
 class SpecialMajorsPage extends StatefulWidget {
   @override
@@ -76,18 +75,5 @@ class _SpecialMajorsPageState extends State<SpecialMajorsPage>  with TickerProvi
     );
   }
 }
-// to add gaol
-// showModalBottomSheet(
-//                 enableDrag: false,
-//                 isScrollControlled: true,
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.only(
-//                     topLeft: Radius.circular(10.0),
-//                     topRight: Radius.circular(10.0),
-//                   ),
-//                 ),
-//                 context: context,
-//                 builder: (BuildContext buildContext) => AddAppointment(),
-//               );
 
 

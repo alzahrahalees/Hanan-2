@@ -1,9 +1,9 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Constance.dart';
-
 
 
 class AddNewSemesterPlan extends StatefulWidget {
@@ -25,6 +25,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
   var _occupationalSpecialistId;
   var _communicationSpecialistId;
 
+  List<String> subjects=[];
 
   // String specialistId
 
@@ -34,12 +35,13 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
     });
   }
 
+
+
   onSemesterChange (value){
     setState(() {
       _semesterValue=value;
     });
   }
-
 
 
   Future<bool> setUIds() async {
@@ -62,31 +64,10 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
     _semesterValue = 'first';
   }
 
-  // snackBarErr(){
-  //   Scaffold.of(context).showSnackBar(
-  //       SnackBar(
-  //           backgroundColor: Colors.red[200],
-  //           content: Text(
-  //             'يوجد خطأ الرجاء المحاولة في وقت لاحق',
-  //             style: TextStyle(color: Colors.deepPurple, fontSize: 12),
-  //           )
-  //       ));
-  // }
-  //
-  // snackBarDone(){
-  //   Scaffold.of(context).showSnackBar(
-  //       SnackBar(
-  //           backgroundColor: Colors.white70,
-  //           content: Text(
-  //             'تم إضافة الخطة',
-  //             style: TextStyle(color: Colors.deepPurple, fontSize: 12),
-  //           )
-  //       ));
-  // }
 
   @override
   Widget build(BuildContext context) {
-    String _title='الخطة الدراسية لعام ${DateTime.now().year.toString()}';
+    String _title='الخطة الدراسية لعام ${DateTime.now().year.toString()}'+"-"+"${(DateTime.now().year+1).toString()}";
     int _beginYear= DateTime.now().year;
     int _beginMonth=DateTime.now().month;
     int _beginDay=DateTime.now().day;
@@ -110,7 +91,6 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
         body: GestureDetector(
           onTap: () {
             FocusScopeNode currentFocus = FocusScope.of(context);
-
             if (!currentFocus.hasPrimaryFocus) {
               currentFocus.unfocus();
             }
@@ -121,19 +101,11 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
               padding: const EdgeInsets.all(10),
               child: ListView(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: KNormalTextFormField(
-                      title: _title,
-                      hintText: 'عنوان الخطة' ,
-                      onChanged: (value){
-                        setState(() {
-                          _title=value;
-                        });
-                      },
-                      validatorText: '#مطلوب',
-                    ),
-                  ),
+                  Padding(padding: EdgeInsets.all(5)),
+
+                  Center(child: Text(_title,style: kTextPageStyle.copyWith(color:Colors.deepPurple,fontSize:18 ))),
+
+                  Padding(padding: EdgeInsets.all(5)),
                   Padding(
                     padding: const EdgeInsets.all(15),
                     child: Text(
@@ -285,11 +257,13 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0)),
                       onPressed: () async {
-                        List<String> subjects = subjectController.text.split(
+                         subjects =  subjectController.text==null? []: subjectController.text.split(
                             ',');
                         print(subjects);
+                        Random ran = Random();
 
-                        String docId= widget.studentId+DateTime.now().year.toString()+_semesterValue;
+
+                        String docId= widget.studentId+DateTime.now().year.toString()+_semesterValue+ran.nextInt(10000000).toString();
                         bool isDone = await setUIds();
                         if (isDone) {
 

@@ -42,7 +42,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
   File _Image;
   Image _Image2;
-
   File _Vedio;
   List<Image> Images;
 
