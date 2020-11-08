@@ -41,10 +41,10 @@ class _TFilesState extends State<TFiles> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String fileUrl;
   File _File;
-  bool psychologySpecialistName2=false;
-  bool communicationSpecialistName2=false;
-  bool occupationalSpecialistName2=false;
-  bool physiotherapySpecialistName2=false;
+  bool psychologySpecialist=false;
+  bool communicationSpecialist=false;
+  bool occupationalSpecialist=false;
+  bool physiotherapySpecialist=false;
   bool showMassage=false;
   bool showMassage2=false;
   String download;
@@ -115,11 +115,11 @@ class _TFilesState extends State<TFiles> {
                        children: [
                          Text(widget.occupationalSpecialistName,style: kTextPageStyle),
                          Text("  أخصائي العلاج الوظيفي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                         Checkbox(value: occupationalSpecialistName2, onChanged: (bool value) {
+                         Checkbox(value: occupationalSpecialist, onChanged: (bool value) {
                            setState(() {
-                            occupationalSpecialistName2 = value;
+                            occupationalSpecialist = value;
                            });
-                           print(occupationalSpecialistName2);
+                           print(occupationalSpecialist);
                          },
                          checkColor: Colors.black,
                            activeColor: Colors.deepPurple.shade100,
@@ -132,11 +132,11 @@ class _TFilesState extends State<TFiles> {
                           children: [
                             Text(widget.communicationSpecialistName,style: kTextPageStyle),
                             Text("  أخصائي التواصل",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                            Checkbox(value: communicationSpecialistName2, onChanged: (bool value) {
+                            Checkbox(value: communicationSpecialist, onChanged: (bool value) {
                               setState(() {
-                                communicationSpecialistName2 = value;
+                                communicationSpecialist = value;
                               });
-                              print(communicationSpecialistName2);
+                              print(communicationSpecialist);
                             },
                               checkColor: Colors.black,
                               activeColor: Colors.deepPurple.shade100,
@@ -149,11 +149,11 @@ class _TFilesState extends State<TFiles> {
                           children: [
                             Text(widget.physiotherapySpecialistName,style: kTextPageStyle),
                             Text("  أخصائي العلاج الطبيعي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                            Checkbox(value: physiotherapySpecialistName2, onChanged: (bool value) {
+                            Checkbox(value: physiotherapySpecialist, onChanged: (bool value) {
                               setState(() {
-                                physiotherapySpecialistName2 = value;
+                                physiotherapySpecialist = value;
                               });
-                              print(physiotherapySpecialistName2);
+                              print(physiotherapySpecialist);
                             },
                               checkColor: Colors.black,
                               activeColor: Colors.deepPurple.shade100,
@@ -167,11 +167,11 @@ class _TFilesState extends State<TFiles> {
                           children: [
                             Text(widget.psychologySpecialistName,style: kTextPageStyle),
                             Text(" الأخصائي النفسي ",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                            Checkbox(value: psychologySpecialistName2, onChanged: (bool value) {
+                            Checkbox(value: psychologySpecialist, onChanged: (bool value) {
                               setState(() {
-                                psychologySpecialistName2 = value;
+                                psychologySpecialist = value;
                               });
-                              print(psychologySpecialistName2);
+                              print(psychologySpecialist);
                             },
                               checkColor: Colors.black,
                               activeColor: Colors.deepPurple.shade100,
@@ -294,10 +294,10 @@ class _TFilesState extends State<TFiles> {
     var random= new Random();
     int documentId=random.nextInt(1000000000);
 
-    print("py $psychologySpecialistName2");
-    print("ph $physiotherapySpecialistName2");
-    print("c $communicationSpecialistName2");
-    print("o $occupationalSpecialistName2");
+    print("py $psychologySpecialist");
+    print("ph $physiotherapySpecialist");
+    print("c $communicationSpecialist");
+    print("o $occupationalSpecialist");
 
     var addFileToStudent= Students.doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
         {
@@ -335,7 +335,7 @@ class _TFilesState extends State<TFiles> {
         'publisher':widget.teacherName
     });
 
-    if (psychologySpecialistName2==true){
+    if (psychologySpecialist==true){
     var addFileToPsychologySpecialistStudent=  Specialists.doc(widget.psychologySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
         {
           'filePath':fileUrl,
@@ -354,7 +354,7 @@ class _TFilesState extends State<TFiles> {
           'publisher':widget.teacherName
         });}
 
-    if (physiotherapySpecialistName2==true){
+    if (physiotherapySpecialist==true){
       var addFileToPhysiotherapySpecialistStudent=  Specialists.doc(widget.physiotherapySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
           {
             'filePath':fileUrl,
@@ -372,7 +372,7 @@ class _TFilesState extends State<TFiles> {
             'date':DateTime.now().toString().substring(0, 10),
             'publisher':widget.teacherName
           });}
-    if (communicationSpecialistName2==true){
+    if (communicationSpecialist==true){
       var addFileToCommunicationSpecialistStudent=  Specialists.doc(widget.communicationSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
           {
             'filePath':fileUrl,
@@ -391,7 +391,7 @@ class _TFilesState extends State<TFiles> {
             'publisher':widget.teacherName
           });}
 
-    if (occupationalSpecialistName2==true){
+    if (occupationalSpecialist==true){
       var addFileToOccupationalSpecialistStudent=  Specialists.doc(widget.occupationalSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
           {
             'filePath':fileUrl,
@@ -410,10 +410,10 @@ class _TFilesState extends State<TFiles> {
             'publisher':widget.teacherName
           });}
     setState(() {
-      psychologySpecialistName2=false;
-      communicationSpecialistName2=false;
-      occupationalSpecialistName2=false;
-      physiotherapySpecialistName2=false;
+      psychologySpecialist=false;
+      communicationSpecialist=false;
+      occupationalSpecialist=false;
+      physiotherapySpecialist=false;
       showMassage=false;
         showMassage2=false;
 

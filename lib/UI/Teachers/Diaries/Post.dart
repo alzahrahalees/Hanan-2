@@ -98,11 +98,9 @@ class _AddPostState extends State<AddPost> {
 
       if (widget.video !=null) {
         FirebaseStorage storage= FirebaseStorage(storageBucket: 'gs://hananz-5ffb9.appspot.com');
-
         StorageReference ref = storage.ref().child(p.basename(widget.video.path));
         StorageUploadTask storageUploadTask = ref.putFile(widget.video);
-        StorageTaskSnapshot storageTaskSnapshot = await storageUploadTask
-            .onComplete;
+        StorageTaskSnapshot storageTaskSnapshot = await storageUploadTask.onComplete;
         String Url = await storageTaskSnapshot.ref.getDownloadURL();
         print("........ $Url ..........");
         if (!mounted) return;

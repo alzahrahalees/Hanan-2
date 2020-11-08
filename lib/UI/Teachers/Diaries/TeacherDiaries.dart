@@ -53,17 +53,17 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
     CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     CollectionReference Admin_Teachers = Admin.doc(centerId).collection('Teachers');
     CollectionReference Admin_Students = Admin.doc(centerId).collection('Students');
-    return Scaffold(
-    //   body:
-    //     SafeArea(
-    //       child: StreamBuilder<QuerySnapshot>(
-    //         stream:Admin_Students.doc(uid).collection('Posts').where('date',isEqualTo:dateSearch2).orderBy('createdAt',descending: true).snapshots(),
-    //         builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-    //           if (!snapshot.hasData)
-    //             return  Center(child: SpinKitFoldingCube(
-    //               color: kUnselectedItemColor,
-    //               size: 60,
-    //             ),
+  //  return Scaffold(
+    //  body:
+      //   SafeArea(
+        //child: StreamBuilder<QuerySnapshot>(
+           //stream:Admin_Students.doc(uid).collection('Posts').where('date',isEqualTo:dateSearch2).orderBy('createdAt',descending: true).snapshots(),
+             //builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+         //      if (!snapshot.hasData)
+       //          return  Center(child: SpinKitFoldingCube(
+           //        color: kUnselectedItemColor,
+             //      size: 60,
+               //  ),
     //             );
     //               else{
     //                 return Container(
@@ -313,8 +313,9 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
     //   ),
     // ),
     // );
-    body: Container(child: Text('diaries page'),),
-    );
+
+  //  );
+    return(Text("ok"));
   }
 }
 

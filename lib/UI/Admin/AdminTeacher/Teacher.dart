@@ -93,9 +93,7 @@ class AddTeacher extends StatelessWidget {
         "type": type,
         "birthday": birthday.toString()
       });
-
 }
-
       Navigator.pop(
           context,
           MaterialPageRoute(

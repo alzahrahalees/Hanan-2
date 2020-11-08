@@ -174,8 +174,6 @@ class _FirstLogInState extends State<FirstLogIn> {
           builder: (context)=> MainLogIn()
       ));
     }).catchError((err) => print('****######### Err: $err ###########*********'));
-
-
   }
 
   bool isValid(){
