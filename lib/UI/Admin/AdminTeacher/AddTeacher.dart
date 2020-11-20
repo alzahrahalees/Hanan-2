@@ -21,6 +21,7 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
   CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
   final _formkey = GlobalKey<FormState>();
 
+  bool _isEmailExists =false;
   String _name;
   String _age;
   String _email='';
@@ -50,6 +51,18 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                   ? Colors.deepPurpleAccent
                   : Colors.grey)),
     );}
+
+  Future<bool> isEmailExists (String email) async{
+    bool isExits;
+    await FirebaseFirestore.instance.collection('Users').doc(email).get()
+        .then((value){
+      if(value.exists){
+        isExits=true;
+      }
+      else isExits=false;
+    });
+    return isExits;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,13 +112,19 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                           child: KNormalTextFormField(
                             validatorText: "#مطلوبة",
                             hintText: "البريد الاكتروني",
-                            onChanged: (value) {
+                            onChanged: (value) async {
+                              _isEmailExists = await isEmailExists(value);
                               setState(() {
                                 _email = value;
                               });
                             },
                           ),
                         ), //email
+
+                        _isEmailExists?Text('هذا الايميل مستعمل الرجاء اختيار ايميل اخر', style: TextStyle(
+                            color: Colors.red, fontSize: 12 ),)
+                            : SizedBox(),
+
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: KNormalTextFormField(
@@ -168,7 +187,13 @@ class _AddTeacherScreenState extends State<AddTeacherScreen> {
                         ]),
                         new Padding(
                           padding: new EdgeInsets.all(15),
-                          child: AddTeacher(
+                          child: _isEmailExists? RaisedButton(
+                              color: Colors.black38,
+                              child: Text("إضافة", style: kTextButtonStyle),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0)),
+                                )
+                              :AddTeacher(
                             formkey: _formkey,
                               name: _name,
                               age: _age,

@@ -1,12 +1,9 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Constance.dart';
 import 'Student.dart';
-import '../AdminMainScreen.dart';
-import 'package:hanan/services/auth.dart';
 
 
 class AddStudentScreen extends StatefulWidget {
@@ -27,8 +24,9 @@ List <String> l;
   User userAdmin =  FirebaseAuth.instance.currentUser;
   CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
   CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
-  final AuthService _auth = AuthService();
+
   //Map<String,dynamic> s;
+  bool _isEmailExists =false;
   List<String>s;
   String _name;
   String _age;
@@ -53,8 +51,21 @@ List <String> l;
     setState(() {
       selectedIndex = index;
     });
+
   }
 
+  Future<bool> isEmailExists (String email) async{
+    FirebaseAuthException;
+    bool isExits;
+    await FirebaseFirestore.instance.collection('Users').doc(email).get()
+        .then((value){
+      if(value.exists){
+        isExits=true;
+      }
+      else isExits=false;
+    });
+    return isExits;
+  }
 
   Widget RadioButton(String txt, int index) {
     return OutlineButton(
@@ -76,6 +87,7 @@ List <String> l;
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: kUnselectedItemColor),
@@ -122,13 +134,19 @@ List <String> l;
                           child: KNormalTextFormField(
                             validatorText: "#مطلوبة",
                             hintText: "البريد الاكتروني",
-                            onChanged: (value) {
+                            onChanged: (value) async {
+                              _isEmailExists = await isEmailExists(value);
                               setState(() {
                                 _email = value;
                               });
                             },
                           ),
                         ), //email
+
+                        _isEmailExists?Text('هذا الايميل مستعمل الرجاء اختيار ايميل اخر', style: TextStyle(
+                            color: Colors.red, fontSize: 12 ),)
+                            : SizedBox(),
+
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: KNormalTextFormField(
@@ -467,7 +485,13 @@ List <String> l;
                         ),
                         new Padding(
                           padding: new EdgeInsets.all(15),
-                          child: AddStudent(
+                          child:_isEmailExists? RaisedButton(
+                            color: Colors.black38,
+                            child: Text("إضافة", style: kTextButtonStyle),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0)),
+                          )
+                              : AddStudent(
                             formKey: _formkey,
                               name: _name,
                               age: _age,

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hanan/UI/loading.dart';
 import 'package:hanan/UI/logIn.dart';
 import '../Constance.dart';
-import 'package:hanan/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AddAdminScreen extends StatefulWidget {
@@ -21,7 +20,6 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
   final _formkey = GlobalKey<FormState>();
   final firestoreInstance = FirebaseFirestore.instance;
 
-  final AuthService _auth = AuthService();
   String _name;
   String _city;
   String _email='';

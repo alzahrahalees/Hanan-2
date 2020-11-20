@@ -319,8 +319,6 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                                             document.id, _sDay);
 
 
-
-
                                       },
                                     ),
                                   ),
@@ -372,6 +370,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
                                                     appointmentId: document.id);
                                                 Scaffold.of(context).showSnackBar(
                                                   SnackBar(
+                                                    duration: Duration(seconds: 2),
                                                     backgroundColor: Colors.white70,
                                                       elevation: 15,
                                                       content: Text(

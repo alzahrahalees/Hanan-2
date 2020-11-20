@@ -145,6 +145,10 @@ class _StudentScreenState extends State<StudentScreen> {
                                                               value.docs.forEach((element) {
                                                                 Specialists.doc(element.id).collection('Students').doc(document.id).delete();
                                                               }));
+
+                                                          FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
+                                                              .catchError((e)=> print(e));
+
                                                           Navigator.pop(context);
                                                         },
                                                         color: kButtonColor,

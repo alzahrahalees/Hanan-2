@@ -6,7 +6,7 @@ import 'ParentStudentAppointment.dart';
 import 'ParentStudentInfo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hanan/services/chang_password.dart';
+import 'package:hanan/UI/chang_password.dart';
 import 'package:hanan/UI/selfProfile.dart';
 import 'package:hanan/UI/logIn.dart';
 import 'ParentCaretakerInformation.dart';

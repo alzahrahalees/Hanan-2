@@ -38,11 +38,36 @@ class _MainLogInState extends State<MainLogIn> {
 
   @override
   Widget build(BuildContext context) {
+
+    List<int> list= [5,7,4,6,3,2];
+    int i =0 ;
+    int counter =0 ;
+    int item = list[0];
+
     return isLoading?  LoadingScreen() :Scaffold(
+      // floatingActionButton: FloatingActionButton(
+      //   child: Text('اختبار'),
+      //   onPressed: (){
+      //     while (counter < list.length){
+      //         if (list[i]<item) {
+      //         list[i]= item - list[i];
+      //         i = list.indexOf(item);
+      //         item = list[list.indexOf(item)+1];
+      //         counter++;
+      //         continue;
+      //       }
+      //       if (i== list.length-1){
+      //         i = 0;
+      //       }
+      //       else i++;
+      //     }
+      //     print(list);
+      //   },
+      // ),
         appBar: AppBar(
           iconTheme: IconThemeData(color: kSelectedItemColor),
           elevation: 0,
-          backgroundColor: Colors.white70,
+          backgroundColor: kWolcomeBkg,
           centerTitle: true,
           title: Hero(
             tag: 'login',
@@ -55,8 +80,8 @@ class _MainLogInState extends State<MainLogIn> {
         ),
         body: SafeArea(
             child: Container(
-              //  color: kWolcomeBkg,
-              color: Colors.white70,
+               color: kWolcomeBkg,
+              // color: Colors.white70,
                 alignment: Alignment.center,
                 child: Form(
                     key: _formKey,
@@ -112,13 +137,14 @@ class _MainLogInState extends State<MainLogIn> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0)),
                             onPressed: () async {
+                              dynamic type = await whoIs(_email.text.toLowerCase());
+                              isInAuth= await isReg();
                               if (_formKey.currentState.validate()) {
                                 setState(() {
                                   isLoading=true;
                                 });
-                                isInAuth= await isReg();
+
                                 if(!isInAuth){
-                               dynamic type = await whoIs(_email.text.toLowerCase());
                                 print('inside onPress function $type');
                                 if (type == 'Teachers') {
                                   result =
@@ -203,17 +229,14 @@ class _MainLogInState extends State<MainLogIn> {
                                 else{
                                   setState(() {
                                     isLoading=false;
-                                    warningText= 'الرجاء االضغط على التسجيل لأول مره لاستكمال التسجيل وتعيين كلمة سر جديدة';
                                   });
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => FirstLogIn(type: type,email: _email.text,)));
                                 }
                               }
                             }
                         ),
-                        // Container(
-                        //     width: 400,
-                        //     height: 500,
-                        //     child: MyCard()
-                        // ),
+
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Text(
@@ -225,14 +248,11 @@ class _MainLogInState extends State<MainLogIn> {
                           ),
                         ),
                          InkWell(
-                            child: Text("إذا كنت تسجل الدخول لأول مره اضغط هنا",
+                            child: Text("إذا كنت تسجل الدخول لأول مره ادخل كلمة مرور عشوائية",
                                 textAlign: TextAlign.center,
-                                style: kTextPageStyle.copyWith(
-                                    decoration: TextDecoration.underline)),
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => FirstLogIn()));
-                            }),
+                                style: kTextPageStyle
+                            ),
+                            ),
 
                          Padding(
                            padding: const EdgeInsets.only(top: 8),
@@ -251,14 +271,13 @@ class _MainLogInState extends State<MainLogIn> {
 
   Future<String> whoIs(String email) async {
     String type;
-
+    //get type
     await FirebaseFirestore.instance
         .collection('Users')
         .where('email', isEqualTo: email)
         .get()
         .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs
-          .forEach((doc) {
+      querySnapshot.docs.forEach((doc) {
         type = doc.data()['type'];
         print('inside whoIs function $type');
       });
@@ -267,25 +286,17 @@ class _MainLogInState extends State<MainLogIn> {
   }
 
   Future<bool> isReg() async{
-    String type;
-    await FirebaseFirestore.instance
-        .collection('Users ')
-        .where('email', isEqualTo: _email.text.toLowerCase())
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs
-          .forEach((doc) {
-        type = doc.data()['type'];
-        print('inside whoIs function $type');
-      });
-    }).catchError((err) => type = 'Not Valid');
+     String type = await whoIs(_email.text);
 
+    //get document from isAuth collection
     authReslute = await FirebaseFirestore.instance.collection('NoAuth')
         .doc(_email.text.toLowerCase()).get();
 
+    // check if document exist
     bool isAdminReg = (authReslute.exists) & (type!='Admin') ;
     print ("#### inside isReg function $isAdminReg");
     return isAdminReg ;
+
   }
 
 

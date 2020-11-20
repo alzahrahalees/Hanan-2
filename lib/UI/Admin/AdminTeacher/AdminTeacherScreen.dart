@@ -139,6 +139,8 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                                     Teachers.doc(document.id).delete();
                                                     Users.doc(document.id).delete();
                                                     Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();
+                                                    FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
+                                                        .catchError((e)=> print(e));
                                                     Navigator.pop(context);
                                                   },
                                                   color: kButtonColor,

@@ -3,8 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/logIn.dart';
 import 'package:hanan/UI/selfProfile.dart';
-import 'package:hanan/services/auth.dart';
-import 'package:hanan/services/chang_password.dart';
+import 'package:hanan/UI/chang_password.dart';
 import '../Constance.dart';
 import 'TeacherAllAppointments.dart';
 import 'TeacherStudentList.dart';
@@ -13,7 +12,6 @@ import 'notifications.dart';
 
 
 class TeacherMainScreen extends StatefulWidget {
-  AuthService _auth = AuthService();
   final int index;
   TeacherMainScreen(this.index);
   @override
@@ -23,7 +21,6 @@ class TeacherMainScreen extends StatefulWidget {
 class _TeacherMainScreenState extends State<TeacherMainScreen> {
 
   User user = FirebaseAuth.instance.currentUser;
-  AuthService _authService= AuthService();
   int _currentIndex=0;
   List<Widget> _screens=[TeacherStudentList(),AllAppointmentsTeacher()];
   List<String> _titles=[ "قائمة الطلاب", "جميع المواعيد"];

@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Specialists/student.dart';
-import 'package:provider/provider.dart';
 import '../Constance.dart';
 import 'SpecialistStudentMain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,7 +23,7 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
     var _gender='';
     User user = FirebaseAuth.instance.currentUser;
     CollectionReference studentsInSpecia = FirebaseFirestore.instance.collection('Specialists')
-    .doc(user.email).collection('Students');
+        .doc(user.email).collection('Students');
     return Container(
       color: kBackgroundPageColor,
       child: Column(
@@ -45,7 +43,7 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
               }),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: studentsInSpecia.snapshots(),
+                stream: studentsInSpecia.snapshots(),
                 builder: ( context, snapshot) {
                   if (!snapshot.hasData)
                     return Center(
@@ -61,18 +59,18 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
                         size: 60,
                       )
                         ,);
-                      default:
-                        return ListView.builder(
-                            physics: ScrollPhysics(),
-                            itemCount: snapshot.data.docs.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context,index){
-                              DocumentSnapshot document =snapshot.data.docs[index];
-                              String name = document.data()['name'];
-                              _gender= document.data()['gender'];
+                    default:
+                      return ListView.builder(
+                          physics: ScrollPhysics(),
+                          itemCount: snapshot.data.docs.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context,index){
+                            DocumentSnapshot document =snapshot.data.docs[index];
+                            String name = document.data()['name'];
+                            _gender= document.data()['gender'];
 
-                              if(name.toLowerCase().contains(_searchString) || name.toUpperCase().contains(_searchString.toUpperCase())){
-                                return Padding(
+                            if(name.toLowerCase().contains(_searchString) || name.toUpperCase().contains(_searchString.toUpperCase())){
+                              return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Card(
                                       color: kCardColor,
@@ -97,20 +95,19 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
                                           title: Text(document.data()['name'] , style: kTextPageStyle))
                                   )
                               );
-                              }
-                              else return SizedBox();
+                            }
+                            else return SizedBox();
 
-            }
-            );
-            }} ),
+                          }
+                      );
+                  }} ),
 
           ),
         ],
       ),
     );
-      }
-
-
-
   }
 
+
+
+}
