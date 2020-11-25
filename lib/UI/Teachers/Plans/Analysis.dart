@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../Constance.dart';
 
+
 class AnalysisDetails extends StatefulWidget {
 final String studentId;
 final String planId;
@@ -159,128 +160,132 @@ class _AnalysisState extends State<AnalysisDetails> {
                       builder: (_) => StatefulBuilder(
                           builder: (context, setState) {
                             return AlertDialog(
-                                title:
-                                Form(
-                                  key: _formkey,
-                                  child: ListView(
-                                      shrinkWrap: true,
-                                      children: [
-                                        Column(
-                                            children:[
-                                              Padding(padding: EdgeInsets.all(3)) ,
-                                               SizedBox(
-                                                 child: TextFormField(
-                                                  controller: _proceduralGoal,
-                                                  minLines: 1,
-                                                  maxLines: 3,
-                                                  autocorrect: false,
-                                                  decoration: InputDecoration(
-                                                    labelText: 'الهدف الإجرائي',
-                                                    labelStyle: kTextPageStyle.copyWith(color: Colors.grey.shade700),
-                                                    focusedBorder: OutlineInputBorder(
-                                                      borderSide: BorderSide(color: Colors.deepPurple),
-                                                    ),
-                                                  ),
-                                                   validator: (value) {
-                                                     if (value.isEmpty) {
-                                                       return '* مطلوب';
-                                                     }
-                                                   },
-                                              ),
-                                               ),
-                                              Padding(padding: EdgeInsets.all(6)),
-                                              SizedBox(
-                                                child: TextFormField(
-                                                  controller: _startDate,
-                                                  minLines: 1,
-                                                  autocorrect: false,
-                                                  decoration: InputDecoration(
-                                                    labelText: 'تاريخ البداية',
-                                                    labelStyle: kTextPageStyle.copyWith(color: Colors.grey.shade700),
-                                                    focusedBorder: OutlineInputBorder(
-                                                      borderSide: BorderSide(color: Colors.deepPurple),
-                                                    ),
-                                                  ),
-                                                  validator: (value) {
-                                                    if (value.isEmpty) {
-                                                      return '* مطلوب';
-                                                    }
-                                                  },
+                            title: Container(
+                            width: 270,
+                            height: 270,
+                              child: Form(
+                                key: _formkey,
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  children: [
+                                    Column(
+                                        children:[
+                                          Padding(padding: EdgeInsets.all(3)) ,
+                                           SizedBox(
+                                             child: TextFormField(
+                                              controller: _proceduralGoal,
+                                              minLines: 1,
+                                              maxLines: 3,
+                                              autocorrect: false,
+                                              decoration: InputDecoration(
+                                                labelText: 'الهدف الإجرائي',
+                                                labelStyle: kTextPageStyle.copyWith(color: Colors.grey.shade700),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.deepPurple),
                                                 ),
                                               ),
-                                              Padding(padding: EdgeInsets.all(6)),
-                                              SizedBox(
-                                                child: TextFormField(
-                                                  controller:_endDate,
-                                                  minLines: 1,
-                                                  autocorrect: false,
-                                                  decoration: InputDecoration(
-                                                    labelText: 'تاريخ النهاية',
-                                                    labelStyle: kTextPageStyle.copyWith(color: Colors.grey.shade700),
-                                                    focusedBorder: OutlineInputBorder(
-                                                      borderSide: BorderSide(color: Colors.deepPurple),
-                                                    ),
-                                                  ),
-                                                  validator: (value) {
-                                                    if (value.isEmpty) {
-                                                      return '* مطلوب';
-                                                    }
-                                                  },
+                                               validator: (value) {
+                                                 if (value.isEmpty) {
+                                                   return '* مطلوب';
+                                                 }
+                                               },
+                                          ),
+                                           ),
+                                          Padding(padding: EdgeInsets.all(6)),
+                                          SizedBox(
+                                            child: TextFormField(
+                                              controller: _startDate,
+                                              minLines: 1,
+                                              decoration: InputDecoration(
+                                                labelText: 'تاريخ البداية',
+                                                labelStyle: kTextPageStyle.copyWith(color: Colors.grey.shade700),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.deepPurple),
                                                 ),
                                               ),
-                                              Padding(padding: EdgeInsets.all(6)),
-                                              SizedBox(
-                                                child: Row(
-                                                  children: [
-                                                    FlatButton(onPressed: (){
-                                                      if(_formkey.currentState.validate()){
-                                                        var random = new Random();
-                                                        int documentId = random.nextInt(1000000000);
-                                                        var addProceduralGoalToStudent = studentsPlansGoal.doc(
-                                                            widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}${documentId} ProceduralGoal").set({
-                                                          'proceduralGoal':_proceduralGoal.text,
-                                                          'startDate':_startDate.text,
-                                                          'endDate':_endDate.text,
-                                                          'createdAt': Timestamp.now(),
-                                                          'proceduralGoal':"${widget.goalId}${documentId} ProceduralGoal",
-                                                          'planId':widget.planId,
-                                                          'goalId':widget.goalId,
-                                                          'totalTimes':"",
-                                                          'successfulTimes':"",
-                                                          'evaluation':"",
-                                                          'helpType':"",
-                                                            });
-                                                        var addProceduralGoalToTeacher = teachersPlansGoal.doc(
-                                                            widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}${documentId} ProceduralGoal").set({
-                                                          'proceduralGoal':_proceduralGoal.text,
-                                                          'startDate':_startDate.text,
-                                                          'endDate':_endDate.text,
-                                                          'createdAt': Timestamp.now(),
-                                                          'proceduralGoalId':"${widget.goalId}${documentId} ProceduralGoal",
-                                                          'planId':widget.planId,
-                                                          'goalId':widget.goalId,
-                                                          'totalTimes':"",
-                                                          'successfulTimes':"",
-                                                          'evaluation':"",
-                                                          'helpType':"",
-                                                          }).whenComplete(() {
-                                                            _proceduralGoal.clear();
-                                                            _startDate.clear();
-                                                            _endDate.clear();
-                                                            Navigator.pop(context);});
-                                                      }}, child: Text(  "إضافة",style:kTextPageStyle.copyWith(color: Colors.deepPurple))),
-                                                    Padding(padding: EdgeInsets.all(20)),
-                                                    FlatButton(onPressed: (){
-                                                      _proceduralGoal.clear();
-                                                      _startDate.clear();
-                                                      _endDate.clear();
-                                                      Navigator.pop(context);}, child: Text("إلغاء",style:kTextPageStyle.copyWith(color: Colors.deepPurple))),
-                                                  ],
+                                              validator: (value) {
+                                                if (value.isEmpty) {
+                                                  return '* مطلوب';
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                          Padding(padding: EdgeInsets.all(6)),
+                                          SizedBox(
+                                            child: TextFormField(
+                                              controller:_endDate,
+                                              minLines: 1,
+                                              autocorrect: false,
+                                              decoration: InputDecoration(
+                                                labelText: 'تاريخ النهاية',
+                                                labelStyle: kTextPageStyle.copyWith(color: Colors.grey.shade700),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderSide: BorderSide(color: Colors.deepPurple),
                                                 ),
-                                              )
-                                            ])]),
-                                ));}));
-                },
+                                              ),
+                                              validator: (value) {
+                                                if (value.isEmpty) {
+                                                  return '* مطلوب';
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                          Padding(padding: EdgeInsets.all(6)),
+                                          SizedBox(
+                                            child: Row(
+                                              children: [
+                                                FlatButton(onPressed: (){
+                                                  if(_formkey.currentState.validate()){
+                                                    var random = new Random();
+                                                    int documentId = random.nextInt(1000000000);
+                                                    var addProceduralGoalToStudent = studentsPlansGoal.doc(
+                                                        widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}${documentId} ProceduralGoal").set({
+                                                      'proceduralGoal':_proceduralGoal.text,
+                                                      'startDate':_startDate.text,
+                                                      'endDate':_endDate.text,
+                                                      'createdAt': Timestamp.now(),
+                                                      'proceduralGoal':"${widget.goalId}${documentId} ProceduralGoal",
+                                                      'planId':widget.planId,
+                                                      'goalId':widget.goalId,
+                                                      'totalTimes':"",
+                                                      'successfulTimes':"",
+                                                      'evaluation':"",
+                                                      'helpType':"",
+                                                        });
+                                                    var addProceduralGoalToTeacher = teachersPlansGoal.doc(
+                                                        widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}${documentId} ProceduralGoal").set({
+                                                      'proceduralGoal':_proceduralGoal.text,
+                                                      'startDate':_startDate.text,
+                                                      'endDate':_endDate.text,
+                                                      'createdAt': Timestamp.now(),
+                                                      'proceduralGoalId':"${widget.goalId}${documentId} ProceduralGoal",
+                                                      'planId':widget.planId,
+                                                      'goalId':widget.goalId,
+                                                      'totalTimes':"",
+                                                      'successfulTimes':"",
+                                                      'evaluation':"",
+                                                      'helpType':"",
+                                                      }).whenComplete(() {
+                                                        _proceduralGoal.clear();
+                                                        _startDate.clear();
+                                                        _endDate.clear();
+                                                        Navigator.pop(context);});
+                                                  }}, child: Text(  "إضافة",style:kTextPageStyle.copyWith(color: Colors.deepPurple))),
+                                                Padding(padding: EdgeInsets.all(20)),
+                                                FlatButton(onPressed: (){
+                                                  _proceduralGoal.clear();
+                                                  _startDate.clear();
+                                                  _endDate.clear();
+                                                  Navigator.pop(context);}, child: Text("إلغاء",style:kTextPageStyle.copyWith(color: Colors.deepPurple))),
+                                              ],
+                                            ),
+                                          )
+                                        ]),
+                                  ],
+                                ),
+                              ),
+                            ));}));
+                }
               ),
               Padding(padding: EdgeInsets.all(3)),
             ],
@@ -550,7 +555,10 @@ class _AnalysisState extends State<AnalysisDetails> {
     ]);}),
                   ],
                 );}
-    else{return Text("",style: TextStyle(fontSize: 0),);}
+    else{  return  Center(child: SpinKitFoldingCube(
+               color: kUnselectedItemColor,
+               size: 60,
+             ));}
 
               }
             ),
