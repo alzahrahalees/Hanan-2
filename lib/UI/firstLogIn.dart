@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hanan/UI/Specialists/SpecialistMainScreen.dart';
 import 'package:hanan/UI/Parents/ParentMain.dart';
 import 'package:hanan/UI/loading.dart';
+import 'package:hanan/UI/logIn.dart';
 import 'Teachers/TeacherMainScreen.dart';
 import 'Constance.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -164,10 +165,9 @@ class _FirstLogInState extends State<FirstLogIn> {
 
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-            email: widget.email.toLowerCase(), password: _password.text)
+        email: widget.email.toLowerCase(), password: _password.text)
         .catchError((err) => print('### Account Not created Err :$err'))
         .then((value) async {
-
       //get centerId
       centerId = await FirebaseFirestore.instance
           .collection('Users')
@@ -175,7 +175,6 @@ class _FirstLogInState extends State<FirstLogIn> {
           .get()
           .then((value) => centerId = value.data()['center']);
     }).whenComplete(() async {
-
       //delete from isAuth collection
       await FirebaseFirestore.instance
           .collection('NoAuth')
@@ -203,17 +202,24 @@ class _FirstLogInState extends State<FirstLogIn> {
       if (widget.type == 'Teachers') {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => TeacherMainScreen(0)));
-      } else if (widget.type == 'Specialists') {
+      }
+      else if (widget.type == 'Specialists') {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => SpecialistMainScreen(index: 0)));
-      } else if (widget.type == 'Students') {
+      }
+      else if (widget.type == 'Students') {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => ParentMain(0)));
       }
 
-    });
+
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => MainLogIn()
+      ));
+    }).catchError((err) =>
+        print('****######### Err: $err ###########*********'));
   }
 
   bool isValid() {

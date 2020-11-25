@@ -6,7 +6,6 @@ import 'package:hanan/UI/Constance.dart';
 class GeneralMajorsPage extends StatefulWidget {
   final String studentId;
   final List<dynamic> tabs;
-
   const GeneralMajorsPage({this.studentId, this.tabs});
 
   @override
@@ -15,16 +14,13 @@ class GeneralMajorsPage extends StatefulWidget {
 
 class _GeneralMajorsPageState extends State<GeneralMajorsPage>  with TickerProviderStateMixin{
   int _currentIndex =0;
-
-
   @override
+
   void dispose() {
     _tabController.dispose();
     super.dispose();
   }
-
   TabController _tabController;
-
   @override
   void initState() {
     super.initState();
@@ -32,7 +28,6 @@ class _GeneralMajorsPageState extends State<GeneralMajorsPage>  with TickerProvi
       _tabController = TabController(vsync: this, length: widget.tabs.length, initialIndex: 0);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +38,13 @@ class _GeneralMajorsPageState extends State<GeneralMajorsPage>  with TickerProvi
           backgroundColor: kAppBarColor,
           toolbarHeight: 75,
           bottom: TabBar(
-            physics: ScrollPhysics(),
+            physics:  NeverScrollableScrollPhysics(),
             isScrollable: true,
             controller:_tabController,
             labelColor: kSelectedItemColor,
             indicatorColor: kSelectedItemColor,
             unselectedLabelColor: kUnselectedItemColor,
             onTap: (index) {
-
               setState(() {
                 _currentIndex = index;
               });

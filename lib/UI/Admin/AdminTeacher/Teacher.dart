@@ -91,10 +91,10 @@ class AddTeacher extends StatelessWidget {
         "type": type,
         "birthday": birthday.toString()
       });
-
 }
 
         Navigator.pop(context, MaterialPageRoute(builder: (context) => MainAdminScreen(0)));}
+
 
    return RaisedButton(
       color: kButtonColor,

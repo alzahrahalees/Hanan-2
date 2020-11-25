@@ -136,9 +136,7 @@ class _StudyCaseScreenState extends State<StudyCaseScreen> {
                         );
                       }
                       return ListView(
-                          children:
-                          snapshot.data.docs.map<Widget>((
-                              DocumentSnapshot doc) {
+                          children: snapshot.data.docs.map<Widget>((DocumentSnapshot doc) {
                             if (doc.id == widget.studentId + 'family' &&
                                 doc
                                     .data()

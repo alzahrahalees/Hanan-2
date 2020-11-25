@@ -87,6 +87,7 @@ class KCircularTextFormField extends StatelessWidget {
               if (value.isEmpty) {
                 return '$validatorText ';
               }
+              else return '';
             }));
   }
 }
@@ -118,6 +119,7 @@ class KNormalTextFormField extends StatelessWidget {
         if (value.isEmpty) {
           return '$validatorText ';
         }
+        else return '';
       },
       onChanged: onChanged,
     );
