@@ -7,6 +7,7 @@ import 'package:hanan/UI/Constance.dart';
 import 'package:hanan/UI/Teachers/Plans/GoalAnalysis.dart';
 import 'package:hanan/UI/Teachers/Plans/addNewGoal.dart';
 
+
 //plan pages for 6 majors ..
 class SpecialMajorsPage extends StatefulWidget {
   final String studentId;

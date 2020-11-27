@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         supportedLocales: [
-          Locale("ar"), // OR Locale('ar', 'AE') OR Other RTL locales
+          Locale("ar"),
         ],
-        locale: Locale("ar"), // OR Locale('ar', 'AE') OR Other RTL locales,
+        locale: Locale("ar"),
 
         title: kTitleOfProject ,
         home: WelcomeScreen(),
