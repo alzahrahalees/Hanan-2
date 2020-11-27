@@ -270,8 +270,10 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>
                   ),
                 ),
                 context: context,
-                builder: (BuildContext buildContext) =>
-                    AddAppointmentInStudent(studentName),
+                builder: (BuildContext buildContext) => AddAppointmentInStudent(
+                  studentName: studentName,
+                  studentId: widget.studentId,
+                ),
               );
             },
           ),

@@ -10,8 +10,9 @@ import 'package:weekday_selector_formfield/weekday_selector_formfield.dart';
 import '../Constance.dart';
 
 class AddAppointmentInStudent extends StatefulWidget {
+  final String studentId;
   final String studentName;
-  AddAppointmentInStudent(this.studentName);
+  AddAppointmentInStudent({this.studentName, this.studentId});
 
   @override
   _AddAppointmentInStudentState createState() =>
@@ -26,8 +27,6 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
   bool _wed = false;
   bool _thu = false;
 
-  // String _studentName=widget.studentName;
-  String _studentId = '';
   String _teacherId;
   String _specialistName;
   String _specialistType;
@@ -106,7 +105,7 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
       String _centerId) {
     Random ran = Random();
     int num = ran.nextInt(100000000);
-    String docId = _studentId + num.toString();
+    String docId = widget.studentId + num.toString();
 
     //add to Specialists
     FirebaseFirestore.instance
@@ -116,7 +115,7 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
         .doc(docId)
         .set({
           'name': widget.studentName,
-          'studentId': _studentId,
+          'studentId': widget.studentId,
           'specialistId': user.email,
           'teacherId': teacherId,
           'specialistName': specialistName,
@@ -140,12 +139,12 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
     //add to Students
     FirebaseFirestore.instance
         .collection('Students')
-        .doc(_studentId)
+        .doc(widget.studentId)
         .collection('Appointments')
         .doc(docId)
         .set({
           'name': widget.studentName,
-          'studentId': _studentId,
+          'studentId': widget.studentId,
           'specialistId': user.email,
           'teacherId': teacherId,
           'specialistName': specialistName,
@@ -174,7 +173,7 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
         .doc(docId)
         .set({
       'name': widget.studentName,
-      'studentId': _studentId,
+      'studentId': widget.studentId,
       'specialistId': user.email,
       'teacherId': teacherId,
       'specialistName': specialistName,
@@ -200,12 +199,12 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
         .collection('Centers')
         .doc(_centerId)
         .collection('Students')
-        .doc(_studentId)
+        .doc(widget.studentId)
         .collection('Appointments')
         .doc(docId)
         .set({
           'name': widget.studentName,
-          'studentId': _studentId,
+          'studentId': widget.studentId,
           'specialistId': user.email,
           'teacherId': teacherId,
           'specialistName': specialistName,
@@ -234,8 +233,11 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
     List<String> _theDays = [];
 
     _addAppointment() async {
+      setState(() {
+        _isLoading = true;
+      });
       print('enterd add function');
-      _teacherId = await _teacherUID(_studentId);
+      _teacherId = await _teacherUID(widget.studentId);
       _specialistName = await _getSpecialistName();
       _specialistType = await _getSpecialistType();
       _centerId = await _getCenterID();
@@ -384,9 +386,6 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
                           });
                         } else {
                           _addAppointment();
-                          setState(() {
-                            _isLoading = true;
-                          });
                         }
                       },
                     ),
