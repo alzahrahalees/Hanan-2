@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'Specialist.dart';
 import '../../Constance.dart';
 import '../AdminMainScreen.dart';
-import 'package:hanan/services/auth.dart';
 
 class AddSpecialistScreen extends StatefulWidget {
   @override
@@ -20,7 +19,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
   final _formkey = GlobalKey<FormState>();
   final firestoreInstance = FirebaseFirestore.instance;
 
-  final AuthService _auth = AuthService();
+  bool _isEmailExists =false;
   String _name;
   String _age;
   String _email='';
@@ -35,6 +34,18 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
     setState(() {
       selectedIndex = index;
     });}
+
+    Future<bool> isEmailExists (String email) async{
+    bool isExits;
+    await FirebaseFirestore.instance.collection('Users').doc(email).get()
+        .then((value){
+          if(value.exists){
+            isExits=true;
+          }
+          else isExits=false;
+    });
+    return isExits;
+    }
 
   Widget RadioButton(String txt, int index) {
     return OutlineButton(
@@ -102,13 +113,19 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                           child: KNormalTextFormField(
                             validatorText: "#مطلوبة",
                             hintText: "البريد الاكتروني",
-                            onChanged: (value) {
+                            onChanged: (value) async {
+                              _isEmailExists = await isEmailExists(value);
                               setState(() {
                                 _email = value;
                               });
                             },
                           ),
-                        ), //email
+                        ),
+
+                        _isEmailExists?Text('هذا الايميل مستعمل الرجاء اختيار ايميل اخر', style: TextStyle(
+                          color: Colors.red, fontSize: 12 ),)
+                            : SizedBox(),
+
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: KNormalTextFormField(
@@ -198,8 +215,14 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                       ))
                 ]),
                         new Padding(
-                          padding: new EdgeInsets.all(15),
-                          child: AddSpecialist(
+                          padding:  EdgeInsets.all(15),
+                          child:_isEmailExists? RaisedButton(
+                            color: Colors.black38,
+                            child: Text("إضافة", style: kTextButtonStyle),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0)),
+                          )
+                              : AddSpecialist(
                             formkey: _formkey,
                               name: _name,
                               age: _age,

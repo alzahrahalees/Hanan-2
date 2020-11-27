@@ -100,6 +100,7 @@ class _AddPostPageState extends State<AddPostPage> {
                               if (value.isEmpty) {
                                 return 'مطلوب';
                               }
+                              else return '';
                             },
                           ),
                         ),
@@ -187,7 +188,6 @@ class _AddPostPageState extends State<AddPostPage> {
                                   ),
                                   titlePadding: EdgeInsets.only(right:90),
                                 ));
-
                           },
                           child: IconButton(
                               icon: Icon(Icons.camera_enhance_rounded,

@@ -8,7 +8,7 @@ import '../Constance.dart';
 import 'AdminTeacher/AdminTeacherScreen.dart';
 import 'AdminSpecialist/AdminSpecialistScreen.dart';
 import 'AdminStudent/AdminStudentsScreen.dart';
-import '../../services/chang_password.dart';
+import '../chang_password.dart';
 import '../../UI/selfProfile.dart';
 
 
@@ -140,6 +140,7 @@ class _MainAdminScreenState extends State<MainAdminScreen> {
           body: CustomScrollView(
             slivers:<Widget>[
               SliverAppBar(
+                toolbarHeight: 40,
                 iconTheme: IconThemeData(color: kUnselectedItemColor),
                 backgroundColor: kAppBarColor,
                 title: Text(_titles[_currentIndex], style: kTextAppBarStyle),

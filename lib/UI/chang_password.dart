@@ -18,6 +18,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   String warningText='';
 
   final _formkey = GlobalKey<FormState>();
+  Icon _icon = Icon(Icons.lock);
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +71,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
                 Padding(padding:EdgeInsets.all(25) ),
                 TextFormField(
+
                   controller: _newPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -85,19 +87,42 @@ class _ChangePasswordState extends State<ChangePassword> {
                   },
                 ),
                 TextFormField(
+                  onChanged: (value) {
+                    if (isValid() && _newPasswordController.text == _secondNewPasswordController.text) {
+                      setState(() {
+                        textColor = Colors.grey;
+                        _icon = Icon(
+                          Icons.check,
+                          color: Colors.green,
+                        );
+                      });
+                    }
+                    else {
+                      setState(() {
+                        textColor = Colors.red;
+                        _icon = Icon(
+                          Icons.clear,
+                          color: Colors.red,
+                        );
+                      });
+                    }
+
+                  },
+
+
                   controller: _secondNewPasswordController,
                   obscureText: true,
                   decoration: InputDecoration(
-                      prefixIcon: new Icon(Icons.lock),
+                      prefixIcon: _icon,
                       hintText:"إعادة إدخال كلمة المرور الجديدة",
                       helperStyle: TextStyle(fontSize: 10)),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return " الرجاء إعادة إدخال كلمة المرور الجديدة";
-                    }
-                    else
-                      return null;
-                  },
+                  // validator: (value) {
+                  //   if (value.isEmpty) {
+                  //     return " الرجاء إعادة إدخال كلمة المرور الجديدة";
+                  //   }
+                  //   else
+                  //     return null;
+                  // },
                 ),
                 Padding(padding:EdgeInsets.all(25) ),
                 RaisedButton(
@@ -167,12 +192,18 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 
   Future<dynamic> authEmailandPassword() async{
+
   EmailAuthCredential credential = EmailAuthProvider.credential(
       email: _emailController.text, password: _passwordController.text);
 
-  var result= await FirebaseAuth.instance.currentUser.reauthenticateWithCredential(credential);
-  print('inside Auth function $result');
-  return result;
+  await FirebaseAuth.instance.currentUser.reauthenticateWithCredential(credential)
+      .whenComplete(() async {
+    await FirebaseAuth.instance.currentUser.updatePassword(_newPasswordController.text)
+        .whenComplete(() => print('passwordChanged'))
+        .catchError((e)=> print('####%### Err inside change password:  $e'));
+
+  }).catchError((e)=> print('####%### Err inside reauthenticateWithCredential :  $e'));
+
   }
 
   void changPassword() async{

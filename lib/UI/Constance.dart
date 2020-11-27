@@ -5,13 +5,16 @@ import 'package:multiselect_formfield/multiselect_formfield.dart';
 
 const kTitleOfProject = "SECS Hanan";
 
-const Color kAppBarColor = Color(0xFFe1d0ed);
-const Color kWolcomeBkg = Color(0xFFede3fc);
+const Color kAppBarColor = Color(0xFFceb8e0);
+const Color kWolcomeBkg = Color(0xFFd8d8d8);
 const Color kBackgroundPageColor = Color(0xFFeeeeee);
 const Color kCardColor = Color(0xfff4f4f4);
-const Color kButtonColor = Color(0xFFB39DDB);
+const Color kButtonColor = Color(0xff9181bd);
 const kSelectedItemColor = Color(0xff5F3E60);
 const kUnselectedItemColor = Color(0xff9181bd);
+
+
+
 
 const kTextAppBarStyle = TextStyle(
     fontSize: 20,
@@ -21,7 +24,7 @@ const kTextAppBarStyle = TextStyle(
 
 const kTextButtonStyle = TextStyle(
     fontSize: 18,
-    color: Colors.white,
+    color: kWolcomeBkg,
     fontWeight: FontWeight.w600,
     letterSpacing: 1);
 
@@ -33,7 +36,7 @@ const kTextPageStyle = TextStyle(
 
 RoundedRectangleBorder kButtonShape() {
   return RoundedRectangleBorder(
-      side: BorderSide(color: Colors.deepPurpleAccent.shade100),
+      side: BorderSide(color: kUnselectedItemColor),
       borderRadius: BorderRadius.circular(18.0));
 }
 
@@ -84,6 +87,7 @@ class KCircularTextFormField extends StatelessWidget {
               if (value.isEmpty) {
                 return '$validatorText ';
               }
+              else return '';
             }));
   }
 }
@@ -115,6 +119,7 @@ class KNormalTextFormField extends StatelessWidget {
         if (value.isEmpty) {
           return '$validatorText ';
         }
+        else return '';
       },
       onChanged: onChanged,
     );

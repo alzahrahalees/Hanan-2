@@ -23,10 +23,14 @@ class _PlansTeacherFirstPageState extends State<PlansTeacherFirstPage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     User _userTeacher = FirebaseAuth.instance.currentUser;
     CollectionReference studentsPlans = FirebaseFirestore.instance.collection('Students').doc(widget._studentId).collection('Plans');
     CollectionReference teachersPlans =FirebaseFirestore.instance.collection('Teachers').doc(_userTeacher.email).collection('Students').doc(widget._studentId).collection('Plans');
     CollectionReference specialists = FirebaseFirestore.instance.collection('Specialists');
+
+
 
     return Scaffold(
       floatingActionButton:
@@ -77,54 +81,9 @@ class _PlansTeacherFirstPageState extends State<PlansTeacherFirstPage> {
                                   ListTile(
                                     title: Text(document.data()['planTitle'],style:kTextPageStyle.copyWith(fontSize: 13)),
                                     subtitle: Text(document.data()['semester']=='first'? 'الفصل الدراسي الأول': 'الفصل الدراسي الثاني',style:kTextPageStyle.copyWith(fontSize: 10,color: Colors.grey)),
-                                    trailing: IconButton(icon: Icon(Icons.delete) ,color: Colors.grey.shade300,onPressed: () {
-                                      Timer timer= Timer(Duration(seconds: 10), () {
-                                        studentsPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
-                                            value.docs.forEach((element) {studentsPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
-                                        teachersPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
-                                            value.docs.forEach((element) {teachersPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
-                                        specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();
-                                        specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').get().then((value) => value.docs.forEach((plans) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').doc(plans.id).delete();}));}));
-                                        specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();}));
-                                        studentsPlans.doc(document.data()['planId']).delete();
-                                        teachersPlans.doc(document.data()['planId']).delete();
-                                      });
-                                      Scaffold.of(context).showSnackBar(SnackBar(
-                                        content: Row(
-                                          children: [
-                                            Icon(Icons.auto_delete_outlined, color: Colors.deepPurple.shade200,),
-                                            Text("      سيتم الحذف بعد عشرة ثواني", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),
-                                            SizedBox(
-                                              width: 70,
-                                              child: FlatButton(onPressed: () {
-                                                studentsPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
-                                                    value.docs.forEach((element) {studentsPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
-                                                teachersPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
-                                                    value.docs.forEach((element) {teachersPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
-                                                specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();
-                                                specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').get().then((value) => value.docs.forEach((plans) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').doc(plans.id).delete();}));}));
-    specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();}));
-                                                studentsPlans.doc(document.data()['planId']).delete();
-                                                teachersPlans.doc(document.data()['planId']).delete();
 
-                                                Scaffold.of(context).hideCurrentSnackBar();},
-                                                child: Text(" تأكيد ", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),),
-                                            SizedBox(
-                                              child: FlatButton(onPressed: () {
-                                                timer.cancel();
-                                                Scaffold.of(context).hideCurrentSnackBar();
-                                              },
-                                                child: Text("تراجع", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),
-                                              width: 70,
-                                            ),
-                                          ],
-                                        ),
-                                        backgroundColor: Colors.white70,
-                                        duration: Duration(seconds: 10),
-                                      ));
-                                    }
-                                      ),
-                                    onTap:(){
+                                    onTap:() async{
+
                                   if(document.data()['major']== 'general'){
                                   Navigator.push(context, MaterialPageRoute(
                                   builder: (context)=>
@@ -134,7 +93,8 @@ class _PlansTeacherFirstPageState extends State<PlansTeacherFirstPage> {
                                   ));
                                   }
                                   else{
-                                  Navigator.push(context, MaterialPageRoute(builder: (context)=> SpecialMajorsPage(studentId: widget._studentId,planId: document.data()['planId'],)));
+                                  Navigator.push(context, MaterialPageRoute(builder:
+                                      (context)=> SpecialMajorsPage(studentId: widget._studentId,planId: document.data()['planId'],)));
                                   }
                                   },
                                     leading: Icon(Icons.event_note_rounded,color: Colors.deepPurple.shade200,size: 60,),
@@ -152,3 +112,52 @@ class _PlansTeacherFirstPageState extends State<PlansTeacherFirstPage> {
     );
   }
 }
+
+
+//                                 trailing: IconButton(icon: Icon(Icons.delete) ,color: Colors.grey.shade300,onPressed: () {
+//                                   Timer timer= Timer(Duration(seconds: 10), () {
+//                                     studentsPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
+//                                         value.docs.forEach((element) {studentsPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
+//                                     teachersPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
+//                                         value.docs.forEach((element) {teachersPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
+//                                     specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();
+//                                     specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').get().then((value) => value.docs.forEach((plans) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').doc(plans.id).delete();}));}));
+//                                     specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();}));
+//                                     studentsPlans.doc(document.data()['planId']).delete();
+//                                     teachersPlans.doc(document.data()['planId']).delete();
+//                                   });
+//                                   Scaffold.of(context).showSnackBar(SnackBar(
+//                                     content: Row(
+//                                       children: [
+//                                         Icon(Icons.auto_delete_outlined, color: Colors.deepPurple.shade200,),
+//                                         Text("      سيتم الحذف بعد عشرة ثواني", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),
+//                                         SizedBox(
+//                                           width: 70,
+//                                           child: FlatButton(onPressed: () {
+//                                             studentsPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
+//                                                 value.docs.forEach((element) {studentsPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
+//                                             teachersPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
+//                                                 value.docs.forEach((element) {teachersPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
+//                                             specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();
+//                                             specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').get().then((value) => value.docs.forEach((plans) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').doc(plans.id).delete();}));}));
+// specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();}));
+//                                             studentsPlans.doc(document.data()['planId']).delete();
+//                                             teachersPlans.doc(document.data()['planId']).delete();
+//
+//                                             Scaffold.of(context).hideCurrentSnackBar();},
+//                                             child: Text(" تأكيد ", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),),
+//                                         SizedBox(
+//                                           child: FlatButton(onPressed: () {
+//                                             timer.cancel();
+//                                             Scaffold.of(context).hideCurrentSnackBar();
+//                                           },
+//                                             child: Text("تراجع", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),
+//                                           width: 70,
+//                                         ),
+//                                       ],
+//                                     ),
+//                                     backgroundColor: Colors.white70,
+//                                     duration: Duration(seconds: 10),
+//                                   ));
+//                                 }
+//                                   ),

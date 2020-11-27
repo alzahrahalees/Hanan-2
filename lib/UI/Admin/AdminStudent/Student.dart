@@ -3,10 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminMainScreen.dart';
-import 'package:hanan/services/auth.dart';
-import 'StudentDetails.dart';
 import '../../Constance.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Student{
   String name;
@@ -331,12 +328,9 @@ class AddStudent extends StatelessWidget {
         'physiotherapySpecialistId':physiotherapySpecialistId,
       });
 }
-      Navigator.pop(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  MainAdminScreen(2)));
-    };
+      Navigator.pop(context, MaterialPageRoute(
+          builder: (context) => MainAdminScreen(2))
+      );}
 
     return RaisedButton(
         color: kButtonColor,
@@ -355,81 +349,4 @@ class AddStudent extends StatelessWidget {
     );
   }
 }
-
-
-
-class StudentCards extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    User userAdmin =  FirebaseAuth.instance.currentUser;
-    //References
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
-    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers');
-    CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
-
-    AuthService _auth=AuthService();
-
-    return StreamBuilder<QuerySnapshot>(
-      stream:
-      Admin_Students.snapshots(),
-      builder: (BuildContext context,
-          AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60));
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60));
-          default:
-            return new ListView(
-                children:
-                snapshot.data.docs.map((DocumentSnapshot document) {
-                  return Card(
-                      borderOnForeground: true,
-                      child: ListTile(
-                        onTap: (){
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                     StudentInfo(document.data()['uid'])));
-                        },
-                        trailing: IconButton(icon: Icon (Icons.delete),
-                          onPressed: () {
-                            Students.doc(document.id).delete();
-                            Users.doc(document.id).delete();
-                            Admin_Students.doc(document.id).delete();
-
-                            Admin_Teachers.get().then((value) => value.docs.forEach((element) {
-                                  Admin_Teachers.doc(element.id).collection('Students').doc(document.id).delete();
-                                }));
-
-                            Teachers.get().then((value) =>
-                                value.docs.forEach((element) {
-                                  Teachers.doc(element.id).collection('Students').doc(document.id).delete();
-                                }));
-
-                            Admin_Specialists.get().then((value) =>
-                                value.docs.forEach((element) {
-                                  Admin_Specialists.doc(element.id).collection('Students').doc(document.id).delete();
-                                }));
-
-                            Specialists.get().then((value) =>
-                                value.docs.forEach((element) {
-                                  Specialists.doc(element.id).collection('Students').doc(document.id).delete();
-                                }));}),
-
-
-                        title: new Text(document.data()['name'], style: kTextPageStyle),
-                        subtitle: new Text("طالب", style: kTextPageStyle),
-                      ));
-                }).toList());
-        }
-      },
-    );
-  }}
-
 

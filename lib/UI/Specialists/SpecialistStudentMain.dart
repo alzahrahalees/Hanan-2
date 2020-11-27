@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Specialists/SmainStudyCasesScreen.dart';
-import 'package:hanan/UI/Specialists/student.dart';
 import 'package:hanan/UI/Study%20Cases/mainStudyCasesScreen.dart';
 import '../Constance.dart';
 import 'SpecialistDiaries.dart';
 import 'SpecialistPlans.dart';
 import 'SpecialistStudentAppointment.dart';
-import 'package:provider/provider.dart';
+
 
 
 class SpecialistStudentMain extends StatefulWidget {
@@ -55,7 +54,7 @@ class _SpecialistStudentMainState extends State<SpecialistStudentMain> {
         teacherName: widget.teacherName,
         teacherId: widget.teacherId
     )];
-    StudentSp studentInfo= StudentSp();
+
 
 
     return SafeArea(

@@ -75,7 +75,8 @@ class _SpecialMajorsPageState extends State<SpecialMajorsPage>  with TickerProvi
           children: [
     SafeArea(
     child: StreamBuilder<QuerySnapshot>(
-    stream:studentsPlansGoal.where('goalType',isEqualTo: 'مجال الانتباه والتركيز').orderBy('createdAt',descending: true).snapshots(),
+    stream:
+    studentsPlansGoal.where('goalType',isEqualTo: 'مجال الانتباه والتركيز').orderBy('createdAt',descending: true).snapshots(),
     builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
     if (!snapshot.hasData){
     return  Center(child: SpinKitFoldingCube(
@@ -110,39 +111,40 @@ class _SpecialMajorsPageState extends State<SpecialMajorsPage>  with TickerProvi
                        child: Text(documentSnapshot['goalTitle']),
                      ),
                      leading: Icon(Icons.title,color: Colors.indigoAccent,),
-                     trailing: IconButton(icon: Icon(Icons.clear),color: Colors.grey,iconSize: 15,
-                     onPressed: (){
-                       Timer timer= Timer(Duration(seconds: 10), (){
-                           studentsPlansGoal.doc(documentSnapshot['goalId']).delete();
-                       teachersPlansGoal.doc(documentSnapshot['goalId']).delete();
-                       specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();}));});
-    Scaffold.of(context).showSnackBar(SnackBar(
-    content: Row(
-    children: [
-    Icon(Icons.auto_delete_outlined, color: Colors.deepPurple.shade200,),
-    Text("      سيتم الحذف بعد عشرة ثواني", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),
-    SizedBox(
-    width: 70,
-    child: FlatButton(onPressed: () {
-      studentsPlansGoal.doc(documentSnapshot['goalId']).delete();
-      teachersPlansGoal.doc(documentSnapshot['goalId']).delete();
-      specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();}));
-    Scaffold.of(context).hideCurrentSnackBar();},
-    child: Text(" تأكيد ", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),),
-    SizedBox(
-    child: FlatButton(onPressed: () {
-    timer.cancel();
-    Scaffold.of(context).hideCurrentSnackBar();
-    },
-    child: Text("تراجع", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),
-    width: 70,
-    ),
-    ],
-    ),
-    backgroundColor: Colors.white70,
-    duration: Duration(seconds: 10),
-    ));
-    })),
+    //                  trailing: IconButton(icon: Icon(Icons.clear),color: Colors.grey,iconSize: 15,
+    //                  onPressed: (){
+    //                    Timer timer= Timer(Duration(seconds: 10), (){
+    //                        studentsPlansGoal.doc(documentSnapshot['goalId']).delete();
+    //                    teachersPlansGoal.doc(documentSnapshot['goalId']).delete();
+    //                    specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();}));});
+    // Scaffold.of(context).showSnackBar(SnackBar(
+    // content: Row(
+    // children: [
+    // Icon(Icons.auto_delete_outlined, color: Colors.deepPurple.shade200,),
+    // Text("      سيتم الحذف بعد عشرة ثواني", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),
+    // SizedBox(
+    // width: 70,
+    // child: FlatButton(onPressed: () {
+    //   studentsPlansGoal.doc(documentSnapshot['goalId']).delete();
+    //   teachersPlansGoal.doc(documentSnapshot['goalId']).delete();
+    //   specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();}));
+    // Scaffold.of(context).hideCurrentSnackBar();},
+    // child: Text(" تأكيد ", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),),
+    // SizedBox(
+    // child: FlatButton(onPressed: () {
+    // timer.cancel();
+    // Scaffold.of(context).hideCurrentSnackBar();
+    // },
+    // child: Text("تراجع", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),
+    // width: 70,
+    // ),
+    // ],
+    // ),
+    // backgroundColor: Colors.white70,
+    // duration: Duration(seconds: 10),
+    // ));
+    // })),
+                   ),
                    Divider(thickness: 0.2,color: Colors.grey),
                    Center(child: Text("الهدف العام:",style: TextStyle(color: Colors.deepPurple,fontSize: 10),)),
                    ListTile(

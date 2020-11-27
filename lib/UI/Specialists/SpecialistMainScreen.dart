@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hanan/UI/Specialists/student.dart';
 import 'package:hanan/UI/logIn.dart';
 import 'package:hanan/UI/selfProfile.dart';
-import 'package:hanan/services/chang_password.dart';
+import 'package:hanan/UI/chang_password.dart';
 import '../Constance.dart';
 import 'SpecailistAllAppointments.dart';
 import 'SpecialistStudentList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
 
 class SpecialistMainScreen extends StatefulWidget {
 
@@ -58,8 +56,8 @@ class _SpecialistMainScreenState extends State<SpecialistMainScreen> {
               label: "الطلاب",
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
-              label: "المواعيد"
+                icon: Icon(Icons.calendar_today),
+                label: "المواعيد"
             ),
           ],
         ),

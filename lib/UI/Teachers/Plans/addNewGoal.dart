@@ -211,7 +211,9 @@ class _AddGoalState extends State<AddGoal> {
                           validator: (value) {
                             if (value.isEmpty) {
                               return '* مطلوب';
-                            }},
+                            }
+                            // else return '';
+                            },
 
                         ),
                       ),
@@ -242,6 +244,7 @@ class _AddGoalState extends State<AddGoal> {
                             if (value.isEmpty) {
                               return '* مطلوب';
                             }
+                            //else return '';
                           },
                         ),
                       ),
@@ -272,6 +275,7 @@ class _AddGoalState extends State<AddGoal> {
                             if (value.isEmpty) {
                               return '* مطلوب';
                             }
+                            // else return '';
                           },
 
                         ),
@@ -305,7 +309,7 @@ class _AddGoalState extends State<AddGoal> {
                             ),
                           ))
                     ]),
-    Container(alignment: Alignment.centerRight,child: Text(_showMassage == false ?"  * يجب تحديد المجال":"",style: TextStyle(color: Colors.red.shade700),)),
+                    Container(alignment: Alignment.centerRight,child: Text(_showMassage == false ?"  * يجب تحديد المجال":"",style: TextStyle(color: Colors.red.shade700),)),
                     Row(
                       children: [
                         GestureDetector(
@@ -436,6 +440,12 @@ class _AddGoalState extends State<AddGoal> {
         'communicationSpecialistId':_communicationSpecialist==true?_communicationSpecialistId:null,
         'physiotherapySpecialistId':_physiotherapySpecialist==true?_physiotherapySpecialistId:null,
       });
+     //add evaluation and notes docements
+      studentsPlansGoal.doc("${widget.planId}${documentId} Goal").collection('Evaluation')
+          .doc('eval').set({});
+
+
+
       var addPlanGoalToTeacher = teachersPlansGoal
         ..doc("${widget.planId}${documentId} Goal").set({
           "goalType": _goalType,
