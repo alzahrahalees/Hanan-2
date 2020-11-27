@@ -74,7 +74,8 @@ class _SpecialMajorsPageState extends State<SpecialMajorsPage>  with TickerProvi
           children: [
     SafeArea(
     child: StreamBuilder<QuerySnapshot>(
-    stream:studentsPlansGoal.where('goalType',isEqualTo: 'مجال الانتباه والتركيز').orderBy('createdAt',descending: true).snapshots(),
+    stream:
+    studentsPlansGoal.where('goalType',isEqualTo: 'مجال الانتباه والتركيز').orderBy('createdAt',descending: true).snapshots(),
     builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
     if (!snapshot.hasData){
     return  Center(child: SpinKitFoldingCube(

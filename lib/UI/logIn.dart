@@ -147,15 +147,21 @@ class _MainLogInState extends State<MainLogIn> {
                                 if(!isInAuth){
                                 print('inside onPress function $type');
                                 if (type == 'Teachers') {
-                                  result =
-                                  await _auth.signInWithEmailAndPassword(
-                                      email: _email.text.toLowerCase(),
-                                      password: _password.text)
-                                      .catchError((onError) =>
-                                      setState(() {
-                                        warningText =
-                                        'يوجد خطأ في الايميل أو كلمة السر';
-                                      }));
+                                  try{
+                                          result = await _auth
+                                              .signInWithEmailAndPassword(
+                                                  email:
+                                                      _email.text.toLowerCase(),
+                                                  password: _password.text);
+                                        }
+                                   on FirebaseAuthException catch  (e) {
+                                    print('Failed with error code: ${e.code}');
+                                    print(e.message);
+                                    setState(() {
+                                      isLoading=false;
+                                      warningText = 'يوجد خطأ في الإيميل أو كلمة السر';
+                                    });
+                                  }
                                   if (result != null) {
                                     Navigator.pushReplacement(
                                         context,
@@ -166,15 +172,21 @@ class _MainLogInState extends State<MainLogIn> {
                                   }
                                 }
                                 else if (type == 'Specialists') {
-                                  result =
-                                  await _auth.signInWithEmailAndPassword(
-                                      email: _email.text,
-                                      password: _password.text.toLowerCase())
-                                      .catchError((onError) =>
-                                      setState(() {
-                                        warningText =
-                                        'يوجد خطأ في الايميل أو كلمة السر';
-                                      }));
+                                  try{
+                                    result = await _auth
+                                        .signInWithEmailAndPassword(
+                                        email:
+                                        _email.text.toLowerCase(),
+                                        password: _password.text);
+                                  }
+                                  on FirebaseAuthException catch  (e) {
+                                    print('Failed with error code: ${e.code}');
+                                    print(e.message);
+                                    setState(() {
+                                      isLoading=false;
+                                      warningText = 'يوجد خطأ في الإيميل أو كلمة السر';
+                                    });
+                                  }
                                   if (result != null) {
                                     Navigator.pushReplacement(
                                         context,
@@ -184,15 +196,21 @@ class _MainLogInState extends State<MainLogIn> {
                                   }
                                 }
                                 else if (type == 'Students') {
-                                  result =
-                                  await _auth.signInWithEmailAndPassword(
-                                      email: _email.text.toLowerCase(),
-                                      password: _password.text)
-                                      .catchError((onError) =>
-                                      setState(() {
-                                        warningText =
-                                        'يوجد خطأ في الايميل أو كلمة السر';
-                                      }));
+                                  try{
+                                    result = await _auth
+                                        .signInWithEmailAndPassword(
+                                        email:
+                                        _email.text.toLowerCase(),
+                                        password: _password.text);
+                                  }
+                                  on FirebaseAuthException catch  (e) {
+                                    print('Failed with error code: ${e.code}');
+                                    print(e.message);
+                                    setState(() {
+                                      isLoading=false;
+                                      warningText = 'يوجد خطأ في الإيميل أو كلمة السر';
+                                    });
+                                  }
                                   if (result != null) {
                                     Navigator.pushReplacement(
                                         context,
@@ -202,15 +220,21 @@ class _MainLogInState extends State<MainLogIn> {
                                   }
                                 }
                                 else if (type == 'Admin') {
-                                  result =
-                                  await _auth.signInWithEmailAndPassword(
-                                      email: _email.text.toLowerCase(),
-                                      password: _password.text)
-                                      .catchError((onError) =>
-                                      setState(() {
-                                        warningText =
-                                        'يوجد خطأ في الايميل أو كلمة السر';
-                                      }));
+                                  try{
+                                    result = await _auth
+                                        .signInWithEmailAndPassword(
+                                        email:
+                                        _email.text.toLowerCase(),
+                                        password: _password.text);
+                                  }
+                                  on FirebaseAuthException catch  (e) {
+                                    print('Failed with error code: ${e.code}');
+                                    print(e.message);
+                                    setState(() {
+                                      isLoading=false;
+                                      warningText = 'يوجد خطأ في الإيميل أو كلمة السر';
+                                    });
+                                  }
                                   if (result != null) {
                                     Navigator.pushReplacement(
                                         context,
@@ -219,10 +243,17 @@ class _MainLogInState extends State<MainLogIn> {
                                                 MainAdminScreen(0)));
                                   }
                                 }
+                                else if(type == 'null'){
+                                  setState(() {
+                                    isLoading=false;
+                                    warningText = 'يوجد خطأ في الإيميل أو كلمة السر';
+                                  });
+                                }
+
                                 else {
                                   setState(() {
                                     isLoading=false;
-                                    warningText = 'هذا الإيميل غير صالح للاستعمال, حاول مرة أخرى';
+                                    warningText = 'يوجد خطأ في الإيميل أو كلمة السر';
                                   });
                                 }
                                 }

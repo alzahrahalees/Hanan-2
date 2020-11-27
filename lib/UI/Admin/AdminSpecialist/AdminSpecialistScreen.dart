@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'Specialist.dart';
 import '../../Constance.dart';
 import 'AddSpecialis.dart';
 import 'package:firebase_auth/firebase_auth.dart';

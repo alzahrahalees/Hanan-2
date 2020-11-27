@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hanan/UI/Teachers/Plans/Analysis.dart';
 import 'package:hanan/UI/Teachers/Plans/Evaluation.dart';
 import 'package:hanan/UI/Teachers/Plans/EvaluationAndNotes.dart';
-import 'package:hanan/UI/Teachers/Plans/Notes.dart';
 import '../../Constance.dart';
 
 
@@ -57,7 +56,7 @@ class _GoalAnalysisMainState extends State<GoalAnalysisMain>  with TickerProvide
       body:TabBarView(
       children: [
        AnalysisDetails(studentId: widget.studentId,planId: widget.planId,goalId: widget.goalId,),
-        NotesAndEvaluation(studentId: widget.studentId,planId: widget.planId,goalId: widget.goalId,),
+        NotesAndEvaluation(studentId: widget.studentId,planId: widget.planId,goalId: widget.goalId,type: 'Teachers',),
 
       ]) )),
     );}}

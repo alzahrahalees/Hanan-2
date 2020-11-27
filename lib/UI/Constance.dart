@@ -9,7 +9,7 @@ const Color kAppBarColor = Color(0xFFceb8e0);
 const Color kWolcomeBkg = Color(0xFFd8d8d8);
 const Color kBackgroundPageColor = Color(0xFFeeeeee);
 const Color kCardColor = Color(0xfff4f4f4);
-const Color kButtonColor = kUnselectedItemColor;
+const Color kButtonColor = Color(0xff9181bd);
 const kSelectedItemColor = Color(0xff5F3E60);
 const kUnselectedItemColor = Color(0xff9181bd);
 

@@ -37,7 +37,7 @@ class StudyCaseScreen extends StatefulWidget {
 }
 
 class _StudyCaseScreenState extends State<StudyCaseScreen> {
-  Future<bool> hasData() {}
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -137,10 +137,7 @@ class _StudyCaseScreenState extends State<StudyCaseScreen> {
                       }
                       return ListView(
                           children: snapshot.data.docs.map<Widget>((DocumentSnapshot doc) {
-                            if (doc.id == widget.studentId + 'family' &&
-                                doc
-                                    .data()
-                                    .isNotEmpty)
+                            if (doc.id == widget.studentId + 'family' && doc.data().isNotEmpty)
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -163,10 +160,7 @@ class _StudyCaseScreenState extends State<StudyCaseScreen> {
                                   ),
                                 ),
                               );
-                            else if (doc.id == widget.studentId + 'family' &&
-                                doc
-                                    .data()
-                                    .isEmpty) {
+                            else if (doc.id == widget.studentId + 'family' && doc.data().isEmpty) {
                               return GestureDetector(
                                   onTap: () {
                                     Navigator.push(
