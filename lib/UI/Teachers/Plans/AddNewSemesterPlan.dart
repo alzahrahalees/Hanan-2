@@ -206,16 +206,7 @@ return isExit;
                child:  Text('تحتوي هذه الخطة على أقسام المجالات الخاصة وهي : مجال التواصل، المجال الإدراكي، المجال الحركي الدقيق، '
                    'المجال الاجتماعي، والمجال الاستقلالي'),
              ),
-
-
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: KNormalTextFormField(
-                    readOnly:_selectedMajorValue== 'general'? false: true,
-                    hintText: 'الرجاء إدخال المواد هنا',
-                    controller: subjectController,
-                  ),
-                ),
+                
 
                 Padding(
                   padding: const EdgeInsets.all(15),
