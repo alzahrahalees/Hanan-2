@@ -59,10 +59,7 @@ class _TeacherInfoState extends State<TeacherInfo> {
     User userAdmin =  FirebaseAuth.instance.currentUser;
     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+
 
 
     String gender=gender1;
@@ -80,7 +77,7 @@ class _TeacherInfoState extends State<TeacherInfo> {
         ),
         body: SafeArea(
             child: StreamBuilder<QuerySnapshot>(
-                stream: Admin_Teachers.where('uid' ,isEqualTo:uid ).snapshots(),
+                stream: Teachers.where('uid' ,isEqualTo:uid ).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData)
                     return Center(child: SpinKitFoldingCube(
@@ -241,16 +238,7 @@ class _TeacherInfoState extends State<TeacherInfo> {
                                                         .circular(18.0)),
                                                 onPressed: () {
                                                   if (formkey.currentState.validate()) {
-                                                    Admin_Teachers.doc(uid).update({
-                                                      'name': newName == null ? name : newName,
-                                                      'age': newAge == null ? age : newAge,
-                                                      'phone': newPhone == null ? phone : newPhone,
-                                                    });
-                                                    if (gender != null) {
-                                                      Admin_Teachers.doc(uid).update({
-                                                        'gender': gender,
-                                                      });
-                                                    }
+
                                                     Teachers.doc(uid).update({
                                                       'name': newName == null ? name : newName,
                                                       'age': newAge == null ? age : newAge,

@@ -23,13 +23,8 @@ class _PlansTeacherFirstPageState extends State<PlansTeacherFirstPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     User _userTeacher = FirebaseAuth.instance.currentUser;
     CollectionReference studentsPlans = FirebaseFirestore.instance.collection('Students').doc(widget._studentId).collection('Plans');
-    CollectionReference teachersPlans =FirebaseFirestore.instance.collection('Teachers').doc(_userTeacher.email).collection('Students').doc(widget._studentId).collection('Plans');
-    CollectionReference specialists = FirebaseFirestore.instance.collection('Specialists');
-
 
 
     return Scaffold(
@@ -52,7 +47,7 @@ class _PlansTeacherFirstPageState extends State<PlansTeacherFirstPage> {
       body: SafeArea(
         child: Container(
            child:   StreamBuilder(
-                stream: teachersPlans.orderBy('createdAt',descending: true).snapshots(),
+                stream: studentsPlans.orderBy('createdAt',descending: true).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData)
                     return Center(
@@ -112,52 +107,3 @@ class _PlansTeacherFirstPageState extends State<PlansTeacherFirstPage> {
     );
   }
 }
-
-
-//                                 trailing: IconButton(icon: Icon(Icons.delete) ,color: Colors.grey.shade300,onPressed: () {
-//                                   Timer timer= Timer(Duration(seconds: 10), () {
-//                                     studentsPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
-//                                         value.docs.forEach((element) {studentsPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
-//                                     teachersPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
-//                                         value.docs.forEach((element) {teachersPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
-//                                     specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();
-//                                     specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').get().then((value) => value.docs.forEach((plans) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').doc(plans.id).delete();}));}));
-//                                     specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();}));
-//                                     studentsPlans.doc(document.data()['planId']).delete();
-//                                     teachersPlans.doc(document.data()['planId']).delete();
-//                                   });
-//                                   Scaffold.of(context).showSnackBar(SnackBar(
-//                                     content: Row(
-//                                       children: [
-//                                         Icon(Icons.auto_delete_outlined, color: Colors.deepPurple.shade200,),
-//                                         Text("      سيتم الحذف بعد عشرة ثواني", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),
-//                                         SizedBox(
-//                                           width: 70,
-//                                           child: FlatButton(onPressed: () {
-//                                             studentsPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
-//                                                 value.docs.forEach((element) {studentsPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
-//                                             teachersPlans.doc(document.data()['planId']).collection('Goals').get().then((value) =>
-//                                                 value.docs.forEach((element) {teachersPlans.doc(document.data()['planId']).collection('Goals').doc(element.id).delete();}));
-//                                             specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();
-//                                             specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').get().then((value) => value.docs.forEach((plans) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).collection('Goals').doc(plans.id).delete();}));}));
-// specialists.get().then((value) => value.docs.forEach((element) {specialists.doc(element.id).collection('Students').doc(widget._studentId).collection('Plans').doc(document.data()['planId']).delete();}));
-//                                             studentsPlans.doc(document.data()['planId']).delete();
-//                                             teachersPlans.doc(document.data()['planId']).delete();
-//
-//                                             Scaffold.of(context).hideCurrentSnackBar();},
-//                                             child: Text(" تأكيد ", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),),
-//                                         SizedBox(
-//                                           child: FlatButton(onPressed: () {
-//                                             timer.cancel();
-//                                             Scaffold.of(context).hideCurrentSnackBar();
-//                                           },
-//                                             child: Text("تراجع", style: TextStyle(color: Colors.deepPurple, fontSize: 12)),),
-//                                           width: 70,
-//                                         ),
-//                                       ],
-//                                     ),
-//                                     backgroundColor: Colors.white70,
-//                                     duration: Duration(seconds: 10),
-//                                   ));
-//                                 }
-//                                   ),

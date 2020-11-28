@@ -22,13 +22,8 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
 
     User userAdmin =  FirebaseAuth.instance.currentUser;
     //ReferenceS
-    CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
-
-
-
+    CollectionReference specialists= FirebaseFirestore.instance.collection('Specialists');
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
     return SafeArea(
         child: Scaffold(
@@ -75,7 +70,7 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                         child:
                         StreamBuilder<QuerySnapshot>(
                           stream:
-                          Admin_Specialists.snapshots(),
+                          specialists.where('center',isEqualTo: userAdmin.email).snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
@@ -125,21 +120,13 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                                                         ),
                                                         onPressed: ()
                                                         {
-                                                          Specialists.doc(document.id).delete();
+                                                          specialists.doc(document.id).delete();
 
-                                                          Users.doc(document.id).delete();
+                                                          users.doc(document.id).delete();
 
-                                                          Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists').doc(document.id).delete();
-
-                                                          Admin_Specialists.doc(document.id).collection("Students").get().then((value) =>
+                                                          specialists.doc(document.id).collection("Students").get().then((value) =>
                                                               value.docs.forEach((element) {
-                                                                Admin_Specialists.doc(document.id).collection('Students').doc(element.id).delete();
-                                                              })
-                                                          );
-
-                                                          Specialists.doc(document.id).collection("Students").get().then((value) =>
-                                                              value.docs.forEach((element) {
-                                                                Specialists.doc(document.id).collection('Students').doc(element.id).delete();
+                                                                specialists.doc(document.id).collection('Students').doc(element.id).delete();
                                                               })
                                                           );
 

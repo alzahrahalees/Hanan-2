@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../Constance.dart';
 import 'AddStudent.dart';
-import 'Student.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -23,14 +22,10 @@ class _StudentScreenState extends State<StudentScreen> {
 
     User userAdmin =  FirebaseAuth.instance.currentUser;
     //References
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
-    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers');
-    CollectionReference Specialists= FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Admin_Specialists = Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
+    CollectionReference students = FirebaseFirestore.instance.collection('Students');
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    CollectionReference teachers = FirebaseFirestore.instance.collection('Teachers');
+    CollectionReference specialists= FirebaseFirestore.instance.collection('Specialists');
 
     return SafeArea(
         child: Scaffold(
@@ -75,7 +70,7 @@ class _StudentScreenState extends State<StudentScreen> {
                         child:
                         StreamBuilder<QuerySnapshot>(
                           stream:
-                          Admin_Students.snapshots(),
+                          students.where('center',isEqualTo: userAdmin.email).snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(color: kUnselectedItemColor, size: 60,));
@@ -123,27 +118,18 @@ class _StudentScreenState extends State<StudentScreen> {
                                                         ),
                                                         onPressed: ()
                                                         {
-                                                          Students.doc(document.id).delete();
-                                                          Users.doc(document.id).delete();
-                                                          Admin_Students.doc(document.id).delete();
+                                                          students.doc(document.id).delete();
+                                                          users.doc(document.id).delete();
 
-                                                          Admin_Teachers.get().then((value) => value.docs.forEach((element) {
-                                                            Admin_Teachers.doc(element.id).collection('Students').doc(document.id).delete();
-                                                          }));
 
-                                                          Teachers.get().then((value) =>
+                                                          teachers.get().then((value) =>
                                                               value.docs.forEach((element) {
-                                                                Teachers.doc(element.id).collection('Students').doc(document.id).delete();
+                                                                teachers.doc(element.id).collection('Students').doc(document.id).delete();
                                                               }));
 
-                                                          Admin_Specialists.get().then((value) =>
+                                                          specialists.get().then((value) =>
                                                               value.docs.forEach((element) {
-                                                                Admin_Specialists.doc(element.id).collection('Students').doc(document.id).delete();
-                                                              }));
-
-                                                          Specialists.get().then((value) =>
-                                                              value.docs.forEach((element) {
-                                                                Specialists.doc(element.id).collection('Students').doc(document.id).delete();
+                                                                specialists.doc(element.id).collection('Students').doc(document.id).delete();
                                                               }));
 
                                                           FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()

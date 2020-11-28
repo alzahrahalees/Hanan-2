@@ -8,8 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
-
 import 'TeacherDetails.dart';
 
 class TeacherScreen extends StatefulWidget {
@@ -32,8 +30,8 @@ class _TeacherScreenState extends State<TeacherScreen> {
     //Reference
     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers');
+
+
 
 
     return SafeArea(
@@ -75,7 +73,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                 Expanded(
                   child: StreamBuilder<QuerySnapshot>(
                     stream:
-                    Admin_Teachers.snapshots(),
+                   Teachers.where('center',isEqualTo: userAdmin.email).snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (!snapshot.hasData) return Center(child:SpinKitFoldingCube(
@@ -138,7 +136,6 @@ class _TeacherScreenState extends State<TeacherScreen> {
 
                                                     Teachers.doc(document.id).delete();
                                                     Users.doc(document.id).delete();
-                                                    Admin.doc(userAdmin.email.toLowerCase()).collection('Teachers').doc(document.id).delete();
                                                     FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
                                                         .catchError((e)=> print(e));
                                                     Navigator.pop(context);

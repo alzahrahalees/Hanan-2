@@ -67,10 +67,7 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
     CollectionReference Specialists =
         FirebaseFirestore.instance.collection('Specialists');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin =
-        FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Specialists =
-        Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
+
 
     String gender = gender1;
     String name;
@@ -88,7 +85,7 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
         body: SafeArea(
             child: StreamBuilder<QuerySnapshot>(
                 stream:
-                    Admin_Specialists.where('uid', isEqualTo: uid).snapshots(),
+                    Specialists.where('uid', isEqualTo: uid).snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
@@ -291,34 +288,6 @@ class _SpecialistInfoState extends State<SpecialistInfo> {
                                           onPressed: () {
                                             if (formkey.currentState
                                                 .validate()) {
-                                              Admin_Specialists.doc(uid)
-                                                  .update({
-                                                'name': newName == null
-                                                    ? name
-                                                    : newName,
-                                                'age': newAge == null
-                                                    ? age
-                                                    : newAge,
-                                                'phone': newPhone == null
-                                                    ? phone
-                                                    : newPhone,
-                                              });
-                                              if (gender != null) {
-                                                Admin_Specialists.doc(uid)
-                                                    .update({
-                                                  'gender': gender,
-                                                  'name': name,
-                                                  'age': age,
-                                                  'phone': phone,
-                                                });
-                                              }
-                                              if (typeOfSpechalist != null) {
-                                                Admin_Specialists.doc(uid)
-                                                    .update({
-                                                  'typeOfSpechalist':
-                                                      typeOfSpechalist,
-                                                });
-                                              }
                                               Specialists.doc(uid).update({
                                                 'name': newName == null
                                                     ? name

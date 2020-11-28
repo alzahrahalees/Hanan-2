@@ -268,17 +268,7 @@ class _TFilesState extends State<TFiles> {
     User userTeacher = FirebaseAuth.instance.currentUser;
     CollectionReference Students =
     FirebaseFirestore.instance.collection('Students');
-    CollectionReference Teachers =
-    FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Admin =
-    FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Teachers =
-    Admin.doc(widget.centerId).collection('Teachers');
-    CollectionReference Admin_Students =
-    Admin.doc(widget.centerId).collection('Students');
     CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Admin_Specialists = Admin.doc(widget.centerId).collection('Specialists');
-
     String basename = p.basename(_File.path);
     FirebaseStorage storage= FirebaseStorage(storageBucket: 'gs://hananz-5ffb9.appspot.com');
     StorageReference ref = storage.ref().child(p.basename(_File.path));
@@ -307,123 +297,73 @@ class _TFilesState extends State<TFiles> {
           'date':DateTime.now().toString().substring(0, 10),
           'publisher':widget.teacherName
         });
-        var addFileToAdminStudent= Admin_Students.doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-        {
-          'filePath':fileUrl,
-          'createdAt':Timestamp.now(),
-          'fileName':basename,
-          'date':DateTime.now().toString().substring(0, 10),
-          'publisher':widget.teacherName
-        });
 
-    var addFileToTeacherStudent=  Teachers.doc(userTeacher.email).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-        {
-      'filePath':fileUrl,
-      'createdAt':Timestamp.now(),
-      'fileName':basename,
-      'date':DateTime.now().toString().substring(0, 10),
-          'publisher':widget.teacherName
 
-    });
-
-    var addFileToAdminTeacherStudent= Admin_Teachers.doc(userTeacher.email).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-      {
-      'filePath':fileUrl,
-      'createdAt':Timestamp.now(),
-      'fileName':basename,
-      'date':DateTime.now().toString().substring(0, 10),
-        'publisher':widget.teacherName
-    });
-
-    if (psychologySpecialist==true){
-    var addFileToPsychologySpecialistStudent=  Specialists.doc(widget.psychologySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-        {
-          'filePath':fileUrl,
-          'createdAt':Timestamp.now(),
-          'fileName':basename,
-          'date':DateTime.now().toString().substring(0, 10),
-          'publisher':widget.teacherName
-        });
-
-    var addFileToAdminPsychologySpecialistStudent= Admin_Specialists.doc(widget.psychologySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-        {
-          'filePath':fileUrl,
-          'createdAt':Timestamp.now(),
-          'fileName':basename,
-          'date':DateTime.now().toString().substring(0, 10),
-          'publisher':widget.teacherName
-        });}
-
-    if (physiotherapySpecialist==true){
-      var addFileToPhysiotherapySpecialistStudent=  Specialists.doc(widget.physiotherapySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
+    if (psychologySpecialist==true) {
+      var addFileToPsychologySpecialistStudent = Specialists.doc(
+          widget.psychologySpecialistId).collection("Students").doc(
+          widget.studentId).collection('StudyCases').doc(
+          "${widget.studentId}$documentId File").set(
           {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':widget.teacherName
+            'filePath': fileUrl,
+            'createdAt': Timestamp.now(),
+            'fileName': basename,
+            'date': DateTime.now().toString().substring(0, 10),
+            'publisher': widget.teacherName
           });
-
-      var addFileToAdminPhysiotherapySpecialistStudent= Admin_Specialists.doc(widget.physiotherapySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':widget.teacherName
-          });}
-    if (communicationSpecialist==true){
-      var addFileToCommunicationSpecialistStudent=  Specialists.doc(widget.communicationSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':widget.teacherName
-          });
-
-      var addFileToAdminCommunicationSpecialistStudent= Admin_Specialists.doc(widget.communicationSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':widget.teacherName
-          });}
-
-    if (occupationalSpecialist==true){
-      var addFileToOccupationalSpecialistStudent=  Specialists.doc(widget.occupationalSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':widget.teacherName
-          });
-
-      var addFileToAdminOccupationalSpecialistStudent= Admin_Specialists.doc(widget.occupationalSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':widget.teacherName
-          });}
-    setState(() {
-      psychologySpecialist=false;
-      communicationSpecialist=false;
-      occupationalSpecialist=false;
-      physiotherapySpecialist=false;
-      showMassage=false;
-        showMassage2=false;
-
-    });}
-   showDownloadProgress(received, total) {
-    if (total != -1) {
-     setState(() {
-       download= ((received / total * 100).toStringAsFixed(0) + "%");
-     });
-
     }
-  }
-}
+      if (physiotherapySpecialist == true) {
+        var addFileToPhysiotherapySpecialistStudent = Specialists.doc(
+            widget.physiotherapySpecialistId).collection("Students").doc(
+            widget.studentId).collection('StudyCases').doc(
+            "${widget.studentId}$documentId File").set(
+            {
+              'filePath': fileUrl,
+              'createdAt': Timestamp.now(),
+              'fileName': basename,
+              'date': DateTime.now().toString().substring(0, 10),
+              'publisher': widget.teacherName
+            });
+      }
+        if (communicationSpecialist == true) {
+          var addFileToCommunicationSpecialistStudent = Specialists.doc(
+              widget.communicationSpecialistId).collection("Students").doc(
+              widget.studentId).collection('StudyCases').doc(
+              "${widget.studentId}$documentId File").set(
+              {
+                'filePath': fileUrl,
+                'createdAt': Timestamp.now(),
+                'fileName': basename,
+                'date': DateTime.now().toString().substring(0, 10),
+                'publisher': widget.teacherName
+              });}
+        if (occupationalSpecialist == true) {
+          var addFileToOccupationalSpecialistStudent = Specialists.doc(
+              widget.occupationalSpecialistId).collection("Students").doc(
+              widget.studentId).collection('StudyCases').doc(
+              "${widget.studentId}$documentId File").set(
+              {
+                'filePath': fileUrl,
+                'createdAt': Timestamp.now(),
+                'fileName': basename,
+                'date': DateTime.now().toString().substring(0, 10),
+                'publisher': widget.teacherName
+              });
+        }
+        setState(() {
+          psychologySpecialist = false;
+          communicationSpecialist = false;
+          occupationalSpecialist = false;
+          physiotherapySpecialist = false;
+          showMassage = false;
+          showMassage2 = false;
+        });
+       }
+      showDownloadProgress(received, total) {
+        if (total != -1) {
+          setState(() {
+            download = ((received / total * 100).toStringAsFixed(0) + "%");
+          });
+        }
+      }
+    }

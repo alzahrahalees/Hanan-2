@@ -289,18 +289,10 @@ class _SFilesState extends State<SFiles> {
   Future pickFile2() async {
 
     User userSpecialist = FirebaseAuth.instance.currentUser;
-    CollectionReference Students =
+    CollectionReference students =
     FirebaseFirestore.instance.collection('Students');
-    CollectionReference Teachers =
-    FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Admin =
-    FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Teachers =
-    Admin.doc(widget.centerId).collection('Teachers');
-    CollectionReference Admin_Students =
-    Admin.doc(widget.centerId).collection('Students');
-    CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Admin_Specialists = Admin.doc(widget.centerId).collection('Specialists');
+    CollectionReference specialists = FirebaseFirestore.instance.collection('Specialists');
+
 
 
     String basename = p.basename(_File.path);
@@ -323,15 +315,7 @@ class _SFilesState extends State<SFiles> {
     print("c $communicationSpecialistName2");
     print("o $occupationalSpecialistName2");
 
-    var addFileToStudent= Students.doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-        {
-          'filePath':fileUrl,
-          'createdAt':Timestamp.now(),
-          'fileName':basename,
-          'date':DateTime.now().toString().substring(0, 10),
-          'publisher':specialistName
-        });
-    var addFileToAdminStudent= Admin_Students.doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
+    var addFileToStudent= students.doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
         {
           'filePath':fileUrl,
           'createdAt':Timestamp.now(),
@@ -340,26 +324,7 @@ class _SFilesState extends State<SFiles> {
           'publisher':specialistName
         });
 
-    var addFileToTeacherStudent=  Teachers.doc(widget.teacherId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-        {
-          'filePath':fileUrl,
-          'createdAt':Timestamp.now(),
-          'fileName':basename,
-          'date':DateTime.now().toString().substring(0, 10),
-          'publisher':specialistName
-
-        });
-
-    var addFileToAdminTeacherStudent= Admin_Teachers.doc(widget.teacherId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-        {
-          'filePath':fileUrl,
-          'createdAt':Timestamp.now(),
-          'fileName':basename,
-          'date':DateTime.now().toString().substring(0, 10),
-          'publisher':specialistName
-        });
-
-      var addFileToSpecialistStudent=  Specialists.doc(userSpecialist.email).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
+      var addFileToSpecialistStudent=  specialists.doc(userSpecialist.email).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
           {
             'filePath':fileUrl,
             'createdAt':Timestamp.now(),
@@ -368,89 +333,58 @@ class _SFilesState extends State<SFiles> {
             'publisher':specialistName
           });
 
-      var addFileToAdminSpecialistStudent= Admin_Specialists.doc(userSpecialist.email).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
+    if (psychologySpecialistName2==true&& widget.psychologySpecialistId !=userSpecialist.email) {
+      var addFileToPsychologySpecialistStudent = specialists.doc(
+          widget.psychologySpecialistId).collection("Students").doc(
+          widget.studentId).collection('StudyCases').doc(
+          "${widget.studentId}$documentId File").set(
           {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
+            'filePath': fileUrl,
+            'createdAt': Timestamp.now(),
+            'fileName': basename,
+            'date': DateTime.now().toString().substring(0, 10),
+            'publisher': specialistName
           });
-
-    if (psychologySpecialistName2==true&& widget.psychologySpecialistId !=userSpecialist.email){
-      var addFileToPsychologySpecialistStudent=  Specialists.doc(widget.psychologySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
+    }
+    if (physiotherapySpecialistName2==true && widget.physiotherapySpecialistId !=userSpecialist.email) {
+      var addFileToPhysiotherapySpecialistStudent = specialists.doc(
+          widget.physiotherapySpecialistId).collection("Students").doc(
+          widget.studentId).collection('StudyCases').doc(
+          "${widget.studentId}$documentId File").set(
           {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
+            'filePath': fileUrl,
+            'createdAt': Timestamp.now(),
+            'fileName': basename,
+            'date': DateTime.now().toString().substring(0, 10),
+            'publisher': specialistName
           });
-
-      var addFileToAdminPsychologySpecialistStudent= Admin_Specialists.doc(widget.psychologySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
+    }
+    if (communicationSpecialistName2==true && widget.communicationSpecialistId !=userSpecialist.email) {
+      var addFileToCommunicationSpecialistStudent = specialists.doc(
+          widget.communicationSpecialistId).collection("Students").doc(
+          widget.studentId).collection('StudyCases').doc(
+          "${widget.studentId}$documentId File").set(
           {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
-          });}
-
-    if (physiotherapySpecialistName2==true && widget.physiotherapySpecialistId !=userSpecialist.email){
-      var addFileToPhysiotherapySpecialistStudent=  Specialists.doc(widget.physiotherapySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
+            'filePath': fileUrl,
+            'createdAt': Timestamp.now(),
+            'fileName': basename,
+            'date': DateTime.now().toString().substring(0, 10),
+            'publisher': specialistName
           });
-
-      var addFileToAdminPhysiotherapySpecialistStudent= Admin_Specialists.doc(widget.physiotherapySpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
+    }
+    if (occupationalSpecialistName2==true&& widget.occupationalSpecialistId !=userSpecialist.email) {
+      var addFileToOccupationalSpecialistStudent = specialists.doc(
+          widget.occupationalSpecialistId).collection("Students").doc(
+          widget.studentId).collection('StudyCases').doc(
+          "${widget.studentId}$documentId File").set(
           {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
-          });}
-    if (communicationSpecialistName2==true && widget.communicationSpecialistId !=userSpecialist.email){
-      var addFileToCommunicationSpecialistStudent=  Specialists.doc(widget.communicationSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
+            'filePath': fileUrl,
+            'createdAt': Timestamp.now(),
+            'fileName': basename,
+            'date': DateTime.now().toString().substring(0, 10),
+            'publisher': specialistName
           });
-
-      var addFileToAdminCommunicationSpecialistStudent= Admin_Specialists.doc(widget.communicationSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
-          });}
-
-    if (occupationalSpecialistName2==true&& widget.occupationalSpecialistId !=userSpecialist.email){
-      var addFileToOccupationalSpecialistStudent=  Specialists.doc(widget.occupationalSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
-          });
-
-      var addFileToAdminOccupationalSpecialistStudent= Admin_Specialists.doc(widget.occupationalSpecialistId).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
-          });}
+    }
     setState(() {
       psychologySpecialistName2=false;
       communicationSpecialistName2=false;

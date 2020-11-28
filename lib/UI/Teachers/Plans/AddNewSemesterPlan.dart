@@ -5,15 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Constance.dart';
 
-
 class AddNewSemesterPlan extends StatefulWidget {
   final String studentId;
-
   AddNewSemesterPlan(this.studentId);
 
   @override
-  _AddNewSemesterPlanState createState() => _AddNewSemesterPlanState();
-}
+  _AddNewSemesterPlanState createState() => _AddNewSemesterPlanState();}
 
 class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -34,8 +31,6 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
     });
   }
 
-
-
   onSemesterChange (value){
     setState(() {
       _semesterValue=value;
@@ -54,7 +49,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
     }).whenComplete(() => isDone=true);
     return isDone;
   }
-  Future <bool> checkTitl1(String newTitle) async {
+  Future <bool> checkTitle1(String newTitle) async {
     bool isExit=false;
   var s1= await FirebaseFirestore.instance.collection('Students')
         .doc(widget.studentId).collection("Plans").where('planTitle',isEqualTo: newTitle).where('semester',isEqualTo: "first").get();
@@ -64,7 +59,7 @@ class _AddNewSemesterPlanState extends State<AddNewSemesterPlan> {
 //  print(s.docs.isEmpty);
 return isExit;
   }
-  Future <bool> checkTitl2(String newTitle) async {
+  Future <bool> checkTitle2(String newTitle) async {
     bool isExit=false;
     var s1= await FirebaseFirestore.instance.collection('Students')
         .doc(widget.studentId).collection("Plans").where('planTitle',isEqualTo: newTitle).where('semester',isEqualTo: "second").get();
@@ -207,47 +202,12 @@ return isExit;
                     style: kTextPageStyle.copyWith(color: Colors.grey)
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: RadioListTile(
-                    selected: false,
-                    toggleable: true,
-                    title: Text('المجالات الخاصة'),
-                    activeColor:  kSelectedItemColor,
-                    subtitle: Text('يحتوي هذا المجال على أقسام المجالات الخاصة وهي : مجال التواصل، المجال الإدراكي، المجال الحركي الدقيق، '
-                        'المجال الاجتماعي، والمجال الاستقلالي'),
-                    value: 'special' ,
-                    groupValue: _selectedMajorValue,
-                    onChanged: (value){
+             Padding(padding: EdgeInsets.all(10),
+               child:  Text('تحتوي هذه الخطة على أقسام المجالات الخاصة وهي : مجال التواصل، المجال الإدراكي، المجال الحركي الدقيق، '
+                   'المجال الاجتماعي، والمجال الاستقلالي'),
+             ),
 
-                      onMajorChange(value);
 
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: RadioListTile(
-                    toggleable: true,
-                    title: Text('المواد العامة'),
-                    activeColor:  kSelectedItemColor,
-                    subtitle: Text('يحتوي هذا المجال على أقسام المواد العامة مثل : القرآن والحديث وغيرها من المواد العامة '),
-                    value: 'general',
-                    groupValue: _selectedMajorValue,
-                    onChanged: (value){
-                      onMajorChange(value);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("في حال اختيارك المجالات المواد العامة، الرجاء إدخال المواد متبوعة بفاصلة، مثل: القرآن، الحديث، العلوم", style: kTextPageStyle.copyWith(color: Colors.black54)),
-                    ),
-                  ),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: KNormalTextFormField(
@@ -272,11 +232,10 @@ return isExit;
                        String titlePlan= _semesterValue == 'first'? _titleSmester1:_titleSmester2;
                        String semester= _semesterValue == 'first'? "الفصل الدراسي الأول":"الفصل الدراسي الثاني";
                       String docId= widget.studentId+DateTime.now().year.toString()+_semesterValue+ran.nextInt(10000000).toString();
-                      bool checkT= _semesterValue == 'first'? await  checkTitl1( titlePlan): await checkTitl2( titlePlan);
-
+                      bool checkT= _semesterValue == 'first'? await  checkTitle1( titlePlan): await checkTitle2( titlePlan);
+                       bool isDone = await setUIds();
                       if (checkT ) {
                         //Add to data base
-                        bool isDone = await setUIds();
                         if(_occupationalSpecialistId != null){
                         await FirebaseFirestore.instance.collection('Specialists')
                             .doc(_occupationalSpecialistId).collection('Students')
@@ -365,33 +324,14 @@ return isExit;
                           'endDay': _endDay,
                           'subjects': subjects,
                           'createdAt':Timestamp.now(),
-                        });
-
-                        await FirebaseFirestore.instance.collection('Teachers')
-                            .doc(_teacherUser.email).collection('Students')
-                            .doc(widget.studentId).collection('Plans')
-                            .doc(docId).set({
-                          'planId':docId,
-                          'planTitle':   _semesterValue == 'first'? _titleSmester1:_titleSmester2,
-                          'major': _selectedMajorValue,
-                          'semester': _semesterValue,
-                          'beginYear': _beginYear,
-                          'beginMonth': _beginMonth,
-                          'beginDay': _beginDay,
-                          'endYear': _endYear,
-                          'endMoth': _endMonth,
-                          'endDay': _endDay,
-                          'subjects': subjects,
-                          'createdAt':Timestamp.now(),
-                        }).whenComplete(() => Navigator.pop(context))
-                            .catchError((err) => print(err));
-                      }
+                        });}
                       else{
                         _scaffoldKey.currentState.showSnackBar(SnackBar(
                 content: Text(" لقد تم إضافة $titlePlan $semester ",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),
                  backgroundColor: Colors.white70,
                  duration: Duration(seconds: 3),
                       ));}
+                      Navigator.pop(context);
                     }
                   ),
                 ),

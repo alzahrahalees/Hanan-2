@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import '../Constance.dart';
-import 'Diaries/TeacherDiaries.dart';
 import 'TeacherStudentMain.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-import 'dart:math';
 
 
 

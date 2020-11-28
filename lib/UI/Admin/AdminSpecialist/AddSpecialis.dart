@@ -217,6 +217,7 @@ class _AddSpecialistScreenState extends State<AddSpecialistScreen> {
                         new Padding(
                           padding:  EdgeInsets.all(15),
                           child:_isEmailExists? RaisedButton(
+                            onPressed: (){},
                             color: Colors.black38,
                             child: Text("إضافة", style: kTextButtonStyle),
                             shape: RoundedRectangleBorder(

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Admin/AdminStudent/StudentDetails.dart';
-
 import '../../Constance.dart';
 
 class TeacherStudents extends StatelessWidget {
@@ -14,11 +13,6 @@ class TeacherStudents extends StatelessWidget {
 
   Widget build(BuildContext context) {
     User userAdmin =  FirebaseAuth.instance.currentUser;
-    CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
 
 
@@ -31,7 +25,7 @@ class TeacherStudents extends StatelessWidget {
       body:
           SafeArea(
     child:  StreamBuilder(
-        stream: Admin_Students.where('teacherId',isEqualTo: uid).snapshots(),
+        stream: Students.where('teacherId',isEqualTo: uid).snapshots(),
         builder:  (BuildContext context,
             AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {

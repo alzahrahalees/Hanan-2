@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../Constance.dart';
 
-class AnalysisDetails extends StatefulWidget {
+class AnalysisDetailsS extends StatefulWidget {
   final String studentId;
   final String planId;
   final String goalId;
-  AnalysisDetails({this.studentId,this.planId,this.goalId});
+  AnalysisDetailsS({this.studentId,this.planId,this.goalId});
   @override
   _AnalysisState createState() => _AnalysisState();
 }
 
-class _AnalysisState extends State<AnalysisDetails> {
+class _AnalysisState extends State<AnalysisDetailsS> {
   void dispose() {
     super.dispose();
     canEdit=false;
@@ -26,18 +26,6 @@ class _AnalysisState extends State<AnalysisDetails> {
     _helpType=null;
     _evaluation=null;
   }
-  User _userTeacher = FirebaseAuth.instance.currentUser;
-
-  Future<String> getteacherName() async {
-    String name= "";
-    await FirebaseFirestore.instance.collection('Teachers')
-        .doc(_userTeacher.email).get().then((data){
-      name=data.data()['name'];
-    });
-    return name;
-  }
-
-
 
   TextEditingController _proceduralGoal= TextEditingController();
   TextEditingController _startDate= TextEditingController();
@@ -57,12 +45,30 @@ class _AnalysisState extends State<AnalysisDetails> {
   String _evaluation;
   final _formkey = GlobalKey<FormState>();
   bool canEdit=false;
+  User _userSpecialist = FirebaseAuth.instance.currentUser;
+
+
+  Future<String> spicialistName() async {
+    String name= "";
+    await FirebaseFirestore.instance.collection('Specialists')
+        .doc(_userSpecialist.email).get().then((data){
+     name=data.data()['name'];
+    });
+    return name;
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
+    User _userSpecialist = FirebaseAuth.instance.currentUser;
     CollectionReference studentsPlansGoal = FirebaseFirestore.instance.collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
+    CollectionReference specialistPlansGoal =FirebaseFirestore.instance.collection('Specialists').doc(_userSpecialist.email).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
+
     return SafeArea(
         child: StreamBuilder<QuerySnapshot>(
-            stream:studentsPlansGoal.where("goalId",isEqualTo: widget.goalId).snapshots(),
+            stream:specialistPlansGoal.where("goalId",isEqualTo: widget.goalId).snapshots(),
             builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData){
                 return  Center(child: SpinKitFoldingCube(
@@ -250,11 +256,10 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                       child: Row(
                                                                         children: [
                                                                           FlatButton(onPressed: () async{
-
                                                                             if(_formkey.currentState.validate()){
                                                                               var random = new Random();
                                                                               int documentId = random.nextInt(1000000000);
-                                                                              String teacherName=await getteacherName();
+                                                                              String specialistName= await spicialistName();
                                                                               var addProceduralGoalToStudent = studentsPlansGoal.doc(
                                                                                   widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}${documentId} ProceduralGoal").set({
                                                                                 'proceduralGoal':_proceduralGoal.text,
@@ -268,9 +273,27 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                 'successfulTimes':"",
                                                                                 'evaluation':"",
                                                                                 'helpType':"",
-                                                                                'writer':"",
-                                                                                'teacherName':teacherName,
-                                                                                'writerId':_userTeacher.email
+                                                                                'writer':specialistName,
+                                                                                'writerId':_userSpecialist.email,
+                                                                                'teacherName':"",
+                                                                              });
+                                                                              var addProceduralGoalToSpecialist = specialistPlansGoal.doc(
+                                                                                  widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}${documentId} ProceduralGoal").set({
+                                                                                'proceduralGoal':_proceduralGoal.text,
+                                                                                'startDate':_startDate.text,
+                                                                                'endDate':_endDate.text,
+                                                                                'createdAt': Timestamp.now(),
+                                                                                'proceduralGoalId':"${widget.goalId}${documentId} ProceduralGoal",
+                                                                                'planId':widget.planId,
+                                                                                'goalId':widget.goalId,
+                                                                                'totalTimes':"",
+                                                                                'successfulTimes':"",
+                                                                                'evaluation':"",
+                                                                                'helpType':"",
+                                                                                'writer':specialistName,
+                                                                                'writerId':_userSpecialist.email,
+                                                                                'teacherName':"",
+
                                                                               }).whenComplete(() {
                                                                                 _proceduralGoal.clear();
                                                                                 _startDate.clear();
@@ -334,7 +357,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                       ),),
 
                                     StreamBuilder<QuerySnapshot>(
-                                        stream: studentsPlansGoal.doc(widget.goalId).collection('ProceduralGoals').orderBy('createdAt',descending: true).snapshots(),
+                                        stream: specialistPlansGoal.doc(widget.goalId).collection('ProceduralGoals').orderBy('createdAt',descending: true).snapshots(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData){
                                             return ListView(
@@ -375,32 +398,66 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                 child: Column(
                                                                   children: [
                                                                     Container(
-                                                                      alignment: Alignment.bottomRight,
+                                                                      alignment: Alignment.bottomLeft,
                                                                       child: Column(
                                                                         children: [
                                                                           Row(
                                                                             children: [
                                                                               IconButton(icon: Icon(Icons.clear,size: 10,),
-                                                                                onPressed: (){
-                                                                                  if(documentSnapshot2['writer']==""){
+                                                                                onPressed: () {
                                                                                     showDialog(
                                                                                         context: context,
-                                                                                        builder: (_) => new AlertDialog(
-                                                                                          content: new Text("هل تريد حذف الهدف الإجرائي"),
-                                                                                          actions: <Widget>[
+                                                                                        builder: (
+                                                                                            _) =>
+                                                                                        new AlertDialog(
+                                                                                          content: new Text(
+                                                                                              "هل تريد حذف الهدف الإجرائي"),
+                                                                                          actions: <
+                                                                                              Widget>[
                                                                                             Row(
                                                                                               children: [
                                                                                                 FlatButton(
-                                                                                                  child: Text('حذف',style: TextStyle(color: Colors.deepPurple),),
+                                                                                                  child: Text(
+                                                                                                    'حذف',
+                                                                                                    style: TextStyle(
+                                                                                                        color: Colors
+                                                                                                            .deepPurple),),
                                                                                                   onPressed: () {
-                                                                                                    studentsPlansGoal.doc(widget.goalId).collection('ProceduralGoals').doc(documentSnapshot2['proceduralGoalId']).delete();
-                                                                                                    Navigator.of(context).pop();
+                                                                                                    studentsPlansGoal
+                                                                                                        .doc(
+                                                                                                        widget
+                                                                                                            .goalId)
+                                                                                                        .collection(
+                                                                                                        'ProceduralGoals')
+                                                                                                        .doc(
+                                                                                                        documentSnapshot2['proceduralGoalId'])
+                                                                                                        .delete();
+                                                                                                    specialistPlansGoal
+                                                                                                        .doc(
+                                                                                                        widget
+                                                                                                            .goalId)
+                                                                                                        .collection(
+                                                                                                        'ProceduralGoals')
+                                                                                                        .doc(
+                                                                                                        documentSnapshot2['proceduralGoalId'])
+                                                                                                        .delete();
+                                                                                                    Navigator
+                                                                                                        .of(
+                                                                                                        context)
+                                                                                                        .pop();
                                                                                                   },
                                                                                                 ),
                                                                                                 FlatButton(
-                                                                                                  child: Text('إلغاء',style: TextStyle(color: Colors.deepPurple),),
+                                                                                                  child: Text(
+                                                                                                    'إلغاء',
+                                                                                                    style: TextStyle(
+                                                                                                        color: Colors
+                                                                                                            .deepPurple),),
                                                                                                   onPressed: () {
-                                                                                                    Navigator.of(context).pop();
+                                                                                                    Navigator
+                                                                                                        .of(
+                                                                                                        context)
+                                                                                                        .pop();
                                                                                                   },
                                                                                                 ),
                                                                                               ],
@@ -408,13 +465,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                           ],
                                                                                         ));
                                                                                   }
-                                                                                  else{
-                                                                                    Scaffold.of(context).showSnackBar(SnackBar(
-                                                                                      content: Text("لا يمكنك حذف الهدف الإجرائي",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),
-                                                                                      backgroundColor: Colors.white70,
-                                                                                      duration: Duration(seconds: 1),
-                                                                                    ));
-                                                                                  }},
+
 
 
                                                                               ),
@@ -422,20 +473,18 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                           ),
                                                                           Row(
                                                                             children: [
-                                                                                    documentSnapshot2['writer']=="" ?
                                                                               IconButton(icon: Icon(Icons.edit),color: Colors.grey,
                                                                                 onPressed: (){
                                                                                   setState(() {
                                                                                     canEdit=true;
                                                                                   });
                                                                                 },
-                                                                              ): Center(child: Text(documentSnapshot2['writer']!=""?"      بواسطة "+documentSnapshot2['writer']:"بواسطتك",style:TextStyle(fontSize: 10,color: Colors.grey))),
+                                                                              ),
                                                                               Padding(padding: EdgeInsets.only(right: 180)),
-                                                                              documentSnapshot2['writer']==""?
                                                                               canEdit ==true?
                                                                               FlatButton(onPressed: (){
                                                                                 setState(() {
-                                                                                  studentsPlansGoal.doc(widget.goalId).collection("ProceduralGoals").doc(documentSnapshot2['proceduralGoalId']).update({
+                                                                                 specialistPlansGoal.doc(widget.goalId).collection("ProceduralGoals").doc(documentSnapshot2['proceduralGoalId']).update({
                                                                                     'startDate':_newStartDate!=null?_newStartDate:documentSnapshot2['startDate'],
                                                                                     'endDate':_newEndDate!=null?_newEndDate:documentSnapshot2['endDate'],
                                                                                     'totalTimes':_totalTimes!=null?_totalTimes:documentSnapshot2['totalTimes'],
@@ -444,15 +493,27 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                     'helpType':_helpType!=null?_helpType:documentSnapshot2['helpType'],
                                                                                   }
                                                                                   );
+
+                                                                                 studentsPlansGoal.doc(widget.goalId).collection("ProceduralGoals").doc(documentSnapshot2['proceduralGoalId']).update({
+                                                                                   'startDate':_newStartDate!=null?_newStartDate:documentSnapshot2['startDate'],
+                                                                                   'endDate':_newEndDate!=null?_newEndDate:documentSnapshot2['endDate'],
+                                                                                   'totalTimes':_totalTimes!=null?_totalTimes:documentSnapshot2['totalTimes'],
+                                                                                   'successfulTimes':_successfulTimes !=null?_successfulTimes:documentSnapshot2['successfulTimes'],
+                                                                                   'evaluation':_evaluation !=null?_evaluation:documentSnapshot2['evaluation'],
+                                                                                   'helpType':_helpType!=null?_helpType:documentSnapshot2['helpType'],
+                                                                                 }
+                                                                                 );
+
                                                                                   canEdit=false;
                                                                                 });}
                                                                                   , child: Text("حفظ",style: TextStyle(color: Colors.deepPurple),)):
-                                                                              Text(""):Text(""),
+                                                                              Text(""),
                                                                             ],
                                                                           ),
                                                                         ],
                                                                       ),
                                                                     ),
+
                                                                     Center(child: Text(documentSnapshot2['proceduralGoal'])),
                                                                     DataTable(
                                                                       showBottomBorder: true,
@@ -499,7 +560,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                 hintStyle: TextStyle(fontSize: 10,fontWeight: FontWeight.bold,),
                                                                               ),
                                                                               style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),
-                                                                              readOnly: documentSnapshot2['writer']!=""? true: canEdit==true? false:true,
+                                                                              readOnly: canEdit==true? false:true,
                                                                               onChanged: (value){
                                                                                 setState(() {
                                                                                   _totalTimes=value;
@@ -507,7 +568,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                               },
                                                                             )),
                                                                             DataCell(TextField(
-                                                                                readOnly: documentSnapshot2['writer']!=""? true: canEdit==true? false:true,
+                                                                                readOnly: canEdit==true? false:true,
                                                                                 controller:_successfulTimesL[index],
                                                                                 decoration:  InputDecoration(
                                                                                   focusedBorder: UnderlineInputBorder(
@@ -523,7 +584,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                 style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold)
                                                                             )),
                                                                             DataCell(TextField(
-                                                                                readOnly: documentSnapshot2['writer']!=""? true: canEdit==true? false:true,
+                                                                                readOnly: canEdit==true? false:true,
                                                                                 controller:_evaluationL[index],
                                                                                 decoration:  InputDecoration(
                                                                                   focusedBorder: UnderlineInputBorder(
@@ -539,7 +600,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                 style: TextStyle(fontSize: 8,fontWeight: FontWeight.bold)
                                                                             )),
                                                                             DataCell(TextField(
-                                                                                readOnly: documentSnapshot2['writer']!=""? true: canEdit==true? false:true,
+                                                                                readOnly: canEdit==true? false:true,
                                                                                 controller:_helpTypeL[index],
                                                                                 decoration:  InputDecoration(
                                                                                   focusedBorder: UnderlineInputBorder(
@@ -555,7 +616,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                 style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold)
                                                                             )),
                                                                             DataCell(TextField(
-                                                                                readOnly: documentSnapshot2['writer']!=""? true: canEdit==true? false:true,
+                                                                                readOnly: canEdit==true? false:true,
                                                                                 controller:_startDateL[index],
                                                                                 decoration:  InputDecoration(
                                                                                   focusedBorder: UnderlineInputBorder(
@@ -571,7 +632,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                 style: TextStyle(fontSize: 8,fontWeight: FontWeight.bold)
                                                                             )),
                                                                             DataCell(TextField(
-                                                                                readOnly: documentSnapshot2['writer']!=""? true: canEdit==true? false:true,
+                                                                                readOnly: canEdit==true? false:true,
                                                                                 controller:_endDateL[index],
                                                                                 decoration:  InputDecoration(
                                                                                   focusedBorder: UnderlineInputBorder(

@@ -9,15 +9,11 @@ class notifications extends StatefulWidget {
   @override
   _notificationsState createState() => _notificationsState();
 }
-
 class _notificationsState extends State<notifications> {
   User userTeacher = FirebaseAuth.instance.currentUser;
-  CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-  CollectionReference Teachers =
-      FirebaseFirestore.instance.collection('Teachers');
+  CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
   String PostId;
   String NotificationUid;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,14 +89,6 @@ class _notificationsState extends State<notifications> {
                                 );
 
                                 Teachers.doc(userTeacher.email)
-                                    .collection('Notifications')
-                                    .doc(document.data()['NotificationUid'])
-                                    .update({
-                                  'read': true,
-                                });
-                                Admin.doc(document.data()['centerId'])
-                                    .collection('Teachers')
-                                    .doc(userTeacher.email)
                                     .collection('Notifications')
                                     .doc(document.data()['NotificationUid'])
                                     .update({

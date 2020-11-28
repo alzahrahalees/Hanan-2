@@ -355,6 +355,7 @@ class _AddGoalState extends State<AddGoal> {
                           child: Row(
                             children: [
                               IconButton(
+                                  onPressed: (){},
                                   icon: Icon(Icons.camera_enhance_rounded,
                                     color: Colors.deepPurple.shade200,size: 30,)),
                               Padding(padding: EdgeInsets.all(5)),
@@ -386,7 +387,6 @@ class _AddGoalState extends State<AddGoal> {
             onPressed: () async{
     User _userTeacher = FirebaseAuth.instance.currentUser;
     CollectionReference studentsPlansGoal = FirebaseFirestore.instance.collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
-    CollectionReference teachersPlansGoal =FirebaseFirestore.instance.collection('Teachers').doc(_userTeacher.email).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
     CollectionReference specialists = FirebaseFirestore.instance.collection('Specialists');
     if(_goalType==null){
       setState(() {
@@ -446,26 +446,6 @@ class _AddGoalState extends State<AddGoal> {
 
 
 
-      var addPlanGoalToTeacher = teachersPlansGoal
-        ..doc("${widget.planId}${documentId} Goal").set({
-          "goalType": _goalType,
-          "goalTitle": _goalTitle.text,
-          "generalGoal": _generalGoal.text,
-          "image": _imageUrl,
-          "goalNeeds": _goalNeeds.text,
-          "postId": widget.planId,
-          "goalId": "${widget.planId}${documentId} Goal",
-          'createdAt': Timestamp.now(),
-          'date':DateTime.now().toString().substring(0, 10),
-          'psychologySpecialistName':_psychologySpecialist == true?_psychologySpecialistName:null,
-          'occupationalSpecialistName':_occupationalSpecialist==true?_occupationalSpecialistName:null,
-          'communicationSpecialistName':_communicationSpecialist==true?_communicationSpecialistName:null,
-          'physiotherapySpecialistName':_physiotherapySpecialist==true?_physiotherapySpecialistName:null,
-          'psychologySpecialistId':_psychologySpecialist == true?_psychologySpecialistId:null,
-          'occupationalSpecialistId':_occupationalSpecialist==true?_occupationalSpecialistId:null,
-          'communicationSpecialistId':_communicationSpecialist==true?_communicationSpecialistId:null,
-          'physiotherapySpecialistId':_physiotherapySpecialist==true?_physiotherapySpecialistId:null,
-        });
 
       if (_psychologySpecialist == true) {
         var addPlanGoalTopsychologySpecialist = specialists.doc(

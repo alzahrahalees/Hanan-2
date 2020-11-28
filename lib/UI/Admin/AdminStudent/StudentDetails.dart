@@ -66,21 +66,14 @@ class _StudentInfoState extends State<StudentInfo> {
   @override
   Widget build(BuildContext context) {
     User userAdmin = FirebaseAuth.instance.currentUser;
-    CollectionReference Students =
+    CollectionReference students =
         FirebaseFirestore.instance.collection('Students');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Teachers =
+    CollectionReference users = FirebaseFirestore.instance.collection('Users');
+    CollectionReference teachers =
         FirebaseFirestore.instance.collection('Teachers');
-    CollectionReference Specialists =
+    CollectionReference specialists =
         FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Admin =
-        FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Teachers =
-        Admin.doc(userAdmin.email).collection('Teachers');
-    CollectionReference Admin_Specialists =
-        Admin.doc(userAdmin.email).collection('Specialists');
-    CollectionReference Admin_Students =
-        Admin.doc(userAdmin.email).collection('Students');
+
 
     String gender = gender1;
     String name;
@@ -100,7 +93,7 @@ class _StudentInfoState extends State<StudentInfo> {
         ),
         body: SafeArea(
             child: StreamBuilder<QuerySnapshot>(
-                stream: Admin_Students.where('uid', isEqualTo: uid).snapshots(),
+                stream: students.where('uid', isEqualTo: uid).snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
@@ -223,9 +216,9 @@ class _StudentInfoState extends State<StudentInfo> {
                                         new Padding(
                                           padding: new EdgeInsets.all(20),
                                           child: StreamBuilder(
-                                              stream: Admin.doc(userAdmin.email)
-                                                  .collection('Teachers')
-                                                  .snapshots(),
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('Teachers').where('center',isEqualTo: userAdmin.email).
+                                                  snapshots(),
                                               builder: (context,
                                                   AsyncSnapshot<QuerySnapshot>
                                                       snapshot) {
@@ -288,8 +281,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                         new Padding(
                                           padding: new EdgeInsets.all(20),
                                           child: StreamBuilder(
-                                              stream: Admin.doc(userAdmin.email)
-                                                  .collection('Specialists')
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('Specialists').where('center',isEqualTo: userAdmin.email)
                                                   .where('typeOfSpechalist',
                                                       isEqualTo: "أخصائي نفسي")
                                                   .snapshots(),
@@ -360,8 +353,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                         new Padding(
                                           padding: new EdgeInsets.all(20),
                                           child: StreamBuilder(
-                                              stream: Admin.doc(userAdmin.email)
-                                                  .collection('Specialists')
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('Specialists').where('center',isEqualTo: userAdmin.email)
                                                   .where('typeOfSpechalist',
                                                       isEqualTo:
                                                           "أخصائي علاج وظيفي")
@@ -434,8 +427,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                         new Padding(
                                           padding: new EdgeInsets.all(20),
                                           child: StreamBuilder(
-                                              stream: Admin.doc(userAdmin.email)
-                                                  .collection('Specialists')
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('Specialists').where('center',isEqualTo: userAdmin.email)
                                                   .where('typeOfSpechalist',
                                                       isEqualTo:
                                                           "أخصائي علاج طبيعي")
@@ -508,8 +501,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                         new Padding(
                                           padding: new EdgeInsets.all(20),
                                           child: StreamBuilder(
-                                              stream: Admin.doc(userAdmin.email)
-                                                  .collection('Specialists')
+                                              stream:FirebaseFirestore.instance
+                                                  .collection('Specialists').where('center',isEqualTo: userAdmin.email)
                                                   .where('typeOfSpechalist',
                                                       isEqualTo: "أخصائي تخاطب")
                                                   .snapshots(),
@@ -584,71 +577,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                           onPressed: () {
                                             if (formkey.currentState
                                                 .validate()) {
-                                              Admin_Students.doc(uid).update({
-                                                'name': newName == null
-                                                    ? name
-                                                    : newName,
-                                                'age': newAge == null
-                                                    ? age
-                                                    : newAge,
-                                                'phone': newPhone == null
-                                                    ? phone
-                                                    : newPhone,
-                                              });
-                                              if (gender != null) {
-                                                Admin_Students.doc(uid).update({
-                                                  'gender': gender,
-                                                });
-                                              }
-                                              if (teacherId != null) {
-                                                Admin_Students.doc(uid).update({
-                                                  'teacherId': teacherId,
-                                                  'teacherName': teacherName,
-                                                });
-                                              }
-                                              if (psychologySpecialistId !=
-                                                  null) {
-                                                Admin_Students.doc(uid).update({
-                                                  'psychologySpecialistName':
-                                                      psychologySpecialistName,
-                                                  //نفسي
-                                                  'psychologySpecialistId':
-                                                      psychologySpecialistId,
-                                                });
-                                              }
-                                              if (occupationalSpecialistId !=
-                                                  null) {
-                                                Admin_Students.doc(uid).update({
-                                                  'occupationalSpecialistName':
-                                                      occupationalSpecialistName,
-                                                  //,ظيفي
-                                                  'occupationalSpecialistId':
-                                                      occupationalSpecialistId,
-                                                });
-                                              }
-                                              if (physiotherapySpecialistId !=
-                                                  null) {
-                                                Admin_Students.doc(uid).update({
-                                                  'physiotherapySpecialistName':
-                                                      physiotherapySpecialistName,
-                                                  //علاج طبيعي
-                                                  'physiotherapySpecialistId':
-                                                      physiotherapySpecialistId,
-                                                });
-                                              }
 
-                                              if (communicationSpecialistId !=
-                                                  null) {
-                                                Admin_Students.doc(uid).update({
-                                                  'communicationSpecialistName':
-                                                      communicationSpecialistName,
-                                                  //تخاطب
-                                                  'communicationSpecialistId':
-                                                      communicationSpecialistId,
-                                                });
-                                              }
-
-                                              Students.doc(uid).update({
+                                              students.doc(uid).update({
                                                 'name': newName == null
                                                     ? name
                                                     : newName,
@@ -660,20 +590,20 @@ class _StudentInfoState extends State<StudentInfo> {
                                                     : newPhone,
                                               });
                                               if (gender != null) {
-                                                Students.doc(uid).update({
+                                                students.doc(uid).update({
                                                   'gender': gender,
                                                 });
                                               }
 
                                               if (teacherId != null) {
-                                                Students.doc(uid).update({
+                                                students.doc(uid).update({
                                                   'teacherId': teacherId,
                                                   'teacherName': teacherName,
                                                 });
                                               }
                                               if (psychologySpecialistId !=
                                                   null) {
-                                                Students.doc(uid).update({
+                                                students.doc(uid).update({
                                                   'psychologySpecialistName':
                                                       psychologySpecialistName,
                                                   //نفسي
@@ -683,7 +613,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
                                               if (occupationalSpecialistId !=
                                                   null) {
-                                                Students.doc(uid).update({
+                                                students.doc(uid).update({
                                                   'occupationalSpecialistName':
                                                       occupationalSpecialistName,
                                                   //,ظيفي
@@ -693,7 +623,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
                                               if (physiotherapySpecialistId !=
                                                   null) {
-                                                Students.doc(uid).update({
+                                                students.doc(uid).update({
                                                   'physiotherapySpecialistName':
                                                       physiotherapySpecialistName,
                                                   //علاج طبيعي
@@ -704,7 +634,7 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                               if (communicationSpecialistId !=
                                                   null) {
-                                                Students.doc(uid).update({
+                                                students.doc(uid).update({
                                                   'communicationSpecialistName':
                                                       communicationSpecialistName,
                                                   //تخاطب
@@ -713,7 +643,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                                 });
                                               }
 
-                                              Users.doc(uid).update({
+                                              users.doc(uid).update({
                                                 'name': newName == null
                                                     ? name
                                                     : newName,
@@ -725,12 +655,12 @@ class _StudentInfoState extends State<StudentInfo> {
                                                     : newPhone,
                                               });
                                               if (gender != null) {
-                                                Users.doc(uid).update({
+                                                users.doc(uid).update({
                                                   'gender': gender,
                                                 });
                                               }
                                               if (teacherId != null) {
-                                                Users.doc(uid).update({
+                                                users.doc(uid).update({
                                                   'teacherId': teacherId,
                                                   'teacherName': teacherName,
                                                 });
@@ -738,7 +668,7 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                               if (psychologySpecialistId !=
                                                   null) {
-                                                Users.doc(uid).update({
+                                                users.doc(uid).update({
                                                   'psychologySpecialistName':
                                                       psychologySpecialistName,
                                                   //نفسي
@@ -748,7 +678,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
                                               if (occupationalSpecialistId !=
                                                   null) {
-                                                Users.doc(uid).update({
+                                                users.doc(uid).update({
                                                   'occupationalSpecialistName':
                                                       occupationalSpecialistName,
                                                   //,ظيفي
@@ -758,7 +688,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
                                               if (physiotherapySpecialistId !=
                                                   null) {
-                                                Users.doc(uid).update({
+                                                users.doc(uid).update({
                                                   'physiotherapySpecialistName':
                                                       physiotherapySpecialistName,
                                                   //علاج طبيعي
@@ -769,7 +699,7 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                               if (communicationSpecialistId !=
                                                   null) {
-                                                Users.doc(uid).update({
+                                                users.doc(uid).update({
                                                   'communicationSpecialistName':
                                                       communicationSpecialistName,
                                                   //تخاطب
@@ -778,35 +708,16 @@ class _StudentInfoState extends State<StudentInfo> {
                                                 });
                                               }
 
-                                              if (teacherId != null) {
-                                                Admin_Teachers.get().then(
-                                                    (value) => value.docs
-                                                            .forEach((element) {Admin_Teachers.doc(element.id)
-                                                              .collection('Students')
-                                                              .doc(uid)
-                                                              .delete()
-                                                              .whenComplete(() {
-                                                            Admin_Teachers.doc(
-                                                                    teacherId)
-                                                                .collection(
-                                                                    'Students')
-                                                                .doc(uid)
-                                                                .set({
-                                                              'uid': uid
-                                                            });
-                                                          });
-                                                        }));
-
-                                                Teachers.get().then((value) =>
+                                                teachers.get().then((value) =>
                                                     value.docs
                                                         .forEach((element) {
-                                                      Teachers.doc(element.id)
+                                                      teachers.doc(element.id)
                                                           .collection(
                                                               'Students')
                                                           .doc(uid)
                                                           .delete()
                                                           .whenComplete(() {
-                                                        Teachers.doc(teacherId)
+                                                        teachers.doc(teacherId)
                                                             .collection(
                                                                 'Students')
                                                             .doc(uid)
@@ -815,23 +726,23 @@ class _StudentInfoState extends State<StudentInfo> {
                                                     }));
                                               }
 
-                                              if (psychologySpecialistId !=
-                                                  null) {
-                                                Admin_Specialists.where(
+
+
+                                                specialists.where(
                                                         'typeOfSpechalist',
                                                         isEqualTo:
                                                             "أخصائي نفسي")
                                                     .get()
                                                     .then((value) => value.docs
                                                             .forEach((element) {
-                                                          Admin_Specialists.doc(
+                                                          specialists.doc(
                                                                   element.id)
                                                               .collection(
                                                                   'Students')
                                                               .doc(uid)
                                                               .delete()
                                                               .whenComplete(() {
-                                                            Admin_Specialists.doc(
+                                                            specialists.doc(
                                                                     psychologySpecialistId)
                                                                 .collection(
                                                                     'Students')
@@ -841,50 +752,21 @@ class _StudentInfoState extends State<StudentInfo> {
                                                             });
                                                           });
                                                         }));
-
-                                                Specialists.where(
-                                                        'typeOfSpechalist',
-                                                        isEqualTo:
-                                                            "أخصائي نفسي")
-                                                    .get()
-                                                    .then((value) => value.docs
-                                                            .forEach((element) {
-                                                          Specialists.doc(
-                                                                  element.id)
-                                                              .collection(
-                                                                  'Students')
-                                                              .doc(uid)
-                                                              .delete()
-                                                              .whenComplete(() {
-                                                            Specialists.doc(
-                                                                    psychologySpecialistId)
-                                                                .collection(
-                                                                    'Students')
-                                                                .doc(uid)
-                                                                .set({
-                                                              'uid': uid
-                                                            });
-                                                          });
-                                                        }));
-                                              }
-
-                                              if (communicationSpecialistId !=
-                                                  null) {
-                                                Admin_Specialists.where(
+                                                specialists.where(
                                                         'typeOfSpechalist',
                                                         isEqualTo:
                                                             "أخصائي تخاطب")
                                                     .get()
                                                     .then((value) => value.docs
                                                             .forEach((element) {
-                                                          Admin_Specialists.doc(
+                                                          specialists.doc(
                                                                   element.id)
                                                               .collection(
                                                                   'Students')
                                                               .doc(uid)
                                                               .delete()
                                                               .whenComplete(() {
-                                                            Admin_Specialists.doc(
+                                                            specialists.doc(
                                                                     communicationSpecialistId)
                                                                 .collection(
                                                                     'Students')
@@ -894,50 +776,21 @@ class _StudentInfoState extends State<StudentInfo> {
                                                             });
                                                           });
                                                         }));
-
-                                                Specialists.where(
-                                                        'typeOfSpechalist',
-                                                        isEqualTo:
-                                                            "أخصائي تخاطب")
-                                                    .get()
-                                                    .then((value) => value.docs
-                                                            .forEach((element) {
-                                                          Specialists.doc(
-                                                                  element.id)
-                                                              .collection(
-                                                                  'Students')
-                                                              .doc(uid)
-                                                              .delete()
-                                                              .whenComplete(() {
-                                                            Specialists.doc(
-                                                                    communicationSpecialistId)
-                                                                .collection(
-                                                                    'Students')
-                                                                .doc(uid)
-                                                                .set({
-                                                              'uid': uid
-                                                            });
-                                                          });
-                                                        }));
-                                              }
-
-                                              if (occupationalSpecialistId !=
-                                                  null) {
-                                                Admin_Specialists.where(
+                                                specialists.where(
                                                         'typeOfSpechalist',
                                                         isEqualTo:
                                                             "أخصائي علاج وظيفي")
                                                     .get()
                                                     .then((value) => value.docs
                                                             .forEach((element) {
-                                                          Admin_Specialists.doc(
+                                                          specialists.doc(
                                                                   element.id)
                                                               .collection(
                                                                   'Students')
                                                               .doc(uid)
                                                               .delete()
                                                               .whenComplete(() {
-                                                            Admin_Specialists.doc(
+                                                            specialists.doc(
                                                                     occupationalSpecialistId)
                                                                 .collection(
                                                                     'Students')
@@ -947,49 +800,21 @@ class _StudentInfoState extends State<StudentInfo> {
                                                             });
                                                           });
                                                         }));
-                                                Specialists.where(
-                                                        'typeOfSpechalist',
-                                                        isEqualTo:
-                                                            "أخصائي علاج وظيفي")
-                                                    .get()
-                                                    .then((value) => value.docs
-                                                            .forEach((element) {
-                                                          Specialists.doc(
-                                                                  element.id)
-                                                              .collection(
-                                                                  'Students')
-                                                              .doc(uid)
-                                                              .delete()
-                                                              .whenComplete(() {
-                                                            Specialists.doc(
-                                                                    occupationalSpecialistId)
-                                                                .collection(
-                                                                    'Students')
-                                                                .doc(uid)
-                                                                .set({
-                                                              'uid': uid
-                                                            });
-                                                          });
-                                                        }));
-                                              }
-
-                                              if (physiotherapySpecialistId !=
-                                                  null) {
-                                                Admin_Specialists.where(
+                                                specialists.where(
                                                         'typeOfSpechalist',
                                                         isEqualTo:
                                                             "أخصائي علاج طبيعي")
                                                     .get()
                                                     .then((value) => value.docs
                                                             .forEach((element) {
-                                                          Admin_Specialists.doc(
+                                                          specialists.doc(
                                                                   element.id)
                                                               .collection(
                                                                   'Students')
                                                               .doc(uid)
                                                               .delete()
                                                               .whenComplete(() {
-                                                            Admin_Specialists.doc(
+                                                            specialists.doc(
                                                                     physiotherapySpecialistId)
                                                                 .collection(
                                                                     'Students')
@@ -1000,52 +825,26 @@ class _StudentInfoState extends State<StudentInfo> {
                                                           });
                                                         }));
 
-                                                Specialists.where(
-                                                        'typeOfSpechalist',
-                                                        isEqualTo:
-                                                            "أخصائي علاج طبيعي")
-                                                    .get()
-                                                    .then((value) => value.docs
-                                                            .forEach((element) {
-                                                          Specialists.doc(
-                                                                  element.id)
-                                                              .collection(
-                                                                  'Students')
-                                                              .doc(uid)
-                                                              .delete()
-                                                              .whenComplete(() {
-                                                            Specialists.doc(
-                                                                    physiotherapySpecialistId)
-                                                                .collection(
-                                                                    'Students')
-                                                                .doc(uid)
-                                                                .set({
-                                                              'uid': uid
-                                                            });
-                                                          });
-                                                        }));
-                                              }
-
-                                              Specialists.get().then((value) =>
+                                              specialists.get().then((value) =>
                                                   value.docs.forEach((element) {
-                                                  Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                  specialists.doc(element.id).collection('Students').doc(uid).update({
                                                     'name':newName==null? name: newName,
                                                   });
 
                                                   if (gender != null) {
-                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                    specialists.doc(element.id).collection('Students').doc(uid).update({
                                                       'gender': gender,
                                                     });
                                                   }
                                                   if (teacherId != null) {
-                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                    specialists.doc(element.id).collection('Students').doc(uid).update({
                                                       'teacherId': teacherId,
                                                       'teacherName': teacherName,
                                                     });
                                                   }
                                                   if (psychologySpecialistId !=
                                                       null) {
-                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                    specialists.doc(element.id).collection('Students').doc(uid).update({
                                                       'psychologySpecialistName':
                                                       psychologySpecialistName,
                                                       //نفسي
@@ -1055,7 +854,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   }
                                                   if (occupationalSpecialistId !=
                                                       null) {
-                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                    specialists.doc(element.id).collection('Students').doc(uid).update({
                                                       'occupationalSpecialistName':
                                                       occupationalSpecialistName,
                                                       //,ظيفي
@@ -1065,7 +864,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   }
                                                   if (physiotherapySpecialistId !=
                                                       null) {
-                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                    specialists.doc(element.id).collection('Students').doc(uid).update({
                                                       'physiotherapySpecialistName':
                                                       physiotherapySpecialistName,
                                                       //علاج طبيعي
@@ -1076,7 +875,7 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                                   if (communicationSpecialistId !=
                                                       null) {
-                                                    Specialists.doc(element.id).collection('Students').doc(uid).update({
+                                                    specialists.doc(element.id).collection('Students').doc(uid).update({
                                                       'communicationSpecialistName':
                                                       communicationSpecialistName,
                                                       //تخاطب
@@ -1088,69 +887,13 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   })
                                               );
 
-                                              Admin_Specialists.get().then((value) =>
-                                                  value.docs.forEach((element) {
-                                                    Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
-                                                      'name':newName==null? name: newName,
-                                                    });
 
-                                                    if (gender != null) {
-                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
-                                                        'gender': gender,
-                                                      });
-                                                    }
-                                                    if (teacherId != null) {
-                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
-                                                        'teacherId': teacherId,
-                                                        'teacherName': teacherName,
-                                                      });
-                                                    }
-                                                    if (psychologySpecialistId != null) {
-                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
-                                                        'psychologySpecialistName':
-                                                        psychologySpecialistName,
-                                                        //نفسي
-                                                        'psychologySpecialistId':
-                                                        psychologySpecialistId,
-                                                      });
-                                                    }
-                                                    if (occupationalSpecialistId != null) {
-                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
-                                                        'occupationalSpecialistName':
-                                                        occupationalSpecialistName,
-                                                        //,ظيفي
-                                                        'occupationalSpecialistId':
-                                                        occupationalSpecialistId,
-                                                      });
-                                                    }
-                                                    if (physiotherapySpecialistId != null) {
-                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
-                                                        'physiotherapySpecialistName':
-                                                        physiotherapySpecialistName,
-                                                        //علاج طبيعي
-                                                        'physiotherapySpecialistId':
-                                                        physiotherapySpecialistId,
-                                                      });
-                                                    }
-
-                                                    if (communicationSpecialistId != null) {
-                                                      Admin_Specialists.doc(element.id).collection('Students').doc(uid).update({
-                                                        'communicationSpecialistName':
-                                                        communicationSpecialistName,
-                                                        //تخاطب
-                                                        'communicationSpecialistId':
-                                                        communicationSpecialistId,
-                                                      });
-                                                    }
-                                                  })
-                                              );
                                               Navigator.pop(
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           MainAdminScreen(0)));
                                             }
-                                          },
                                         ),
                                       ),
                                     ),

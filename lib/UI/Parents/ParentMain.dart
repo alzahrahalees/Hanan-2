@@ -40,7 +40,7 @@ class _ParentMainState extends State<ParentMain> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _screens=[ParentDiaries(),ParentAppointments(),PlansTeacher(),ParentStudyCaseScreen(),ParentCaretakerInformation()];
+    List<Widget> _screens=[ParentDiaries(),ParentAppointments(),ParentPlans(),ParentStudyCaseScreen(),ParentCaretakerInformation()];
     List<String> _titles=['اليوميات',"المواعيد ","الخطط","المعلومات ","فريق العمل"];
     String _name='';
     return SafeArea(

@@ -190,6 +190,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                 ));
                           },
                           child: IconButton(
+                              onPressed: (){},
                               icon: Icon(Icons.camera_enhance_rounded,
                             color: Colors.deepPurple.shade400,)),
                         ),
@@ -233,7 +234,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             },
                             child: IconButton(icon: Icon(Icons.video_call,
                                 size: 30,
-                                color: Colors.deepPurple.shade400),)),
+                                color: Colors.deepPurple.shade400),
+                              onPressed: (){},
+                            )),
 
                         // Navigator.push(context, MaterialPageRoute(builder: (context) => ChewieDemo()),);},
                       ],

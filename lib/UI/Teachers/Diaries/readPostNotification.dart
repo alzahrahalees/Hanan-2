@@ -26,11 +26,9 @@ class _OnePostNotState extends State<OnePostNot> {
   @override
   Widget build(BuildContext context) {
     User userTeacher = FirebaseAuth.instance.currentUser;
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-    CollectionReference Admin_Teachers = Admin.doc(widget.centerId).collection('Teachers');
-    CollectionReference Admin_Students = Admin.doc(widget.centerId).collection('Students');
+
      return Scaffold(
        appBar: AppBar(
          title: Text("اليومية", style: kTextAppBarStyle),
@@ -118,14 +116,6 @@ class _OnePostNotState extends State<OnePostNot> {
     onPressed: () {
 
     var DeltoStudentPost=  Students.doc(widget.studentId).collection("Posts").doc(widget.postId).collection('Comments').doc(document.id).delete();
-
-    var DeltoAdminStudentPost= Admin_Students.doc(widget.studentId).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
-
-    var DeltoTeacherStudentPost= Teachers.doc(userTeacher.email).collection("Students").doc(widget.studentId)
-        .collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
-
-    var DeltoAdminTeacherStudentPost=  Admin_Teachers.doc(userTeacher.email).collection("Students").doc(widget.studentId).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
-
 
     Navigator.of(context).pop();
     },

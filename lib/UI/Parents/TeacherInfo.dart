@@ -19,7 +19,7 @@ class _teacherInfoState extends State<teacherInfo> {
   @override
   Widget build(BuildContext context) {
 
-    User userAdmin =  FirebaseAuth.instance.currentUser;
+
     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
 
 

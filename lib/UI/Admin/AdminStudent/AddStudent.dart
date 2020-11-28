@@ -12,7 +12,7 @@ class AddStudentScreen extends StatefulWidget {
 }
 
 class _AddStudentScreenState extends State<AddStudentScreen> {
-  @override
+@override
   void initState() {
     super.initState();
   }
@@ -20,10 +20,6 @@ List <String> l;
 
 
   final _formkey = GlobalKey<FormState>();
-  final firestoreInstance = FirebaseFirestore.instance;
-  User userAdmin =  FirebaseAuth.instance.currentUser;
-  CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-  CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
 
   //Map<String,dynamic> s;
   bool _isEmailExists =false;
@@ -55,7 +51,7 @@ List <String> l;
   }
 
   Future<bool> isEmailExists (String email) async{
-    FirebaseAuthException;
+
     bool isExits;
     await FirebaseFirestore.instance.collection('Users').doc(email).get()
         .then((value){
@@ -87,6 +83,7 @@ List <String> l;
 
   @override
   Widget build(BuildContext context) {
+    User userAdmin = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
         appBar: AppBar(
@@ -220,7 +217,7 @@ List <String> l;
                             new Padding(
                                 padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
-                                    stream: Admin.doc(userAdmin.email).collection('Teachers').snapshots(),
+                                    stream: FirebaseFirestore.instance.collection('Teachers').where('center',isEqualTo: userAdmin.email).snapshots(),
                                     builder: (context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
                                       if (snapshot.hasData){
@@ -275,7 +272,7 @@ List <String> l;
                             new Padding(
                               padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
-                                  stream: Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي نفسي" ).snapshots(),
+                                  stream: FirebaseFirestore.instance.collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي نفسي" ).where('center',isEqualTo: userAdmin.email).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     if (snapshot.hasData){
@@ -330,7 +327,7 @@ List <String> l;
                             new Padding(
                               padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
-                                  stream: Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج وظيفي" ).snapshots(),
+                                  stream: FirebaseFirestore.instance.collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج وظيفي" ).where('center',isEqualTo: userAdmin.email).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                     if (snapshot.hasData) {
@@ -379,7 +376,7 @@ List <String> l;
                             new Padding(
                               padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
-                                  stream:Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج طبيعي" ).snapshots(),
+                                  stream:FirebaseFirestore.instance.collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي علاج طبيعي" ).where('center',isEqualTo: userAdmin.email).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                    if (snapshot.hasData) {
@@ -435,7 +432,7 @@ List <String> l;
                               padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
                                   stream:
-                                  Admin.doc(userAdmin.email).collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي تخاطب" ).snapshots(),
+                                  FirebaseFirestore.instance.collection('Specialists').where('typeOfSpechalist',isEqualTo:"أخصائي تخاطب" ).where('center',isEqualTo: userAdmin.email).snapshots(),
                                   builder: (context,
                                       AsyncSnapshot<QuerySnapshot> snapshot) {
                                      if (snapshot.hasData) {
@@ -486,6 +483,7 @@ List <String> l;
                         new Padding(
                           padding: new EdgeInsets.all(15),
                           child:_isEmailExists? RaisedButton(
+                            onPressed: (){},
                             color: Colors.black38,
                             child: Text("إضافة", style: kTextButtonStyle),
                             shape: RoundedRectangleBorder(

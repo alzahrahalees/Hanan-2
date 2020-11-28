@@ -19,7 +19,6 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
 
   @override
   Widget build(BuildContext context) {
-
     var _gender='';
     User user = FirebaseAuth.instance.currentUser;
     CollectionReference studentsInSpecia = FirebaseFirestore.instance.collection('Specialists')

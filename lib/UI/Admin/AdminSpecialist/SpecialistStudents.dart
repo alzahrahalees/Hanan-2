@@ -16,12 +16,7 @@ class SpecialistStudents extends StatelessWidget {
     CollectionReference Specialists =
     FirebaseFirestore.instance.collection('Specialists');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin =
-    FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Specialists =
-    Admin.doc(userAdmin.email.toLowerCase()).collection('Specialists');
-    CollectionReference Admin_Students=Admin.doc(userAdmin.email.toLowerCase()).collection('Students');
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+
 
 
     return Scaffold(
@@ -34,7 +29,7 @@ class SpecialistStudents extends StatelessWidget {
         SafeArea(
             child:  StreamBuilder(
                 stream:
-                Admin_Specialists.doc(uid).collection('Students').snapshots(),
+                Specialists.doc(uid).collection('Students').snapshots(),
                 builder:  (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {

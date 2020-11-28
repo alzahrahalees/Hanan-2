@@ -44,20 +44,7 @@ class AddSpecialist extends StatelessWidget {
      if (!isExists){
        var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase()).set({});
       //problem:the document must be have the same ID
-      var addToAdminSpecialist=Admin_Specialists.doc(email.toLowerCase())
-          .set({
-        "isAuth":false,
-        "center":userAdmin.email.toLowerCase(),
-        'uid':email.toLowerCase(),
-        'name': name,
-        'age': age,
-        'email': email.toLowerCase(),
-        'phone': phone,
-        "gender": gender,
-        "type": type,
-        "typeOfSpechalist":typeOfSpechalist,
-        "birthday": birthday.toString()
-      });
+
       Specialists.doc(email.toLowerCase())
           .set({
         "isAuth":false,

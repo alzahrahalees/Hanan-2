@@ -102,7 +102,9 @@ class _MainLogInState extends State<MainLogIn> {
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
                             hintText: "البريد الإلكتروني",
-                            prefixIcon: new IconButton(icon:Icon(Icons.person),focusColor: Colors.deepPurple,),
+                            prefixIcon: new IconButton(
+                              onPressed: (){},
+                              icon:Icon(Icons.person),focusColor: Colors.deepPurple,),
                           ),
                           validator: (value) {
                             if (value.isEmpty) {
@@ -118,7 +120,9 @@ class _MainLogInState extends State<MainLogIn> {
                           decoration: InputDecoration(
                               focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
-                              prefixIcon: new IconButton(icon:Icon(Icons.lock),focusColor: Colors.deepPurple,),
+                              prefixIcon: new IconButton(icon:Icon(Icons.lock),focusColor: Colors.deepPurple,
+                                onPressed: (){},
+                              ),
                               hintText: "كلمة المرور",
                               helperStyle: TextStyle(fontSize: 10)),
                           validator: (value) {

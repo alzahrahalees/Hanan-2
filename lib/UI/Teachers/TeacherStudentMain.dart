@@ -5,7 +5,6 @@ import 'TeacherPlans.dart';
 import 'TeacherStudentAppointment.dart';
 // ignore: implementation_imports
 import 'package:flutter/src/widgets/framework.dart';
-
 import '../Study Cases/mainStudyCasesScreen.dart';
 
 
@@ -66,10 +65,7 @@ class _TeacherStudentMainState extends State<TeacherStudentMain> {
 
     )];
 
-
-
     List<String> _titles=['يوميات',"مواعيد ","خطط","معلومات "];
-
 
     return SafeArea(
       child: Scaffold(

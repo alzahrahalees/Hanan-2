@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hanan/UI/Specialists/SmainStudyCasesScreen.dart';
-import 'package:hanan/UI/Study%20Cases/mainStudyCasesScreen.dart';
 import '../Constance.dart';
-import 'SpecialistDiaries.dart';
 import 'SpecialistPlans.dart';
 import 'SpecialistStudentAppointment.dart';
 
@@ -42,7 +40,7 @@ class _SpecialistStudentMainState extends State<SpecialistStudentMain> {
   Widget build( context) {
 
     List<String> _titles=["مواعيد ","خطط","معلومات "];
-    List<Widget> _screens=[AppointmentsSpecialist(studentId: widget.uid),PlansSpecialist(),SpechalistStudyCaseScreen(studentId: widget.uid,centerId: widget.centerId,
+    List<Widget> _screens=[AppointmentsSpecialist(studentId: widget.uid),SpecialistPlans (widget.uid),SpechalistStudyCaseScreen(studentId: widget.uid,centerId: widget.centerId,
         communicationSpecialistName:widget.communicationSpecialistName,
         communicationSpecialistId: widget.communicationSpecialistId,
         physiotherapySpecialistId:widget.physiotherapySpecialistId,

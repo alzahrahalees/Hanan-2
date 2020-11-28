@@ -83,8 +83,7 @@ class KCircularTextFormField extends StatelessWidget {
             validator: (value) {
               if (value.isEmpty) {
                 return '$validatorText ';
-              } else
-                return '';
+              }
             }));
   }
 }
@@ -119,8 +118,7 @@ class KNormalTextFormField extends StatelessWidget {
       validator: (value) {
         if (value.isEmpty) {
           return '$validatorText ';
-        } else
-          return '';
+        }
       },
       onChanged: onChanged,
     );
@@ -311,6 +309,7 @@ class _kDatePickerState extends State<kDatePicker> {
     ]);
   }
 }
+
 
 class KDropDownList extends StatefulWidget {
   String textBehind;

@@ -1,12 +1,10 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hanan/UI/Teachers/Diaries/Video.dart';
 import 'package:hanan/UI/Teachers/Diaries/Post.dart';
-import 'package:path_provider/path_provider.dart';
 import '../Constance.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
@@ -16,10 +14,6 @@ class ParentDiaries extends StatefulWidget {
 }
 
 class _ParentDiariesState extends State<ParentDiaries> {
-
-
-
-  final _formkey = GlobalKey<FormState>();
   String comment;
   DateTime dateSearch=DateTime.now();
   String dateSearch2=DateTime.now().toString().substring(0, 10);
@@ -32,38 +26,15 @@ class _ParentDiariesState extends State<ParentDiaries> {
 
   List<TextEditingController> _controllers = new List();
 
-  Future<void> downloadFile(String url) async {
-    Dio dio = Dio();
-    try {
-      var dir = await  getExternalStorageDirectory();
-      print(dir.path);
-      await dio.download(url, "${dir.path}/v.mp4",
-          onReceiveProgress: (rec, total) {
-            print("Rec: $rec , Total: $total");
-            setState(() {
-              downloading = true;
-              progressString = ((rec / total) * 100).toStringAsFixed(0) + "%";
-            });
-          });
-    } catch (e) {
-      print(e);
-    }
-    setState(() {
-      downloading = false;
-      progressString = "Completed";
-    });
-    print("Download completed");
-  }
-
 
   Widget build(BuildContext context) {
     User userStudent = FirebaseAuth.instance.currentUser;
-    CollectionReference Students = FirebaseFirestore.instance.collection('Students');
+    CollectionReference students = FirebaseFirestore.instance.collection('Students');
 
     return Scaffold(
       body: SafeArea(
           child: StreamBuilder<QuerySnapshot>(
-              stream: Students.doc(userStudent.email).collection('Posts').where('date',isEqualTo:dateSearch2).orderBy('createdAt', descending: true).snapshots(),
+              stream: students.doc(userStudent.email).collection('Posts').where('date',isEqualTo:dateSearch2).orderBy('createdAt', descending: true).snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData)
                   return Center(child: SpinKitFoldingCube(
@@ -107,10 +78,6 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                 String teachrtId=documentSnapshot['teacherId'];
                                 String Writer = documentSnapshot['studentName'];
                                 CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-                                CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-                                CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-                                CollectionReference Admin_Teachers = Admin.doc(CenterId).collection('Teachers');
-                                CollectionReference Admin_Students = Admin.doc(CenterId).collection('Students');
 
                                     return Column(
                                       children: [
@@ -250,17 +217,6 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                                                         ),
                                                                                         onPressed: ()  {
                                                                                           Students.doc(Uid).collection("Posts").doc(PostId).collection('Comments').doc(document.id).delete();
-
-                                                                                           Admin_Students.doc(Uid).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
-
-                                                                                           Teachers.doc(teachrtId).collection("Students").doc(Uid).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
-
-                                                                                           Admin_Teachers.doc(teachrtId).collection("Students").doc(Uid).collection('Posts').doc(PostId).collection('Comments').doc(document.id).delete();
-
-                                                                                           Teachers.doc(teachrtId).collection('Notifications').doc("${document.id} Notifications").delete();
-
-                                                                                           Admin_Teachers.doc(teachrtId).collection('Notifications').doc("${document.id} Notifications").delete();
-
                                                                                           Navigator.of(context).pop();
 
                                                                                         },

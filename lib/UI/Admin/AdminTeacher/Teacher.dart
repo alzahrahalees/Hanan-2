@@ -31,8 +31,7 @@ class AddTeacher extends StatelessWidget {
     //Reference
     CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
     CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-    CollectionReference Admin = FirebaseFirestore.instance.collection('Centers');
-    CollectionReference Admin_Teachers =Admin.doc(userAdmin.email).collection('Teachers');
+
 
 
 
@@ -48,18 +47,6 @@ class AddTeacher extends StatelessWidget {
       var NoAuth =FirebaseFirestore.instance.collection('NoAuth').doc(email.toLowerCase()).set({});
 
 
-     var addToAdminTeachers=Admin_Teachers.doc(email.toLowerCase())
-          .set({
-       "isAuth":false,
-       "center":userAdmin.email.toLowerCase(),
-       "uid":email.toLowerCase(),
-       'name': name,
-       'age': age,
-       'email': email.toLowerCase(),
-       'phone': phone,
-       "gender": gender,
-       "type": type,
-       "birthday": birthday.toString(),});
 
 
       //problem:the document must be have the same ID
