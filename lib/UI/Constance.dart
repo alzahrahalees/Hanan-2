@@ -13,9 +13,6 @@ const Color kButtonColor = Color(0xff9181bd);
 const kSelectedItemColor = Color(0xff5F3E60);
 const kUnselectedItemColor = Color(0xff9181bd);
 
-
-
-
 const kTextAppBarStyle = TextStyle(
     fontSize: 20,
     color: kUnselectedItemColor,
@@ -70,24 +67,24 @@ class KCircularTextFormField extends StatelessWidget {
   KCircularTextFormField(this.controller, this.validatorText);
 
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
         width: 300,
         height: 70,
         child: TextFormField(
-          textAlign: TextAlign.center,
+            textAlign: TextAlign.center,
             controller: controller,
             decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
-                border:  OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple, width: 2)),
+                border: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(
-              const Radius.circular(18.0),
-            ))),
+                  const Radius.circular(18.0),
+                ))),
             validator: (value) {
               if (value.isEmpty) {
                 return '$validatorText ';
-              }
-              else return '';
+              } else
+                return '';
             }));
   }
 }
@@ -100,26 +97,30 @@ class KNormalTextFormField extends StatelessWidget {
   String title = '';
   bool readOnly = false;
 
-
   KNormalTextFormField(
-      {this.hintText, this.validatorText, this.controller, this.onChanged,this.title,this.readOnly});
+      {this.hintText,
+      this.validatorText,
+      this.controller,
+      this.onChanged,
+      this.title,
+      this.readOnly});
 
   Widget build(BuildContext context) {
     return TextFormField(
-      readOnly: readOnly==null? false: readOnly,
+      readOnly: readOnly == null ? false : readOnly,
       initialValue: title,
       controller: controller,
       decoration: InputDecoration(
         focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
-        labelText:  "$hintText",
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2)),
+        labelText: "$hintText",
         labelStyle: TextStyle(color: Colors.grey),
       ),
       validator: (value) {
         if (value.isEmpty) {
           return '$validatorText ';
-        }
-        else return '';
+        } else
+          return '';
       },
       onChanged: onChanged,
     );
@@ -135,18 +136,23 @@ class KNormalTextFormFieldLines extends StatelessWidget {
   bool readOnly;
 
   KNormalTextFormFieldLines(
-      {this.hintText, this.validatorText, this.controller, this.onChanged, this.initialValue,this.readOnly});
+      {this.hintText,
+      this.validatorText,
+      this.controller,
+      this.onChanged,
+      this.initialValue,
+      this.readOnly});
 
   Widget build(BuildContext context) {
     return TextFormField(
-      readOnly: readOnly==null? false: readOnly,
+      readOnly: readOnly == null ? false : readOnly,
       initialValue: initialValue,
       maxLines: 6,
       minLines: 1,
       controller: controller,
       decoration: InputDecoration(
         focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2)),
         hintText: "$hintText",
       ),
       validator: (value) {
@@ -169,15 +175,13 @@ class KNormalTextFormFieldLinesNoV extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return TextFormField(
-
       maxLines: 6,
       minLines: 1,
       controller: controller,
       decoration: InputDecoration(
         focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2)),
         hintText: "$hintText",
-
       ),
       onChanged: onChanged,
     );
@@ -195,7 +199,7 @@ class KNormalTextFormFieldNoV extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(
           focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
+              borderSide: BorderSide(color: Colors.deepPurple, width: 2)),
           hintText: "$hintText",
         ));
   }
@@ -205,27 +209,25 @@ class KNormalTextFormFieldNoV extends StatelessWidget {
 class KCustomTwoRadioButton extends StatefulWidget {
   @override
   String valueOfIndex;
-  List<String> list ;
-  KCustomTwoRadioButton(String valueOfIndex , List<String> list){
-    this.valueOfIndex=valueOfIndex;
-    this.list=list;
+  List<String> list;
+  KCustomTwoRadioButton(String valueOfIndex, List<String> list) {
+    this.valueOfIndex = valueOfIndex;
+    this.list = list;
   }
 
-  _KCustomTwoRadioButtonState createState() => _KCustomTwoRadioButtonState(valueOfIndex,list);
-
+  _KCustomTwoRadioButtonState createState() =>
+      _KCustomTwoRadioButtonState(valueOfIndex, list);
 }
 
 // i think we need to add in the same page to can access ValueOfIndex
 class _KCustomTwoRadioButtonState extends State<KCustomTwoRadioButton> {
-
   String valueOfIndex;
-  List<String> list ;
-  _KCustomTwoRadioButtonState(String valueOfIndex , List<String> list){
-    this.valueOfIndex=valueOfIndex;
-    this.list=list;
+  List<String> list;
+  _KCustomTwoRadioButtonState(String valueOfIndex, List<String> list) {
+    this.valueOfIndex = valueOfIndex;
+    this.list = list;
   }
   int selectedIndex = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -240,6 +242,7 @@ class _KCustomTwoRadioButtonState extends State<KCustomTwoRadioButton> {
       ),
     );
   }
+
   void changeIndex(int index) {
     setState(() {
       selectedIndex = index;
@@ -255,7 +258,7 @@ class _KCustomTwoRadioButtonState extends State<KCustomTwoRadioButton> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       borderSide: BorderSide(
           color:
-          selectedIndex == index ? Colors.deepPurpleAccent : Colors.grey),
+              selectedIndex == index ? Colors.deepPurpleAccent : Colors.grey),
       child: Text(txt,
           style: TextStyle(
               color: selectedIndex == index
@@ -264,7 +267,6 @@ class _KCustomTwoRadioButtonState extends State<KCustomTwoRadioButton> {
     );
   }
 }
-
 
 class kDatePicker extends StatefulWidget {
   DateTime whatDate;
@@ -346,16 +348,17 @@ class _KDropDownListState extends State<KDropDownList> {
   @override
   Widget build(BuildContext context) {
     return Row(children: <Widget>[
-      textBehind==null?
-      SizedBox()
-          :Text("$textBehind", style: kTextPageStyle.copyWith(color: Colors.grey)),
+      textBehind == null
+          ? SizedBox()
+          : Text("$textBehind",
+              style: kTextPageStyle.copyWith(color: Colors.grey)),
       new Padding(padding: new EdgeInsets.all(7)),
       Expanded(
           child: SizedBox(
         height: 40,
-        width: 200,
+        width: 100,
         child: DropdownButton(
-
+          isExpanded: false,
           hint: Text('$hintText'),
           // Not necessary for Option 1
           value: selected,
@@ -407,11 +410,10 @@ class _MultiSelectState extends State<MultiSelect> {
     return Container(
       padding: EdgeInsets.all(16),
       child: MultiSelectFormField(
-
         hintWidget: Center(child: Text('اضغط لاختيار واحدة أو أكثر')),
         fillColor: kBackgroundPageColor,
         autovalidate: false,
-        title:Text('النمو الإنفعالي'),
+        title: Text('النمو الإنفعالي'),
         validator: (value) {
           if (value == null || value.length == 0) {
             return 'مطلوب';
@@ -468,9 +470,9 @@ class _MultiSelectState extends State<MultiSelect> {
         initialValue: list,
         onSaved: (value) {
           if (value == null)
-          setState(() {
-            list = value;
-          });
+            setState(() {
+              list = value;
+            });
         },
       ),
     );
@@ -513,12 +515,10 @@ class ReusableCard extends StatelessWidget {
 }
 
 class Circle extends StatelessWidget {
-
   final Widget child;
   final Color color;
 
   const Circle({this.color, this.child});
-
 
   @override
   Widget build(BuildContext context) {
@@ -543,8 +543,7 @@ class Circle extends StatelessWidget {
 }
 
 class ProfileTile extends StatelessWidget {
-
-  final  icon;
+  final icon;
   final String hintTitle;
   final String title;
   final Color color;
@@ -552,13 +551,18 @@ class ProfileTile extends StatelessWidget {
 
   final bool readOnly;
 
-
-  const ProfileTile({this.readOnly,this.onChanged,this.icon, this.hintTitle, this.title, this.color});
+  const ProfileTile(
+      {this.readOnly,
+      this.onChanged,
+      this.icon,
+      this.hintTitle,
+      this.title,
+      this.color});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
+      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 8),
       child: Container(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -578,18 +582,19 @@ class ProfileTile extends StatelessWidget {
                     readOnly: readOnly,
                     initialValue: title,
                     decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
-                        helperText: readOnly?  "لايمكن تغييره": '' ,
-                        labelText: hintTitle,
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.deepPurple, width: 2)),
+                      helperText: readOnly ? "لايمكن تغييره" : '',
+                      labelText: hintTitle,
                       labelStyle: TextStyle(color: Colors.deepPurple),
                     ),
                     onChanged: onChanged,
-                    validator:  (value){
+                    validator: (value) {
                       if (value.isEmpty) {
                         return "لا يمكن تركها فارغة";
-                      }
-                      else return null;
+                      } else
+                        return null;
                     },
                   ),
                 ),
@@ -603,8 +608,7 @@ class ProfileTile extends StatelessWidget {
 }
 
 class ProfileTileTwo extends StatelessWidget {
-
-  final  icon;
+  final icon;
   final String hintTitle;
   final String title;
   final Color color;
@@ -612,13 +616,18 @@ class ProfileTileTwo extends StatelessWidget {
 
   final bool readOnly;
 
-
-  const ProfileTileTwo({this.readOnly,this.onChanged,this.icon, this.hintTitle, this.title, this.color});
+  const ProfileTileTwo(
+      {this.readOnly,
+      this.onChanged,
+      this.icon,
+      this.hintTitle,
+      this.title,
+      this.color});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10,bottom: 10,left: 5,right: 8),
+      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 8),
       child: Container(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -638,18 +647,19 @@ class ProfileTileTwo extends StatelessWidget {
                     readOnly: readOnly,
                     initialValue: title,
                     decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.deepPurple,width: 2)),
-                        //helperText: readOnly?  "لايمكن تغييره": '' ,
-                        labelText: hintTitle,
-                        labelStyle: TextStyle(color: Colors.deepPurple),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.deepPurple, width: 2)),
+                      //helperText: readOnly?  "لايمكن تغييره": '' ,
+                      labelText: hintTitle,
+                      labelStyle: TextStyle(color: Colors.deepPurple),
                     ),
                     onChanged: onChanged,
-                    validator:  (value){
+                    validator: (value) {
                       if (value.isEmpty) {
                         return "لا يمكن تركها فارغة";
-                      }
-                      else return null;
+                      } else
+                        return null;
                     },
                   ),
                 ),
