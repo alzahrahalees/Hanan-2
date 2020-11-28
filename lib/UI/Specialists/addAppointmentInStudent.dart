@@ -195,35 +195,7 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
     }).catchError((err) => print('### Err : $err ###'));
 
     // add To Student In Center
-    FirebaseFirestore.instance
-        .collection('Centers')
-        .doc(_centerId)
-        .collection('Students')
-        .doc(widget.studentId)
-        .collection('Appointments')
-        .doc(docId)
-        .set({
-          'name': widget.studentName,
-          'studentId': widget.studentId,
-          'specialistId': user.email,
-          'teacherId': teacherId,
-          'specialistName': specialistName,
-          'specialistType': specialistType,
-          'hour': _hour,
-          'min': _min,
-          'sun': _sun,
-          'mon': _mon,
-          'tue': _tue,
-          'wed': _wed,
-          'thu': _thu,
-          'sunIsChecked': false,
-          'monIsChecked': false,
-          'tueIsChecked': false,
-          'wedIsChecked': false,
-          'thuIsChecked': false,
-        })
-        .whenComplete(() => print('appointment added to teacher'))
-        .catchError((err) => print('### Err : $err ###'));
+
   }
 
   // call all functions

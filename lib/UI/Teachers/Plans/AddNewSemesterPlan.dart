@@ -206,8 +206,6 @@ return isExit;
                child:  Text('تحتوي هذه الخطة على أقسام المجالات الخاصة وهي : مجال التواصل، المجال الإدراكي، المجال الحركي الدقيق، '
                    'المجال الاجتماعي، والمجال الاستقلالي'),
              ),
-                
-
                 Padding(
                   padding: const EdgeInsets.all(15),
                   child: RaisedButton(
