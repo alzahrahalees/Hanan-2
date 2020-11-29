@@ -106,122 +106,134 @@ class _SFilesState extends State<SFiles> {
                                         context: context,
                                         builder: (_) => StatefulBuilder(
                                             builder: (context, setState) {
-                                              return new AlertDialog(
+                                              return  AlertDialog(
                                                 title: SizedBox(
-                                                  width: 200,
-                                                  child: ListView(
-                                                    shrinkWrap: true,
-                                                    children: [
-                                                      Column(
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Icon(Icons.upload_file,color: Colors.deepPurple.shade200,),
-                                                              Padding(padding: EdgeInsets.all(3),),
-                                                              GestureDetector(child:Text("إضغط هنا لإختيار المستند",style: kTextPageStyle,),
-                                                                  onTap:(){ pickFile1().whenComplete((){
+                                                  child: Expanded(
+                                                    child: ListView(
+                                                      shrinkWrap: true,
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            Padding(padding: EdgeInsets.all(5)) ,
+                                                            Row(
+                                                              children: [
+                                                                Icon(Icons.upload_file,color: Colors.deepPurple.shade200,),
+                                                                Padding(padding: EdgeInsets.all(3),),
+                                                                GestureDetector(child:Text("إضغط هنا لإختيار المستند",style: kTextPageStyle,),
+                                                                    onTap:(){ pickFile1().whenComplete((){
+                                                                      setState(() {
+                                                                        showMassage=true;
+                                                                      });
+                                                                    });}),
+                                                              ],
+                                                            ),
+                                                            Padding(padding: EdgeInsets.all(3)) ,
+                                                            _File!=null? showMassage==true?Text("تم إختيار ${p.basename(_File.path)}",style:kTextPageStyle.copyWith(fontSize: 10,color: Colors.grey) ,)
+                                                                :SizedBox():SizedBox(),
+                                                            Padding(padding: EdgeInsets.all(5)) ,
+                                                            Text("مشاركة مع : ",style: kTextPageStyle),
+                                                            Padding(padding: EdgeInsets.all(5)),
+                                                            widget.occupationalSpecialistId !=null && widget.occupationalSpecialistId !=userSpecialist.email?
+                                                            Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(widget.occupationalSpecialistName,style: kTextPageStyle),
+                                                                  Text("  أخصائي العلاج الوظيفي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
+                                                                  Checkbox(value: occupationalSpecialistName2, onChanged: (bool value) {
                                                                     setState(() {
-                                                                      showMassage=true;
+                                                                      occupationalSpecialistName2 = value;
                                                                     });
-                                                                  });}),
-                                                            ],
-                                                          ),
-                                                          Padding(padding: EdgeInsets.all(3)) ,
-                                                          _File!=null?
-                                                          showMassage==true?Text("تم إختيار ${p.basename(_File.path)}",style:kTextPageStyle.copyWith(fontSize: 10,color: Colors.grey) ,):Text(""):Text(""),
-                                                          Padding(padding: EdgeInsets.all(5)) ,
-                                                          Text("مشاركة مع : ",style: kTextPageStyle),
-                                                          Padding(padding: EdgeInsets.all(5)),
-                                                          widget.occupationalSpecialistId !=null && widget.occupationalSpecialistId !=userSpecialist.email?
-                                                          Row(
-                                                            children: [
-                                                              Text(widget.occupationalSpecialistName,style: kTextPageStyle),
-                                                              Text("  أخصائي العلاج الوظيفي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                              Checkbox(value: occupationalSpecialistName2, onChanged: (bool value) {
-                                                                setState(() {
-                                                                  occupationalSpecialistName2 = value;
-                                                                });
-                                                                print(occupationalSpecialistName2);
-                                                              },
-                                                                checkColor: Colors.black,
-                                                                activeColor: Colors.deepPurple.shade100,
-                                                                hoverColor: Colors.black,
-                                                              )
-                                                            ],
-                                                          ):Text("",style:TextStyle (fontSize: 0)),
-                                                          widget.communicationSpecialistId !=null && widget.communicationSpecialistId !=userSpecialist.email?
-                                                          Row(
-                                                            children: [
-                                                              Text(widget.communicationSpecialistName,style: kTextPageStyle),
-                                                              Text("  أخصائي التواصل",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                              Checkbox(value: communicationSpecialistName2, onChanged: (bool value) {
-                                                                setState(() {
-                                                                  communicationSpecialistName2 = value;
-                                                                });
-                                                                print(communicationSpecialistName2);
-                                                              },
-                                                                checkColor: Colors.black,
-                                                                activeColor: Colors.deepPurple.shade100,
-                                                                hoverColor: Colors.black,
-                                                              )
-                                                            ],
-                                                          ):Text("",style:TextStyle (fontSize: 0)),
-                                                          widget.physiotherapySpecialistId !=null && widget.physiotherapySpecialistId!=userSpecialist.email?
-                                                          Row(
-                                                            children: [
-                                                              Text(widget.physiotherapySpecialistName,style: kTextPageStyle),
-                                                              Text("  أخصائي العلاج الطبيعي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                              Checkbox(value: physiotherapySpecialistName2, onChanged: (bool value) {
-                                                                setState(() {
-                                                                  physiotherapySpecialistName2 = value;
-                                                                });
-                                                                print(physiotherapySpecialistName2);
-                                                              },
-                                                                checkColor: Colors.black,
-                                                                activeColor: Colors.deepPurple.shade100,
-                                                                hoverColor: Colors.black,
-                                                              )
-                                                            ],
-                                                          ):Text("",style:TextStyle (fontSize: 0)),
+                                                                    print(occupationalSpecialistName2);
+                                                                  },
+                                                                    checkColor: Colors.black,
+                                                                    activeColor: Colors.deepPurple.shade100,
+                                                                    hoverColor: Colors.black,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ):SizedBox(),
+                                                            widget.communicationSpecialistId !=null && widget.communicationSpecialistId !=userSpecialist.email?
+                                                            Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(widget.communicationSpecialistName,style: kTextPageStyle),
+                                                                  Text("  أخصائي التواصل",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
+                                                                  Checkbox(value: communicationSpecialistName2, onChanged: (bool value) {
+                                                                    setState(() {
+                                                                      communicationSpecialistName2 = value;
+                                                                    });
+                                                                    print(communicationSpecialistName2);
+                                                                  },
+                                                                    checkColor: Colors.black,
+                                                                    activeColor: Colors.deepPurple.shade100,
+                                                                    hoverColor: Colors.black,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ):SizedBox(),
+                                                            widget.physiotherapySpecialistId !=null && widget.physiotherapySpecialistId!=userSpecialist.email?
+                                                            Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(widget.physiotherapySpecialistName,style: kTextPageStyle),
+                                                                  Text("  أخصائي العلاج الطبيعي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
+                                                                  Checkbox(value: physiotherapySpecialistName2, onChanged: (bool value) {
+                                                                    setState(() {
+                                                                      physiotherapySpecialistName2 = value;
+                                                                    });
+                                                                    print(physiotherapySpecialistName2);
+                                                                  },
+                                                                    checkColor: Colors.black,
+                                                                    activeColor: Colors.deepPurple.shade100,
+                                                                    hoverColor: Colors.black,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ):SizedBox(),
 
-                                                          widget.psychologySpecialistId!=null && widget.psychologySpecialistId !=userSpecialist.email?
-                                                          Row(
-                                                            children: [
-                                                              Text(widget.psychologySpecialistName,style: kTextPageStyle),
-                                                              Text(" الأخصائي النفسي ",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                              Checkbox(value: psychologySpecialistName2, onChanged: (bool value) {
-                                                                setState(() {
-                                                                  psychologySpecialistName2 = value;
-                                                                });
-                                                                print(psychologySpecialistName2);
-                                                              },
-                                                                checkColor: Colors.black,
-                                                                activeColor: Colors.deepPurple.shade100,
-                                                                hoverColor: Colors.black,
-                                                              )
-                                                            ],
-                                                          ):Text("",style:TextStyle (fontSize: 0)),
+                                                            widget.psychologySpecialistId!=null && widget.psychologySpecialistId !=userSpecialist.email?
+                                                            Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(widget.psychologySpecialistName,style: kTextPageStyle),
+                                                                  Text(" الأخصائي النفسي ",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
+                                                                  Checkbox(value: psychologySpecialistName2, onChanged: (bool value) {
+                                                                    setState(() {
+                                                                      psychologySpecialistName2 = value;
+                                                                    });
+                                                                    print(psychologySpecialistName2);
+                                                                  },
+                                                                    checkColor: Colors.black,
+                                                                    activeColor: Colors.deepPurple.shade100,
+                                                                    hoverColor: Colors.black,
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ):SizedBox(),
 
-                                                          Padding(padding: EdgeInsets.all(5)),
-                                                          _File !=null ?
-                                                          FlatButton(onPressed: (){
-                                                            setState(() {
-                                                              showMassage2=true;
-                                                            });
-                                                            pickFile2().whenComplete(() {
-                                                              Navigator.pop(context);});
-                                                          },
-                                                              child:
-                                                              Text( "إرفاق", style: kTextPageStyle.copyWith(color:Colors.deepPurple.shade400))):
-                                                          Text("*يجب إختيار مستند",style:  kTextPageStyle.copyWith(color: Colors.grey,fontSize: 8)),
-                                                          Padding(padding: EdgeInsets.all(6)),
-                                                          showMassage2==true?
-                                                          Text("جاري التحميل ...",style:  kTextPageStyle.copyWith(color: Colors.grey,fontSize: 8)):
-                                                          Text("",style: TextStyle(fontSize: 0),)
+                                                            Padding(padding: EdgeInsets.all(5)),
+                                                            _File !=null ? FlatButton(onPressed: (){
+                                                              setState(() {
+                                                                showMassage2=true;
+                                                              });
+                                                              pickFile2().whenComplete(() {
+                                                                Navigator.pop(context);});},
+                                                                child:
+                                                                Text( "إرفاق", style: kTextPageStyle.copyWith(color:Colors.deepPurple.shade400))):
+                                                            Text("*يجب إختيار مستند",style:  kTextPageStyle.copyWith(color: Colors.grey,fontSize: 8)),
+                                                            Padding(padding: EdgeInsets.all(6)),
+                                                            showMassage2==true?
+                                                            Text("جاري التحميل ...",style:  kTextPageStyle.copyWith(color: Colors.grey,fontSize: 8)):
+                                                            SizedBox()
 
-                                                        ],
-                                                      ),
-                                                    ],
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               );

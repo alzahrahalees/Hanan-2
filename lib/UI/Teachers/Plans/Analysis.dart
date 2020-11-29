@@ -106,31 +106,26 @@ class _AnalysisState extends State<AnalysisDetails> {
                                           builder: (_) => StatefulBuilder(
                                               builder: (context, setState) {
                                                 return AlertDialog(
-                                                    title:
-                                                    Container(
+                                                    title: Container(
                                                       width: 270,
                                                       height: 270,
                                                       child: ListView(
                                                           shrinkWrap: true,
                                                           children: [
-                                                            Column(
-                                                                children:[
+                                                            Column(children:[
                                                                   Padding(padding: EdgeInsets.all(5)) ,
-                                                                  Row(
-                                                                    children: [
+                                                                  Row(children: [
                                                                       Icon(Icons.people_alt_rounded,color: Colors.deepPurple.shade100,),
                                                                       Padding(padding: EdgeInsets.all(3)),
                                                                       Text("المشاركين في تحقيق الهدف : ",style: kTextPageStyle),
-                                                                    ],
-                                                                  ),
+                                                                    ],),
                                                                   Padding(padding: EdgeInsets.all(5)),
                                                                   document.data()['physiotherapySpecialistName']!=null?
-                                                                  Row(
-                                                                    children: [
+                                                                  Row(children: [
                                                                       Text(document.data()['physiotherapySpecialistName'],style: kTextPageStyle),
                                                                       Text("  أخصائي العلاج الطبيعي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                                    ],
-                                                                  ):Text("",style: TextStyle(fontSize: 0),),
+                                                                    ],)
+                                                                      :SizedBox(),
                                                                   document.data()['communicationSpecialistName']!=null?
                                                                   Row(
                                                                     children: [

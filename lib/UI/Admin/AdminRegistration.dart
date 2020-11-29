@@ -32,11 +32,10 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
 
   bool isValid(){
 
-    bool isSame= _password==_password2;
     bool hasDigits = _password.contains( RegExp(r'[0-9]'));
     bool hasLowercase = _password.contains( RegExp(r'[a-z]')) || _password.contains( RegExp(r'[A-Z]'));
     bool hasMinLength = _password.length > 6;
-    return  hasDigits  & hasLowercase & hasMinLength & isSame;
+    return  hasDigits && hasLowercase && hasMinLength ;
   }
 
   @override
@@ -151,11 +150,32 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                               setState(() {
                                 _password2 = value;
                               });
+                              if (isValid() && _password2 == _password){
+                                setState(() {
+                                  isItValid = false;
+                                  textColor = Colors.grey;
+                                  icon= Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  );
+                                });
+                              }
+                              else{
+                                setState(() {
+                                  textColor = Colors.red;
+                                  icon= Icon(
+                                    Icons.clear,
+                                    color: Colors.red,
+                                  );
+                                  isItValid = false;
+                                });
+                              }
+
                             },
                         ),
                         ),
 
-                        isItValid? new Padding(
+                       isItValid? Padding(
                           padding: new EdgeInsets.all(15),
                           child: AddAdmin(
                             formKey: _formkey,
@@ -167,29 +187,16 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                               password2: _password2,
                               type: "Admin",
                           ) //phone num
-                        ):  Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        ): Padding(
+                          padding: const EdgeInsets.all(15),
                           child: RaisedButton(
-                              color: kButtonColor,
-                              child: Text("تحقق من صلاحية الرقم السري", style: kTextButtonStyle.copyWith(fontSize: 20)),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0)),
-                              onPressed:() {
-                                if(isValid()){
-                                  setState(() {
-                                    isItValid=isValid();
-                                    icon = Icon(Icons.done,color: Colors.green,);
-                                  });
-                                }
-                                else{
-                                  setState(() {
-                                    textColor=Colors.red;
-                                    icon = Icon(Icons.clear,color: Colors.red,);
-                                  });
-                                }
-                              }
+                             color: Colors.black26,
+                             child: Text("تسجيل", style: kTextButtonStyle.copyWith(fontSize: 20)),
+                             shape: RoundedRectangleBorder(
+                                 borderRadius: BorderRadius.circular(18.0)),
+                             onPressed:() { }
 
-                          ),
+                       ),
                         ),
                         ReusableCard(
                           width: 400,
@@ -250,12 +257,6 @@ class AddAdmin extends StatelessWidget {
         var result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: email.toLowerCase(), password: password);
         var user = result.user;
-
-
-
-      //problem:the document must be have the same ID
-
-
 
       var addToAdmin=Admin.doc(user.email.toLowerCase())
           .set({

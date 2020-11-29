@@ -10,10 +10,7 @@ import 'Constance.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirstLogIn extends StatefulWidget {
-  final String type;
-  final String email;
 
-  FirstLogIn({this.type, this.email});
 
   @override
   _FirstLogInState createState() => _FirstLogInState();
@@ -21,7 +18,7 @@ class FirstLogIn extends StatefulWidget {
 
 class _FirstLogInState extends State<FirstLogIn> {
 
-
+  TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _secondPassword = TextEditingController();
   Color textColor = Colors.black54;
@@ -29,8 +26,24 @@ class _FirstLogInState extends State<FirstLogIn> {
 
   final _formKey = GlobalKey<FormState>();
   Icon _icon = Icon(Icons.lock);
+  bool _isValid = false;
 
 
+  Future<String> whoIs(String email) async {
+    String type;
+    //get type
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .where('email', isEqualTo: email)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        type = doc.data()['type'];
+        print('inside whoIs function $type');
+      });
+    }).catchError((err) => type = 'Not Valid');
+    return type;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +68,23 @@ class _FirstLogInState extends State<FirstLogIn> {
                     child: ListView(shrinkWrap: true, children: [
                       Column(children: <Widget>[
                         Padding(padding: EdgeInsets.all(10)),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: TextFormField(
+                            controller: _email,
+                            decoration: InputDecoration(
 
+                                prefixIcon: new Icon(Icons.mail),
+                                hintText: "الإيميل",
+                                helperStyle: TextStyle(fontSize: 10)),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return " الرجاء إدخال البريد الإلكتروني ";
+                              } else
+                                return null;
+                            },
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: TextFormField(
@@ -82,6 +111,7 @@ class _FirstLogInState extends State<FirstLogIn> {
                                   Icons.check,
                                   color: Colors.green,
                                 );
+                                _isValid = true;
                               });
                             }
                             else {
@@ -91,6 +121,7 @@ class _FirstLogInState extends State<FirstLogIn> {
                                   Icons.clear,
                                   color: Colors.red,
                                 );
+                                _isValid= false;
                               });
                             }
                           },
@@ -107,7 +138,7 @@ class _FirstLogInState extends State<FirstLogIn> {
                               return null;
                           },
                         ),
-                        Padding(
+                        _isValid? Padding(
                           padding: const EdgeInsets.only(top: 20, bottom: 5,right: 10,left: 10),
                           child: RaisedButton(
                               color: kButtonColor,
@@ -138,7 +169,15 @@ class _FirstLogInState extends State<FirstLogIn> {
                                   });
                                 }
                               }),
-                        ),
+                        ):
+                        RaisedButton(
+                            color: Colors.black26,
+                            child: Text("استكمال التسجيل",
+                                style: kTextButtonStyle),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0)),
+                            onPressed: () {}
+                            ),
                         ReusableCard(
                           width: 400,
                           color: Colors.white10,
@@ -160,66 +199,74 @@ class _FirstLogInState extends State<FirstLogIn> {
                     ])))));
   }
 
-  Future<void> editIsAuthInDB() async {
+  void editIsAuthInDB() async {
     String centerId;
+    String type = await whoIs(_email.text.toLowerCase());
 
-    await FirebaseAuth.instance
+     FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-        email: widget.email.toLowerCase(), password: _password.text)
+        email: _email.text.toLowerCase(), password: _password.text)
         .catchError((err) => print('### Account Not created Err :$err'))
-        .then((value) async {
+        .then((value)  {
       //get centerId
-      centerId = await FirebaseFirestore.instance
+       FirebaseFirestore.instance
           .collection('Users')
-          .doc(widget.email)
+          .doc(_email.text.toLowerCase())
           .get()
-          .then((value) => centerId = value.data()['center']);
-    }).whenComplete(() async {
-      //delete from isAuth collection
-      await FirebaseFirestore.instance
-          .collection('NoAuth')
-          .doc(widget.email.toLowerCase())
-          .delete();
-
-      //edit isAuth fields
-      await FirebaseFirestore.instance
-          .collection(widget.type)
-          .doc(widget.email.toLowerCase())
-          .update({"isAuth": true});
-      await FirebaseFirestore.instance
-          .collection('Centers')
-          .doc(centerId)
-          .collection(widget.type)
-          .doc(widget.email.toLowerCase())
-          .update({'isAuth': true});
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(widget.email.toLowerCase())
-          .update({"isAuth": true});
-
-
-      //which page to enter
-      if (widget.type == 'Teachers') {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => TeacherMainScreen(0)));
-      }
-      else if (widget.type == 'Specialists') {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SpecialistMainScreen(index: 0)));
-      }
-      else if (widget.type == 'Students') {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ParentMain(0)));
-      }
+          .then((value) => centerId = value.data()['center'])
+          .whenComplete(()  {
+        print(type);
+        print(_email.text);
+        print(centerId);
+        //delete from isAuth collection
+         FirebaseFirestore.instance
+            .collection('NoAuth')
+            .doc(_email.text.toLowerCase())
+            .delete();
+        //
+        // //edit isAuth fields
+         FirebaseFirestore.instance
+            .collection(type)
+            .doc(_email.text.toLowerCase())
+            .update({"isAuth": true});
+         FirebaseFirestore.instance
+            .collection('Centers')
+            .doc(centerId)
+            .collection(type)
+            .doc(_email.text.toLowerCase())
+            .update({'isAuth': true});
+         FirebaseFirestore.instance
+            .collection('Users')
+            .doc(_email.text.toLowerCase())
+            .update({"isAuth": true});
 
 
-      Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => MainLogIn()
-      ));
-    }).catchError((err) =>
-        print('****######### Err: $err ###########*********'));
+        //which page to enter
+        if (type == 'Teachers') {
+
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => TeacherMainScreen(0)));
+        }
+        else if (type == 'Specialists') {
+
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SpecialistMainScreen(index: 0)));
+        }
+        else if (type == 'Students') {
+
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => ParentMain(0)));
+        }
+
+        //
+        // Navigator.pushReplacement(context, MaterialPageRoute(
+        //     builder: (context) => MainLogIn()
+        // Navigator.pop(context);
+      }).catchError((err) =>
+          print('****######### Err: $err ###########*********'));
+    });
   }
 
   bool isValid() {

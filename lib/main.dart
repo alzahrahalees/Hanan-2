@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
       },
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           GlobalCupertinoLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -30,7 +31,6 @@ class MyApp extends StatelessWidget {
           Locale("ar"),
         ],
         locale: Locale("ar"),
-
         title: kTitleOfProject,
         home: WelcomeScreen(),
       ),

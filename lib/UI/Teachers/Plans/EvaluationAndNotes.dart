@@ -367,6 +367,7 @@ class _NotesAndEvaluationState extends State<NotesAndEvaluation> {
                                 document.data()['dayOfPublish'].toString();
                             String nameOfPublisher =
                                 document.data()['nameOfPublisher'];
+                            String email = document.data()['email'];
 
                             return Card(
                                 color: Colors.white,
@@ -389,45 +390,48 @@ class _NotesAndEvaluationState extends State<NotesAndEvaluation> {
                                         theNote,
                                         style: TextStyle(fontSize: 15),
                                       ),
-                                      trailing: IconButton(
-                                          icon: Icon(Icons.delete),
-                                          onPressed: () {
-                                            return Alert(
-                                              context: context,
-                                              type: AlertType.error,
-                                              title:
-                                                  " هل أنت مـتأكد من الحذف ؟ ",
-                                              desc: "",
-                                              buttons: [
-                                                DialogButton(
-                                                  child: Text(
-                                                    "لا",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20),
-                                                  ),
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  color: kButtonColor,
-                                                ),
-                                                DialogButton(
-                                                  child: Text(
-                                                    "نعم",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20),
-                                                  ),
-                                                  onPressed: () {
-                                                    studentNotes
-                                                        .doc(document.id)
-                                                        .delete();
-                                                    Navigator.pop(context);
-                                                  },
-                                                  color: kButtonColor,
-                                                ),
-                                              ],
-                                            ).show();
-                                          }),
+                                      trailing: email == _currentUser
+                                          ? IconButton(
+                                              icon: Icon(Icons.delete),
+                                              onPressed: () {
+                                                return Alert(
+                                                  context: context,
+                                                  type: AlertType.error,
+                                                  title:
+                                                      " هل أنت مـتأكد من الحذف ؟ ",
+                                                  desc: "",
+                                                  buttons: [
+                                                    DialogButton(
+                                                      child: Text(
+                                                        "لا",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20),
+                                                      ),
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      color: kButtonColor,
+                                                    ),
+                                                    DialogButton(
+                                                      child: Text(
+                                                        "نعم",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20),
+                                                      ),
+                                                      onPressed: () {
+                                                        studentNotes
+                                                            .doc(document.id)
+                                                            .delete();
+                                                        Navigator.pop(context);
+                                                      },
+                                                      color: kButtonColor,
+                                                    ),
+                                                  ],
+                                                ).show();
+                                              })
+                                          : SizedBox(),
                                     )
                                   ],
                                 ));
@@ -744,9 +748,10 @@ class _AddEvaluationState extends State<AddEvaluation> {
                 widget.reportPath
                     .doc('monthlyReports')
                     .collection(DateTime.now().month.toString())
-                    .doc('$documentId' + DateTime.now().toString())
+                    .doc(widget.goalId)
                     .set({
-                      'goalName': widget.goalName,
+                      'goalId'
+                          'goalName': widget.goalName,
                       'goalType': widget.goalType,
                       'month': DateTime.now().month,
                       'evaluation': _achievementValue,
