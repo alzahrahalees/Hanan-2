@@ -195,7 +195,6 @@ class _AddAppointmentInStudentState extends State<AddAppointmentInStudent> {
     }).catchError((err) => print('### Err : $err ###'));
 
     // add To Student In Center
-
   }
 
   // call all functions

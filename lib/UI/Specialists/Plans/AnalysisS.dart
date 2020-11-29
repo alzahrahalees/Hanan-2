@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../Constance.dart';
-
 class AnalysisDetailsS extends StatefulWidget {
   final String studentId;
   final String planId;
@@ -14,7 +13,6 @@ class AnalysisDetailsS extends StatefulWidget {
   @override
   _AnalysisState createState() => _AnalysisState();
 }
-
 class _AnalysisState extends State<AnalysisDetailsS> {
   void dispose() {
     super.dispose();
@@ -47,28 +45,70 @@ class _AnalysisState extends State<AnalysisDetailsS> {
   bool canEdit=false;
   User _userSpecialist = FirebaseAuth.instance.currentUser;
 
-
   Future<String> spicialistName() async {
     String name= "";
     await FirebaseFirestore.instance.collection('Specialists')
         .doc(_userSpecialist.email).get().then((data){
-     name=data.data()['name'];
+      name=data.data()['name'];
     });
     return name;
+  }
+  String nameS="";
+  Future<String> spicialistName2() async {
+    await FirebaseFirestore.instance.collection('Specialists')
+        .doc(_userSpecialist.email).get().then((data){
+      nameS=data.data()['name'];
+    });
   }
 
 
 
+  String specialistTypeId='communicationSpecialistId';
+  User userSpecialist = FirebaseAuth.instance.currentUser;
+  void getType() async {
+    await FirebaseFirestore.instance
+        .collection('Specialists')
+        .doc(userSpecialist.email)
+        .get()
+        .then((data) {
+      if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
+        setState(() {
+          specialistTypeId = 'communicationSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
+        setState(() {
+          specialistTypeId = 'psychologySpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
+        setState(() {
+          specialistTypeId = 'occupationalSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
+        setState(() {
+          specialistTypeId = 'physiotherapySpecialistId';
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getType();
+    spicialistName2();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    User _userSpecialist = FirebaseAuth.instance.currentUser;
-    CollectionReference studentsPlansGoal = FirebaseFirestore.instance.collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
-    CollectionReference specialistPlansGoal =FirebaseFirestore.instance.collection('Specialists').doc(_userSpecialist.email).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
 
+    CollectionReference studentsPlansGoal = FirebaseFirestore.instance.collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
     return SafeArea(
         child: StreamBuilder<QuerySnapshot>(
-            stream:specialistPlansGoal.where("goalId",isEqualTo: widget.goalId).snapshots(),
+            stream:studentsPlansGoal.where("goalId",isEqualTo: widget.goalId).snapshots(),
             builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData){
                 return  Center(child: SpinKitFoldingCube(
@@ -80,8 +120,7 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                   child:ListView(
                       children:[
                         Padding(padding: EdgeInsets.all(5)),
-                        Column (children:
-                        snapshot.data.docs.map((DocumentSnapshot document) {
+                        Column (children: snapshot.data.docs.map((DocumentSnapshot document) {
                           return Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Container(
@@ -276,24 +315,6 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                                                                 'writer':specialistName,
                                                                                 'writerId':_userSpecialist.email,
                                                                                 'teacherName':"",
-                                                                              });
-                                                                              var addProceduralGoalToSpecialist = specialistPlansGoal.doc(
-                                                                                  widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}${documentId} ProceduralGoal").set({
-                                                                                'proceduralGoal':_proceduralGoal.text,
-                                                                                'startDate':_startDate.text,
-                                                                                'endDate':_endDate.text,
-                                                                                'createdAt': Timestamp.now(),
-                                                                                'proceduralGoalId':"${widget.goalId}${documentId} ProceduralGoal",
-                                                                                'planId':widget.planId,
-                                                                                'goalId':widget.goalId,
-                                                                                'totalTimes':"",
-                                                                                'successfulTimes':"",
-                                                                                'evaluation':"",
-                                                                                'helpType':"",
-                                                                                'writer':specialistName,
-                                                                                'writerId':_userSpecialist.email,
-                                                                                'teacherName':"",
-
                                                                               }).whenComplete(() {
                                                                                 _proceduralGoal.clear();
                                                                                 _startDate.clear();
@@ -355,9 +376,8 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                             title:Text(documentSnapshot['goalNeeds'],style:TextStyle(color: Colors.black,fontSize: 15)),
                                           ),  ],
                                       ),),
-
                                     StreamBuilder<QuerySnapshot>(
-                                        stream: specialistPlansGoal.doc(widget.goalId).collection('ProceduralGoals').orderBy('createdAt',descending: true).snapshots(),
+                                        stream: studentsPlansGoal.doc(widget.goalId).collection('ProceduralGoals').where('writerId',isEqualTo: userSpecialist.email).snapshots(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData){
                                             return ListView(
@@ -432,15 +452,6 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                                                                                         .doc(
                                                                                                         documentSnapshot2['proceduralGoalId'])
                                                                                                         .delete();
-                                                                                                    specialistPlansGoal
-                                                                                                        .doc(
-                                                                                                        widget
-                                                                                                            .goalId)
-                                                                                                        .collection(
-                                                                                                        'ProceduralGoals')
-                                                                                                        .doc(
-                                                                                                        documentSnapshot2['proceduralGoalId'])
-                                                                                                        .delete();
                                                                                                     Navigator
                                                                                                         .of(
                                                                                                         context)
@@ -465,9 +476,7 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                                                                           ],
                                                                                         ));
                                                                                   }
-
-
-
+                                                                                  
                                                                               ),
                                                                             ],
                                                                           ),
@@ -484,17 +493,7 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                                                               canEdit ==true?
                                                                               FlatButton(onPressed: (){
                                                                                 setState(() {
-                                                                                 specialistPlansGoal.doc(widget.goalId).collection("ProceduralGoals").doc(documentSnapshot2['proceduralGoalId']).update({
-                                                                                    'startDate':_newStartDate!=null?_newStartDate:documentSnapshot2['startDate'],
-                                                                                    'endDate':_newEndDate!=null?_newEndDate:documentSnapshot2['endDate'],
-                                                                                    'totalTimes':_totalTimes!=null?_totalTimes:documentSnapshot2['totalTimes'],
-                                                                                    'successfulTimes':_successfulTimes !=null?_successfulTimes:documentSnapshot2['successfulTimes'],
-                                                                                    'evaluation':_evaluation !=null?_evaluation:documentSnapshot2['evaluation'],
-                                                                                    'helpType':_helpType!=null?_helpType:documentSnapshot2['helpType'],
-                                                                                  }
-                                                                                  );
-
-                                                                                 studentsPlansGoal.doc(widget.goalId).collection("ProceduralGoals").doc(documentSnapshot2['proceduralGoalId']).update({
+                                                                                  studentsPlansGoal.doc(widget.goalId).collection("ProceduralGoals").doc(documentSnapshot2['proceduralGoalId']).update({
                                                                                    'startDate':_newStartDate!=null?_newStartDate:documentSnapshot2['startDate'],
                                                                                    'endDate':_newEndDate!=null?_newEndDate:documentSnapshot2['endDate'],
                                                                                    'totalTimes':_totalTimes!=null?_totalTimes:documentSnapshot2['totalTimes'],
@@ -503,7 +502,6 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                                                                    'helpType':_helpType!=null?_helpType:documentSnapshot2['helpType'],
                                                                                  }
                                                                                  );
-
                                                                                   canEdit=false;
                                                                                 });}
                                                                                   , child: Text("حفظ",style: TextStyle(color: Colors.deepPurple),)):

@@ -5,19 +5,61 @@ import 'package:hanan/UI/Admin/AdminStudent/StudentDetails.dart';
 
 import '../../Constance.dart';
 
-class SpecialistStudents extends StatelessWidget {
+class SpecialistStudents extends StatefulWidget {
   @override
   String uid;
   SpecialistStudents  (String uid) {this.uid=uid;}
+
+  @override
+  _SpecialistStudentsState createState() => _SpecialistStudentsState();
+}
+
+class _SpecialistStudentsState extends State<SpecialistStudents> {
   String  Studentname="";
+
+  String specialistTypeId='communicationSpecialistId';
+  void getType() async {
+    await FirebaseFirestore.instance
+        .collection('Specialists')
+        .doc(widget.uid)
+        .get()
+        .then((data) {
+      if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
+        setState(() {
+          specialistTypeId = 'communicationSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
+        setState(() {
+          specialistTypeId = 'psychologySpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
+        setState(() {
+          specialistTypeId = 'occupationalSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
+        setState(() {
+          specialistTypeId = 'physiotherapySpecialistId';
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getType();
+  }
+  
+  
+  
 
   Widget build(BuildContext context) {
     User userAdmin =  FirebaseAuth.instance.currentUser;
-    CollectionReference Specialists =
-    FirebaseFirestore.instance.collection('Specialists');
-    CollectionReference Users = FirebaseFirestore.instance.collection('Users');
-
-
+    CollectionReference students =
+    FirebaseFirestore.instance.collection('Students');
 
     return Scaffold(
         appBar: AppBar(
@@ -29,7 +71,7 @@ class SpecialistStudents extends StatelessWidget {
         SafeArea(
             child:  StreamBuilder(
                 stream:
-                Specialists.doc(uid).collection('Students').snapshots(),
+                students.where(specialistTypeId,isEqualTo: widget.uid).snapshots(),
                 builder:  (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
@@ -61,13 +103,3 @@ class SpecialistStudents extends StatelessWidget {
                 })) );
   }
 }
-//     Admin_Teachers.doc(uid).collection("Students").get().then((value) {
-//           value.docs.forEach((element) {
-//           Admin_Students.doc(element.data()['uid']).snapshots()
-//           });
-//           }),
-
-// Admin_Students.doc(document.data()['uid']).get().then((value) {
-//                       Studentname=value.data()['name'];
-//
-//                   } );

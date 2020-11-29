@@ -14,8 +14,6 @@ class TeacherStudents extends StatelessWidget {
   Widget build(BuildContext context) {
     User userAdmin =  FirebaseAuth.instance.currentUser;
     CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-
-
     return Scaffold(
         appBar: AppBar(
         title: Text("الطلاب", style: kTextAppBarStyle),

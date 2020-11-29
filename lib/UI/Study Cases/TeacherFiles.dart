@@ -11,7 +11,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:path/path.dart' as p;
 import '../Constance.dart';
 
-
 class TFiles extends StatefulWidget {
   final String studentId;
   final String centerId;
@@ -263,12 +262,10 @@ class _TFilesState extends State<TFiles> {
   File file = await FilePicker.getFile(type: FileType.any);
   setState(() {
   _File = file;});}
-
   Future pickFile2() async {
     User userTeacher = FirebaseAuth.instance.currentUser;
     CollectionReference Students =
     FirebaseFirestore.instance.collection('Students');
-    CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
     String basename = p.basename(_File.path);
     FirebaseStorage storage= FirebaseStorage(storageBucket: 'gs://hananz-5ffb9.appspot.com');
     StorageReference ref = storage.ref().child(p.basename(_File.path));
@@ -295,62 +292,14 @@ class _TFilesState extends State<TFiles> {
           'createdAt':Timestamp.now(),
           'fileName':basename,
           'date':DateTime.now().toString().substring(0, 10),
-          'publisher':widget.teacherName
+          'publisher':widget.teacherName,
+          'psychologySpecialistId':psychologySpecialist == true?widget.psychologySpecialistId:null,
+          'occupationalSpecialistId':occupationalSpecialist==true?widget.occupationalSpecialistId:null,
+          'communicationSpecialistId':communicationSpecialist==true?widget.communicationSpecialistId:null,
+          'physiotherapySpecialistId':physiotherapySpecialist==true?widget.physiotherapySpecialistId:null,
         });
 
-
-    if (psychologySpecialist==true) {
-      var addFileToPsychologySpecialistStudent = Specialists.doc(
-          widget.psychologySpecialistId).collection("Students").doc(
-          widget.studentId).collection('StudyCases').doc(
-          "${widget.studentId}$documentId File").set(
-          {
-            'filePath': fileUrl,
-            'createdAt': Timestamp.now(),
-            'fileName': basename,
-            'date': DateTime.now().toString().substring(0, 10),
-            'publisher': widget.teacherName
-          });
-    }
-      if (physiotherapySpecialist == true) {
-        var addFileToPhysiotherapySpecialistStudent = Specialists.doc(
-            widget.physiotherapySpecialistId).collection("Students").doc(
-            widget.studentId).collection('StudyCases').doc(
-            "${widget.studentId}$documentId File").set(
-            {
-              'filePath': fileUrl,
-              'createdAt': Timestamp.now(),
-              'fileName': basename,
-              'date': DateTime.now().toString().substring(0, 10),
-              'publisher': widget.teacherName
-            });
-      }
-        if (communicationSpecialist == true) {
-          var addFileToCommunicationSpecialistStudent = Specialists.doc(
-              widget.communicationSpecialistId).collection("Students").doc(
-              widget.studentId).collection('StudyCases').doc(
-              "${widget.studentId}$documentId File").set(
-              {
-                'filePath': fileUrl,
-                'createdAt': Timestamp.now(),
-                'fileName': basename,
-                'date': DateTime.now().toString().substring(0, 10),
-                'publisher': widget.teacherName
-              });}
-        if (occupationalSpecialist == true) {
-          var addFileToOccupationalSpecialistStudent = Specialists.doc(
-              widget.occupationalSpecialistId).collection("Students").doc(
-              widget.studentId).collection('StudyCases').doc(
-              "${widget.studentId}$documentId File").set(
-              {
-                'filePath': fileUrl,
-                'createdAt': Timestamp.now(),
-                'fileName': basename,
-                'date': DateTime.now().toString().substring(0, 10),
-                'publisher': widget.teacherName
-              });
-        }
-        setState(() {
+    setState(() {
           psychologySpecialist = false;
           communicationSpecialist = false;
           occupationalSpecialist = false;
