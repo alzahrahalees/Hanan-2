@@ -225,79 +225,6 @@ return isExit;
                        bool isDone = await setUIds();
                       if (checkT ) {
                         //Add to data base
-                        if(_occupationalSpecialistId != null){
-                        await FirebaseFirestore.instance.collection('Specialists')
-                            .doc(_occupationalSpecialistId).collection('Students')
-                            .doc(widget.studentId).collection('Plans')
-                            .doc(docId).set({
-                          'planId':docId,
-                          'planTitle':   _semesterValue == 'first'? _titleSmester1:_titleSmester2,
-                          'major': _selectedMajorValue,
-                          'semester': _semesterValue,
-                          'beginYear': _beginYear,
-                          'beginMonth': _beginMonth,
-                          'beginDay': _beginDay,
-                          'endYear': _endYear,
-                          'endMoth': _endMonth,
-                          'endDay': _endDay,
-                          'subjects': subjects,
-                          'createdAt':Timestamp.now(),
-                        });}
-                        if(_communicationSpecialistId != null){
-                          await FirebaseFirestore.instance.collection('Specialists')
-                              .doc(_communicationSpecialistId).collection('Students')
-                              .doc(widget.studentId).collection('Plans')
-                              .doc(docId).set({
-                            'planId':docId,
-                            'planTitle':   _semesterValue == 'first'? _titleSmester1:_titleSmester2,
-                            'major': _selectedMajorValue,
-                            'semester': _semesterValue,
-                            'beginYear': _beginYear,
-                            'beginMonth': _beginMonth,
-                            'beginDay': _beginDay,
-                            'endYear': _endYear,
-                            'endMoth': _endMonth,
-                            'endDay': _endDay,
-                            'subjects': subjects,
-                            'createdAt':Timestamp.now(),
-                          });}
-                        if(_physiotherapySpecialistId != null){
-                          await FirebaseFirestore.instance.collection('Specialists')
-                              .doc(_physiotherapySpecialistId).collection('Students')
-                              .doc(widget.studentId).collection('Plans')
-                              .doc(docId).set({
-                            'planId':docId,
-                            'planTitle':   _semesterValue == 'first'? _titleSmester1:_titleSmester2,
-                            'major': _selectedMajorValue,
-                            'semester': _semesterValue,
-                            'beginYear': _beginYear,
-                            'beginMonth': _beginMonth,
-                            'beginDay': _beginDay,
-                            'endYear': _endYear,
-                            'endMoth': _endMonth,
-                            'endDay': _endDay,
-                            'subjects': subjects,
-                            'createdAt':Timestamp.now(),
-                          });}
-                        if(_psychologySpecialistId != null){
-                          await FirebaseFirestore.instance.collection('Specialists')
-                              .doc(_psychologySpecialistId).collection('Students')
-                              .doc(widget.studentId).collection('Plans')
-                              .doc(docId).set({
-                            'planId':docId,
-                            'planTitle':   _semesterValue == 'first'? _titleSmester1:_titleSmester2,
-                            'major': _selectedMajorValue,
-                            'semester': _semesterValue,
-                            'beginYear': _beginYear,
-                            'beginMonth': _beginMonth,
-                            'beginDay': _beginDay,
-                            'endYear': _endYear,
-                            'endMoth': _endMonth,
-                            'endDay': _endDay,
-                            'subjects': subjects,
-                            'createdAt':Timestamp.now(),
-                          });}
-
                         await FirebaseFirestore.instance.collection('Students')
                             .doc(widget.studentId).collection('Plans')
                             .doc(docId).set({
@@ -313,7 +240,12 @@ return isExit;
                           'endDay': _endDay,
                           'subjects': subjects,
                           'createdAt':Timestamp.now(),
+                          'psychologySpecialistId':_psychologySpecialistId != null?_psychologySpecialistId:null,
+                          'occupationalSpecialistId':_occupationalSpecialistId != null?_occupationalSpecialistId:null,
+                          'communicationSpecialistId':_communicationSpecialistId != null?_communicationSpecialistId:null,
+                          'physiotherapySpecialistId':_physiotherapySpecialistId != null?_physiotherapySpecialistId :null,
                         });}
+
                       else{
                         _scaffoldKey.currentState.showSnackBar(SnackBar(
                 content: Text(" لقد تم إضافة $titlePlan $semester ",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),

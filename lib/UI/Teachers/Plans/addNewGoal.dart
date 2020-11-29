@@ -419,7 +419,6 @@ class _AddGoalState extends State<AddGoal> {
       setState(() {
         _imageUrl = Url;
       });}
-
       var addPlanGoalToStudent = studentsPlansGoal.doc(
           "${widget.planId}${documentId} Goal").set({
         "goalType": _goalType,
@@ -443,99 +442,6 @@ class _AddGoalState extends State<AddGoal> {
      //add evaluation and notes docements
       studentsPlansGoal.doc("${widget.planId}${documentId} Goal").collection('Evaluation')
           .doc('eval').set({});
-
-
-
-
-      if (_psychologySpecialist == true) {
-        var addPlanGoalTopsychologySpecialist = specialists.doc(
-            _psychologySpecialistId).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals").doc("${widget.planId}${documentId} Goal").set({
-          "goalType": _goalType,
-          "goalTitle": _goalTitle.text,
-          "generalGoal": _generalGoal.text,
-          "image": _imageUrl,
-          "goalNeeds": _goalNeeds.text,
-          "postId": widget.planId,
-          "goalId": "${widget.planId}${documentId} Goal",
-          'createdAt': Timestamp.now(),
-          'date':DateTime.now().toString().substring(0, 10),
-          'psychologySpecialistName':_psychologySpecialist == true?_psychologySpecialistName:null,
-          'occupationalSpecialistName':_occupationalSpecialist==true?_occupationalSpecialistName:null,
-          'communicationSpecialistName':_communicationSpecialist==true?_communicationSpecialistName:null,
-          'physiotherapySpecialistName':_physiotherapySpecialist==true?_physiotherapySpecialistName:null,
-          'psychologySpecialistId':_psychologySpecialist == true?_psychologySpecialistId:null,
-          'occupationalSpecialistId':_occupationalSpecialist==true?_occupationalSpecialistId:null,
-          'communicationSpecialistId':_communicationSpecialist==true?_communicationSpecialistId:null,
-          'physiotherapySpecialistId':_physiotherapySpecialist==true?_physiotherapySpecialistId:null,
-        });
-      }
-      if (_physiotherapySpecialist == true) {
-        var addGoalPlanToPhysiotherapySpecialistStudent =specialists.doc(
-        _physiotherapySpecialistId).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals").doc("${widget.planId}${documentId} Goal").set({
-          "goalType": _goalType,
-          "goalTitle": _goalTitle.text,
-          "generalGoal": _generalGoal.text,
-          "image": _imageUrl,
-          "goalNeeds": _goalNeeds.text,
-          "postId": widget.planId,
-          "goalId": "${widget.planId}${documentId} Goal",
-          'createdAt': Timestamp.now(),
-          'date':DateTime.now().toString().substring(0, 10),
-          'psychologySpecialistName':_psychologySpecialist == true?_psychologySpecialistName:null,
-          'occupationalSpecialistName':_occupationalSpecialist==true?_occupationalSpecialistName:null,
-          'communicationSpecialistName':_communicationSpecialist==true?_communicationSpecialistName:null,
-          'physiotherapySpecialistName':_physiotherapySpecialist==true?_physiotherapySpecialistName:null,
-          'psychologySpecialistId':_psychologySpecialist == true?_psychologySpecialistId:null,
-          'occupationalSpecialistId':_occupationalSpecialist==true?_occupationalSpecialistId:null,
-          'communicationSpecialistId':_communicationSpecialist==true?_communicationSpecialistId:null,
-          'physiotherapySpecialistId':_physiotherapySpecialist==true?_physiotherapySpecialistId:null,
-            });
-      }
-
-      if (_communicationSpecialist == true) {
-        var addGoalPlanToCommunicationSpecialistStudent = specialists.doc(
-        _communicationSpecialistId).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals").doc("${widget.planId}${documentId} Goal").set({
-          "goalType": _goalType,
-          "goalTitle": _goalTitle.text,
-          "generalGoal": _generalGoal.text,
-          "image": _imageUrl,
-          "goalNeeds": _goalNeeds.text,
-          "postId": widget.planId,
-          "goalId": "${widget.planId}${documentId} Goal",
-          'createdAt': Timestamp.now(),
-          'date':DateTime.now().toString().substring(0, 10),
-          'psychologySpecialistName':_psychologySpecialist == true?_psychologySpecialistName:null,
-          'occupationalSpecialistName':_occupationalSpecialist==true?_occupationalSpecialistName:null,
-          'communicationSpecialistName':_communicationSpecialist==true?_communicationSpecialistName:null,
-          'physiotherapySpecialistName':_physiotherapySpecialist==true?_physiotherapySpecialistName:null,
-          'psychologySpecialistId':_psychologySpecialist == true?_psychologySpecialistId:null,
-          'occupationalSpecialistId':_occupationalSpecialist==true?_occupationalSpecialistId:null,
-          'communicationSpecialistId':_communicationSpecialist==true?_communicationSpecialistId:null,
-          'physiotherapySpecialistId':_physiotherapySpecialist==true?_physiotherapySpecialistId:null,
-            });
-      }
-      if (_occupationalSpecialist == true) {
-        var addGoalPlanToOccupationalSpecialistStudent = specialists.doc(
-        _occupationalSpecialistId).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals").doc("${widget.planId}${documentId} Goal").set({
-          "goalType": _goalType,
-          "goalTitle": _goalTitle.text,
-          "generalGoal": _generalGoal.text,
-          "image": _imageUrl,
-          "goalNeeds": _goalNeeds.text,
-          "postId": widget.planId,
-          "goalId": "${widget.planId}${documentId} Goal",
-          'createdAt': Timestamp.now(),
-          'date':DateTime.now().toString().substring(0, 10),
-          'psychologySpecialistName':_psychologySpecialist == true?_psychologySpecialistName:null,
-          'occupationalSpecialistName':_occupationalSpecialist==true?_occupationalSpecialistName:null,
-          'communicationSpecialistName':_communicationSpecialist==true?_communicationSpecialistName:null,
-          'physiotherapySpecialistName':_physiotherapySpecialist==true?_physiotherapySpecialistName:null,
-          'psychologySpecialistId':_psychologySpecialist == true?_psychologySpecialistId:null,
-          'occupationalSpecialistId':_occupationalSpecialist==true?_occupationalSpecialistId:null,
-          'communicationSpecialistId':_communicationSpecialist==true?_communicationSpecialistId:null,
-          'physiotherapySpecialistId':_physiotherapySpecialist==true?_physiotherapySpecialistId:null,
-            });
-      }
       Navigator.pop(context);
     }}  )),
                   ],

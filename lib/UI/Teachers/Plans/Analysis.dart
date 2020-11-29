@@ -271,6 +271,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                 'writer':"",
                                                                                 'teacherName':teacherName,
                                                                                 'writerId':_userTeacher.email
+
                                                                               }).whenComplete(() {
                                                                                 _proceduralGoal.clear();
                                                                                 _startDate.clear();

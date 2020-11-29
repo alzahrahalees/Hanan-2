@@ -53,11 +53,54 @@ class _SFilesState extends State<SFiles> {
   bool showMassage2=false;
   String download;
   String specialistName;
+  User userSpecialist = FirebaseAuth.instance.currentUser;
+  String specialistTypeId='communicationSpecialistId';
+  void getType() async {
+    await FirebaseFirestore.instance
+        .collection('Specialists')
+        .doc(userSpecialist.email)
+        .get()
+        .then((data) {
+      if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
+        setState(() {
+          specialistTypeId = 'communicationSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
+        setState(() {
+          specialistTypeId = 'psychologySpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
+        setState(() {
+          specialistTypeId = 'occupationalSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
+        setState(() {
+          specialistTypeId = 'physiotherapySpecialistId';
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getType();
+  }
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     print(widget.occupationalSpecialistId);
     User userSpecialist = FirebaseAuth.instance.currentUser;
     CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
+    CollectionReference students= FirebaseFirestore.instance.collection('Students');
 
     if (userSpecialist.email==widget.occupationalSpecialistId) {
       specialistName = widget.occupationalSpecialistName;
@@ -71,8 +114,6 @@ class _SFilesState extends State<SFiles> {
     if (userSpecialist.email==widget.physiotherapySpecialistId) {
       specialistName = widget.physiotherapySpecialistName;
     }
-
-
     return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
@@ -82,7 +123,7 @@ class _SFilesState extends State<SFiles> {
           backgroundColor: Colors.white70,),
         body: SafeArea(
             child: StreamBuilder<QuerySnapshot>(
-                stream: Specialists.doc(userSpecialist.email).collection('Students').doc(widget.studentId).collection('StudyCases').orderBy('createdAt',descending: true ).snapshots(),
+                stream: students.doc(widget.studentId).collection('StudyCases').where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData){
                     return  Center(child: SpinKitFoldingCube(
@@ -130,78 +171,6 @@ class _SFilesState extends State<SFiles> {
                                                           _File!=null?
                                                           showMassage==true?Text("تم إختيار ${p.basename(_File.path)}",style:kTextPageStyle.copyWith(fontSize: 10,color: Colors.grey) ,):Text(""):Text(""),
                                                           Padding(padding: EdgeInsets.all(5)) ,
-                                                          Text("مشاركة مع : ",style: kTextPageStyle),
-                                                          Padding(padding: EdgeInsets.all(5)),
-                                                          widget.occupationalSpecialistId !=null && widget.occupationalSpecialistId !=userSpecialist.email?
-                                                          Row(
-                                                            children: [
-                                                              Text(widget.occupationalSpecialistName,style: kTextPageStyle),
-                                                              Text("  أخصائي العلاج الوظيفي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                              Checkbox(value: occupationalSpecialistName2, onChanged: (bool value) {
-                                                                setState(() {
-                                                                  occupationalSpecialistName2 = value;
-                                                                });
-                                                                print(occupationalSpecialistName2);
-                                                              },
-                                                                checkColor: Colors.black,
-                                                                activeColor: Colors.deepPurple.shade100,
-                                                                hoverColor: Colors.black,
-                                                              )
-                                                            ],
-                                                          ):Text("",style:TextStyle (fontSize: 0)),
-                                                          widget.communicationSpecialistId !=null && widget.communicationSpecialistId !=userSpecialist.email?
-                                                          Row(
-                                                            children: [
-                                                              Text(widget.communicationSpecialistName,style: kTextPageStyle),
-                                                              Text("  أخصائي التواصل",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                              Checkbox(value: communicationSpecialistName2, onChanged: (bool value) {
-                                                                setState(() {
-                                                                  communicationSpecialistName2 = value;
-                                                                });
-                                                                print(communicationSpecialistName2);
-                                                              },
-                                                                checkColor: Colors.black,
-                                                                activeColor: Colors.deepPurple.shade100,
-                                                                hoverColor: Colors.black,
-                                                              )
-                                                            ],
-                                                          ):Text("",style:TextStyle (fontSize: 0)),
-                                                          widget.physiotherapySpecialistId !=null && widget.physiotherapySpecialistId!=userSpecialist.email?
-                                                          Row(
-                                                            children: [
-                                                              Text(widget.physiotherapySpecialistName,style: kTextPageStyle),
-                                                              Text("  أخصائي العلاج الطبيعي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                              Checkbox(value: physiotherapySpecialistName2, onChanged: (bool value) {
-                                                                setState(() {
-                                                                  physiotherapySpecialistName2 = value;
-                                                                });
-                                                                print(physiotherapySpecialistName2);
-                                                              },
-                                                                checkColor: Colors.black,
-                                                                activeColor: Colors.deepPurple.shade100,
-                                                                hoverColor: Colors.black,
-                                                              )
-                                                            ],
-                                                          ):Text("",style:TextStyle (fontSize: 0)),
-
-                                                          widget.psychologySpecialistId!=null && widget.psychologySpecialistId !=userSpecialist.email?
-                                                          Row(
-                                                            children: [
-                                                              Text(widget.psychologySpecialistName,style: kTextPageStyle),
-                                                              Text(" الأخصائي النفسي ",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                              Checkbox(value: psychologySpecialistName2, onChanged: (bool value) {
-                                                                setState(() {
-                                                                  psychologySpecialistName2 = value;
-                                                                });
-                                                                print(psychologySpecialistName2);
-                                                              },
-                                                                checkColor: Colors.black,
-                                                                activeColor: Colors.deepPurple.shade100,
-                                                                hoverColor: Colors.black,
-                                                              )
-                                                            ],
-                                                          ):Text("",style:TextStyle (fontSize: 0)),
-
                                                           Padding(padding: EdgeInsets.all(5)),
                                                           _File !=null ?
                                                           FlatButton(onPressed: (){
@@ -314,77 +283,15 @@ class _SFilesState extends State<SFiles> {
     print("ph $physiotherapySpecialistName2");
     print("c $communicationSpecialistName2");
     print("o $occupationalSpecialistName2");
-
     var addFileToStudent= students.doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
         {
           'filePath':fileUrl,
           'createdAt':Timestamp.now(),
           'fileName':basename,
           'date':DateTime.now().toString().substring(0, 10),
-          'publisher':specialistName
+          'publisher':specialistName,
+          specialistTypeId:userSpecialist.email,
         });
-
-      var addFileToSpecialistStudent=  specialists.doc(userSpecialist.email).collection("Students").doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-          {
-            'filePath':fileUrl,
-            'createdAt':Timestamp.now(),
-            'fileName':basename,
-            'date':DateTime.now().toString().substring(0, 10),
-            'publisher':specialistName
-          });
-
-    if (psychologySpecialistName2==true&& widget.psychologySpecialistId !=userSpecialist.email) {
-      var addFileToPsychologySpecialistStudent = specialists.doc(
-          widget.psychologySpecialistId).collection("Students").doc(
-          widget.studentId).collection('StudyCases').doc(
-          "${widget.studentId}$documentId File").set(
-          {
-            'filePath': fileUrl,
-            'createdAt': Timestamp.now(),
-            'fileName': basename,
-            'date': DateTime.now().toString().substring(0, 10),
-            'publisher': specialistName
-          });
-    }
-    if (physiotherapySpecialistName2==true && widget.physiotherapySpecialistId !=userSpecialist.email) {
-      var addFileToPhysiotherapySpecialistStudent = specialists.doc(
-          widget.physiotherapySpecialistId).collection("Students").doc(
-          widget.studentId).collection('StudyCases').doc(
-          "${widget.studentId}$documentId File").set(
-          {
-            'filePath': fileUrl,
-            'createdAt': Timestamp.now(),
-            'fileName': basename,
-            'date': DateTime.now().toString().substring(0, 10),
-            'publisher': specialistName
-          });
-    }
-    if (communicationSpecialistName2==true && widget.communicationSpecialistId !=userSpecialist.email) {
-      var addFileToCommunicationSpecialistStudent = specialists.doc(
-          widget.communicationSpecialistId).collection("Students").doc(
-          widget.studentId).collection('StudyCases').doc(
-          "${widget.studentId}$documentId File").set(
-          {
-            'filePath': fileUrl,
-            'createdAt': Timestamp.now(),
-            'fileName': basename,
-            'date': DateTime.now().toString().substring(0, 10),
-            'publisher': specialistName
-          });
-    }
-    if (occupationalSpecialistName2==true&& widget.occupationalSpecialistId !=userSpecialist.email) {
-      var addFileToOccupationalSpecialistStudent = specialists.doc(
-          widget.occupationalSpecialistId).collection("Students").doc(
-          widget.studentId).collection('StudyCases').doc(
-          "${widget.studentId}$documentId File").set(
-          {
-            'filePath': fileUrl,
-            'createdAt': Timestamp.now(),
-            'fileName': basename,
-            'date': DateTime.now().toString().substring(0, 10),
-            'publisher': specialistName
-          });
-    }
     setState(() {
       psychologySpecialistName2=false;
       communicationSpecialistName2=false;

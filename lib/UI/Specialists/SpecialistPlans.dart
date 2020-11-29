@@ -9,21 +9,58 @@ import 'Plans/SpecialMajorsPageS.dart';
 class SpecialistPlans extends StatefulWidget {
   final String _studentId;
   SpecialistPlans(this._studentId);
-
   @override
   _SpecialistPlansState createState() => _SpecialistPlansState();
 }
 
+
 class _SpecialistPlansState extends State<SpecialistPlans> {
+
+  String specialistTypeId='communicationSpecialistId';
+  User userSpecialist = FirebaseAuth.instance.currentUser;
+  void getType() async {
+    await FirebaseFirestore.instance
+        .collection('Specialists')
+        .doc(userSpecialist.email)
+        .get()
+        .then((data) {
+      if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
+        setState(() {
+          specialistTypeId = 'communicationSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
+        setState(() {
+          specialistTypeId = 'psychologySpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
+        setState(() {
+          specialistTypeId = 'occupationalSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
+        setState(() {
+          specialistTypeId = 'physiotherapySpecialistId';
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getType();
+  }
+
   @override
   Widget build(BuildContext context) {
-    User _userSpecialist = FirebaseAuth.instance.currentUser;
-    CollectionReference specialistsPlans = FirebaseFirestore.instance.collection('Specialists').doc(_userSpecialist.email).collection('Students').doc(widget._studentId).collection('Plans');
+    CollectionReference studentsPlans = FirebaseFirestore.instance.collection('Students').doc(widget._studentId).collection('Plans');
     return Scaffold(
       body: SafeArea(
         child: Container(
           child:   StreamBuilder(
-            stream: specialistsPlans.orderBy('createdAt',descending: true).snapshots(),
+            stream: studentsPlans.where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData)
                 return Center(

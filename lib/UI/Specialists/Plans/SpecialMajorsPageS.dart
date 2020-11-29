@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hanan/UI/Constance.dart';
 import 'package:hanan/UI/Specialists/Plans/GoalAnalysisS.dart';
-
-
 //plan pages for 6 majors ..
 class SpecialMajorsPageS extends StatefulWidget {
   final String studentId;
@@ -23,16 +21,49 @@ class _SpecialMajorsPageSState extends State<SpecialMajorsPageS>  with TickerPro
   }
   TabController controller;
   @override
+
+  String specialistTypeId='communicationSpecialistId';
+  User userSpecialist = FirebaseAuth.instance.currentUser;
+  void getType() async {
+    await FirebaseFirestore.instance
+        .collection('Specialists')
+        .doc(userSpecialist.email)
+        .get()
+        .then((data) {
+      if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
+        setState(() {
+          specialistTypeId = 'communicationSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
+        setState(() {
+          specialistTypeId = 'psychologySpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
+        setState(() {
+          specialistTypeId = 'occupationalSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
+        setState(() {
+          specialistTypeId = 'physiotherapySpecialistId';
+        });
+      }
+    });
+  }
+
+  @override
   void initState() {
     super.initState();
+    getType();
   }
+
   @override
   Widget build(BuildContext context) {
-
     User _userSpecialist = FirebaseAuth.instance.currentUser;
     CollectionReference studentsPlansGoal = FirebaseFirestore.instance.collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
     CollectionReference specialistPlansGoal =FirebaseFirestore.instance.collection('Specialists').doc(_userSpecialist.email).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
-
 
     if(controller == null) {
       controller=new TabController(length: 6, vsync: this);
@@ -67,7 +98,7 @@ class _SpecialMajorsPageSState extends State<SpecialMajorsPageS>  with TickerPro
               SafeArea(
                   child: StreamBuilder<QuerySnapshot>(
                       stream:
-                      specialistPlansGoal.where('goalType',isEqualTo: 'مجال الانتباه والتركيز').orderBy('createdAt',descending: true).snapshots(),
+                      studentsPlansGoal.where('goalType',isEqualTo: 'مجال الانتباه والتركيز').where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
                       builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData){
                           return  Center(child: SpinKitFoldingCube(
@@ -140,7 +171,7 @@ class _SpecialMajorsPageSState extends State<SpecialMajorsPageS>  with TickerPro
               // 2
               SafeArea(
                   child: StreamBuilder<QuerySnapshot>(
-                      stream:specialistPlansGoal.where('goalType',isEqualTo:'مجال التواصل').orderBy('createdAt',descending: true).snapshots(),
+                      stream:studentsPlansGoal.where('goalType',isEqualTo:'مجال التواصل').where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
                       builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData){
                           return  Center(child: SpinKitFoldingCube(
@@ -212,7 +243,7 @@ class _SpecialMajorsPageSState extends State<SpecialMajorsPageS>  with TickerPro
               //3
               SafeArea(
                   child: StreamBuilder<QuerySnapshot>(
-                      stream:specialistPlansGoal.where('goalType',isEqualTo: 'المجال الإدراكي').orderBy('createdAt',descending: true).snapshots(),
+                      stream:studentsPlansGoal.where('goalType',isEqualTo: 'المجال الإدراكي').where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
                       builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData){
                           return  Center(child: SpinKitFoldingCube(
@@ -284,7 +315,7 @@ class _SpecialMajorsPageSState extends State<SpecialMajorsPageS>  with TickerPro
               //4
               SafeArea(
                   child: StreamBuilder<QuerySnapshot>(
-                      stream:specialistPlansGoal.where('goalType',isEqualTo:'المجال الحركي الدقيق').orderBy('createdAt',descending: true).snapshots(),
+                      stream:studentsPlansGoal.where('goalType',isEqualTo:'المجال الحركي الدقيق').where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
                       builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData){
                           return  Center(child: SpinKitFoldingCube(
@@ -356,7 +387,7 @@ class _SpecialMajorsPageSState extends State<SpecialMajorsPageS>  with TickerPro
               //5
               SafeArea(
                   child: StreamBuilder<QuerySnapshot>(
-                      stream:specialistPlansGoal.where('goalType',isEqualTo: 'المجال الاجتماعي').orderBy('createdAt',descending: true).snapshots(),
+                      stream:studentsPlansGoal.where('goalType',isEqualTo: 'المجال الاجتماعي').where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
                       builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData){
                           return  Center(child: SpinKitFoldingCube(
@@ -428,7 +459,7 @@ class _SpecialMajorsPageSState extends State<SpecialMajorsPageS>  with TickerPro
               //6
               SafeArea(
                   child: StreamBuilder<QuerySnapshot>(
-                      stream:specialistPlansGoal.where('goalType',isEqualTo:  'المجال الاستقلالي').orderBy('createdAt',descending: true).snapshots(),
+                      stream:studentsPlansGoal.where('goalType',isEqualTo:  'المجال الاستقلالي').snapshots(),
                       builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData){
                           return  Center(child: SpinKitFoldingCube(

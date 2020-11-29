@@ -49,8 +49,6 @@ class AddStudent extends StatelessWidget {
       User userAdmin =  FirebaseAuth.instance.currentUser;
       CollectionReference students = FirebaseFirestore.instance.collection('Students');
       CollectionReference users = FirebaseFirestore.instance.collection('Users');
-      CollectionReference teachers = FirebaseFirestore.instance.collection('Teachers');
-      CollectionReference specialists = FirebaseFirestore.instance.collection('Specialists');
 
       var exists = await FirebaseFirestore.instance.collection('Users')
           .doc(email).get();
@@ -89,114 +87,6 @@ class AddStudent extends StatelessWidget {
       var addStudyCasesC= students.doc(email.toLowerCase()).collection('StudyCases').doc(email.toLowerCase()+'clinical').set({});
       var addStudyCasesS= students.doc(email.toLowerCase()).collection('StudyCases').doc(email.toLowerCase()+'info').set({});
 
-
-
-      var addTeacherStudent= teachers.doc(teacherId).collection('Students').doc(email.toLowerCase()).
-      set({
-        'name': name,
-        'uid': email.toLowerCase(),
-      } );
-
-    if (psychologySpecialistId != null) {
-      var addPsychologyStudent = specialists.doc(psychologySpecialistId)
-          .collection('Students').doc(email.toLowerCase())
-          .
-      set({
-
-        'uid': email.toLowerCase(),
-        'name': name,
-        'gender': gender,
-        'teacherName': teacherName,
-        'teacherId': teacherId,
-        'psychologySpecialistName': psychologySpecialistName, //نفسي
-        'psychologySpecialistId': psychologySpecialistId,
-        'communicationSpecialistName': communicationSpecialistName, //تخاطب
-        'communicationSpecialistId': communicationSpecialistId,
-        'occupationalSpecialistName': occupationalSpecialistName, //,ظيفي
-        'occupationalSpecialistId': occupationalSpecialistId,
-        'physiotherapySpecialistName': physiotherapySpecialistName, //علاج طبيعي
-        'physiotherapySpecialistId': physiotherapySpecialistId,
-        "center": userAdmin.email.toLowerCase(),
-      }
-      );
-    }
-
-
-     if (communicationSpecialistId != null) {
-       var addCommunicationStudent = specialists.doc(communicationSpecialistId)
-           .collection('Students').doc(email.toLowerCase()).
-       set({
-         'uid': email.toLowerCase(),
-         'name': name,
-         'gender': gender,
-         'teacherName': teacherName,
-         'teacherId': teacherId,
-         'psychologySpecialistName': psychologySpecialistName,
-         //نفسي
-         'psychologySpecialistId': psychologySpecialistId,
-         'communicationSpecialistName': communicationSpecialistName,
-         //تخاطب
-         'communicationSpecialistId': communicationSpecialistId,
-         'occupationalSpecialistName': occupationalSpecialistName,
-         //,ظيفي
-         'occupationalSpecialistId': occupationalSpecialistId,
-         'physiotherapySpecialistName': physiotherapySpecialistName,
-         //علاج طبيعي
-         'physiotherapySpecialistId': physiotherapySpecialistId,
-         "center": userAdmin.email.toLowerCase(),
-       });
-     }
-      if (occupationalSpecialistId != null) {
-        var addOccupationalStudent = specialists.doc(occupationalSpecialistId)
-            .collection('Students').doc(email.toLowerCase()).
-        set({
-          'uid': email.toLowerCase(),
-          'name': name,
-          'gender': gender,
-          'teacherName': teacherName,
-          'teacherId': teacherId,
-          'psychologySpecialistName': psychologySpecialistName,
-          //نفسي
-          'psychologySpecialistId': psychologySpecialistId,
-          'communicationSpecialistName': communicationSpecialistName,
-          //تخاطب
-          'communicationSpecialistId': communicationSpecialistId,
-          'occupationalSpecialistName': occupationalSpecialistName,
-          //,ظيفي
-          'occupationalSpecialistId': occupationalSpecialistId,
-          'physiotherapySpecialistName': physiotherapySpecialistName,
-          //علاج طبيعي
-          'physiotherapySpecialistId': physiotherapySpecialistId,
-          "center": userAdmin.email.toLowerCase(),
-        });
-      }
-      if (physiotherapySpecialistId != null) {
-        var addPhysiotherapy = specialists.doc(physiotherapySpecialistId)
-            .collection("Students")
-            .doc(email.toLowerCase())
-            .set({
-          'center': userAdmin,
-          'uid': email.toLowerCase(),
-          'name': name,
-          'gender': gender,
-          'teacherName': teacherName,
-          'teacherId': teacherId,
-          'psychologySpecialistName': psychologySpecialistName,
-          //نفسي
-          'psychologySpecialistId': psychologySpecialistId,
-          'communicationSpecialistName': communicationSpecialistName,
-          //تخاطب
-          'communicationSpecialistId': communicationSpecialistId,
-          'occupationalSpecialistName': occupationalSpecialistName,
-          //,ظيفي
-          'occupationalSpecialistId': occupationalSpecialistId,
-          'physiotherapySpecialistName': physiotherapySpecialistName,
-          //علاج طبيعي
-          'physiotherapySpecialistId': physiotherapySpecialistId,
-          "center": userAdmin.email.toLowerCase(),
-        }
-        );
-      }
       var addToUsers=users.doc(email.toLowerCase())
           .set({
         "center": userAdmin.email.toLowerCase(),
