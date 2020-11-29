@@ -97,49 +97,49 @@ class _SpecialistScreenState extends State<SpecialistScreen> {
                                                       builder: (context) =>
                                                           SpecialistInfo(document.data()['uid'])));
                                             },
-                                            trailing: IconButton(icon: Icon (Icons.delete),
-                                                onPressed: () {
-                                                  return Alert(
-                                                    context: context,
-                                                    type: AlertType.error,
-                                                    title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
-                                                    desc: "",
-                                                    buttons: [
-                                                      DialogButton(
-                                                        child: Text(
-                                                          "لا",
-                                                          style: TextStyle(color: Colors.white, fontSize: 20),
-                                                        ),
-                                                        onPressed: () => Navigator.pop(context),
-                                                        color: kButtonColor,
-                                                      ),
-                                                      DialogButton(
-                                                        child: Text(
-                                                          "نعم",
-                                                          style: TextStyle(color: Colors.white, fontSize: 20),
-                                                        ),
-                                                        onPressed: ()
-                                                        {
-                                                          specialists.doc(document.id).delete();
-
-                                                          users.doc(document.id).delete();
-
-                                                          specialists.doc(document.id).collection("Students").get().then((value) =>
-                                                              value.docs.forEach((element) {
-                                                                specialists.doc(document.id).collection('Students').doc(element.id).delete();
-                                                              })
-                                                          );
-
-                                                          FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
-                                                              .catchError((e)=> print(e));
-                                                          Navigator.pop(context);
-                                                        },
-                                                        color: kButtonColor,
-                                                      ),
-                                                    ],
-                                                  ).show();
-                                                }
-                                            ),
+                                            // trailing: IconButton(icon: Icon (Icons.delete),
+                                            //     onPressed: () {
+                                            //       return Alert(
+                                            //         context: context,
+                                            //         type: AlertType.error,
+                                            //         title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
+                                            //         desc: "",
+                                            //         buttons: [
+                                            //           DialogButton(
+                                            //             child: Text(
+                                            //               "لا",
+                                            //               style: TextStyle(color: Colors.white, fontSize: 20),
+                                            //             ),
+                                            //             onPressed: () => Navigator.pop(context),
+                                            //             color: kButtonColor,
+                                            //           ),
+                                            //           DialogButton(
+                                            //             child: Text(
+                                            //               "نعم",
+                                            //               style: TextStyle(color: Colors.white, fontSize: 20),
+                                            //             ),
+                                            //             onPressed: ()
+                                            //             {
+                                            //               specialists.doc(document.id).delete();
+                                            //
+                                            //               users.doc(document.id).delete();
+                                            //
+                                            //               specialists.doc(document.id).collection("Students").get().then((value) =>
+                                            //                   value.docs.forEach((element) {
+                                            //                     specialists.doc(document.id).collection('Students').doc(element.id).delete();
+                                            //                   })
+                                            //               );
+                                            //
+                                            //               FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
+                                            //                   .catchError((e)=> print(e));
+                                            //               Navigator.pop(context);
+                                            //             },
+                                            //             color: kButtonColor,
+                                            //           ),
+                                            //         ],
+                                            //       ).show();
+                                            //     }
+                                            // ),
                                             title:  Text(document.data()['name'], style: kTextPageStyle),
                                             subtitle:  Text( document.data()["isAuth"]==true? document.data()["typeOfSpechalist"]:" لم تتم المصادقة",style: kTextPageStyle),
 

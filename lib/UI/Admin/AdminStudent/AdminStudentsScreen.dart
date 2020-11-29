@@ -95,54 +95,54 @@ class _StudentScreenState extends State<StudentScreen> {
                                                       builder: (context) =>
                                                           StudentInfo(document.data()['uid'])));
                                             },
-                                            trailing: IconButton(icon: Icon (Icons.delete),
-                                                onPressed: () {
-                                                  return Alert(
-                                                    context: context,
-                                                    type: AlertType.error,
-                                                    title: " هل أنت مـتأكد من حذف ${document.data()['name']} ؟ ",
-                                                    desc: "",
-                                                    buttons: [
-                                                      DialogButton(
-                                                        child: Text(
-                                                          "لا",
-                                                          style: TextStyle(color: Colors.white, fontSize: 20),
-                                                        ),
-                                                        onPressed: () => Navigator.pop(context),
-                                                        color: kButtonColor,
-                                                      ),
-                                                      DialogButton(
-                                                        child: Text(
-                                                          "نعم",
-                                                          style: TextStyle(color: Colors.white, fontSize: 20),
-                                                        ),
-                                                        onPressed: ()
-                                                        {
-                                                          students.doc(document.id).delete();
-                                                          users.doc(document.id).delete();
-
-
-                                                          teachers.get().then((value) =>
-                                                              value.docs.forEach((element) {
-                                                                teachers.doc(element.id).collection('Students').doc(document.id).delete();
-                                                              }));
-
-                                                          specialists.get().then((value) =>
-                                                              value.docs.forEach((element) {
-                                                                specialists.doc(element.id).collection('Students').doc(document.id).delete();
-                                                              }));
-
-                                                          FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
-                                                              .catchError((e)=> print(e));
-
-                                                          Navigator.pop(context);
-                                                        },
-                                                        color: kButtonColor,
-                                                      ),
-                                                    ],
-                                                  ).show();
-                                                }
-                                            ),
+                                            // trailing: IconButton(icon: Icon (Icons.delete),
+                                            //     onPressed: () {
+                                            //       return Alert(
+                                            //         context: context,
+                                            //         type: AlertType.error,
+                                            //         title: " هل أنت مـتأكد من حذف ${document.data()['name']} ؟ ",
+                                            //         desc: "",
+                                            //         buttons: [
+                                            //           DialogButton(
+                                            //             child: Text(
+                                            //               "لا",
+                                            //               style: TextStyle(color: Colors.white, fontSize: 20),
+                                            //             ),
+                                            //             onPressed: () => Navigator.pop(context),
+                                            //             color: kButtonColor,
+                                            //           ),
+                                            //           DialogButton(
+                                            //             child: Text(
+                                            //               "نعم",
+                                            //               style: TextStyle(color: Colors.white, fontSize: 20),
+                                            //             ),
+                                            //             onPressed: ()
+                                            //             {
+                                            //               students.doc(document.id).delete();
+                                            //               users.doc(document.id).delete();
+                                            //
+                                            //
+                                            //               teachers.get().then((value) =>
+                                            //                   value.docs.forEach((element) {
+                                            //                     teachers.doc(element.id).collection('Students').doc(document.id).delete();
+                                            //                   }));
+                                            //
+                                            //               specialists.get().then((value) =>
+                                            //                   value.docs.forEach((element) {
+                                            //                     specialists.doc(element.id).collection('Students').doc(document.id).delete();
+                                            //                   }));
+                                            //
+                                            //               FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
+                                            //                   .catchError((e)=> print(e));
+                                            //
+                                            //               Navigator.pop(context);
+                                            //             },
+                                            //             color: kButtonColor,
+                                            //           ),
+                                            //         ],
+                                            //       ).show();
+                                            //     }
+                                            // ),
                                             title: new Text(document.data()['name'], style: kTextPageStyle),
                                             subtitle: new Text("طالب", style: kTextPageStyle),
                                           ));}

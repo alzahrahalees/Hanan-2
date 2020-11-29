@@ -110,42 +110,42 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                                     TeacherInfo(document.data()['uid'])));
                                       },
 
-                                      trailing: IconButton(icon: Icon (Icons.delete),
-                                          onPressed: () {
-                                            return Alert(
-                                              // content: Icon(Icons.clear, color: Colors.red,),
-                                              context: context,
-                                              type: AlertType.error,
-                                              title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
-                                              desc: "",
-                                              buttons: [
-                                                DialogButton(
-                                                  child: Text(
-                                                    "لا",
-                                                    style: TextStyle(color: Colors.white, fontSize: 20),
-                                                  ),
-                                                  onPressed: () => Navigator.pop(context),
-                                                  color: kButtonColor,
-                                                ),
-                                                DialogButton(
-                                                  child: Text(
-                                                    "نعم",
-                                                    style: TextStyle(color: Colors.white, fontSize: 20),
-                                                  ),
-                                                  onPressed: (){
-
-                                                    Teachers.doc(document.id).delete();
-                                                    Users.doc(document.id).delete();
-                                                    FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
-                                                        .catchError((e)=> print(e));
-                                                    Navigator.pop(context);
-                                                  },
-                                                  color: kButtonColor,
-                                                ),
-                                              ],
-                                            ).show();
-                                          }
-                                      ),
+                                      // trailing: IconButton(icon: Icon (Icons.delete),
+                                      //     onPressed: () {
+                                      //       return Alert(
+                                      //         // content: Icon(Icons.clear, color: Colors.red,),
+                                      //         context: context,
+                                      //         type: AlertType.error,
+                                      //         title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
+                                      //         desc: "",
+                                      //         buttons: [
+                                      //           DialogButton(
+                                      //             child: Text(
+                                      //               "لا",
+                                      //               style: TextStyle(color: Colors.white, fontSize: 20),
+                                      //             ),
+                                      //             onPressed: () => Navigator.pop(context),
+                                      //             color: kButtonColor,
+                                      //           ),
+                                      //           DialogButton(
+                                      //             child: Text(
+                                      //               "نعم",
+                                      //               style: TextStyle(color: Colors.white, fontSize: 20),
+                                      //             ),
+                                      //             onPressed: (){
+                                      //
+                                      //               Teachers.doc(document.id).delete();
+                                      //               Users.doc(document.id).delete();
+                                      //               FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
+                                      //                   .catchError((e)=> print(e));
+                                      //               Navigator.pop(context);
+                                      //             },
+                                      //             color: kButtonColor,
+                                      //           ),
+                                      //         ],
+                                      //       ).show();
+                                      //     }
+                                      // ),
                                       title:  Text(document.data()['name'], style: kTextPageStyle),
                                       subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
 
