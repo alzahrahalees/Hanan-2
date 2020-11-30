@@ -755,15 +755,9 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
 
                                               users.doc(uid).update({
-                                                'name': newName == null
-                                                    ? name
-                                                    : newName,
-                                                'age': newAge == null
-                                                    ? age
-                                                    : newAge,
-                                                'phone': newPhone == null
-                                                    ? phone
-                                                    : newPhone,
+                                                'name': newName == null ? name : newName,
+                                                'age': newAge == null ? age : newAge,
+                                                'phone': newPhone == null ? phone : newPhone,
                                               });
                                               if (gender != null) {
                                                 users.doc(uid).update({
@@ -808,8 +802,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                                 });
                                               }
 
-                                              if (communicationSpecialistId !=
-                                                  null) {
+                                              if (communicationSpecialistId != null) {
                                                 users.doc(uid).update({
                                                   'communicationSpecialistName':
                                                       communicationSpecialistName,

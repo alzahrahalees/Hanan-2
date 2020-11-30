@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
           Locale("ar"),
         ],
         locale: Locale("ar"),
-
         title: kTitleOfProject,
         home: WelcomeScreen(),
       ),
