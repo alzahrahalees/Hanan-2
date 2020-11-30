@@ -722,7 +722,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                               if (communicationSpecialistId != null) {
                                                 studentsPlans.get().then((value)=>{
                                                   value.docs.forEach((element) {
-                                                    studentsPlans.doc(element.id).collection('Goals').where('communicationSpecialistId',isEqualTo:! null).get().then((val) => {
+                                                    studentsPlans.doc(element.id).collection('Goals').where('communicationSpecialistId',isEqualTo: !null).get().then((val) => {
                                                       val.docs.forEach((goal) {
                                                         studentsPlans.doc(element.id).collection('Goals').doc(goal.id).update({
                                                           'communicationSpecialistName':
@@ -731,6 +731,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                                           'communicationSpecialistId':
                                                           communicationSpecialistId,
                                                         });})});})});
+
 
                                                 students.doc(uid).update({
                                                   'communicationSpecialistName':
