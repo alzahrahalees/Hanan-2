@@ -86,6 +86,7 @@ class _TFilesState extends State<TFiles> {
                 return new AlertDialog(
                 title: SizedBox(
                   width: 200,
+                  height: 300,
                   child: ListView(
                     shrinkWrap: true,
                     children: [

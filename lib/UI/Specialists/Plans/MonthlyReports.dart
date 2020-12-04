@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hanan/UI/Constance.dart';
@@ -17,6 +18,7 @@ class _MonthlyReportsState extends State<MonthlyReports> {
   int _numOfMonth = DateTime.now().month;
 
 
+  String specialistTypeId;
 
   List<String> months = [
     'يناير',
@@ -32,6 +34,41 @@ class _MonthlyReportsState extends State<MonthlyReports> {
     'نوفمبر',
     'ديسمبر'
   ];
+
+  void getType() async {
+    await FirebaseFirestore.instance
+        .collection('Specialists')
+        .doc(FirebaseAuth.instance.currentUser.email)
+        .get()
+        .then((data) {
+      if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
+        setState(() {
+          specialistTypeId = 'communicationSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
+        setState(() {
+          specialistTypeId = 'psychologySpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
+        setState(() {
+          specialistTypeId = 'occupationalSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
+        setState(() {
+          specialistTypeId = 'physiotherapySpecialistId';
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getType();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,50 +149,41 @@ class _MonthlyReportsState extends State<MonthlyReports> {
                               offset: Offset(1, 3))
                         ] // make rounded corner of border
                         ),
-                    child: Container(
-                      width: 400,
-                      height: 40,
-                      child: ListView(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Row(
-                            children:  [
-                           Container(
-                             child: Center(child: Text('المجال')),
-                             width: 90,
-                           ),
-                              VerticalDivider(
-                                width: 5,
-                              ),
-                          Container(
-                              width: 90,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Container(
+                            child: Center(child: Text('المجال')),
+                            width: 100,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Container(
+                              width: 100,
                               child: Center(
                                   child: Text(
                                 'الهدف',
                                 textAlign: TextAlign.center,
                               ))),
-                              VerticalDivider(
-                                width: 5,
-                              ),
-                          Container(child: Center(child: Text('التقييم')), width: 90,),
-                              VerticalDivider(
-                                width: 5,
-                              ),
-                          Container(child: Center(child: Text('المساعدة')), width: 90,),])
-                        ],
-                      ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text('التقييم'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text('المساعدة'),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('Students')
-                        .doc(widget.studentId)
-                        .collection('Plans')
-                        .doc(widget.planId)
-                        .collection('Reports')
-                        .doc('monthlyReports')
+                    stream: FirebaseFirestore.instance.collection('Students').doc(widget.studentId)
+                        .collection('Plans').doc(widget.planId).collection('Reports').doc('monthlyReports')
                         .collection(_numOfMonth.toString())
                         .orderBy('goalType')
                         .snapshots(),
@@ -173,6 +201,8 @@ class _MonthlyReportsState extends State<MonthlyReports> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               DocumentSnapshot document = snapshot.data.docs[index];
+
+                              if(document.data()[specialistTypeId] == FirebaseAuth.instance.currentUser.email ){
                                 String eval = document.data()['evaluation'];
                                 String help = document.data()['helpType'] == '' ? 'لا يوجد' : document.data()['helpType'];
                                 String goalName = document.data()['goalName'];
@@ -189,60 +219,49 @@ class _MonthlyReportsState extends State<MonthlyReports> {
                                           Radius.circular(10.0)),
                                       // set rounded corner radius
                                       boxShadow: [
-                                        BoxShadow(blurRadius: 5, color: Colors.grey, offset: Offset(1, 3))
+                                        BoxShadow(
+                                            blurRadius: 5,
+                                            color: Colors.grey,
+                                            offset: Offset(1, 3))
                                       ] // make rounded corner of border
                                       ),
-                                  child: Container(
+                                  child:  Container(
                                     width: 400,
-                                    height: 80,
+                                    height: 40,
                                     child: ListView(
                                       shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal ,
+                                      scrollDirection: Axis.horizontal,
                                       children: [
-                                           Container(
-                                             width: 90 ,
-                                             child: Center(
-                                                 child: Text(
-                                               goalType,
-                                               textAlign: TextAlign.center,
-                                             )),
-                                           ),
-                                          VerticalDivider(
-                                            width: 5,
-                                          ),
-                                          Container(
-                                            width: 90 ,
-                                            child: Center(
-                                              child: Text(
-                                                goalName,
-                                                textAlign: TextAlign.center,
+                                        Row(
+                                            children:  [
+                                              Container(
+                                                child: Center(child: Text('المجال')),
+                                                width: 90,
                                               ),
-                                            ),
-                                          ),
-                                        VerticalDivider(
-                                          width: 5,
-                                        ),
-                                          Container(
-                                            width: 90 ,
-                                            child: Center(
-                                              child: Text(eval,
-                                                  textAlign: TextAlign.center),
-                                            ),
-                                          ),
-                                        VerticalDivider(
-                                          width: 5,
-                                        ),
-                                          Container(
-                                            width: 90 ,
-                                            child: Center(
-                                              child: Text(help,
-                                                  textAlign: TextAlign.center),
-                                            ),
-                                          ),
+                                              VerticalDivider(
+                                                width: 5,
+                                              ),
+                                              Container(
+                                                  width: 90,
+                                                  child: Center(
+                                                      child: Text(
+                                                        'الهدف',
+                                                        textAlign: TextAlign.center,
+                                                      ))),
+                                              VerticalDivider(
+                                                width: 5,
+                                              ),
+                                              Container(child: Center(child: Text('التقييم')), width: 90,),
+                                              VerticalDivider(
+                                                width: 5,
+                                              ),
+                                              Container(child: Center(child: Text('المساعدة')), width: 90,),])
                                       ],
                                     ),
                                   ),
                                 );
+                              }
+                              else return SizedBox();
                             });
                       }
                     }),

@@ -69,7 +69,7 @@ class _ParentMainState extends State<ParentMain> {
       'اليوميات',
       "المواعيد ",
       "الخطط",
-      "المعلومات ",
+      "معلومات الطالب ",
       "فريق العمل"
     ];
     String _name = '';
@@ -106,7 +106,7 @@ class _ParentMainState extends State<ParentMain> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.info),
-                  label: "معلومات الطالب",
+                  label: "المعلومات",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.people_alt_rounded),

@@ -112,52 +112,23 @@ class _AppointmentsSpecialistState extends State<AppointmentsSpecialist>
   String whatDay(int index) {
     String day;
     switch (index) {
-      case 0:
-        {
-          setState(() {
-            day = 'sun';
-          });
-        }
+      case 0:{setState(() {day = 'sun';});}
         break;
 
-      case 1:
-        {
-          setState(() {
-            day = 'mon';
-          });
-        }
+      case 1:{setState(() {day = 'mon';});}
         break;
 
-      case 2:
-        {
-          setState(() {
-            day = 'tue';
-          });
-        }
+      case 2: {setState(() {day = 'tue';});}
         break;
 
-      case 3:
-        {
-          setState(() {
-            day = 'wed';
-          });
-        }
+      case 3:{setState(() {day = 'wed';}); }
         break;
 
-      case 4:
-        {
-          setState(() {
-            day = 'thu';
-          });
-        }
+      case 4:{setState(() {day = 'thu';});}
         break;
 
       default:
-        {
-          setState(() {
-            day = 'sun';
-          });
-        }
+        {setState(() {day = 'sun';});}
         break;
     }
 

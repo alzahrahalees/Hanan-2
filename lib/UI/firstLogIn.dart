@@ -18,7 +18,7 @@ class FirstLogIn extends StatefulWidget {
 
 class _FirstLogInState extends State<FirstLogIn> {
 
-  TextEditingController _email = TextEditingController();
+  String _email='';
   TextEditingController _password = TextEditingController();
   TextEditingController _secondPassword = TextEditingController();
   Color textColor = Colors.black54;
@@ -27,6 +27,7 @@ class _FirstLogInState extends State<FirstLogIn> {
   final _formKey = GlobalKey<FormState>();
   Icon _icon = Icon(Icons.lock);
   bool _isValid = false;
+  String _wrongEmail ='';
 
 
   Future<String> whoIs(String email) async {
@@ -71,9 +72,12 @@ class _FirstLogInState extends State<FirstLogIn> {
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: TextFormField(
-                            controller: _email,
+                            onChanged: (str){
+                              setState(() {
+                                _email= str;
+                              });
+                            },
                             decoration: InputDecoration(
-
                                 prefixIcon: new Icon(Icons.mail),
                                 hintText: "الإيميل",
                                 helperStyle: TextStyle(fontSize: 10)),
@@ -84,6 +88,10 @@ class _FirstLogInState extends State<FirstLogIn> {
                                 return null;
                             },
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(_wrongEmail, style: TextStyle(color: Colors.red),),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
@@ -151,7 +159,7 @@ class _FirstLogInState extends State<FirstLogIn> {
                                   setState(() {
                                     isLoading = true;
                                   });
-                                  await editIsAuthInDB();
+                                  await authUser();
                                   Fluttertoast.showToast(
                                       msg: 'تم تعيين كلمة السر بنجاح',
                                     textColor: Colors.white70,
@@ -199,74 +207,78 @@ class _FirstLogInState extends State<FirstLogIn> {
                     ])))));
   }
 
-  void editIsAuthInDB() async {
+  void authUser() async {
     String centerId;
-    String type = await whoIs(_email.text.toLowerCase());
+    String type = await whoIs(_email.toLowerCase());
 
      FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-        email: _email.text.toLowerCase(), password: _password.text)
-        .catchError((err) => print('### Account Not created Err :$err'))
+        email: _email.toLowerCase(), password: _password.text)
+        .catchError((err) {
+
+       print('### Account Not created Err :$err');
+       setState(() {
+         _wrongEmail = 'يوجد خطأ في البريد الإلكتروني';
+       });
+     })
         .then((value)  {
-      //get centerId
-       FirebaseFirestore.instance
-          .collection('Users')
-          .doc(_email.text.toLowerCase())
-          .get()
-          .then((value) => centerId = value.data()['center'])
-          .whenComplete(()  {
-        print(type);
-        print(_email.text);
-        print(centerId);
+
         //delete from isAuth collection
          FirebaseFirestore.instance
             .collection('NoAuth')
-            .doc(_email.text.toLowerCase())
+            .doc(_email.toLowerCase())
             .delete();
-        //
+
+         //get centerId
+         FirebaseFirestore.instance
+             .collection('Users')
+             .doc(_email.toLowerCase())
+             .get()
+             .then((value) => centerId = value.data()['center'])
+             .whenComplete(()  {
+           print(type);
+           print(_email);
+           print(centerId);
+
         // //edit isAuth fields
          FirebaseFirestore.instance
             .collection(type)
-            .doc(_email.text.toLowerCase())
+            .doc(_email.toLowerCase())
             .update({"isAuth": true});
-         FirebaseFirestore.instance
-            .collection('Centers')
-            .doc(centerId)
-            .collection(type)
-            .doc(_email.text.toLowerCase())
-            .update({'isAuth': true});
+
          FirebaseFirestore.instance
             .collection('Users')
-            .doc(_email.text.toLowerCase())
+            .doc(_email.toLowerCase())
             .update({"isAuth": true});
 
 
         //which page to enter
-        if (type == 'Teachers') {
-
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => TeacherMainScreen(0)));
-        }
-        else if (type == 'Specialists') {
-
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SpecialistMainScreen(index: 0)));
-        }
-        else if (type == 'Students') {
-
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => ParentMain(0)));
-        }
+        // if (type == 'Teachers') {
+        //
+        //   Navigator.pushReplacement(context,
+        //       MaterialPageRoute(builder: (context) => TeacherMainScreen(0)));
+        // }
+        // else if (type == 'Specialists') {
+        //
+        //   Navigator.pushReplacement(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (context) => SpecialistMainScreen(index: 0)));
+        // }
+        // else if (type == 'Students') {
+        //
+        //   Navigator.pushReplacement(
+        //       context, MaterialPageRoute(builder: (context) => ParentMain(0)));
+        // }
 
         //
-        // Navigator.pushReplacement(context, MaterialPageRoute(
-        //     builder: (context) => MainLogIn()
+        Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) => MainLogIn()));
         // Navigator.pop(context);
       }).catchError((err) =>
           print('****######### Err: $err ###########*********'));
-    });
+    }).catchError((err) =>
+         print('****######### Err: $err ###########*********'));
   }
 
   bool isValid() {

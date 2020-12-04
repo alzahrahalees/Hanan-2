@@ -113,2301 +113,331 @@ class _SpecialMajorsPageState extends State<SpecialMajorsPage>
           body: TabBarView(
             controller: controller,
             children: [
-              SafeArea(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: studentsPlansGoal
-                          .where('goalType',
-                              isEqualTo: 'مجال الانتباه والتركيز')
-                          .orderBy('createdAt', descending: true)
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                              child: SpinKitFoldingCube(
-                            color: kUnselectedItemColor,
-                            size: 60,
-                          ));
-                        } else {
-                          return Container(
-                            color: Colors.white70,
-                            child: ListView.builder(
-                                itemCount: snapshot.data.docs.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot documentSnapshot =
-                                      snapshot.data.docs[index];
-                                  return Column(children: [
-                                    Padding(padding: EdgeInsets.all(5)),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    GoalAnalysisMain(
-                                                      studentId:
-                                                          widget.studentId,
-                                                      planId: widget.planId,
-                                                      goalId: documentSnapshot[
-                                                          "goalId"],
-                                                    )));
-                                      },
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(10),
-                                                topRight: Radius.circular(10)),
-                                            side: BorderSide(
-                                                width: 2,
-                                                color: Colors
-                                                    .deepPurple.shade200)),
-                                        elevation: 5,
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                                title: Center(
-                                                  child: Text(documentSnapshot[
-                                                      'goalTitle']),
-                                                ),
-                                                leading: Icon(
-                                                  Icons.title,
-                                                  color: Colors.indigoAccent,
-                                                ),
-                                                trailing: IconButton(
-                                                    icon: Icon(Icons.clear),
-                                                    color: Colors.grey,
-                                                    iconSize: 15,
-                                                    onPressed: () {
-                                                      Timer timer = Timer(
-                                                          Duration(seconds: 10),
-                                                          () {
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .delete();
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'ProceduralGoals')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection('Notes')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'Evaluation')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(widget
-                                                                          .planId)
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(documentSnapshot[
-                                                                          'planId'])
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element2) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                          }));
-                                                                }));
-                                                      });
-                                                      Scaffold.of(context)
-                                                          .showSnackBar(
-                                                              SnackBar(
-                                                        content: Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .auto_delete_outlined,
-                                                              color: Colors
-                                                                  .deepPurple
-                                                                  .shade200,
-                                                            ),
-                                                            Text(
-                                                                "      سيتم الحذف بعد عشرة ثواني",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .deepPurple,
-                                                                    fontSize:
-                                                                        12)),
-                                                            SizedBox(
-                                                              width: 70,
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Notes').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Evaluation').doc(element.id).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').get().then((value) =>
-                                                                                value.docs.forEach((element2) {
-                                                                                  specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                                }));
-                                                                          }));
-
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    " تأكيد ",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  timer
-                                                                      .cancel();
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    "تراجع",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                              width: 70,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        backgroundColor:
-                                                            Colors.white70,
-                                                        duration: Duration(
-                                                            seconds: 10),
-                                                      ));
-                                                    })),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            Center(
-                                                child: Text(
-                                              "الهدف العام:",
-                                              style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontSize: 10),
-                                            )),
-                                            ListTile(
-                                              title: Text(
-                                                  documentSnapshot[
-                                                      'generalGoal'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15)),
-                                              leading: Icon(Icons.lightbulb,
-                                                  color: Colors.amber),
-                                            ),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            documentSnapshot["image"] != null
-                                                ? ListTile(
-                                                    title: Image.network(
-                                                      documentSnapshot["image"],
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return Center(
-                                                            child: CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .grey),
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .deepPurple));
-                                                      },
-                                                      width: 1500,
-                                                      height: 300,
-                                                    ),
-                                                    leading: Icon(Icons.image,
-                                                        color: Colors
-                                                            .deepOrangeAccent),
-                                                  )
-                                                : Text(
-                                                    "",
-                                                    style:
-                                                        TextStyle(fontSize: 0),
-                                                  ),
-                                            ListTile(
-                                              title: Container(
-                                                child: Text(
-                                                    " تم إنشاؤه  ${documentSnapshot['date']}",
-                                                    style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 8)),
-                                                alignment: Alignment.center,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(padding: EdgeInsets.all(3)),
-                                  ]);
-                                }),
-                          );
-                        }
-                      })),
+              MajorsWidget(studentsPlansGoal: studentsPlansGoal,
+                  widget: widget,
+                  specialists: specialists,
+                major: 'مجال الانتباه والتركيز',
+                 ),
               // 2
-              SafeArea(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: studentsPlansGoal
-                          .where('goalType', isEqualTo: 'مجال التواصل')
-                          .orderBy('createdAt', descending: true)
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                              child: SpinKitFoldingCube(
-                            color: kUnselectedItemColor,
-                            size: 60,
-                          ));
-                        } else {
-                          return Container(
-                            color: Colors.white70,
-                            child: ListView.builder(
-                                itemCount: snapshot.data.docs.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot documentSnapshot =
-                                      snapshot.data.docs[index];
-                                  return Column(children: [
-                                    Padding(padding: EdgeInsets.all(5)),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    GoalAnalysisMain(
-                                                      studentId:
-                                                          widget.studentId,
-                                                      planId: widget.planId,
-                                                      goalId: documentSnapshot[
-                                                          "goalId"],
-                                                    )));
-                                      },
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(10),
-                                                topRight: Radius.circular(10)),
-                                            side: BorderSide(
-                                                width: 2,
-                                                color: Colors
-                                                    .deepPurple.shade200)),
-                                        elevation: 5,
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                                title: Center(
-                                                  child: Text(documentSnapshot[
-                                                      'goalTitle']),
-                                                ),
-                                                leading: Icon(
-                                                  Icons.title,
-                                                  color: Colors.indigoAccent,
-                                                ),
-                                                trailing: IconButton(
-                                                    icon: Icon(Icons.clear),
-                                                    color: Colors.grey,
-                                                    iconSize: 15,
-                                                    onPressed: () {
-                                                      Timer timer = Timer(
-                                                          Duration(seconds: 10),
-                                                          () {
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .delete();
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'ProceduralGoals')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection('Notes')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'Evaluation')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(widget
-                                                                          .planId)
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(documentSnapshot[
-                                                                          'planId'])
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element2) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                          }));
-                                                                }));
-                                                      });
-                                                      Scaffold.of(context)
-                                                          .showSnackBar(
-                                                              SnackBar(
-                                                        content: Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .auto_delete_outlined,
-                                                              color: Colors
-                                                                  .deepPurple
-                                                                  .shade200,
-                                                            ),
-                                                            Text(
-                                                                "      سيتم الحذف بعد عشرة ثواني",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .deepPurple,
-                                                                    fontSize:
-                                                                        12)),
-                                                            SizedBox(
-                                                              width: 70,
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Notes').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Evaluation').doc(element.id).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').get().then((value) =>
-                                                                                value.docs.forEach((element2) {
-                                                                                  specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                                }));
-                                                                          }));
-
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    " تأكيد ",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  timer
-                                                                      .cancel();
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    "تراجع",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                              width: 70,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        backgroundColor:
-                                                            Colors.white70,
-                                                        duration: Duration(
-                                                            seconds: 10),
-                                                      ));
-                                                    })),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            Center(
-                                                child: Text(
-                                              "الهدف العام:",
-                                              style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontSize: 10),
-                                            )),
-                                            ListTile(
-                                              title: Text(
-                                                  documentSnapshot[
-                                                      'generalGoal'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15)),
-                                              leading: Icon(Icons.lightbulb,
-                                                  color: Colors.amber),
-                                            ),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            documentSnapshot["image"] != null
-                                                ? ListTile(
-                                                    title: Image.network(
-                                                      documentSnapshot["image"],
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return Center(
-                                                            child: CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .grey),
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .deepPurple));
-                                                      },
-                                                      width: 1500,
-                                                      height: 300,
-                                                    ),
-                                                    leading: Icon(Icons.image,
-                                                        color: Colors
-                                                            .deepOrangeAccent),
-                                                  )
-                                                : Text(
-                                                    "",
-                                                    style:
-                                                        TextStyle(fontSize: 0),
-                                                  ),
-                                            ListTile(
-                                              title: Container(
-                                                child: Text(
-                                                    " تم إنشاؤه  ${documentSnapshot['date']}",
-                                                    style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 8)),
-                                                alignment: Alignment.center,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(padding: EdgeInsets.all(3)),
-                                  ]);
-                                }),
-                          );
-                        }
-                      })),
+              // 'مجال التواصل'
+              MajorsWidget(studentsPlansGoal: studentsPlansGoal, widget: widget, specialists: specialists, major:  'مجال التواصل'),
               //3
-              SafeArea(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: studentsPlansGoal
-                          .where('goalType', isEqualTo: 'المجال الإدراكي')
-                          .orderBy('createdAt', descending: true)
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                              child: SpinKitFoldingCube(
-                            color: kUnselectedItemColor,
-                            size: 60,
-                          ));
-                        } else {
-                          return Container(
-                            color: Colors.white70,
-                            child: ListView.builder(
-                                itemCount: snapshot.data.docs.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot documentSnapshot =
-                                      snapshot.data.docs[index];
-                                  return Column(children: [
-                                    Padding(padding: EdgeInsets.all(5)),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    GoalAnalysisMain(
-                                                      studentId:
-                                                          widget.studentId,
-                                                      planId: widget.planId,
-                                                      goalId: documentSnapshot[
-                                                          "goalId"],
-                                                    )));
-                                      },
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(10),
-                                                topRight: Radius.circular(10)),
-                                            side: BorderSide(
-                                                width: 2,
-                                                color: Colors
-                                                    .deepPurple.shade200)),
-                                        elevation: 5,
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                                title: Center(
-                                                  child: Text(documentSnapshot[
-                                                      'goalTitle']),
-                                                ),
-                                                leading: Icon(
-                                                  Icons.title,
-                                                  color: Colors.indigoAccent,
-                                                ),
-                                                trailing: IconButton(
-                                                    icon: Icon(Icons.clear),
-                                                    color: Colors.grey,
-                                                    iconSize: 15,
-                                                    onPressed: () {
-                                                      Timer timer = Timer(
-                                                          Duration(seconds: 10),
-                                                          () {
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .delete();
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'ProceduralGoals')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection('Notes')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'Evaluation')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(widget
-                                                                          .planId)
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(documentSnapshot[
-                                                                          'planId'])
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element2) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                          }));
-                                                                }));
-                                                      });
-                                                      Scaffold.of(context)
-                                                          .showSnackBar(
-                                                              SnackBar(
-                                                        content: Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .auto_delete_outlined,
-                                                              color: Colors
-                                                                  .deepPurple
-                                                                  .shade200,
-                                                            ),
-                                                            Text(
-                                                                "      سيتم الحذف بعد عشرة ثواني",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .deepPurple,
-                                                                    fontSize:
-                                                                        12)),
-                                                            SizedBox(
-                                                              width: 70,
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Notes').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Evaluation').doc(element.id).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').get().then((value) =>
-                                                                                value.docs.forEach((element2) {
-                                                                                  specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                                }));
-                                                                          }));
-
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    " تأكيد ",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  timer
-                                                                      .cancel();
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    "تراجع",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                              width: 70,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        backgroundColor:
-                                                            Colors.white70,
-                                                        duration: Duration(
-                                                            seconds: 10),
-                                                      ));
-                                                    })),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            Center(
-                                                child: Text(
-                                              "الهدف العام:",
-                                              style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontSize: 10),
-                                            )),
-                                            ListTile(
-                                              title: Text(
-                                                  documentSnapshot[
-                                                      'generalGoal'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15)),
-                                              leading: Icon(Icons.lightbulb,
-                                                  color: Colors.amber),
-                                            ),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            documentSnapshot["image"] != null
-                                                ? ListTile(
-                                                    title: Image.network(
-                                                      documentSnapshot["image"],
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return Center(
-                                                            child: CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .grey),
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .deepPurple));
-                                                      },
-                                                      width: 1500,
-                                                      height: 300,
-                                                    ),
-                                                    leading: Icon(Icons.image,
-                                                        color: Colors
-                                                            .deepOrangeAccent),
-                                                  )
-                                                : Text(
-                                                    "",
-                                                    style:
-                                                        TextStyle(fontSize: 0),
-                                                  ),
-                                            ListTile(
-                                              title: Container(
-                                                child: Text(
-                                                    " تم إنشاؤه  ${documentSnapshot['date']}",
-                                                    style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 8)),
-                                                alignment: Alignment.center,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(padding: EdgeInsets.all(3)),
-                                  ]);
-                                }),
-                          );
-                        }
-                      })),
+              //'المجال الإدراكي'
+              MajorsWidget(studentsPlansGoal: studentsPlansGoal, widget: widget, specialists: specialists, major:  'المجال الإدراكي'),
               //4
-              SafeArea(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: studentsPlansGoal
-                          .where('goalType', isEqualTo: 'المجال الحركي الدقيق')
-                          .orderBy('createdAt', descending: true)
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                              child: SpinKitFoldingCube(
-                            color: kUnselectedItemColor,
-                            size: 60,
-                          ));
-                        } else {
-                          return Container(
-                            color: Colors.white70,
-                            child: ListView.builder(
-                                itemCount: snapshot.data.docs.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot documentSnapshot =
-                                      snapshot.data.docs[index];
-                                  return Column(children: [
-                                    Padding(padding: EdgeInsets.all(5)),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    GoalAnalysisMain(
-                                                      studentId:
-                                                          widget.studentId,
-                                                      planId: widget.planId,
-                                                      goalId: documentSnapshot[
-                                                          "goalId"],
-                                                    )));
-                                      },
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(10),
-                                                topRight: Radius.circular(10)),
-                                            side: BorderSide(
-                                                width: 2,
-                                                color: Colors
-                                                    .deepPurple.shade200)),
-                                        elevation: 5,
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                                title: Center(
-                                                  child: Text(documentSnapshot[
-                                                      'goalTitle']),
-                                                ),
-                                                leading: Icon(
-                                                  Icons.title,
-                                                  color: Colors.indigoAccent,
-                                                ),
-                                                trailing: IconButton(
-                                                    icon: Icon(Icons.clear),
-                                                    color: Colors.grey,
-                                                    iconSize: 15,
-                                                    onPressed: () {
-                                                      Timer timer = Timer(
-                                                          Duration(seconds: 10),
-                                                          () {
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .delete();
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'ProceduralGoals')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection('Notes')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'Evaluation')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(widget
-                                                                          .planId)
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(documentSnapshot[
-                                                                          'planId'])
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element2) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                          }));
-                                                                }));
-                                                      });
-                                                      Scaffold.of(context)
-                                                          .showSnackBar(
-                                                              SnackBar(
-                                                        content: Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .auto_delete_outlined,
-                                                              color: Colors
-                                                                  .deepPurple
-                                                                  .shade200,
-                                                            ),
-                                                            Text(
-                                                                "      سيتم الحذف بعد عشرة ثواني",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .deepPurple,
-                                                                    fontSize:
-                                                                        12)),
-                                                            SizedBox(
-                                                              width: 70,
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Notes').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Evaluation').doc(element.id).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').get().then((value) =>
-                                                                                value.docs.forEach((element2) {
-                                                                                  specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                                }));
-                                                                          }));
-
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    " تأكيد ",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  timer
-                                                                      .cancel();
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    "تراجع",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                              width: 70,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        backgroundColor:
-                                                            Colors.white70,
-                                                        duration: Duration(
-                                                            seconds: 10),
-                                                      ));
-                                                    })),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            Center(
-                                                child: Text(
-                                              "الهدف العام:",
-                                              style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontSize: 10),
-                                            )),
-                                            ListTile(
-                                              title: Text(
-                                                  documentSnapshot[
-                                                      'generalGoal'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15)),
-                                              leading: Icon(Icons.lightbulb,
-                                                  color: Colors.amber),
-                                            ),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            documentSnapshot["image"] != null
-                                                ? ListTile(
-                                                    title: Image.network(
-                                                      documentSnapshot["image"],
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return Center(
-                                                            child: CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .grey),
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .deepPurple));
-                                                      },
-                                                      width: 1500,
-                                                      height: 300,
-                                                    ),
-                                                    leading: Icon(Icons.image,
-                                                        color: Colors
-                                                            .deepOrangeAccent),
-                                                  )
-                                                : Text(
-                                                    "",
-                                                    style:
-                                                        TextStyle(fontSize: 0),
-                                                  ),
-                                            ListTile(
-                                              title: Container(
-                                                child: Text(
-                                                    " تم إنشاؤه  ${documentSnapshot['date']}",
-                                                    style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 8)),
-                                                alignment: Alignment.center,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(padding: EdgeInsets.all(3)),
-                                  ]);
-                                }),
-                          );
-                        }
-                      })),
+              //'المجال الحركي الدقيق'
+              MajorsWidget(studentsPlansGoal: studentsPlansGoal, widget: widget, specialists: specialists, major: 'المجال الحركي الدقيق'),
               //5
-              SafeArea(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: studentsPlansGoal
-                          .where('goalType', isEqualTo: 'المجال الاجتماعي')
-                          .orderBy('createdAt', descending: true)
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                              child: SpinKitFoldingCube(
-                            color: kUnselectedItemColor,
-                            size: 60,
-                          ));
-                        } else {
-                          return Container(
-                            color: Colors.white70,
-                            child: ListView.builder(
-                                itemCount: snapshot.data.docs.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot documentSnapshot =
-                                      snapshot.data.docs[index];
-                                  return Column(children: [
-                                    Padding(padding: EdgeInsets.all(5)),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    GoalAnalysisMain(
-                                                      studentId:
-                                                          widget.studentId,
-                                                      planId: widget.planId,
-                                                      goalId: documentSnapshot[
-                                                          "goalId"],
-                                                    )));
-                                      },
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(10),
-                                                topRight: Radius.circular(10)),
-                                            side: BorderSide(
-                                                width: 2,
-                                                color: Colors
-                                                    .deepPurple.shade200)),
-                                        elevation: 5,
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                                title: Center(
-                                                  child: Text(documentSnapshot[
-                                                      'goalTitle']),
-                                                ),
-                                                leading: Icon(
-                                                  Icons.title,
-                                                  color: Colors.indigoAccent,
-                                                ),
-                                                trailing: IconButton(
-                                                    icon: Icon(Icons.clear),
-                                                    color: Colors.grey,
-                                                    iconSize: 15,
-                                                    onPressed: () {
-                                                      Timer timer = Timer(
-                                                          Duration(seconds: 10),
-                                                          () {
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .delete();
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'ProceduralGoals')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection('Notes')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'Evaluation')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(widget
-                                                                          .planId)
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(documentSnapshot[
-                                                                          'planId'])
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element2) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                          }));
-                                                                }));
-                                                      });
-                                                      Scaffold.of(context)
-                                                          .showSnackBar(
-                                                              SnackBar(
-                                                        content: Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .auto_delete_outlined,
-                                                              color: Colors
-                                                                  .deepPurple
-                                                                  .shade200,
-                                                            ),
-                                                            Text(
-                                                                "      سيتم الحذف بعد عشرة ثواني",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .deepPurple,
-                                                                    fontSize:
-                                                                        12)),
-                                                            SizedBox(
-                                                              width: 70,
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Notes').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Evaluation').doc(element.id).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').get().then((value) =>
-                                                                                value.docs.forEach((element2) {
-                                                                                  specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                                }));
-                                                                          }));
-
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    " تأكيد ",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  timer
-                                                                      .cancel();
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    "تراجع",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                              width: 70,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        backgroundColor:
-                                                            Colors.white70,
-                                                        duration: Duration(
-                                                            seconds: 10),
-                                                      ));
-                                                    })),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            Center(
-                                                child: Text(
-                                              "الهدف العام:",
-                                              style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontSize: 10),
-                                            )),
-                                            ListTile(
-                                              title: Text(
-                                                  documentSnapshot[
-                                                      'generalGoal'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15)),
-                                              leading: Icon(Icons.lightbulb,
-                                                  color: Colors.amber),
-                                            ),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            documentSnapshot["image"] != null
-                                                ? ListTile(
-                                                    title: Image.network(
-                                                      documentSnapshot["image"],
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return Center(
-                                                            child: CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .grey),
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .deepPurple));
-                                                      },
-                                                      width: 1500,
-                                                      height: 300,
-                                                    ),
-                                                    leading: Icon(Icons.image,
-                                                        color: Colors
-                                                            .deepOrangeAccent),
-                                                  )
-                                                : Text(
-                                                    "",
-                                                    style:
-                                                        TextStyle(fontSize: 0),
-                                                  ),
-                                            ListTile(
-                                              title: Container(
-                                                child: Text(
-                                                    " تم إنشاؤه  ${documentSnapshot['date']}",
-                                                    style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 8)),
-                                                alignment: Alignment.center,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(padding: EdgeInsets.all(3)),
-                                  ]);
-                                }),
-                          );
-                        }
-                      })),
+             // 'المجال الاجتماعي'
+              MajorsWidget(studentsPlansGoal: studentsPlansGoal, widget: widget, specialists: specialists, major:  'المجال الاجتماعي'),
               //6
-              SafeArea(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: studentsPlansGoal
-                          .where('goalType', isEqualTo: 'المجال الاستقلالي')
-                          .orderBy('createdAt', descending: true)
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                              child: SpinKitFoldingCube(
-                            color: kUnselectedItemColor,
-                            size: 60,
-                          ));
-                        } else {
-                          return Container(
-                            color: Colors.white70,
-                            child: ListView.builder(
-                                itemCount: snapshot.data.docs.length,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot documentSnapshot =
-                                      snapshot.data.docs[index];
-                                  return Column(children: [
-                                    Padding(padding: EdgeInsets.all(5)),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    GoalAnalysisMain(
-                                                      studentId:
-                                                          widget.studentId,
-                                                      planId: widget.planId,
-                                                      goalId: documentSnapshot[
-                                                          "goalId"],
-                                                    )));
-                                      },
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(10),
-                                                topRight: Radius.circular(10)),
-                                            side: BorderSide(
-                                                width: 2,
-                                                color: Colors
-                                                    .deepPurple.shade200)),
-                                        elevation: 5,
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                                title: Center(
-                                                  child: Text(documentSnapshot[
-                                                      'goalTitle']),
-                                                ),
-                                                leading: Icon(
-                                                  Icons.title,
-                                                  color: Colors.indigoAccent,
-                                                ),
-                                                trailing: IconButton(
-                                                    icon: Icon(Icons.clear),
-                                                    color: Colors.grey,
-                                                    iconSize: 15,
-                                                    onPressed: () {
-                                                      Timer timer = Timer(
-                                                          Duration(seconds: 10),
-                                                          () {
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .delete();
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'ProceduralGoals')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection('Notes')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        studentsPlansGoal
-                                                            .doc(
-                                                                documentSnapshot[
-                                                                    'goalId'])
-                                                            .collection(
-                                                                'Evaluation')
-                                                            .get()
-                                                            .then((value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(widget
-                                                                          .planId)
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                }));
-                                                        specialists.get().then(
-                                                            (value) =>
-                                                                value.docs.forEach(
-                                                                    (element) {
-                                                                  specialists
-                                                                      .doc(element
-                                                                          .id)
-                                                                      .collection(
-                                                                          'Students')
-                                                                      .doc(widget
-                                                                          .studentId)
-                                                                      .collection(
-                                                                          'Plans')
-                                                                      .doc(documentSnapshot[
-                                                                          'planId'])
-                                                                      .collection(
-                                                                          'Goals')
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element2) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                          }));
-                                                                }));
-                                                      });
-                                                      Scaffold.of(context)
-                                                          .showSnackBar(
-                                                              SnackBar(
-                                                        content: Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons
-                                                                  .auto_delete_outlined,
-                                                              color: Colors
-                                                                  .deepPurple
-                                                                  .shade200,
-                                                            ),
-                                                            Text(
-                                                                "      سيتم الحذف بعد عشرة ثواني",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .deepPurple,
-                                                                    fontSize:
-                                                                        12)),
-                                                            SizedBox(
-                                                              width: 70,
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .delete();
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'ProceduralGoals')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Notes')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Notes').doc(element.id).delete();
-                                                                          }));
-                                                                  studentsPlansGoal
-                                                                      .doc(documentSnapshot[
-                                                                          'goalId'])
-                                                                      .collection(
-                                                                          'Evaluation')
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Evaluation').doc(element.id).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();
-                                                                          }));
-                                                                  specialists
-                                                                      .get()
-                                                                      .then((value) =>
-                                                                          value
-                                                                              .docs
-                                                                              .forEach((element) {
-                                                                            specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').get().then((value) =>
-                                                                                value.docs.forEach((element2) {
-                                                                                  specialists.doc(element.id).collection('Students').doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId']).collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
-                                                                                }));
-                                                                          }));
-
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    " تأكيد ",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              child: FlatButton(
-                                                                onPressed: () {
-                                                                  timer
-                                                                      .cancel();
-                                                                  Scaffold.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                },
-                                                                child: Text(
-                                                                    "تراجع",
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .deepPurple,
-                                                                        fontSize:
-                                                                            12)),
-                                                              ),
-                                                              width: 70,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        backgroundColor:
-                                                            Colors.white70,
-                                                        duration: Duration(
-                                                            seconds: 10),
-                                                      ));
-                                                    })),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            Center(
-                                                child: Text(
-                                              "الهدف العام:",
-                                              style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontSize: 10),
-                                            )),
-                                            ListTile(
-                                              title: Text(
-                                                  documentSnapshot[
-                                                      'generalGoal'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 15)),
-                                              leading: Icon(Icons.lightbulb,
-                                                  color: Colors.amber),
-                                            ),
-                                            Divider(
-                                                thickness: 0.2,
-                                                color: Colors.grey),
-                                            documentSnapshot["image"] != null
-                                                ? ListTile(
-                                                    title: Image.network(
-                                                      documentSnapshot["image"],
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return Center(
-                                                            child: CircularProgressIndicator(
-                                                                valueColor:
-                                                                    AlwaysStoppedAnimation<
-                                                                            Color>(
-                                                                        Colors
-                                                                            .grey),
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .deepPurple));
-                                                      },
-                                                      width: 1500,
-                                                      height: 300,
-                                                    ),
-                                                    leading: Icon(Icons.image,
-                                                        color: Colors
-                                                            .deepOrangeAccent),
-                                                  )
-                                                : Text(
-                                                    "",
-                                                    style:
-                                                        TextStyle(fontSize: 0),
-                                                  ),
-                                            ListTile(
-                                              title: Container(
-                                                child: Text(
-                                                    " تم إنشاؤه  ${documentSnapshot['date']}",
-                                                    style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 8)),
-                                                alignment: Alignment.center,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(padding: EdgeInsets.all(3)),
-                                  ]);
-                                }),
-                          );
-                        }
-                      })),
+              //'المجال الاستقلالي'
+              MajorsWidget(studentsPlansGoal: studentsPlansGoal, widget: widget, specialists: specialists, major:  'المجال الاستقلالي'),
             ],
           )),
     );
+  }
+}
+
+class MajorsWidget extends StatelessWidget {
+  const MajorsWidget({
+
+    @required this.studentsPlansGoal,
+    @required this.widget,
+    @required this.specialists,
+    @required this.major
+
+  }) ;
+
+  final String major;
+  final CollectionReference studentsPlansGoal;
+  final SpecialMajorsPage widget;
+  final CollectionReference specialists;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: StreamBuilder<QuerySnapshot>(
+            stream: studentsPlansGoal
+                .where('goalType',
+                    isEqualTo: major)
+                .orderBy('createdAt', descending: true)
+                .snapshots(),
+            builder: (BuildContext context,
+                AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                    child: SpinKitFoldingCube(
+                  color: kUnselectedItemColor,
+                  size: 60,
+                ));
+              } else {
+                return Container(
+                  color: Colors.white70,
+                  child: ListView.builder(
+                      itemCount: snapshot.data.docs.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot documentSnapshot =
+                            snapshot.data.docs[index];
+                        return Column(children: [
+                          Padding(padding: EdgeInsets.all(5)),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context, MaterialPageRoute(
+                                      builder: (context) =>
+                                          GoalAnalysisMain(
+                                            goalType: documentSnapshot['goalType'],
+                                            studentId: widget.studentId,
+                                            planId: widget.planId,
+                                            goalId: documentSnapshot["goalId"],
+                                          )));
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      bottomRight:
+                                          Radius.circular(10),
+                                      topRight: Radius.circular(10)),
+                                  side: BorderSide(
+                                      width: 2,
+                                      color: Colors
+                                          .deepPurple.shade200)),
+                              elevation: 5,
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                      title: Center(
+                                        child: Text(documentSnapshot['goalTitle']),
+                                      ),
+                                      leading: Icon(
+                                        Icons.title,
+                                        color: Colors.indigoAccent,
+                                      ),
+                                      trailing: IconButton(
+                                          icon: Icon(Icons.clear),
+                                          color: Colors.grey,
+                                          iconSize: 15,
+                                          onPressed: () {
+                                            Timer timer = Timer(
+                                                Duration(seconds: 10), () {
+                                              studentsPlansGoal.doc(documentSnapshot['goalId']).delete();
+                                              studentsPlansGoal.doc(documentSnapshot['goalId']).collection('ProceduralGoals').get()
+                                                  .then((value) => value.docs.forEach((element) {
+                                                        studentsPlansGoal.doc(documentSnapshot['goalId'])
+                                                            .collection('ProceduralGoals')
+                                                            .doc(element.id)
+                                                            .delete();
+                                                      }));
+                                              studentsPlansGoal
+                                                  .doc(documentSnapshot['goalId'])
+                                                  .collection('Notes').get()
+                                                  .then((value) => value.docs.forEach(
+                                                          (element) {studentsPlansGoal
+                                                            .doc(documentSnapshot['goalId'])
+                                                            .collection('Notes').doc(element.id)
+                                                            .delete();
+                                                      }));
+                                              studentsPlansGoal
+                                                  .doc(documentSnapshot['goalId'])
+                                                  .collection('Evaluation')
+                                                  .get().then((value) =>
+                                                      value.docs.forEach(
+                                                          (element) {
+                                                        studentsPlansGoal.doc(documentSnapshot['goalId'])
+                                                            .collection('Evaluation')
+                                                            .doc(element.id).delete();
+                                                      }));
+                                              specialists.get().then(
+                                                  (value) =>
+                                                      value.docs.forEach(
+                                                          (element) {
+                                                        specialists.doc(element.id).collection('Students')
+                                                            .doc(widget.studentId)
+                                                            .collection('Plans')
+                                                            .doc(widget.planId)
+                                                            .collection('Goals')
+                                                            .doc(documentSnapshot['goalId'])
+                                                            .delete();
+                                                      }));
+                                              specialists.get().then(
+                                                  (value) =>
+                                                      value.docs.forEach((element) {
+                                                        specialists.doc(element.id)
+                                                            .collection('Students')
+                                                            .doc(widget.studentId)
+                                                            .collection('Plans')
+                                                            .doc(documentSnapshot['planId'])
+                                                            .collection('Goals')
+                                                            .doc(documentSnapshot['goalId'])
+                                                            .collection('ProceduralGoals')
+                                                            .get()
+                                                            .then((value) =>
+                                                                value.docs.forEach((element2) {
+                                                                  specialists.doc(element.id).collection('Students').doc(widget.studentId)
+                                                                      .collection('Plans').doc(documentSnapshot['planId'])
+                                                                      .collection('Goals').doc(documentSnapshot['goalId'])
+                                                                      .collection('ProceduralGoals').doc(element2.id).delete();
+                                                                }));
+                                                      }));
+                                            });
+                                            Scaffold.of(context)
+                                                .showSnackBar(
+                                                    SnackBar(
+                                              content: Row(
+                                                children: [
+                                                  Icon(Icons.auto_delete_outlined,
+                                                    color: Colors.deepPurple.shade200,
+                                                  ),
+                                                  Text("      سيتم الحذف بعد عشرة ثواني",
+                                                      style: TextStyle(color: Colors.deepPurple,
+                                                          fontSize: 12)),
+                                                  SizedBox(
+                                                    width: 70,
+                                                    child: FlatButton(
+                                                      onPressed: () {
+                                                        studentsPlansGoal
+                                                            .doc(documentSnapshot['goalId'])
+                                                            .delete();
+                                                        studentsPlansGoal
+                                                            .doc(documentSnapshot['goalId'])
+                                                            .collection('ProceduralGoals')
+                                                            .get()
+                                                            .then((value) =>
+                                                            value.docs.forEach((element) {
+                                                              studentsPlansGoal.doc(documentSnapshot['goalId'])
+                                                                  .collection('ProceduralGoals').doc(element.id).delete();
+                                                                }));
+                                                        studentsPlansGoal.doc(documentSnapshot['goalId'])
+                                                            .collection('Notes')
+                                                            .get()
+                                                            .then((value) =>
+                                                                value.docs.forEach((element) {
+                                                                  studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Notes').doc(element.id).delete();
+                                                                }));
+                                                        studentsPlansGoal
+                                                            .doc(documentSnapshot['goalId'])
+                                                            .collection('Evaluation')
+                                                            .get()
+                                                            .then((value) =>
+                                                                value.docs
+                                                                    .forEach((element) {
+                                                                  studentsPlansGoal.doc(documentSnapshot['goalId']).collection('Evaluation').doc(element.id).delete();
+                                                                }));
+                                                        specialists
+                                                            .get()
+                                                            .then((value) =>
+                                                                value
+                                                                    .docs
+                                                                    .forEach((element) {
+                                                                  specialists.doc(element.id).collection('Students').doc(widget.studentId)
+                                                                      .collection('Plans').doc(widget.planId).collection('Goals').doc(documentSnapshot['goalId']).delete();
+                                                                }));
+                                                        specialists
+                                                            .get()
+                                                            .then((value) => value.docs.forEach((element) {
+                                                                  specialists.doc(element.id).collection('Students')
+                                                                      .doc(widget.studentId).collection('Plans').doc(documentSnapshot['planId'])
+                                                                      .collection('Goals').doc(documentSnapshot['goalId']).collection('ProceduralGoals')
+                                                                      .get().then((value) => value.docs.forEach((element2) {
+                                                                        specialists.doc(element.id).collection('Students').doc(widget.studentId)
+                                                                            .collection('Plans').doc(documentSnapshot['planId']).collection('Goals')
+                                                                            .doc(documentSnapshot['goalId']).collection('ProceduralGoals').doc(element2.id).delete();
+                                                                      }));
+                                                                }));
+
+                                                        Scaffold.of(
+                                                                context)
+                                                            .hideCurrentSnackBar();
+                                                      },
+                                                      child: Text(
+                                                          " تأكيد ",
+                                                          style: TextStyle(
+                                                              color: Colors.deepPurple,
+                                                              fontSize:
+                                                                  12)),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    child: FlatButton(
+                                                      onPressed: () {
+                                                        timer.cancel();
+                                                        Scaffold.of(context).hideCurrentSnackBar();
+                                                      },
+                                                      child: Text(
+                                                          "تراجع",
+                                                          style: TextStyle(
+                                                              color: Colors.deepPurple,
+                                                              fontSize: 12)),
+                                                    ),
+                                                    width: 70,
+                                                  ),
+                                                ],
+                                              ),
+                                              backgroundColor:
+                                                  Colors.white70,
+                                              duration: Duration(
+                                                  seconds: 10),
+                                            ));
+                                          })),
+                                  Divider(
+                                      thickness: 0.2,
+                                      color: Colors.grey),
+                                  Center(
+                                      child: Text(
+                                    "الهدف العام:",
+                                    style: TextStyle(
+                                        color: Colors.deepPurple,
+                                        fontSize: 10),
+                                  )),
+                                  ListTile(
+                                    title: Text(
+                                        documentSnapshot[
+                                            'generalGoal'],
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15)),
+                                    leading: Icon(Icons.lightbulb,
+                                        color: Colors.amber),
+                                  ),
+                                  Divider(
+                                      thickness: 0.2,
+                                      color: Colors.grey),
+                                  documentSnapshot["image"] != null
+                                      ? ListTile(
+                                          title: Image.network(
+                                            documentSnapshot["image"],
+                                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return Center(
+                                                  child: CircularProgressIndicator(
+                                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                                                      backgroundColor: Colors.deepPurple));
+                                            },
+                                            width: 1500,
+                                            height: 300,
+                                          ),
+                                          leading: Icon(Icons.image,
+                                              color: Colors.deepOrangeAccent),
+                                        )
+                                      : SizedBox(),
+                                  ListTile(
+                                    title: Container(
+                                      child: Text(" تم إنشاؤه  ${documentSnapshot['date']}",
+                                          style: TextStyle(color: Colors.grey, fontSize: 8)),
+                                      alignment: Alignment.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(3)),
+                        ]);
+                      }),
+                );
+              }
+            }));
   }
 }

@@ -18,10 +18,10 @@ class StudentInfo extends StatefulWidget {
 }
 
 class _StudentInfoState extends State<StudentInfo> {
-  String uid;
+  String studentId;
 
   _StudentInfoState(String uid) {
-    this.uid = uid;
+    this.studentId = uid;
   }
 
   String gender1;
@@ -74,6 +74,7 @@ class _StudentInfoState extends State<StudentInfo> {
     String age;
     String phone;
     String email;
+    String oldTeacherId;
     String oldPhysiotherapySpecialistId;
     String oldOccupationalSpecialistId;
     String oldCommunicationSpecialistId;
@@ -93,8 +94,9 @@ class _StudentInfoState extends State<StudentInfo> {
     CollectionReference specialists =
         FirebaseFirestore.instance.collection('Specialists');
 
-    CollectionReference studentsPlans = FirebaseFirestore.instance.collection('Students').doc(uid).collection('Plans');
-    CollectionReference studentsFiles = FirebaseFirestore.instance.collection('Students').doc(uid).collection('StudyCases');
+    CollectionReference studentsPlans = FirebaseFirestore.instance.collection('Students').doc(studentId).collection('Plans');
+    CollectionReference studentsFiles = FirebaseFirestore.instance.collection('Students').doc(studentId).collection('StudyCases');
+
     String gender = gender1;
 
 
@@ -107,7 +109,7 @@ class _StudentInfoState extends State<StudentInfo> {
         ),
         body: SafeArea(
             child: StreamBuilder<QuerySnapshot>(
-                stream: students.where('uid', isEqualTo: uid).snapshots(),
+                stream: students.where('uid', isEqualTo: studentId).snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
@@ -127,11 +129,17 @@ class _StudentInfoState extends State<StudentInfo> {
                                   age = document.data()['age'];
                                   phone = document.data()['phone'];
                                   email = document.data()['email'];
+                                  oldTeacherId = document.data()['teacherId'];
                                   oldPhysiotherapySpecialistId=document.data()['physiotherapySpecialistId'];
                                   oldOccupationalSpecialistId=document.data()['occupationalSpecialistId'];
                                   oldCommunicationSpecialistId=document.data()['communicationSpecialistId'];
                                   oldPsychologySpecialistId=document.data()['psychologySpecialistId'];
 
+
+                                  print(oldPhysiotherapySpecialistId);
+                                  print(oldOccupationalSpecialistId);
+                                  print(oldCommunicationSpecialistId);
+                                  print(oldPsychologySpecialistId);
 
                                   return Column(children: <Widget>[
                                     ProfileTile(
@@ -234,42 +242,32 @@ class _StudentInfoState extends State<StudentInfo> {
                                                 color: Colors.black38)),
                                         new Padding(
                                           padding: new EdgeInsets.all(20),
-                                          child: StreamBuilder(
-                                              stream: FirebaseFirestore.instance
+                                          child: StreamBuilder(stream: FirebaseFirestore.instance
                                                   .collection('Teachers').where('center',isEqualTo: userAdmin.email).
                                                   snapshots(),
                                               builder: (context,
                                                   AsyncSnapshot<QuerySnapshot>
                                                       snapshot) {
                                                 if (snapshot.hasData) {
-                                                  Center(
-                                                    child:
-                                                        const CupertinoActivityIndicator(),
-                                                  );
+                                                  Center(child: const CupertinoActivityIndicator(),);
                                                   return DropdownButton<String>(
                                                       value: teacherName,
                                                       isDense: true,
                                                       hint: Text(
-                                                          document.data()[
-                                                              'teacherName']),
+                                                          document.data()['teacherName']),
                                                       onChanged: (newValue) {
                                                         setState(() {
-                                                          teacherName =
-                                                              newValue;
+                                                          teacherName =  newValue;
                                                         });
                                                         print(teacherName);
                                                       },
-                                                      items: snapshot.data.docs
-                                                          .map((DocumentSnapshot
-                                                              document) {
+                                                      items: snapshot.data.docs.map((DocumentSnapshot document) {
                                                         return new DropdownMenuItem<
                                                                 String>(
                                                             value: document
                                                                 .data()["name"],
                                                             onTap: () {
-                                                              teacherId =
-                                                                  document.data()[
-                                                                      "uid"];
+                                                              teacherId = document.data()["uid"];
                                                               print(teacherId);
                                                             },
                                                             child:
@@ -335,26 +333,15 @@ class _StudentInfoState extends State<StudentInfo> {
                                                           .map((DocumentSnapshot
                                                               document) {
                                                         return new DropdownMenuItem<String>(
-
-                                                            value: document
-                                                                .data()["name"],
-
-
-
+                                                            value: document.data()["name"],
                                                             onTap: () {
                                                               psychologySpecialistId =
                                                                   document.data()[
                                                                       "uid"];
-                                                              print(
-                                                                  physiotherapySpecialistId);
-                                                            },
-                                                            child:
-                                                                new Container(
-                                                                    height: 23,
+                                                              print(physiotherapySpecialistId);},
+                                                            child: new Container(height: 23,
                                                                     //color: primaryColor,
-                                                                    child: new Text(
-                                                                        document
-                                                                            .data()["name"])));
+                                                                    child: new Text(document.data()["name"])));
                                                       }).toList());
                                                 } else
                                                   return Text('');
@@ -390,42 +377,25 @@ class _StudentInfoState extends State<StudentInfo> {
                                                       value:
                                                           occupationalSpecialistName,
                                                       isDense: true,
-                                                      hint: Text(document
-                                                                      .data()[
-                                                                  'occupationalSpecialistName'] !=
-                                                              null
-                                                          ? document.data()[
-                                                              'occupationalSpecialistName']
+                                                      hint: Text(document.data()['occupationalSpecialistName'] != null ? document.data()['occupationalSpecialistName']
                                                           : "لا يوجد"),
                                                       onChanged: (newValue) {
                                                         setState(() {
                                                           occupationalSpecialistName =
                                                               newValue;
                                                         });
-                                                        print(
-                                                            occupationalSpecialistName);
+                                                        print(occupationalSpecialistName);
                                                       },
-                                                      items: snapshot.data.docs
-                                                          .map((DocumentSnapshot
-                                                              document) {
-                                                        return new DropdownMenuItem<
-                                                                String>(
-                                                            value: document
-                                                                .data()["name"],
-                                                            onTap: () {
-                                                              occupationalSpecialistId =
-                                                                  document.data()[
-                                                                      "uid"];
-                                                              print(
-                                                                  occupationalSpecialistId);
+                                                      items: snapshot.data.docs.map((DocumentSnapshot document) {
+                                                        return new DropdownMenuItem<String>(
+                                                            value: document.data()["name"],
+                                                            onTap: () {occupationalSpecialistId = document.data()["uid"];
+                                                              print(occupationalSpecialistId);
                                                             },
-                                                            child:
-                                                                new Container(
+                                                            child: Container(
                                                               height: 25,
-                                                              //color: primaryColor,
                                                               child: new Text(
-                                                                document.data()[
-                                                                    "name"],
+                                                                document.data()["name"],
                                                               ),
                                                             ));
                                                       }).toList());
@@ -436,8 +406,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                         ),
                                       ],
                                     ),
-                                    new Padding(
-                                        padding: new EdgeInsets.all(10)),
+                                     Padding(
+                                        padding:  EdgeInsets.all(10)),
                                     Row(
                                       children: [
                                         Text(" العلاج الطبيعي",
@@ -446,30 +416,17 @@ class _StudentInfoState extends State<StudentInfo> {
                                         new Padding(
                                           padding: new EdgeInsets.all(20),
                                           child: StreamBuilder(
-                                              stream: FirebaseFirestore.instance
-                                                  .collection('Specialists').where('center',isEqualTo: userAdmin.email)
-                                                  .where('typeOfSpechalist',
-                                                      isEqualTo:
-                                                          "أخصائي علاج طبيعي")
+                                              stream: FirebaseFirestore.instance.collection('Specialists').where('center',isEqualTo: userAdmin.email)
+                                                  .where('typeOfSpechalist', isEqualTo: "أخصائي علاج طبيعي")
                                                   .snapshots(),
-                                              builder: (context,
-                                                  AsyncSnapshot<QuerySnapshot>
-                                                      snapshot) {
+                                              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                                                 if (snapshot.hasData) {
-                                                  Center(
-                                                    child:
-                                                        const CupertinoActivityIndicator(),
-                                                  );
+                                                  Center(child: CupertinoActivityIndicator(),);
                                                   return DropdownButton<String>(
-                                                      value:
-                                                          physiotherapySpecialistName,
+                                                      value: physiotherapySpecialistName,
                                                       isDense: true,
-                                                      hint: Text(document
-                                                                      .data()[
-                                                                  'physiotherapySpecialistName'] !=
-                                                              null
-                                                          ? document.data()[
-                                                              'physiotherapySpecialistName']
+                                                      hint: Text(document.data()['physiotherapySpecialistName'] != null
+                                                          ? document.data()['physiotherapySpecialistName']
                                                           : "لا يوجد"),
                                                       onChanged: (newValue) {
                                                         setState(() {
@@ -479,28 +436,19 @@ class _StudentInfoState extends State<StudentInfo> {
                                                         print(
                                                             physiotherapySpecialistName);
                                                       },
-                                                      items: snapshot.data.docs
-                                                          .map((DocumentSnapshot
-                                                              document) {
+                                                      items: snapshot.data.docs.map((DocumentSnapshotdocument) {
                                                         return new DropdownMenuItem<
                                                                 String>(
                                                             value: document
                                                                 .data()["name"],
                                                             onTap: () {
-                                                              physiotherapySpecialistId =
-                                                                  document.data()[
-                                                                      "uid"];
-                                                              print(
-                                                                  physiotherapySpecialistId);
-                                                            },
-                                                            child:
-                                                                new Container(
+                                                              physiotherapySpecialistId = document.data()["uid"];
+                                                              print(physiotherapySpecialistId);
+                                                              },
+                                                            child: Container(
                                                               height: 25,
                                                               //color: primaryColor,
-                                                              child: new Text(
-                                                                document.data()[
-                                                                    "name"],
-                                                              ),
+                                                              child: new Text(document.data()["name"],),
                                                             ));
                                                       }).toList());
                                                 } else {
@@ -522,57 +470,36 @@ class _StudentInfoState extends State<StudentInfo> {
                                           child: StreamBuilder(
                                               stream:FirebaseFirestore.instance
                                                   .collection('Specialists').where('center',isEqualTo: userAdmin.email)
-                                                  .where('typeOfSpechalist',
-                                                      isEqualTo: "أخصائي تخاطب")
-                                                  .snapshots(),
-                                              builder: (context,
-                                                  AsyncSnapshot<QuerySnapshot>
-                                                      snapshot) {
+                                                  .where('typeOfSpechalist', isEqualTo: "أخصائي تخاطب").snapshots(),
+                                              builder: (context, AsyncSnapshot<QuerySnapshot>snapshot) {
                                                 if (snapshot.hasData) {
                                                   Center(
-                                                    child:
-                                                        const CupertinoActivityIndicator(),
+                                                    child: CupertinoActivityIndicator(),
                                                   );
                                                   return DropdownButton<String>(
-                                                      value:
-                                                          communicationSpecialistName,
+                                                      value: communicationSpecialistName,
                                                       isDense: true,
-                                                      hint: Text(document
-                                                                      .data()[
-                                                                  'communicationSpecialistName'] !=
-                                                              null
-                                                          ? document.data()[
-                                                              'communicationSpecialistName']
+                                                      hint: Text(document.data()['communicationSpecialistName'] != null
+                                                          ? document.data()[ 'communicationSpecialistName']
                                                           : "لا يوجد"),
                                                       onChanged: (newValue) {
-                                                        setState(() {
-                                                          communicationSpecialistName =
-                                                              newValue;
+                                                        setState(() {  communicationSpecialistName =   newValue;
                                                         });
-                                                        print(
-                                                            communicationSpecialistName);
+                                                        print(communicationSpecialistName);
                                                       },
                                                       items: snapshot.data.docs
                                                           .map((DocumentSnapshot
                                                               document) {
-                                                        return new DropdownMenuItem<
-                                                                String>(
-                                                            value: document
-                                                                .data()["name"],
-                                                            onTap: () {
-                                                              communicationSpecialistId =
-                                                                  document.data()[
-                                                                      "uid"];
-                                                              print(
-                                                                  communicationSpecialistId);
+                                                        return new DropdownMenuItem< String>(
+                                                            value: document.data()["name"],
+                                                            onTap: () {communicationSpecialistId = document.data()["uid"];
+                                                              print(communicationSpecialistId);
                                                             },
-                                                            child:
-                                                                new Container(
+                                                            child: Container(
                                                               height: 25,
                                                               //color: primaryColor,
                                                               child: new Text(
-                                                                document.data()[
-                                                                    "name"],
+                                                                document.data()["name"],
                                                               ),
                                                             ));
                                                       }).toList());
@@ -595,45 +522,69 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   BorderRadius.circular(18.0)),
                                           onPressed: () {
                                             print(oldCommunicationSpecialistId);
-                                            if (formkey.currentState
-                                                .validate()) {
-                                              students.doc(uid).update({
-                                                'name': newName == null
-                                                    ? name
-                                                    : newName,
-                                                'age': newAge == null
-                                                    ? age
-                                                    : newAge,
-                                                'phone': newPhone == null
-                                                    ? phone
-                                                    : newPhone,
+                                            if (formkey.currentState.validate()) {
+                                              students.doc(studentId).update({'name': newName == null ? name : newName,
+                                                'age': newAge == null? age : newAge,
+                                                'phone': newPhone == null ? phone : newPhone,
                                               });
                                               if (gender != null) {
-                                                students.doc(uid).update({
+                                                students.doc(studentId).update({
                                                   'gender': gender,
                                                 });
                                               }
 
                                               if (teacherId != null) {
-                                                students.doc(uid).update({
+
+
+                                                FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                    .collection('Appointments').where('studentId', isEqualTo: studentId)
+                                                    .get().then((value) => value.docs.forEach((element) async{
+
+                                                 await FirebaseFirestore.instance.collection('Teachers').doc(teacherId)
+                                                      .collection('Appointments').doc(element.id).set({
+                                                    'name': element.data()['name'],
+                                                    'studentId': element.data()['studentId'],
+                                                    'specialistId': element.data()['specialistId'],
+                                                    'teacherId': teacherId,
+                                                    'specialistName': element.data()['specialistName'],
+                                                    'specialistType': element.data()['specialistType'],
+                                                    'hour': element.data()['hour'],
+                                                    'min': element.data()['min'],
+                                                    'sun': element.data()['sun'],
+                                                    'mon': element.data()['mon'],
+                                                    'tue': element.data()['tue'],
+                                                    'wed': element.data()['wed'],
+                                                    'thu': element.data()['thu'],
+                                                    'sunIsChecked': element.data()['sunIsChecked'],
+                                                    'monIsChecked': element.data()['monIsChecked'],
+                                                    'tueIsChecked': element.data()['tueIsChecked'],
+                                                    'wedIsChecked': element.data()['wedIsChecked'],
+                                                    'thuIsChecked': element.data()['wedIsChecked'],
+                                                  });
+
+
+                                                  FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                      .collection('Appointments').doc(element.id).delete();
+                                                }));
+
+                                                students.doc(studentId).update({
                                                   'teacherId': teacherId,
                                                   'teacherName': teacherName,
                                                 });
                                               }
-                                              if (psychologySpecialistId !=
-                                                  null) {
-                                                students.doc(uid).update({
-                                                  'psychologySpecialistName':
-                                                      psychologySpecialistName,
+
+                                              if (psychologySpecialistId != null) {
+                                                students.doc(studentId).update({'psychologySpecialistName': psychologySpecialistName,
                                                   //نفسي
-                                                  'psychologySpecialistId':
-                                                      psychologySpecialistId,
+                                                  'psychologySpecialistId': psychologySpecialistId,
                                                 });
+
                                                 studentsPlans.where( 'psychologySpecialistId',isEqualTo:oldPsychologySpecialistId).get().then((value) =>
                                                     value.docs.forEach((element) {
                                                       studentsPlans.doc(element.id).update({
                                                         'psychologySpecialistId': psychologySpecialistId,
                                                       });}));
+
                                                 studentsFiles.where( 'psychologySpecialistId',isEqualTo:oldPsychologySpecialistId).get().then((value) =>
                                                     value.docs.forEach((element) {
                                                       studentsFiles.doc(element.id).update({
@@ -642,20 +593,45 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                                 studentsPlans.get().then((value) =>
                                                     value.docs.forEach((element) {
-                                                      studentsPlans.doc(element.id).collection('Goals').get().then((val) =>
+                                                      studentsPlans.doc(element.id).collection('Goals').where('psychologySpecialistId', isGreaterThan: '' ).get().then((val) =>
                                                           val.docs.forEach((goal) {
                                                             studentsPlans.doc(element.id).collection('Goals').doc(goal.id).update({
-                                                              'psychologySpecialistName':
-                                                              psychologySpecialistName,
+                                                              'psychologySpecialistName': psychologySpecialistName,
                                                               //نفسي
-                                                              'psychologySpecialistId':
-                                                              psychologySpecialistId,
-                                                            });}));}));
+                                                              'psychologySpecialistId': psychologySpecialistId,});}));}));
+
+                                                FirebaseFirestore.instance.collection('Specialists').doc(oldPsychologySpecialistId)
+                                                    .collection('Appointments').where('specialistId', isEqualTo: oldPsychologySpecialistId )
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                  String doId= element.id;
+                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                      .collection('Appointments').doc(doId).delete();
+                                                }));
+
+
+                                                FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                    .collection('Appointments').where('specialistId', isEqualTo: oldPsychologySpecialistId )
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                  String doId= element.id;
+                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                      .collection('Appointments').doc(doId).delete();
+                                                }));
+
+                                                if(teacherId==null){
+                                                  FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                      .collection('Appointments').where('specialistId', isEqualTo: oldPsychologySpecialistId )
+                                                      .get().then((value) => value.docs.forEach((element) {
+                                                        String doId= element.id;
+                                                        FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                            .collection('Appointments').doc(doId).delete();
+                                                      }));
+                                                }
+
+
                                               }
 
-                                              if (occupationalSpecialistId !=
-                                                  null) {
-                                                students.doc(uid).update({
+                                              if (occupationalSpecialistId != null) {
+                                                students.doc(studentId).update({
                                                   'occupationalSpecialistName':
                                                       occupationalSpecialistName,
                                                   //,ظيفي
@@ -676,7 +652,7 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                                 studentsPlans.get().then((value) =>
                                                     value.docs.forEach((element) {
-                                                      studentsPlans.doc(element.id).collection('Goals').get().then((val) =>
+                                                      studentsPlans.doc(element.id).collection('Goals').where('occupationalSpecialistId', isGreaterThan: '' ).get().then((val) =>
                                                           val.docs.forEach((goal) {
                                                             studentsPlans.doc(element.id).collection('Goals').doc(goal.id).update({
                                                               'occupationalSpecialistName':
@@ -685,15 +661,39 @@ class _StudentInfoState extends State<StudentInfo> {
                                                               'occupationalSpecialistId':
                                                               occupationalSpecialistId,
                                                             });}));}));
+
+                                               FirebaseFirestore.instance.collection('Specialists').doc(oldOccupationalSpecialistId)
+                                                   .collection('Appointments').where('studentId', isEqualTo: studentId )
+                                                   .get().then((value) => value.docs.forEach((element) {
+                                                 String doId= element.id;
+                                                 FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                     .collection('Appointments').doc(doId).delete();
+                                               }));
+
+                                                FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                    .collection('Appointments').where('specialistId', isEqualTo: oldOccupationalSpecialistId )
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                  String doId= element.id;
+                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                      .collection('Appointments').doc(doId).delete();
+                                                }));
+
+                                                if(teacherId==null){
+                                                  FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                      .collection('Appointments').where('specialistId', isEqualTo: oldOccupationalSpecialistId )
+                                                      .get().then((value) => value.docs.forEach((element) {
+                                                    String doId= element.id;
+                                                    FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                        .collection('Appointments').doc(doId).delete();
+                                                  }));
+                                                }
+
                                               }
-                                              if (physiotherapySpecialistId !=
-                                                  null) {
-                                                students.doc(uid).update({
-                                                  'physiotherapySpecialistName':
-                                                      physiotherapySpecialistName,
+
+                                              if (physiotherapySpecialistId != null) {
+                                                students.doc(studentId).update({'physiotherapySpecialistName': physiotherapySpecialistName,
                                                   //علاج طبيعي
-                                                  'physiotherapySpecialistId':
-                                                      physiotherapySpecialistId,
+                                                  'physiotherapySpecialistId': physiotherapySpecialistId,
                                                 });
                                                 studentsPlans.where('physiotherapySpecialistId',isEqualTo:oldPhysiotherapySpecialistId).get().then((value) =>
                                                   value.docs.forEach((element) {
@@ -708,7 +708,7 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                                 studentsPlans.get().then((value) =>
                                                     value.docs.forEach((element) {
-                                                      studentsPlans.doc(element.id).collection('Goals').get().then((val) =>
+                                                      studentsPlans.doc(element.id).collection('Goals').where('physiotherapySpecialistId', isGreaterThan: '' ).get().then((val) =>
                                                           val.docs.forEach((goal) {
                                                             studentsPlans.doc(element.id).collection('Goals').doc(goal.id).update({
                                                               'physiotherapySpecialistName':
@@ -717,12 +717,41 @@ class _StudentInfoState extends State<StudentInfo> {
                                                               'physiotherapySpecialistId':
                                                               physiotherapySpecialistId,
                                                             });}));}));
+
+                                                FirebaseFirestore.instance.collection('Specialists').doc(oldPhysiotherapySpecialistId)
+                                                    .collection('Appointments').where('specialistId', isEqualTo: oldPhysiotherapySpecialistId )
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                  String doId= element.id;
+                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                      .collection('Appointments').doc(doId).delete();
+                                                }));
+
+                                                FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                    .collection('Appointments').where('specialistId', isEqualTo: oldPhysiotherapySpecialistId )
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                  String doId= element.id;
+                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                      .collection('Appointments').doc(doId).delete();
+                                                }));
+
+                                                if(teacherId==null){
+                                                  FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                      .collection('Appointments').where('specialistId', isEqualTo: oldPhysiotherapySpecialistId )
+                                                      .get().then((value) => value.docs.forEach((element) {
+                                                    String doId= element.id;
+                                                    FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                        .collection('Appointments').doc(doId).delete();
+                                                  }));
+
+                                                }
+
                                               }
 
                                               if (communicationSpecialistId != null) {
-                                                studentsPlans.get().then((value)=>{
-                                                  value.docs.forEach((element) {
-                                                    studentsPlans.doc(element.id).collection('Goals').where('communicationSpecialistId',isEqualTo:! null).get().then((val) => {
+                                                studentsPlans.get().then((doc)=>{
+                                                  doc.docs.forEach((element) {
+
+                                                    studentsPlans.doc(element.id).collection('Goals').where('communicationSpecialistId', isGreaterThan: '' ).get().then((val) => {
                                                       val.docs.forEach((goal) {
                                                         studentsPlans.doc(element.id).collection('Goals').doc(goal.id).update({
                                                           'communicationSpecialistName':
@@ -730,9 +759,9 @@ class _StudentInfoState extends State<StudentInfo> {
                                                           //تخاطب
                                                           'communicationSpecialistId':
                                                           communicationSpecialistId,
-                                                        });})});})});
+                                                        });})});})}).catchError((onError)=> print('eeerrrr : $onError'));
 
-                                                students.doc(uid).update({
+                                                students.doc(studentId).update({
                                                   'communicationSpecialistName':
                                                       communicationSpecialistName,
                                                   //تخاطب
@@ -751,20 +780,49 @@ class _StudentInfoState extends State<StudentInfo> {
                                                       studentsFiles.doc(element.id).update({
                                                         'communicationSpecialistId': communicationSpecialistId,
                                                       });}));
+
+
+
+                                                FirebaseFirestore.instance.collection('Specialists').doc(oldCommunicationSpecialistId)
+                                                    .collection('Appointments').where('specialistId', isEqualTo: oldCommunicationSpecialistId )
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                  String doId= element.id;
+                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                      .collection('Appointments').doc(doId).delete();
+                                                }));
+
+                                                FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                    .collection('Appointments').where('specialistId', isEqualTo: oldCommunicationSpecialistId )
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                  String doId= element.id;
+                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                      .collection('Appointments').doc(doId).delete();
+                                                }));
+
+                                                if(teacherId==null){
+                                                  FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                      .collection('Appointments').where('specialistId', isEqualTo: oldCommunicationSpecialistId )
+                                                      .get().then((value) => value.docs.forEach((element) {
+                                                    String doId= element.id;
+                                                    FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                        .collection('Appointments').doc(doId).delete();
+                                                  }));
+                                                }
+
                                               }
 
-                                              users.doc(uid).update({
+                                              users.doc(studentId).update({
                                                 'name': newName == null ? name : newName,
                                                 'age': newAge == null ? age : newAge,
                                                 'phone': newPhone == null ? phone : newPhone,
                                               });
                                               if (gender != null) {
-                                                users.doc(uid).update({
+                                                users.doc(studentId).update({
                                                   'gender': gender,
                                                 });
                                               }
                                               if (teacherId != null) {
-                                                users.doc(uid).update({
+                                                users.doc(studentId).update({
                                                   'teacherId': teacherId,
                                                   'teacherName': teacherName,
                                                 });
@@ -772,7 +830,7 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                               if (psychologySpecialistId !=
                                                   null) {
-                                                users.doc(uid).update({
+                                                users.doc(studentId).update({
                                                   'psychologySpecialistName':
                                                       psychologySpecialistName,
                                                   //نفسي
@@ -782,7 +840,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
                                               if (occupationalSpecialistId !=
                                                   null) {
-                                                users.doc(uid).update({
+                                                users.doc(studentId).update({
                                                   'occupationalSpecialistName':
                                                       occupationalSpecialistName,
                                                   //,ظيفي
@@ -792,7 +850,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
                                               if (physiotherapySpecialistId !=
                                                   null) {
-                                                users.doc(uid).update({
+                                                users.doc(studentId).update({
                                                   'physiotherapySpecialistName':
                                                       physiotherapySpecialistName,
                                                   //علاج طبيعي
@@ -802,7 +860,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                               }
 
                                               if (communicationSpecialistId != null) {
-                                                users.doc(uid).update({
+                                                users.doc(studentId).update({
                                                   'communicationSpecialistName':
                                                       communicationSpecialistName,
                                                   //تخاطب
@@ -810,12 +868,6 @@ class _StudentInfoState extends State<StudentInfo> {
                                                       communicationSpecialistId,
                                                 });
                                               }
-
-
-
-
-
-
                                               Navigator.pop(
                                                   context,
                                                   MaterialPageRoute(
@@ -833,3 +885,75 @@ class _StudentInfoState extends State<StudentInfo> {
                 })));
   }
 }
+
+
+
+
+//
+//
+// FirebaseFirestore.instance.collection('Specialists')
+// .doc(oldOccupationalSpecialistId).collection('Appointments')
+// .where('studentId', isEqualTo: studentId).get()
+//     .then((value) {
+// print(value.size);
+//
+// value.docs.forEach((element) async{
+//
+// print('insied specialist firebase: $element');
+// print('name: ${element.data()['name']}');
+// FirebaseFirestore.instance.collection('Specialists')
+//     .doc(occupationalSpecialistId).collection('Appointments')
+//     .doc(element.id).set({
+// 'name': element.data()['name'],
+// 'studentId': element.data()['studentId'],
+// 'specialistId': occupationalSpecialistId,
+// 'teacherId':teacherId==null? oldTeacherId: teacherId,
+// 'specialistName': occupationalSpecialistName,
+// 'specialistType': element.data()['specialistType'],
+// 'hour': element.data()['hour'],
+// 'min': element.data()['min'],
+// 'sun': element.data()['sun'],
+// 'mon': element.data()['mon'],
+// 'tue': element.data()['tue'],
+// 'wed': element.data()['wed'],
+// 'thu': element.data()['thu'],
+// 'sunIsChecked': element.data()['sunIsChecked'],
+// 'monIsChecked': element.data()['monIsChecked'],
+// 'tueIsChecked': element.data()['tueIsChecked'],
+// 'wedIsChecked': element.data()['wedIsChecked'],
+// 'thuIsChecked': element.data()['wedIsChecked'],
+// }).whenComplete(() {
+// String doId= element.id;
+// FirebaseFirestore.instance.collection('Specialists')
+//     .doc(oldOccupationalSpecialistId)
+//     .collection('Appointments').doc(doId).delete();
+// });
+
+// if(teacherId != null){
+//  await FirebaseFirestore.instance.collection('Teachers').doc(teacherId)
+//       .collection('Appointments').doc(element.id).set({
+//
+//
+//     'name': element.data()['name'],
+//     'studentId': element.data()['studentId'],
+//     'specialistId': occupationalSpecialistId,
+//     'teacherId':teacherId==null? oldTeacherId: teacherId,
+//     'specialistName': occupationalSpecialistName,
+//     'specialistType': element.data()['specialistType'],
+//     'hour': element.data()['hour'],
+//     'min': element.data()['min'],
+//     'sun': element.data()['sun'],
+//     'mon': element.data()['mon'],
+//     'tue': element.data()['tue'],
+//     'wed': element.data()['wed'],
+//     'thu': element.data()['thu'],
+//     'sunIsChecked': element.data()['sunIsChecked'],
+//     'monIsChecked': element.data()['monIsChecked'],
+//     'tueIsChecked': element.data()['tueIsChecked'],
+//     'wedIsChecked': element.data()['wedIsChecked'],
+//     'thuIsChecked': element.data()['wedIsChecked'],
+//   });
+// }
+
+//
+// } );});

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hanan/UI/Constance.dart';
 import 'package:hanan/UI/Specialists/Plans/GoalAnalysisS.dart';
+import 'MonthlyReports.dart';
+
 //plan pages for 6 majors ..
 class SpecialMajorsPageS extends StatefulWidget {
   final String studentId;
@@ -68,9 +70,39 @@ class _SpecialMajorsPageSState extends State<SpecialMajorsPageS>  with TickerPro
     if(controller == null) {
       controller=new TabController(length: 6, vsync: this);
     }
+
+    void handleClick(String value) {
+      switch (value) {
+        case 'التقارير الشهرية':
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MonthlyReports(
+                    studentId: widget.studentId,
+                    planId: widget.planId,
+                  )));
+          break;
+        case 'إنشاء تقرير':
+          break;
+      }
+    }
     return SafeArea(
       child: Scaffold(
+        // appBar: AppBar(
+
           appBar: AppBar(
+            actions: <Widget>[
+              PopupMenuButton<String>(
+                  onSelected: handleClick,
+                  itemBuilder: (BuildContext context) {
+                    return {'التقارير الشهرية'}.map((String choice) {
+                      return PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(choice),
+                      );
+                    }).toList();
+                  }),
+            ],
             automaticallyImplyLeading: true,
             backgroundColor: kAppBarColor,
             toolbarHeight: 75,

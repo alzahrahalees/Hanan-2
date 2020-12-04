@@ -18,15 +18,52 @@ class SpecialistStudentList extends StatefulWidget {
 }
 
 class _SpecialistStudentListState extends State<SpecialistStudentList> {
+  User user = FirebaseAuth.instance.currentUser;
+
+  String specialistTypeId ='physiotherapySpecialistId';
+
+  void getType() async {
+    await FirebaseFirestore.instance
+        .collection('Specialists')
+        .doc(user.email)
+        .get()
+        .then((data) {
+      if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
+        setState(() {
+          specialistTypeId = 'communicationSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
+        setState(() {
+          specialistTypeId = 'psychologySpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
+        setState(() {
+          specialistTypeId = 'occupationalSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
+        setState(() {
+          specialistTypeId = 'physiotherapySpecialistId';
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getType();
+  }
 
   @override
   Widget build(BuildContext context) {
 
     var _gender='';
     String _searchString='';
-    User user = FirebaseAuth.instance.currentUser;
-    CollectionReference studentsInSpecia = FirebaseFirestore.instance.collection('Specialists')
-        .doc(user.email).collection('Students');
+
+    CollectionReference studentsInSpecialist = FirebaseFirestore.instance.collection('Students');
 
     return  Container(
         color: kBackgroundPageColor,
@@ -47,7 +84,7 @@ class _SpecialistStudentListState extends State<SpecialistStudentList> {
                 }),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                  stream: studentsInSpecia.snapshots(),
+                  stream: studentsInSpecialist.where(specialistTypeId, isEqualTo: user.email ).snapshots(),
                   builder: ( context, snapshot) {
                     if (!snapshot.hasData)
                       return Center(

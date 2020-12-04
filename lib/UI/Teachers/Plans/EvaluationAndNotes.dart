@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -30,6 +31,8 @@ class _NotesAndEvaluationState extends State<NotesAndEvaluation> {
     TextEditingController note = TextEditingController();
 
     String name;
+
+
 
     Future<String> _getName() async {
       String name;
@@ -111,15 +114,13 @@ class _NotesAndEvaluationState extends State<NotesAndEvaluation> {
                         size: 60,
                       ),
                     );
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting)  {
                     return Center(
                       child: SpinKitFoldingCube(
                         color: kUnselectedItemColor,
                         size: 60,
                       ),
-                    );
-                  }
-
+                    );}
                   return Column(
                       // shrinkWrap: true,
                       children: snapshot.data.docs
@@ -478,10 +479,11 @@ class _NotesAndEvaluationState extends State<NotesAndEvaluation> {
                               ),
                               textInputAction: TextInputAction.unspecified,
                               controller: note,
+                              // ignore: missing_return
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value.isEmpty)
                                   return 'مطلوب';
-                                }
+
                               },
                             ),
                           ),
@@ -554,17 +556,50 @@ class AddEvaluation extends StatefulWidget {
 }
 
 class _AddEvaluationState extends State<AddEvaluation> {
+
   onChangedValue(value) {
     setState(() {
       _achievementValue = value;
     });
   }
 
+  String communicationSpecialistId ;
+  String psychologySpecialistId ;
+  String occupationalSpecialistId ;
+  String physiotherapySpecialistId;
+
+  getSpecialists() async{
+
+
+    FirebaseFirestore.instance.collection('Students')
+        .doc(widget.studentId).collection('Plans')
+        .doc(widget.planId).collection('Goals')
+        .doc(widget.goalId).get().then((value) {
+          setState(() {
+            communicationSpecialistId = value.data()['communicationSpecialistId'];
+            occupationalSpecialistId = value.data()['occupationalSpecialistId'];
+            psychologySpecialistId = value.data()['psychologySpecialistId'];
+            physiotherapySpecialistId = value.data()['physiotherapySpecialistId'];
+          });
+    });
+
+
+
+  }
+
+
+
   TextEditingController helper = TextEditingController();
   TextEditingController notes = TextEditingController();
   String _achievementValue = 'أتقن';
 
   bool _withHelp = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getSpecialists();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -750,10 +785,14 @@ class _AddEvaluationState extends State<AddEvaluation> {
                     .collection(DateTime.now().month.toString())
                     .doc(widget.goalId)
                     .set({
-                      'goalId'
-                          'goalName': widget.goalName,
-                      'goalType': widget.goalType,
-                      'month': DateTime.now().month,
+                  'communicationSpecialistId': communicationSpecialistId,
+                  'occupationalSpecialistId': occupationalSpecialistId,
+                  'psychologySpecialistId': psychologySpecialistId,
+                  'physiotherapySpecialistId': physiotherapySpecialistId,
+                  'goalId': widget.goalName,
+                  'goalName': widget.goalName,
+                  'goalType': widget.goalType,
+                  'month': DateTime.now().month,
                       'evaluation': _achievementValue,
                       'helpType': helper.text
                     })
