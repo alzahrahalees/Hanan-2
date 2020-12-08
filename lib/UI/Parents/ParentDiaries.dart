@@ -13,6 +13,7 @@ class ParentDiaries extends StatefulWidget {
   _ParentDiariesState createState() => _ParentDiariesState();
 }
 
+
 class _ParentDiariesState extends State<ParentDiaries> {
   String comment;
   DateTime dateSearch=DateTime.now();
@@ -78,7 +79,6 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                 String teachrtId=documentSnapshot['teacherId'];
                                 String Writer = documentSnapshot['studentName'];
                                 CollectionReference Students = FirebaseFirestore.instance.collection('Students');
-
                                     return Column(
                                       children: [
                                         Card(
@@ -96,7 +96,8 @@ class _ParentDiariesState extends State<ParentDiaries> {
 
                                     child:IconButton(icon: Icon(Icons.file_download,color: Colors.deepPurpleAccent.shade100,), onPressed:() async {
                                       String path =documentSnapshot['video'];
-                                      GallerySaver.saveVideo(path, albumName: "Hanan").then((bool success) {
+                                      GallerySaver.saveVideo(path, albumName: "Hanan")
+                                          .then((bool success) {
                                         setState(() {
                                           print('Video is saved');
                                           Scaffold.of(context).showSnackBar(
@@ -125,8 +126,15 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                 children: [
                                                   Container(
                                                     child: IconButton(icon: Icon(Icons.file_download,color: Colors.deepPurpleAccent.shade100,), onPressed:() async {
+
                                                       String path =documentSnapshot['imageUrl'];
-                                                      GallerySaver.saveImage(path, albumName: "Hanan").then((bool success) {
+                                                      GallerySaver.saveImage(path, albumName: "Hanan")
+
+
+
+
+                                                          .then((bool success) {
+
                                                         setState(() {
                                                           print('Image is saved');
                                                           Scaffold.of(context).showSnackBar(
@@ -151,8 +159,8 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                                       if (loadingProgress == null) return child;
                                                       return Center(
                                                           child: CircularProgressIndicator(valueColor:  AlwaysStoppedAnimation<Color>(Colors.grey),backgroundColor: Colors.deepPurple));},
-                                                      width: 1500,
-                                                      height: 500,
+                                                      width: 1000,
+                                                      height: 250,
                                                     ),
                                                 ],
                                               )  :

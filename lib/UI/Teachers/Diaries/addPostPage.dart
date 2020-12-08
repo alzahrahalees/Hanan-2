@@ -72,11 +72,6 @@ class _AddPostPageState extends State<AddPostPage> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            //keyboardType: TextInputType.multiline,
-                            //  focusNode: FocusNode(skipTraversal: false,
-                            //    canRequestFocus: false,
-                            //  descendantsAreFocusable: false),
-                            //autofocus: true,
                             maxLines: 20,
                             showCursor: true,
                             decoration: InputDecoration(
@@ -106,7 +101,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         ),
                       ],
                     ),
-                    Padding(padding: EdgeInsets.all(5),),
+                    Padding(padding: EdgeInsets.all(50),),
                     Row(
                       children: [
                         Container(
@@ -128,14 +123,14 @@ class _AddPostPageState extends State<AddPostPage> {
                           ],
                         ) : Text(""),   ],
                     ),
-                    Padding(padding: EdgeInsets.all(5),),
+                    Padding(padding: EdgeInsets.all(1),),
                     Divider(color: Colors.deepPurple,
                       thickness: 2,
                     ),
                     Row(
                       children: [
                         Padding(
-                          padding: EdgeInsets.only(left: 150),
+                          padding: EdgeInsets.only(left: 170),
                           child:
                           AddPost(
                             video: _Vedio,
@@ -190,7 +185,6 @@ class _AddPostPageState extends State<AddPostPage> {
                                 ));
                           },
                           child: IconButton(
-                              onPressed: (){},
                               icon: Icon(Icons.camera_enhance_rounded,
                             color: Colors.deepPurple.shade400,)),
                         ),
@@ -235,10 +229,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             child: IconButton(icon: Icon(Icons.video_call,
                                 size: 30,
                                 color: Colors.deepPurple.shade400),
-                              onPressed: (){},
                             )),
-
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => ChewieDemo()),);},
                       ],
                     ),
                     Divider(color: Colors.deepPurple,
@@ -256,30 +247,20 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
 
+
+
   void pickImageCamera() async {
     var Image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _Image = Image;
     });
   }
-
   void pickVideoCamera() async {
-    //  var _isClean = false;
     var Vedio = await ImagePicker.pickVideo(source:ImageSource.camera,maxDuration: const Duration(seconds: 10));
     setState(() {
       _Vedio = Vedio;
     });
   }
-  void exportImage() async {
-    var _isClean = false;
-    var images = await ExportVideoFrame.exportImage(p.basename(_Vedio.path),10,10);
-    var result = images.map((file) => Image.file(file)).toList();
-    setState(() {
-      Images.addAll(result);
-      _Image2=Images.first;
-    });
-  }
-
   void pickImageGallery() async {
     var Image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
@@ -301,9 +282,6 @@ class _AddPostPageState extends State<AddPostPage> {
       _Image=image;
     });
   }
-
-
-
 
 
 }

@@ -246,6 +246,7 @@ return isExit;
                           'physiotherapySpecialistId':_physiotherapySpecialistId != null?_physiotherapySpecialistId :null,
                         });}
 
+
                       else{
                         _scaffoldKey.currentState.showSnackBar(SnackBar(
                 content: Text(" لقد تم إضافة $titlePlan $semester ",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),

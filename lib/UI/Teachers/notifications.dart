@@ -11,9 +11,9 @@ class notifications extends StatefulWidget {
 }
 class _notificationsState extends State<notifications> {
   User userTeacher = FirebaseAuth.instance.currentUser;
-  CollectionReference Teachers = FirebaseFirestore.instance.collection('Teachers');
-  String PostId;
-  String NotificationUid;
+  CollectionReference teachers = FirebaseFirestore.instance.collection('Teachers');
+  String postId;
+  String notificationUid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,10 +23,12 @@ class _notificationsState extends State<notifications> {
         backgroundColor: Colors.white70,
       ),
       body: StreamBuilder<QuerySnapshot>(
-          stream: Teachers.doc(userTeacher.email)
+          stream: teachers.doc(userTeacher.email)
               .collection('Notifications')
               .orderBy('createdAt', descending: true)
               .snapshots(),
+
+
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData)
@@ -44,8 +46,8 @@ class _notificationsState extends State<notifications> {
                     Column(
                         children:
                             snapshot.data.docs.map((DocumentSnapshot document) {
-                      PostId = document.data()['postId'];
-                      NotificationUid = document.data()['NotificationUid'];
+                      postId = document.data()['postId'];
+                      notificationUid = document.data()['NotificationUid'];
                       String Writer = document.data()['writer'];
                       return Column(
                         children: [
@@ -88,12 +90,14 @@ class _notificationsState extends State<notifications> {
                                           )),
                                 );
 
-                                Teachers.doc(userTeacher.email)
+                                teachers.doc(userTeacher.email)
                                     .collection('Notifications')
                                     .doc(document.data()['NotificationUid'])
                                     .update({
                                   'read': true,
                                 });
+
+
                               },
                             ),
                           ),

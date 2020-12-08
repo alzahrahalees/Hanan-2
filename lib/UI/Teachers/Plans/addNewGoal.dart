@@ -99,87 +99,91 @@ class _AddGoalState extends State<AddGoal> {
                                     builder: (context, setState) {
                                       return AlertDialog(
                                           title:
-                                          ListView(
-                                            shrinkWrap: true,
-                                            children: [
-                                              Column(
-                                                  children:[
-                                                    Padding(padding: EdgeInsets.all(5)) ,
-                                                    Text("مشاركة مع : ",style: kTextPageStyle),
-                                                    Padding(padding: EdgeInsets.all(5)),
-                                                    _occupationalSpecialistId !=null?
-                                                    Row(
-                                                      children: [
-                                                        Text(_occupationalSpecialistName,style: kTextPageStyle),
-                                                        Text("  أخصائي العلاج الوظيفي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                        Checkbox(value: _occupationalSpecialist, onChanged: (bool value) {
-                                                          setState(() {
-                                                            _occupationalSpecialist = value;
-                                                          });
-                                                          print(_occupationalSpecialist);
-                                                        },
-                                                          checkColor: Colors.black,
-                                                          activeColor: Colors.deepPurple.shade100,
-                                                          hoverColor: Colors.black,
-                                                        )
-                                                      ],):Text("",style:TextStyle (fontSize: 0)),
+                                          SizedBox(
+                                            width: 200,
+                                            height: 200,
+                                            child: ListView(
+                                              shrinkWrap: true,
+                                              children: [
+                                                Column(
+                                                    children:[
+                                                      Padding(padding: EdgeInsets.all(5)) ,
+                                                      Text("مشاركة مع : ",style: kTextPageStyle),
+                                                      Padding(padding: EdgeInsets.all(5)),
+                                                      _occupationalSpecialistId !=null?
+                                                      Row(
+                                                        children: [
+                                                          Text(_occupationalSpecialistName,style: kTextPageStyle),
+                                                          Text("  أخصائي العلاج الوظيفي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
+                                                          Checkbox(value: _occupationalSpecialist, onChanged: (bool value) {
+                                                            setState(() {
+                                                              _occupationalSpecialist = value;
+                                                            });
+                                                            print(_occupationalSpecialist);
+                                                          },
+                                                            checkColor: Colors.black,
+                                                            activeColor: Colors.deepPurple.shade100,
+                                                            hoverColor: Colors.black,
+                                                          )
+                                                        ],):Text("",style:TextStyle (fontSize: 0)),
 
-                                                    _communicationSpecialistId !=null?
-                                                    Row(
-                                                      children: [
-                                                        Text(_communicationSpecialistName,style: kTextPageStyle),
-                                                        Text("  أخصائي التواصل",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                        Checkbox(value: _communicationSpecialist, onChanged: (bool value) async{
-                                                          bool isDone=await setUIds();
-                                                          setState(() {
-                                                            _communicationSpecialist = value;
-                                                          });
-                                                          print(_communicationSpecialist);
-                                                        },
-                                                          checkColor: Colors.black,
-                                                          activeColor: Colors.deepPurple.shade100,
-                                                          hoverColor: Colors.black,
-                                                        )
-                                                      ],
-                                                    ):Text("",style:TextStyle (fontSize: 0)),
-                                                    _physiotherapySpecialistId !=null?
-                                                    Row(
-                                                      children: [
-                                                        Text(_physiotherapySpecialistName,style: kTextPageStyle),
-                                                        Text("  أخصائي العلاج الطبيعي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                        Checkbox(value: _physiotherapySpecialist, onChanged: (bool value) async {
-                                                          setState(() {
-                                                            _physiotherapySpecialist = value;
-                                                          });
-                                                          print(_physiotherapySpecialist);
-                                                        },
-                                                          checkColor: Colors.black,
-                                                          activeColor: Colors.deepPurple.shade100,
-                                                          hoverColor: Colors.black,
-                                                        )
-                                                      ],
-                                                    ):Text("",style:TextStyle (fontSize: 0)),
+                                                      _communicationSpecialistId !=null?
+                                                      Row(
+                                                        children: [
+                                                          Text(_communicationSpecialistName,style: kTextPageStyle),
+                                                          Text("  أخصائي التواصل",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
+                                                          Checkbox(value: _communicationSpecialist, onChanged: (bool value) async{
+                                                            bool isDone=await setUIds();
+                                                            setState(() {
+                                                              _communicationSpecialist = value;
+                                                            });
+                                                            print(_communicationSpecialist);
+                                                          },
+                                                            checkColor: Colors.black,
+                                                            activeColor: Colors.deepPurple.shade100,
+                                                            hoverColor: Colors.black,
+                                                          )
+                                                        ],
+                                                      ):Text("",style:TextStyle (fontSize: 0)),
+                                                      _physiotherapySpecialistId !=null?
+                                                      Row(
+                                                        children: [
+                                                          Text(_physiotherapySpecialistName,style: kTextPageStyle),
+                                                          Text("  أخصائي العلاج الطبيعي",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
+                                                          Checkbox(value: _physiotherapySpecialist, onChanged: (bool value) async {
+                                                            setState(() {
+                                                              _physiotherapySpecialist = value;
+                                                            });
+                                                            print(_physiotherapySpecialist);
+                                                          },
+                                                            checkColor: Colors.black,
+                                                            activeColor: Colors.deepPurple.shade100,
+                                                            hoverColor: Colors.black,
+                                                          )
+                                                        ],
+                                                      ):Text("",style:TextStyle (fontSize: 0)),
 
-                                                    _psychologySpecialistId!=null?
-                                                    Row(
-                                                      children: [
-                                                        Text(_psychologySpecialistName,style: kTextPageStyle),
-                                                        Text(" الأخصائي النفسي ",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
-                                                        Checkbox(value: _psychologySpecialist, onChanged: (bool value) async {
-                                                          bool isDone=await setUIds();
-                                                          setState(() {
-                                                            _psychologySpecialist = value;
-                                                          });
-                                                          print(_psychologySpecialist);
-                                                        },
-                                                          checkColor: Colors.black,
-                                                          activeColor: Colors.deepPurple.shade100,
-                                                          hoverColor: Colors.black,
-                                                        )
-                                                      ],
-                                                    ):Text("",style:TextStyle (fontSize: 0)),
-                                                  ]),
-                                            ],
+                                                      _psychologySpecialistId!=null?
+                                                      Row(
+                                                        children: [
+                                                          Text(_psychologySpecialistName,style: kTextPageStyle),
+                                                          Text(" الأخصائي النفسي ",style: kTextPageStyle.copyWith(fontSize: 8,color: Colors.grey)),
+                                                          Checkbox(value: _psychologySpecialist, onChanged: (bool value) async {
+                                                            bool isDone=await setUIds();
+                                                            setState(() {
+                                                              _psychologySpecialist = value;
+                                                            });
+                                                            print(_psychologySpecialist);
+                                                          },
+                                                            checkColor: Colors.black,
+                                                            activeColor: Colors.deepPurple.shade100,
+                                                            hoverColor: Colors.black,
+                                                          )
+                                                        ],
+                                                      ):Text("",style:TextStyle (fontSize: 0)),
+                                                    ]),
+                                              ],
+                                            ),
                                           )
                                       );}));
                           }

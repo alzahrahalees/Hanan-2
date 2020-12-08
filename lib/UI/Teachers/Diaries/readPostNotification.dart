@@ -57,7 +57,7 @@ class _OnePostNotState extends State<OnePostNot> {
     Padding(padding: new EdgeInsets.all(8)),
     Column( children:
     snapshot.data.docs.map((DocumentSnapshot document) {
-    String  PostId=document.id;
+    String  postId=document.id;
     String teacherName=document.data()['teacherName'];
     return Column(children:[
       Center(

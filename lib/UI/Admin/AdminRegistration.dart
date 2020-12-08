@@ -19,7 +19,6 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
 
   final _formkey = GlobalKey<FormState>();
   final firestoreInstance = FirebaseFirestore.instance;
-
   String _name;
   String _city;
   String _email='';

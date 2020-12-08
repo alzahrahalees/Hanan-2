@@ -107,8 +107,8 @@ class _AnalysisState extends State<AnalysisDetails> {
                                               builder: (context, setState) {
                                                 return AlertDialog(
                                                     title: Container(
-                                                      width: 270,
-                                                      height: 270,
+                                                      width: 100,
+                                                      height: 100,
                                                       child: ListView(
                                                           shrinkWrap: true,
                                                           children: [
@@ -248,15 +248,19 @@ class _AnalysisState extends State<AnalysisDetails> {
 
                                                                             if(_formkey.currentState.validate()){
                                                                               var random = new Random();
-                                                                              int documentId = random.nextInt(1000000000);
+                                                                              int documentID = random.nextInt(1000000000);
                                                                               String teacherName=await getteacherName();
+
+
+                                                                              CollectionReference studentsPlansGoal = FirebaseFirestore.instance.collection('Students').
+                                                                              doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
                                                                               var addProceduralGoalToStudent = studentsPlansGoal.doc(
-                                                                                  widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}${documentId} ProceduralGoal").set({
+                                                                                  widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}$documentID ProceduralGoal").set({
                                                                                 'proceduralGoal':_proceduralGoal.text,
                                                                                 'startDate':_startDate.text,
                                                                                 'endDate':_endDate.text,
                                                                                 'createdAt': Timestamp.now(),
-                                                                                'proceduralGoalId':"${widget.goalId}${documentId} ProceduralGoal",
+                                                                                'proceduralGoalId':"${widget.goalId}$documentID ProceduralGoal",
                                                                                 'planId':widget.planId,
                                                                                 'goalId':widget.goalId,
                                                                                 'totalTimes':"",
@@ -265,9 +269,9 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                 'helpType':"",
                                                                                 'writer':"",
                                                                                 'teacherName':teacherName,
-                                                                                'writerId':_userTeacher.email
+                                                                                'writerId':_userTeacher.email})
 
-                                                                              }).whenComplete(() {
+                                                                              .whenComplete(() {
                                                                                 _proceduralGoal.clear();
                                                                                 _startDate.clear();
                                                                                 _endDate.clear();
@@ -330,7 +334,8 @@ class _AnalysisState extends State<AnalysisDetails> {
                                       ),),
 
                                     StreamBuilder<QuerySnapshot>(
-                                        stream: studentsPlansGoal.doc(widget.goalId).collection('ProceduralGoals').orderBy('createdAt',descending: true).snapshots(),
+                                        stream: studentsPlansGoal.doc(widget.goalId).collection('ProceduralGoals').
+                                        orderBy('createdAt',descending: true).snapshots(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData){
                                             return ListView(
@@ -428,10 +433,12 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                               ): Center(child: Text(documentSnapshot2['writer']!=""?"      بواسطة "+documentSnapshot2['writer']:"بواسطتك",style:TextStyle(fontSize: 10,color: Colors.grey))),
                                                                               Padding(padding: EdgeInsets.only(right: 180)),
                                                                               documentSnapshot2['writer']==""?
+
                                                                               canEdit ==true?
                                                                               FlatButton(onPressed: (){
                                                                                 setState(() {
-                                                                                  studentsPlansGoal.doc(widget.goalId).collection("ProceduralGoals").doc(documentSnapshot2['proceduralGoalId']).update({
+                                                                                  studentsPlansGoal.doc(widget.goalId).collection("ProceduralGoals").
+                                                                                  doc(documentSnapshot2['proceduralGoalId']).update({
                                                                                     'startDate':_newStartDate!=null?_newStartDate:documentSnapshot2['startDate'],
                                                                                     'endDate':_newEndDate!=null?_newEndDate:documentSnapshot2['endDate'],
                                                                                     'totalTimes':_totalTimes!=null?_totalTimes:documentSnapshot2['totalTimes'],
@@ -442,6 +449,10 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                   );
                                                                                   canEdit=false;
                                                                                 });}
+
+
+
+
                                                                                   , child: Text("حفظ",style: TextStyle(color: Colors.deepPurple),)):
                                                                               Text(""):Text(""),
                                                                             ],

@@ -100,8 +100,8 @@ class _AnalysisState extends State<AnalysisDetailsP> {
                                                 return AlertDialog(
                                                     title:
                                                     Container(
-                                                      width: 270,
-                                                      height: 270,
+                                                      width: 100,
+                                                      height: 100,
                                                       child: ListView(
                                                           shrinkWrap: true,
                                                           children: [
@@ -190,7 +190,11 @@ class _AnalysisState extends State<AnalysisDetailsP> {
                                       ),),
 
                                     StreamBuilder<QuerySnapshot>(
-                                        stream: studentsPlansGoal.doc(widget.goalId).collection('ProceduralGoals').orderBy('createdAt',descending: true).snapshots(),
+                                        stream: studentsPlansGoal.doc(widget.goalId).collection('ProceduralGoals').
+                                        orderBy('createdAt',descending: true).snapshots(),
+
+
+
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData){
                                             return ListView(

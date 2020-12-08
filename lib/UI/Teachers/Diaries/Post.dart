@@ -86,7 +86,6 @@ class _AddPostState extends State<AddPost> {
           Imageurl = Url;
         });
       }
-
       if (widget.video !=null) {
         FirebaseStorage storage= FirebaseStorage(storageBucket: 'gs://hananz-5ffb9.appspot.com');
         StorageReference ref = storage.ref().child(p.basename(widget.video.path));
@@ -101,14 +100,14 @@ class _AddPostState extends State<AddPost> {
       }
 
 
-   var addtoStudentPost=  Students.doc(widget.studentUid).collection("Posts").doc("${widget.studentUid}$documentId").set({
-        'video':Videourl,
+   var addToStudentPost=  Students.doc(widget.studentUid).collection("Posts").doc("${widget.studentUid}$documentId").set({
+        'videoUrl':Videourl,
         'imageUrl':Imageurl,
-         'teacherId':userTeacher.email,
-          'teacherName': widget.teacherName,
+        'teacherId':userTeacher.email,
+        'teacherName': widget.teacherName,
         'content': widget.content,
         'uid': widget.studentUid,
-         'date': widget.date,
+        'date': widget.date,
         'time':dayOrNight(widget.hour),
         'hour':hourEditor(widget.hour),
         'minute':widget.minute,
@@ -116,8 +115,8 @@ class _AddPostState extends State<AddPost> {
         'studentName': widget.studentName,
         'createdAt':Timestamp.now(),
         'postId':"${widget.studentUid}$documentId",
-
       });
+
 
 
 
@@ -222,8 +221,7 @@ class AddComment extends StatelessWidget {
 
     Future<void> AddComment() async {
       var addtoStudentPostComment = Students.doc(studentUid).collection("Posts")
-          .doc(postId).collection("Comments").doc("$studentUid$documentId").set(
-          {
+          .doc(postId).collection("Comments").doc("$studentUid$documentId").set({
             'comment': comment,
             'uid': studentUid,
             'date': date,
@@ -238,13 +236,12 @@ class AddComment extends StatelessWidget {
             'read': false,
           });}
 
-      return FlatButton(
-        child: Text('نشر', style: kTextPageStyle.copyWith(
+
+      return FlatButton(child: Text('نشر', style: kTextPageStyle.copyWith(
             color: comment == null || comment == "" ? Colors.white10 : Colors
                 .deepPurpleAccent.shade700)),
         onPressed: () {
           if (comment != null && comment.isNotEmpty && comment != "") {
-            print(comment);
             AddComment();
             c.clear();
           }
@@ -352,8 +349,8 @@ class AddCommentParent extends StatelessWidget {
     var random = new Random();
     int documentId = random.nextInt(1000000000);
 
-    Future<void> AddCommentParent() async {
-      var addtoStudentPostComment = Students.doc(studentUid).collection("Posts")
+    Future<void> addCommentParent() async {
+      var addToStudentPostComment = Students.doc(studentUid).collection("Posts")
           .doc(postId).collection("Comments").doc("$studentUid$documentId").set(
           {
             'comment': comment,
@@ -370,7 +367,7 @@ class AddCommentParent extends StatelessWidget {
             'createdAt': Timestamp.now(),
           });
 
-      var addtoTeacherNotification = Teachers.doc(
+      var addToTeacherNotification = Teachers.doc(
           teacherId).collection('Notifications').doc(
           "$studentUid$documentId Notifications").set({
         'commentId': "$studentUid$documentId",
@@ -388,6 +385,10 @@ class AddCommentParent extends StatelessWidget {
         'read': false,
         'NotificationUid': "$studentUid$documentId Notifications",
       });
+
+
+
+
     }
 
     return FlatButton(
@@ -397,7 +398,7 @@ class AddCommentParent extends StatelessWidget {
       onPressed: () {
         if (comment != null && comment.isNotEmpty && comment != "") {
           print(comment);
-          AddCommentParent();
+          addCommentParent();
           c.clear();
         }
       },

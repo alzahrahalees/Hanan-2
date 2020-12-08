@@ -217,11 +217,11 @@ List <String> l;
                             new Padding(
                                 padding: new EdgeInsets.all(30),
                               child: StreamBuilder(
-                                    stream: FirebaseFirestore.instance.collection('Teachers').where('center',isEqualTo: userAdmin.email).snapshots(),
+                                    stream: FirebaseFirestore.instance.collection('Teachers').
+                                    where('center',isEqualTo: userAdmin.email).snapshots(),
                                     builder: (context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
                                       if (snapshot.hasData){
-
                                         Center(
                                           child: const CupertinoActivityIndicator(),
                                         );
@@ -235,16 +235,12 @@ List <String> l;
                                           });
                                           print(_teacherName);
                                         },
-                                        items:
-
-                                        snapshot.data.docs
+                                        items: snapshot.data.docs
                                             .map((DocumentSnapshot document) {
                                           return new DropdownMenuItem<String>(
                                               value: document.data()["name"],
                                               onTap: () {
-                                                _teacherId= document
-                                                    .data()["uid"];
-                                                print(_teacherId);
+                                                _teacherId= document.data()["uid"];
                                               },
                                               child: new Container(
                                                 height: 30,
@@ -289,15 +285,13 @@ List <String> l;
                                         });
                                         print(_psychologySpecialistName);
                                       },
-
                                       items:snapshot.data.docs
                                           .map((DocumentSnapshot document) {
 
                                         return new DropdownMenuItem<String>(
                                             value:  document
                                                 .data()["name"],
-                                            onTap: () {
-                                              _psychologySpecialistId = document
+                                            onTap: () {_psychologySpecialistId = document
                                                   .data()["uid"];
                                               print(_physiotherapySpecialistId);
                                             },

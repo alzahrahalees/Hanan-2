@@ -151,8 +151,7 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                           builder: (_) => StatefulBuilder(
                                               builder: (context, setState) {
                                                 return AlertDialog(
-                                                    title:
-                                                    Container(
+                                                    title: Container(
                                                       width: 270,
                                                       height: 270,
                                                       child: ListView(
@@ -298,6 +297,10 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                                                             if(_formkey.currentState.validate()){
                                                                               var random = new Random();
                                                                               int documentId = random.nextInt(1000000000);
+
+
+                                                                              CollectionReference studentsPlansGoal = FirebaseFirestore.instance.collection('Students')
+                                                                                  .doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
                                                                               String specialistName= await spicialistName();
                                                                               var addProceduralGoalToStudent = studentsPlansGoal.doc(
                                                                                   widget.goalId).collection('ProceduralGoals').doc("${widget.goalId}${documentId} ProceduralGoal").set({
@@ -314,8 +317,8 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                                                                 'helpType':"",
                                                                                 'writer':specialistName,
                                                                                 'writerId':_userSpecialist.email,
-                                                                                'teacherName':"",
-                                                                              }).whenComplete(() {
+                                                                                'teacherName':"",})
+                                                                              .whenComplete(() {
                                                                                 _proceduralGoal.clear();
                                                                                 _startDate.clear();
                                                                                 _endDate.clear();
@@ -377,7 +380,8 @@ class _AnalysisState extends State<AnalysisDetailsS> {
                                           ),  ],
                                       ),),
                                     StreamBuilder<QuerySnapshot>(
-                                        stream: studentsPlansGoal.doc(widget.goalId).collection('ProceduralGoals').where('writerId',isEqualTo: userSpecialist.email).snapshots(),
+                                        stream: studentsPlansGoal.doc(widget.goalId).collection('ProceduralGoals')
+                                            .where('writerId',isEqualTo: userSpecialist.email).snapshots(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData){
                                             return ListView(

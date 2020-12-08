@@ -23,12 +23,17 @@ class _ParentPlansState extends State<ParentPlans> {
 
 
     User _userParent = FirebaseAuth.instance.currentUser;
-    CollectionReference studentsPlans = FirebaseFirestore.instance.collection('Students').doc(_userParent.email).collection('Plans');
+    CollectionReference studentsPlans = FirebaseFirestore.instance.collection('Students').
+    doc(_userParent.email).collection('Plans');
     return Scaffold(
       body: SafeArea(
         child: Container(
-          child:   StreamBuilder(
+          child:StreamBuilder(
             stream: studentsPlans.orderBy('createdAt',descending: true).snapshots(),
+
+
+
+
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData)
                 return Center(

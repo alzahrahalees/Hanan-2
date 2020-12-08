@@ -99,7 +99,6 @@ class _SFilesState extends State<SFiles> {
   Widget build(BuildContext context) {
     print(widget.occupationalSpecialistId);
     User userSpecialist = FirebaseAuth.instance.currentUser;
-    CollectionReference Specialists = FirebaseFirestore.instance.collection('Specialists');
     CollectionReference students= FirebaseFirestore.instance.collection('Students');
 
     if (userSpecialist.email==widget.occupationalSpecialistId) {
@@ -122,8 +121,12 @@ class _SFilesState extends State<SFiles> {
           centerTitle: true,
           backgroundColor: Colors.white70,),
         body: SafeArea(
+
             child: StreamBuilder<QuerySnapshot>(
-                stream: students.doc(widget.studentId).collection('StudyCases').where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
+                stream: students.doc(widget.studentId).collection('StudyCases')
+                    .where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
+
+
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData){
                     return  Center(child: SpinKitFoldingCube(
@@ -150,6 +153,7 @@ class _SFilesState extends State<SFiles> {
                                               return new AlertDialog(
                                                 title: SizedBox(
                                                   width: 200,
+                                                  height: 100,
                                                   child: ListView(
                                                     shrinkWrap: true,
                                                     children: [
@@ -260,9 +264,6 @@ class _SFilesState extends State<SFiles> {
     User userSpecialist = FirebaseAuth.instance.currentUser;
     CollectionReference students =
     FirebaseFirestore.instance.collection('Students');
-    CollectionReference specialists = FirebaseFirestore.instance.collection('Specialists');
-
-
 
     String basename = p.basename(_File.path);
     FirebaseStorage storage= FirebaseStorage(storageBucket: 'gs://hananz-5ffb9.appspot.com');
@@ -279,10 +280,8 @@ class _SFilesState extends State<SFiles> {
     var random= new Random();
     int documentId=random.nextInt(1000000000);
 
-    print("py $psychologySpecialistName2");
-    print("ph $physiotherapySpecialistName2");
-    print("c $communicationSpecialistName2");
-    print("o $occupationalSpecialistName2");
+
+
     var addFileToStudent= students.doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
         {
           'filePath':fileUrl,
@@ -292,6 +291,10 @@ class _SFilesState extends State<SFiles> {
           'publisher':specialistName,
           specialistTypeId:userSpecialist.email,
         });
+
+
+
+
     setState(() {
       psychologySpecialistName2=false;
       communicationSpecialistName2=false;

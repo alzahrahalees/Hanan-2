@@ -57,9 +57,12 @@ class _TFilesState extends State<TFiles> {
     centerTitle: true,
     backgroundColor: Colors.white70,),
     body: SafeArea(
+
     child: StreamBuilder<QuerySnapshot>(
-      stream:  FirebaseFirestore.instance.collection('Students').doc(widget.studentId).collection('StudyCases').orderBy('createdAt',descending: true ).snapshots(),
+      stream:  FirebaseFirestore.instance.collection('Students').doc(widget.studentId).
+      collection('StudyCases').orderBy('createdAt',descending: true ).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
         if (!snapshot.hasData){
           return  Center(child: SpinKitFoldingCube(
             color: kUnselectedItemColor,
@@ -83,9 +86,10 @@ class _TFilesState extends State<TFiles> {
               context: context,
               builder: (_) => StatefulBuilder(
   builder: (context, setState) {
-                return new AlertDialog(
+                return  AlertDialog(
                 title: SizedBox(
                   width: 200,
+                  height:300,
                   child: ListView(
                     shrinkWrap: true,
                     children: [
@@ -230,7 +234,6 @@ class _TFilesState extends State<TFiles> {
         return status < 500;
         }),
         );
-        print(response.headers);
         File file = File("$path/${document.data()['fileName']}.pdf");
         var raf = file.openSync(mode: FileMode.write);
         raf.writeFromSync(response.data);
@@ -263,31 +266,22 @@ class _TFilesState extends State<TFiles> {
   setState(() {
   _File = file;});}
   Future pickFile2() async {
-    User userTeacher = FirebaseAuth.instance.currentUser;
-    CollectionReference Students =
-    FirebaseFirestore.instance.collection('Students');
+    CollectionReference students = FirebaseFirestore.instance.collection('Students');
     String basename = p.basename(_File.path);
     FirebaseStorage storage= FirebaseStorage(storageBucket: 'gs://hananz-5ffb9.appspot.com');
     StorageReference ref = storage.ref().child(p.basename(_File.path));
     StorageUploadTask storageUploadTask = ref.putFile(_File);
     StorageTaskSnapshot storageTaskSnapshot = await storageUploadTask.onComplete;
-    String Url = await storageTaskSnapshot.ref.getDownloadURL().whenComplete(() => _displaySnackBar(context,"تم إرفاق المستند بنجاح"));
-    print("........ $Url ..........");
+    String url = await storageTaskSnapshot.ref.getDownloadURL().whenComplete(() => _displaySnackBar(context,"تم إرفاق المستند بنجاح"));
+
     if (!mounted) return;
     setState(() {
-      fileUrl = Url;
+      fileUrl = url;
     });
-
     var random= new Random();
     int documentId=random.nextInt(1000000000);
 
-    print("py $psychologySpecialist");
-    print("ph $physiotherapySpecialist");
-    print("c $communicationSpecialist");
-    print("o $occupationalSpecialist");
-
-    var addFileToStudent= Students.doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set(
-        {
+    var addFileToStudent= students.doc(widget.studentId).collection('StudyCases').doc("${widget.studentId}$documentId File").set({
           'filePath':fileUrl,
           'createdAt':Timestamp.now(),
           'fileName':basename,
@@ -298,6 +292,8 @@ class _TFilesState extends State<TFiles> {
           'communicationSpecialistId':communicationSpecialist==true?widget.communicationSpecialistId:null,
           'physiotherapySpecialistId':physiotherapySpecialist==true?widget.physiotherapySpecialistId:null,
         });
+
+
 
     setState(() {
           psychologySpecialist = false;

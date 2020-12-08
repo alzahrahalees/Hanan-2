@@ -59,9 +59,15 @@ class _SpecialMajorsPagePState extends State<SpecialMajorsPageP>  with TickerPro
             controller: controller,
             children: [
               SafeArea(
+
                   child: StreamBuilder<QuerySnapshot>(
                       stream:
-                     studentsPlansGoal.where('goalType',isEqualTo: 'مجال الانتباه والتركيز').orderBy('createdAt',descending: true).snapshots(),
+                     studentsPlansGoal.where('goalType',isEqualTo: 'مجال الانتباه والتركيز').
+                     orderBy('createdAt',descending: true).snapshots(),
+
+                      
+
+
                       builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData){
                           return  Center(child: SpinKitFoldingCube(
@@ -205,8 +211,15 @@ class _SpecialMajorsPagePState extends State<SpecialMajorsPageP>  with TickerPro
                       })),
               //3
               SafeArea(
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream:studentsPlansGoal.where('goalType',isEqualTo: 'المجال الإدراكي').orderBy('createdAt',descending: true).snapshots(),
+                  child:
+
+                  StreamBuilder<QuerySnapshot>(
+                      stream:studentsPlansGoal.where('goalType',isEqualTo: 'المجال الإدراكي').
+                      orderBy('createdAt',descending: true).snapshots(),
+
+
+
+
                       builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData){
                           return  Center(child: SpinKitFoldingCube(

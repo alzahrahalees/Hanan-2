@@ -314,8 +314,10 @@ class _SpecialMajorsPageSState extends State<SpecialMajorsPageS>  with TickerPro
                       })),
               //4
               SafeArea(
+
                   child: StreamBuilder<QuerySnapshot>(
-                      stream:studentsPlansGoal.where('goalType',isEqualTo:'المجال الحركي الدقيق').where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
+                      stream:studentsPlansGoal.where('goalType',isEqualTo:'المجال الحركي الدقيق')
+                          .where(specialistTypeId,isEqualTo: userSpecialist.email).snapshots(),
                       builder:  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData){
                           return  Center(child: SpinKitFoldingCube(

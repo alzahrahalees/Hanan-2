@@ -639,7 +639,6 @@ class _StudentInfoState extends State<StudentInfo> {
                                                       studentsFiles.doc(element.id).update({
                                                         'psychologySpecialistId': psychologySpecialistId,
                                                       });}));
-
                                                 studentsPlans.get().then((value) =>
                                                     value.docs.forEach((element) {
                                                       studentsPlans.doc(element.id).collection('Goals').get().then((val) =>

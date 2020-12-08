@@ -46,7 +46,7 @@ class _PlansTeacherFirstPageState extends State<PlansTeacherFirstPage> {
           ),
       body: SafeArea(
         child: Container(
-           child:   StreamBuilder(
+           child:StreamBuilder(
                 stream: studentsPlans.orderBy('createdAt',descending: true).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData)

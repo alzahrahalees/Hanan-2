@@ -114,12 +114,18 @@ class _SpecialMajorsPageState extends State<SpecialMajorsPage>
             controller: controller,
             children: [
               SafeArea(
-                  child: StreamBuilder<QuerySnapshot>(
+                  child:
+
+
+                  StreamBuilder<QuerySnapshot>(
                       stream: studentsPlansGoal
                           .where('goalType',
                               isEqualTo: 'مجال الانتباه والتركيز')
                           .orderBy('createdAt', descending: true)
                           .snapshots(),
+
+
+
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData) {

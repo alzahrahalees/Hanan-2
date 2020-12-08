@@ -39,7 +39,7 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
   @override
 
   DateTime dateSearch=DateTime.now();
-  String dateSearch2=DateTime.now().toString().substring(0, 10);
+  String dateSearchDiary=DateTime.now().toString().substring(0, 10);
   var dateSearch3;
   final _formkey = GlobalKey<FormState>();
   String comment;
@@ -48,8 +48,7 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
   Widget build(BuildContext context) {
     List <TextEditingController> cs = [];
     User userTeacher = FirebaseAuth.instance.currentUser;
-    CollectionReference students = FirebaseFirestore.instance.collection(
-        'Students');
+    CollectionReference students = FirebaseFirestore.instance.collection('Students');
 
 
     return Scaffold(
@@ -57,7 +56,7 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
       SafeArea(
           child: StreamBuilder<QuerySnapshot>(
               stream: students.doc(uid).collection('Posts').where(
-                  'date', isEqualTo: dateSearch2).orderBy(
+                  'date', isEqualTo: dateSearchDiary).orderBy(
                   'createdAt', descending: true).snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -90,7 +89,7 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
                           Center(
                             //alignment: Alignment.bottomLeft,
                             child: Text(
-                              dateSearch2, style: TextStyle(color: Colors
+                              dateSearchDiary, style: TextStyle(color: Colors
                                 .grey),),),
                           Padding(padding: new EdgeInsets.all(8)),
                           ListView.builder(
@@ -147,8 +146,8 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
                                                             .deepPurple)
                                                 );
                                               },
-                                              width: 2000,
-                                              height: 450,
+                                              width: 1000,
+                                              height: 250,
                                             )
                                                 : Text("",
                                               style: TextStyle(fontSize: 0),),
@@ -433,10 +432,8 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
                     .then((selectedDate) {
                   if (selectedDate != null) {
                     setState(() {
-                      dateSearch3 = DatePickerEntryMode.input;
                       dateSearch = selectedDate;
-                      dateSearch2 = dateSearch.toString().substring(0, 10);
-                      print(dateSearch2);
+                      dateSearchDiary = dateSearch.toString().substring(0, 10);
                     });
                   }
                 });

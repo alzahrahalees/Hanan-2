@@ -17,6 +17,7 @@ class SpecialistPlans extends StatefulWidget {
 class _SpecialistPlansState extends State<SpecialistPlans> {
 
   String specialistTypeId='communicationSpecialistId';
+
   User userSpecialist = FirebaseAuth.instance.currentUser;
   void getType() async {
     await FirebaseFirestore.instance
@@ -25,26 +26,16 @@ class _SpecialistPlansState extends State<SpecialistPlans> {
         .get()
         .then((data) {
       if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
-        setState(() {
-          specialistTypeId = 'communicationSpecialistId';
-        });
-      }
+        setState(() {specialistTypeId = 'communicationSpecialistId';});}
       if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
         setState(() {
-          specialistTypeId = 'psychologySpecialistId';
-        });
-      }
+          specialistTypeId = 'psychologySpecialistId';});}
       if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
-        setState(() {
-          specialistTypeId = 'occupationalSpecialistId';
-        });
-      }
+        setState(() {specialistTypeId = 'occupationalSpecialistId';
+        });}
       if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
         setState(() {
-          specialistTypeId = 'physiotherapySpecialistId';
-        });
-      }
-    });
+          specialistTypeId = 'physiotherapySpecialistId';});}});
   }
 
   @override
