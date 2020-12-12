@@ -223,7 +223,7 @@ return isExit;
                       String docId= widget.studentId+DateTime.now().year.toString()+_semesterValue+ran.nextInt(10000000).toString();
                       bool checkT= _semesterValue == 'first'? await  checkTitle1( titlePlan): await checkTitle2( titlePlan);
                        bool isDone = await setUIds();
-                      if (checkT ) {
+                      if (checkT==true) {
                         //Add to data base
                         await FirebaseFirestore.instance.collection('Students')
                             .doc(widget.studentId).collection('Plans')
@@ -244,16 +244,14 @@ return isExit;
                           'occupationalSpecialistId':_occupationalSpecialistId != null?_occupationalSpecialistId:null,
                           'communicationSpecialistId':_communicationSpecialistId != null?_communicationSpecialistId:null,
                           'physiotherapySpecialistId':_physiotherapySpecialistId != null?_physiotherapySpecialistId :null,
-                        });}
-
-
+                        });
+                        Navigator.pop(context);}
                       else{
                         _scaffoldKey.currentState.showSnackBar(SnackBar(
                 content: Text(" لقد تم إضافة $titlePlan $semester ",style: TextStyle(color: Colors.deepPurple,fontSize: 12)),
                  backgroundColor: Colors.white70,
                  duration: Duration(seconds: 3),
                       ));}
-                      Navigator.pop(context);
                     }
                   ),
                 ),

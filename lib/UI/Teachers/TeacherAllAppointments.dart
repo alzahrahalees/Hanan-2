@@ -6,9 +6,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/cupertino.dart';
 
 
-CollectionReference teacher= FirebaseFirestore.instance.collection('Teachers')
-    .doc(FirebaseAuth.instance.currentUser.email).collection('Appointments');
-int _currentIndex=0;
 
 class AllAppointmentsTeacher extends StatefulWidget {
   @override
@@ -17,6 +14,10 @@ class AllAppointmentsTeacher extends StatefulWidget {
 
 class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with TickerProviderStateMixin{
 
+
+  CollectionReference _teacher= FirebaseFirestore.instance.collection('Teachers')
+      .doc(FirebaseAuth.instance.currentUser.email).collection('Appointments');
+  int _currentIndex=0;
 
 
   int whatDayIndex(){
@@ -136,7 +137,7 @@ class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with T
         body: Container(
           color: kBackgroundPageColor,
           child: StreamBuilder<QuerySnapshot>(
-              stream: teacher.where(whatDay(_currentIndex),isEqualTo: true).snapshots(),
+              stream: _teacher.where(whatDay(_currentIndex),isEqualTo: true).snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData)
                   return Center(child: SpinKitFoldingCube(
@@ -151,7 +152,7 @@ class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with T
                   default:
                     return ListView(
                       children: snapshot.data.docs.map((DocumentSnapshot document){
-                        try{
+
                         _studentName= document.data()['name'];
                         _specialistName= document.data()['specialistName'];
                         _specialistType= document.data()['specialistType'];
@@ -159,10 +160,8 @@ class _AllAppointmentsTeacherState extends State<AllAppointmentsTeacher>  with T
                         _min=document.data()['min'];
                         _time= dayOrNight(_hour);
                         _isChecked= document.data()['${_sDay}IsChecked'] ;
-                        }
-                        catch(e){
-                          print('#### Appointment Err: $e  ####');
-                        }
+
+
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Card(

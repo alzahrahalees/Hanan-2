@@ -151,7 +151,7 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                               });
                               if (isValid() && _password2 == _password){
                                 setState(() {
-                                  isItValid = false;
+                                  isItValid = true;
                                   textColor = Colors.grey;
                                   icon= Icon(
                                     Icons.check,
@@ -193,7 +193,9 @@ class _AddAdminScreenState extends State<AddAdminScreen> {
                              child: Text("تسجيل", style: kTextButtonStyle.copyWith(fontSize: 20)),
                              shape: RoundedRectangleBorder(
                                  borderRadius: BorderRadius.circular(18.0)),
-                             onPressed:() { }
+                             onPressed:() {
+
+                             }
 
                        ),
                         ),

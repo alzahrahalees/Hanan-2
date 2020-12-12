@@ -33,6 +33,36 @@ class _AddAppointmentState extends State<AddAppointment> {
   Color _color = Colors.black54;
   String warningText = '';
   bool _isLoading = false;
+  String _specialistTypeId ='physiotherapySpecialistId';
+
+  void getType() async {
+    await FirebaseFirestore.instance
+        .collection('Specialists')
+        .doc(user.email)
+        .get()
+        .then((data) {
+      if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
+        setState(() {
+          _specialistTypeId = 'communicationSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
+        setState(() {
+          _specialistTypeId = 'psychologySpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
+        setState(() {
+          _specialistTypeId = 'occupationalSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
+        setState(() {
+          _specialistTypeId = 'physiotherapySpecialistId';
+        });
+      }
+    });
+  }
 
   //function for days picker
   _onChangeDays(daysList) {
@@ -84,22 +114,10 @@ class _AddAppointmentState extends State<AddAppointment> {
     return type;
   }
 
-  Future<String> _getCenterID() async {
-    String centerId;
-    await FirebaseFirestore.instance
-        .collection('Specialists')
-        .doc(user.email)
-        .get()
-        .then((doc) {
-      centerId = doc.data()['center'];
-      print('insid get center Id function : $centerId');
-    });
-    return centerId;
-  }
+
 
   //add the appointment to DB
-  _addToDB(String teacherId, String specialistName, String specialistType,
-      String _centerId) {
+  _addToDB(String teacherId, String specialistName, String specialistType,) {
     Random ran = Random();
     int num = ran.nextInt(100000000);
     String docId = _studentId + num.toString();
@@ -191,39 +209,16 @@ class _AddAppointmentState extends State<AddAppointment> {
       print('appointment added to teacher');
     }).catchError((err) => print('### Err : $err ###'));
 
-    // add To Student In Center
-    FirebaseFirestore.instance
-        .collection('Centers')
-        .doc(_centerId)
-        .collection('Students')
-        .doc(_studentId)
-        .collection('Appointments')
-        .doc(docId)
-        .set({
-          'name': _studentName,
-          'studentId': _studentId,
-          'specialistId': user.email,
-          'teacherId': teacherId,
-          'specialistName': specialistName,
-          'specialistType': specialistType,
-          'hour': _hour,
-          'min': _min,
-          'sun': _sun,
-          'mon': _mon,
-          'tue': _tue,
-          'wed': _wed,
-          'thu': _thu,
-          'sunIsChecked': false,
-          'monIsChecked': false,
-          'tueIsChecked': false,
-          'wedIsChecked': false,
-          'thuIsChecked': false,
-        })
-        .whenComplete(() => print('appointment added to teacher'))
-        .catchError((err) => print('### Err : $err ###'));
+
   }
 
   // call all functions
+
+  @override
+  void initState() {
+    super.initState();
+    getType();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,8 +228,7 @@ class _AddAppointmentState extends State<AddAppointment> {
       _teacherId = await _teacherUID(_studentId);
       _specialistName = await _getSpecialistName();
       _specialistType = await _getSpecialistType();
-      _centerId = await _getCenterID();
-      _addToDB(_teacherId, _specialistName, _specialistType, _centerId);
+      _addToDB(_teacherId, _specialistName, _specialistType);
       print('Before:  $_theDays');
       _theDays = [];
       Navigator.pop(context);
@@ -285,9 +279,7 @@ class _AddAppointmentState extends State<AddAppointment> {
                         ),
                         StreamBuilder(
                             stream: FirebaseFirestore.instance
-                                .collection('Specialists')
-                                .doc(user.email)
-                                .collection('Students')
+                                .collection('Students').where(_specialistTypeId, isEqualTo:user.email)
                                 .snapshots(),
                             builder: (context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {

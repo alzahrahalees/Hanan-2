@@ -139,12 +139,13 @@ class _ProfileState extends State<Profile> {
                       hintTitle: 'الوظيفة',
                       title:arabicTypeF(),
                     ),
-                    (type=="Specialists")? ProfileTile(
+                    type=="Specialists"? ProfileTile(
+                      readOnly:true,
                       color: kWolcomeBkg,
                       icon: Icons.info,
                       hintTitle: 'التخصص',
                       title:document.data()['typeOfSpechalist'],
-                    ):Text(''),
+                    ):Text(""),
 
                     isAdmin? Center(
                       child: Padding(

@@ -86,8 +86,7 @@ class _TeacherScreenState extends State<TeacherScreen> {
                           return Center(child:SpinKitFoldingCube(
                             color: kUnselectedItemColor,
                             size: 60,
-                          )
-                            ,);
+                          ),);
                         default:
                           return  ListView.builder(
                               physics: ScrollPhysics(),
@@ -101,54 +100,14 @@ class _TeacherScreenState extends State<TeacherScreen> {
                                     color:  document.data()["isAuth"]==false ?Color(0xffffd6d6): Colors.white,
                                     borderOnForeground: true,
                                     child: ListTile(
-
                                       onTap: (){
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    TeacherInfo(document.data()['uid'])));
-                                      },
-
-                                      // trailing: IconButton(icon: Icon (Icons.delete),
-                                      //     onPressed: () {
-                                      //       return Alert(
-                                      //         // content: Icon(Icons.clear, color: Colors.red,),
-                                      //         context: context,
-                                      //         type: AlertType.error,
-                                      //         title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
-                                      //         desc: "",
-                                      //         buttons: [
-                                      //           DialogButton(
-                                      //             child: Text(
-                                      //               "لا",
-                                      //               style: TextStyle(color: Colors.white, fontSize: 20),
-                                      //             ),
-                                      //             onPressed: () => Navigator.pop(context),
-                                      //             color: kButtonColor,
-                                      //           ),
-                                      //           DialogButton(
-                                      //             child: Text(
-                                      //               "نعم",
-                                      //               style: TextStyle(color: Colors.white, fontSize: 20),
-                                      //             ),
-                                      //             onPressed: (){
-                                      //
-                                      //               Teachers.doc(document.id).delete();
-                                      //               Users.doc(document.id).delete();
-                                      //               FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
-                                      //                   .catchError((e)=> print(e));
-                                      //               Navigator.pop(context);
-                                      //             },
-                                      //             color: kButtonColor,
-                                      //           ),
-                                      //         ],
-                                      //       ).show();
-                                      //     }
-                                      // ),
+                                                    TeacherInfo(document.data()['uid'])));},
                                       title:  Text(document.data()['name'], style: kTextPageStyle),
                                       subtitle:  Text( document.data()["isAuth"]==true? "معلم":" لم تتم المصادقة",style: kTextPageStyle),
-
                                     ));}
                                 else return SizedBox();
                               }
@@ -163,3 +122,42 @@ class _TeacherScreenState extends State<TeacherScreen> {
 
   }
 }
+
+
+
+// trailing: IconButton(icon: Icon (Icons.delete),
+//     onPressed: () {
+//       return Alert(
+//         // content: Icon(Icons.clear, color: Colors.red,),
+//         context: context,
+//         type: AlertType.error,
+//         title: " هل أنت مـتأكد من حذف  ${document.data()['name']} ؟ ",
+//         desc: "",
+//         buttons: [
+//           DialogButton(
+//             child: Text(
+//               "لا",
+//               style: TextStyle(color: Colors.white, fontSize: 20),
+//             ),
+//             onPressed: () => Navigator.pop(context),
+//             color: kButtonColor,
+//           ),
+//           DialogButton(
+//             child: Text(
+//               "نعم",
+//               style: TextStyle(color: Colors.white, fontSize: 20),
+//             ),
+//             onPressed: (){
+//
+//               Teachers.doc(document.id).delete();
+//               Users.doc(document.id).delete();
+//               FirebaseFirestore.instance.collection('NoAuth').doc(document.id).delete()
+//                   .catchError((e)=> print(e));
+//               Navigator.pop(context);
+//             },
+//             color: kButtonColor,
+//           ),
+//         ],
+//       ).show();
+//     }
+// ),

@@ -592,8 +592,7 @@ class ProfileTile extends StatelessWidget {
                     validator: (value) {
                       if (value.isEmpty) {
                         return "لا يمكن تركها فارغة";
-                      } else
-                        return null;
+                      }
                     },
                   ),
                 ),
@@ -657,8 +656,7 @@ class ProfileTileTwo extends StatelessWidget {
                     validator: (value) {
                       if (value.isEmpty) {
                         return "لا يمكن تركها فارغة";
-                      } else
-                        return null;
+                      }
                     },
                   ),
                 ),

@@ -99,9 +99,12 @@ class _AddGoalState extends State<AddGoal> {
                                     builder: (context, setState) {
                                       return AlertDialog(
                                           title:
-                                          SizedBox(
-                                            width: 200,
-                                            height: 200,
+
+
+                                          Container(
+                                            width: 330,
+                                            height: 330,
+
                                             child: ListView(
                                               shrinkWrap: true,
                                               children: [

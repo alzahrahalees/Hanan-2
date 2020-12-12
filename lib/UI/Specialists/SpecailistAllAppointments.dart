@@ -20,11 +20,39 @@ class AllAppointmentsSpecialist extends StatefulWidget {
 
 class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> with TickerProviderStateMixin{
 
-
-  CollectionReference specialist= FirebaseFirestore.instance.collection('Specialists')
-      .doc(FirebaseAuth.instance.currentUser.email).collection('Appointments');
+  String _user = FirebaseAuth.instance.currentUser.email;
 
 
+  String specialistTypeId ='physiotherapySpecialistId';
+
+  void getType() async {
+    await FirebaseFirestore.instance
+        .collection('Specialists')
+        .doc(_user)
+        .get()
+        .then((data) {
+      if (data.data()['typeOfSpechalist'] == 'أخصائي تخاطب') {
+        setState(() {
+          specialistTypeId = 'communicationSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي نفسي") {
+        setState(() {
+          specialistTypeId = 'psychologySpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج وظيفي") {
+        setState(() {
+          specialistTypeId = 'occupationalSpecialistId';
+        });
+      }
+      if (data.data()['typeOfSpechalist'] == "أخصائي علاج طبيعي") {
+        setState(() {
+          specialistTypeId = 'physiotherapySpecialistId';
+        });
+      }
+    });
+  }
 
   int whatDayIndex(){
     int weekday;
@@ -126,6 +154,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
     super.dispose();
   }
 
+
   TabController _tabController;
 
   @override
@@ -135,6 +164,7 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
      _currentIndex=whatDayIndex();
      _tabController = TabController(vsync: this, length: 5, initialIndex: whatDayIndex());
    });
+   getType();
   }
 
 
@@ -169,6 +199,9 @@ class _AllAppointmentsSpecialistState extends State<AllAppointmentsSpecialist> w
   @override
   Widget build(BuildContext context) {
 
+
+    CollectionReference specialist= FirebaseFirestore.instance.collection('Specialists')
+        .doc(_user).collection('Appointments');
     String _sDay= whatDay(_currentIndex);
     DaysTimer _daysTimer = DaysTimer();
     var _studentName='';

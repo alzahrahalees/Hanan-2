@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hanan/UI/Constance.dart';
 import 'package:hanan/UI/Parents/Plans/GoalAnalysisP.dart';
+import 'package:hanan/UI/Teachers/Plans/MonthlyReports.dart';
 
 //plan pages for 6 majors ..
 class SpecialMajorsPageP extends StatefulWidget {
@@ -15,6 +16,8 @@ class SpecialMajorsPageP extends StatefulWidget {
 }
 class _SpecialMajorsPagePState extends State<SpecialMajorsPageP>  with TickerProviderStateMixin{
 
+  User _userParent = FirebaseAuth.instance.currentUser;
+
   @override
   void dispose() {
     super.dispose();
@@ -24,9 +27,25 @@ class _SpecialMajorsPagePState extends State<SpecialMajorsPageP>  with TickerPro
   void initState() {
     super.initState();
   }
+
+  void handleClick(String value) {
+    switch (value) {
+      case 'التقارير الشهرية':
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MonthlyReports(
+                  studentId:_userParent.email,
+                  planId: widget.planId,
+                )));
+        break;
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    User _userParent = FirebaseAuth.instance.currentUser;
+
     CollectionReference studentsPlansGoal = FirebaseFirestore.instance.collection('Students').doc(_userParent.email).collection('Plans').doc(widget.planId).collection("Goals");
 
     if(controller == null) {
@@ -34,6 +53,18 @@ class _SpecialMajorsPagePState extends State<SpecialMajorsPageP>  with TickerPro
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
+            actions: <Widget>[
+              PopupMenuButton<String>(
+                  onSelected: handleClick,
+                  itemBuilder: (BuildContext context) {
+                    return {'التقارير الشهرية'}.map((String choice) {
+                      return PopupMenuItem<String>(
+                        value: choice,
+                        child: Text(choice),
+                      );
+                    }).toList();
+                  }),
+            ],
             automaticallyImplyLeading: true,
             backgroundColor: kAppBarColor,
             toolbarHeight: 75,
