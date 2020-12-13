@@ -89,13 +89,13 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                           child: Column(
                                             children: [
                                               Padding(padding: EdgeInsets.all(8),),
-                                            documentSnapshot['video']!=null ?
+                                            documentSnapshot['videoUrl']!=null ?
                                               Column(
                                                 children: [
                                                   Container(
 
                                     child:IconButton(icon: Icon(Icons.file_download,color: Colors.deepPurpleAccent.shade100,), onPressed:() async {
-                                      String path =documentSnapshot['video'];
+                                      String path =documentSnapshot['videoUrl'];
                                       GallerySaver.saveVideo(path, albumName: "Hanan")
                                           .then((bool success) {
                                         setState(() {
@@ -116,7 +116,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                     }),
                                     alignment: Alignment.centerLeft,
                                     ),
-                                                  Video(documentSnapshot['video'],),
+                                                  Video(documentSnapshot['videoUrl'],),
 
                                                 ],
                                               ):Text("",style:TextStyle(fontSize: 0),),
