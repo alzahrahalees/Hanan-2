@@ -122,10 +122,10 @@ class _DiariesTeacherState extends State<DiariesTeacher> {
                                                 postId: documentSnapshot.id,
                                                 studentUid: uid,
                                                 imageUrl: documentSnapshot['imageUrl'],
-                                                videoUrl: documentSnapshot['video'],),),
-                                            documentSnapshot['video'] != null
+                                                videoUrl: documentSnapshot['videoUrl'],),),
+                                            documentSnapshot['videoUrl'] != null
                                                 ?
-                                            Video(documentSnapshot['video'],)
+                                            Video(documentSnapshot['videoUrl'],)
                                                 : Text("",
                                               style: TextStyle(fontSize: 0),),
                                             documentSnapshot['imageUrl'] != null

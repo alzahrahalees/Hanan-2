@@ -250,8 +250,6 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                               var random = new Random();
                                                                               int documentID = random.nextInt(1000000000);
                                                                               String teacherName=await getteacherName();
-
-
                                                                               CollectionReference studentsPlansGoal = FirebaseFirestore.instance.collection('Students').
                                                                               doc(widget.studentId).collection('Plans').doc(widget.planId).collection("Goals");
                                                                               var addProceduralGoalToStudent = studentsPlansGoal.doc(
@@ -448,12 +446,7 @@ class _AnalysisState extends State<AnalysisDetails> {
                                                                                   }
                                                                                   );
                                                                                   canEdit=false;
-                                                                                });}
-
-
-
-
-                                                                                  , child: Text("حفظ",style: TextStyle(color: Colors.deepPurple),)):
+                                                                                });}, child: Text("حفظ",style: TextStyle(color: Colors.deepPurple),)):
                                                                               Text(""):Text(""),
                                                                             ],
                                                                           ),
