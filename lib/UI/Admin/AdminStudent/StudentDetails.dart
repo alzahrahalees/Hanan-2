@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,8 +70,6 @@ class _StudentInfoState extends State<StudentInfo> {
   Widget build(BuildContext context) {
 
 
-
-
     String name;
     String age;
     String phone;
@@ -135,11 +135,6 @@ class _StudentInfoState extends State<StudentInfo> {
                                   oldCommunicationSpecialistId=document.data()['communicationSpecialistId'];
                                   oldPsychologySpecialistId=document.data()['psychologySpecialistId'];
 
-
-                                  print(oldPhysiotherapySpecialistId);
-                                  print(oldOccupationalSpecialistId);
-                                  print(oldCommunicationSpecialistId);
-                                  print(oldPsychologySpecialistId);
 
                                   return Column(children: <Widget>[
                                     ProfileTile(
@@ -316,12 +311,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                                           psychologySpecialistName,
                                                       isDense: true,
                                                       hint: Text(document
-                                                                      .data()[
-                                                                  'psychologySpecialistName'] !=
-                                                              null
-                                                          ? document.data()[
-                                                              'psychologySpecialistName']
-                                                          : "لا يوجد"),
+                                                                      .data()['psychologySpecialistName'] != null ?
+                                                      document.data()['psychologySpecialistName'] : "لا يوجد"),
                                                       onChanged: (newValue) {
                                                         setState(() {
                                                           psychologySpecialistName =
@@ -334,10 +325,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                                               document) {
                                                         return new DropdownMenuItem<String>(
                                                             value: document.data()["name"],
-                                                            onTap: () {
-                                                              psychologySpecialistId =
-                                                                  document.data()[
-                                                                      "uid"];
+                                                            onTap: () {psychologySpecialistId = document.data()["uid"];
                                                               print(physiotherapySpecialistId);},
                                                             child: new Container(height: 23,
                                                                     //color: primaryColor,
@@ -361,10 +349,7 @@ class _StudentInfoState extends State<StudentInfo> {
                                           child: StreamBuilder(
                                               stream: FirebaseFirestore.instance
                                                   .collection('Specialists').where('center',isEqualTo: userAdmin.email)
-                                                  .where('typeOfSpechalist',
-                                                      isEqualTo:
-                                                          "أخصائي علاج وظيفي")
-                                                  .snapshots(),
+                                                  .where('typeOfSpechalist', isEqualTo: "أخصائي علاج وظيفي").snapshots(),
                                               builder: (context,
                                                   AsyncSnapshot<QuerySnapshot>
                                                       snapshot) {
@@ -521,6 +506,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                               borderRadius:
                                                   BorderRadius.circular(18.0)),
                                           onPressed: () {
+                                            Random ran = new Random();
+                                            int id = ran.nextInt(1000000);
                                             print(oldCommunicationSpecialistId);
                                             if (formkey.currentState.validate()) {
                                               students.doc(studentId).update({'name': newName == null ? name : newName,
@@ -537,11 +524,12 @@ class _StudentInfoState extends State<StudentInfo> {
 
 
                                                 FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
-                                                    .collection('Appointments').where('studentId', isEqualTo: studentId)
+                                                    .collection('Appointments')
+                                                    .where('studentId', isEqualTo: studentId)
                                                     .get().then((value) => value.docs.forEach((element) async{
 
                                                  await FirebaseFirestore.instance.collection('Teachers').doc(teacherId)
-                                                      .collection('Appointments').doc(element.id).set({
+                                                      .collection('Appointments').doc('$studentId''$id').set({
                                                     'name': element.data()['name'],
                                                     'studentId': element.data()['studentId'],
                                                     'specialistId': element.data()['specialistId'],
@@ -562,7 +550,6 @@ class _StudentInfoState extends State<StudentInfo> {
                                                     'thuIsChecked': element.data()['wedIsChecked'],
                                                   });
 
-
                                                   FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
                                                       .collection('Appointments').doc(element.id).delete();
                                                 }));
@@ -579,8 +566,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   'psychologySpecialistId': psychologySpecialistId,
                                                 });
 
-                                                studentsPlans.where( 'psychologySpecialistId',isEqualTo:oldPsychologySpecialistId).get().then((value) =>
-                                                    value.docs.forEach((element) {
+                                                studentsPlans.where( 'psychologySpecialistId',isEqualTo:oldPsychologySpecialistId)
+                                                    .get().then((value) => value.docs.forEach((element) {
                                                       studentsPlans.doc(element.id).update({
                                                         'psychologySpecialistId': psychologySpecialistId,
                                                       });}));
@@ -600,7 +587,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                                               'psychologySpecialistId': psychologySpecialistId,});}));}));
 
                                                 FirebaseFirestore.instance.collection('Specialists').doc(oldPsychologySpecialistId)
-                                                    .collection('Appointments').where('specialistId', isEqualTo: oldPsychologySpecialistId )
+                                                    .collection('Appointments')
+                                                    .where('studentId', isEqualTo: studentId)
                                                     .get().then((value) => value.docs.forEach((element) {
                                                   String doId= element.id;
                                                   FirebaseFirestore.instance.collection('Students').doc(studentId)
@@ -609,7 +597,8 @@ class _StudentInfoState extends State<StudentInfo> {
 
 
                                                 FirebaseFirestore.instance.collection('Students').doc(studentId)
-                                                    .collection('Appointments').where('specialistId', isEqualTo: oldPsychologySpecialistId )
+                                                    .collection('Appointments')
+                                                    .where('specialistId', isEqualTo: oldPsychologySpecialistId )
                                                     .get().then((value) => value.docs.forEach((element) {
                                                   String doId= element.id;
                                                   FirebaseFirestore.instance.collection('Students').doc(studentId)
@@ -618,7 +607,9 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                                 if(teacherId==null){
                                                   FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
-                                                      .collection('Appointments').where('specialistId', isEqualTo: oldPsychologySpecialistId )
+                                                      .collection('Appointments')
+                                                      .where('specialistId', isEqualTo: oldPsychologySpecialistId )
+                                                      .where('studentId', isEqualTo: studentId)
                                                       .get().then((value) => value.docs.forEach((element) {
                                                         String doId= element.id;
                                                         FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
@@ -626,25 +617,28 @@ class _StudentInfoState extends State<StudentInfo> {
                                                       }));
                                                 }
 
-
-                                              }
-
-                                              if (occupationalSpecialistId != null) {
-                                                students.doc(studentId).update({
-                                                  'occupationalSpecialistName':
-                                                      occupationalSpecialistName,
-                                                  //,ظيفي
-                                                  'occupationalSpecialistId':
-                                                      occupationalSpecialistId,
+                                                FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                    .collection('Plans').get().then((value) {
+                                                      value.docs.forEach((element) {
+                                                        
+                                                      });
                                                 });
 
-                                                studentsPlans.where('occupationalSpecialistId',isEqualTo:oldOccupationalSpecialistId).get().then((value) =>
-                                                    value.docs.forEach((element) {
+                                              }
+                                              if (occupationalSpecialistId != null) {
+
+                                                students.doc(studentId).update({
+                                                  'occupationalSpecialistName': occupationalSpecialistName,
+                                                  'occupationalSpecialistId': occupationalSpecialistId,
+                                                });
+
+                                                studentsPlans.where('occupationalSpecialistId',isEqualTo:oldOccupationalSpecialistId)
+                                                    .get().then((value) => value.docs.forEach((element) {
                                                       studentsPlans.doc(element.id).update({
                                                         'occupationalSpecialistId': occupationalSpecialistId,
                                                       });}));
-                                                studentsFiles.where('occupationalSpecialistId',isEqualTo:oldOccupationalSpecialistId).get().then((value) =>
-                                                    value.docs.forEach((element) {
+                                                studentsFiles.where('occupationalSpecialistId',isEqualTo:oldOccupationalSpecialistId)
+                                                    .get().then((value) => value.docs.forEach((element) {
                                                       studentsFiles.doc(element.id).update({
                                                         'occupationalSpecialistId': occupationalSpecialistId,
                                                       });}));
@@ -661,8 +655,10 @@ class _StudentInfoState extends State<StudentInfo> {
                                                               occupationalSpecialistId,
                                                             });}));}));
 
-                                               FirebaseFirestore.instance.collection('Specialists').doc(oldOccupationalSpecialistId)
-                                                   .collection('Appointments').where('studentId', isEqualTo: studentId )
+                                               FirebaseFirestore.instance.collection('Specialists')
+                                                   .doc(oldOccupationalSpecialistId)
+                                                   .collection('Appointments')
+                                                   .where('studentId', isEqualTo: studentId )
                                                    .get().then((value) => value.docs.forEach((element) {
                                                  String doId= element.id;
                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
@@ -670,7 +666,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                                }));
 
                                                 FirebaseFirestore.instance.collection('Students').doc(studentId)
-                                                    .collection('Appointments').where('specialistId', isEqualTo: oldOccupationalSpecialistId )
+                                                    .collection('Appointments')
+                                                    .where('specialistId', isEqualTo: oldOccupationalSpecialistId )
                                                     .get().then((value) => value.docs.forEach((element) {
                                                   String doId= element.id;
                                                   FirebaseFirestore.instance.collection('Students').doc(studentId)
@@ -679,7 +676,9 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                                 if(teacherId==null){
                                                   FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
-                                                      .collection('Appointments').where('specialistId', isEqualTo: oldOccupationalSpecialistId )
+                                                      .collection('Appointments')
+                                                      .where('specialistId', isEqualTo: oldOccupationalSpecialistId )
+                                                      .where('studentId', isEqualTo: studentId)
                                                       .get().then((value) => value.docs.forEach((element) {
                                                     String doId= element.id;
                                                     FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
@@ -687,8 +686,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   }));
                                                 }
 
-                                              }
 
+                                              }
                                               if (physiotherapySpecialistId != null) {
                                                 students.doc(studentId).update({'physiotherapySpecialistName': physiotherapySpecialistName,
                                                   //علاج طبيعي
@@ -705,10 +704,10 @@ class _StudentInfoState extends State<StudentInfo> {
                                                         'physiotherapySpecialistId': physiotherapySpecialistId,
                                                       });}));
 
-                                                studentsPlans.get().then((value) =>
-                                                    value.docs.forEach((element) {
-                                                      studentsPlans.doc(element.id).collection('Goals').where('physiotherapySpecialistId', isGreaterThan: '' ).get().then((val) =>
-                                                          val.docs.forEach((goal) {
+                                                studentsPlans.get().then((value) => value.docs.forEach((element) {
+                                                      studentsPlans.doc(element.id).collection('Goals')
+                                                          .where('physiotherapySpecialistId', isGreaterThan: '' )
+                                                          .get().then((val) => val.docs.forEach((goal) {
                                                             studentsPlans.doc(element.id).collection('Goals').doc(goal.id).update({
                                                               'physiotherapySpecialistName':
                                                               physiotherapySpecialistName,
@@ -718,7 +717,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                                             });}));}));
 
                                                 FirebaseFirestore.instance.collection('Specialists').doc(oldPhysiotherapySpecialistId)
-                                                    .collection('Appointments').where('specialistId', isEqualTo: oldPhysiotherapySpecialistId )
+                                                    .collection('Appointments')
+                                                    .where('studentId', isEqualTo: studentId )
                                                     .get().then((value) => value.docs.forEach((element) {
                                                   String doId= element.id;
                                                   FirebaseFirestore.instance.collection('Students').doc(studentId)
@@ -745,16 +745,12 @@ class _StudentInfoState extends State<StudentInfo> {
                                                 }
 
                                               }
-
                                               if (communicationSpecialistId != null) {
 
                                                 students.doc(studentId).update({
-
-                                                  'communicationSpecialistName':
-                                                      communicationSpecialistName,
+                                                  'communicationSpecialistName': communicationSpecialistName,
                                                   //تخاطب
-                                                  'communicationSpecialistId':
-                                                      communicationSpecialistId,
+                                                  'communicationSpecialistId': communicationSpecialistId,
                                                 });
 
                                                 studentsPlans.where('communicationSpecialistId',isEqualTo:oldCommunicationSpecialistId).get().then((value) =>
@@ -771,20 +767,20 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                                 studentsPlans.get().then((value) =>
                                                     value.docs.forEach((element) {
-                                                      studentsPlans.doc(element.id).collection('Goals').where('communicationSpecialistId', isGreaterThan: '' ).get().then((val) =>
-                                                          val.docs.forEach((goal) {
+                                                      studentsPlans.doc(element.id).collection('Goals')
+                                                          .where('communicationSpecialistId', isGreaterThan: '' ).
+                                                      get().then((val) => val.docs.forEach((goal) {
                                                             studentsPlans.doc(element.id).collection('Goals').doc(goal.id).update({
-                                                              'communicationSpecialistName':
-                                                              communicationSpecialistName,
+                                                              'communicationSpecialistName': communicationSpecialistName,
                                                               //تخاطب
-                                                              'communicationSpecialistId':
-                                                              communicationSpecialistId,
+                                                              'communicationSpecialistId': communicationSpecialistId,
                                                             });}));}));
 
 
 
                                                 FirebaseFirestore.instance.collection('Specialists').doc(oldCommunicationSpecialistId)
-                                                    .collection('Appointments').where('specialistId', isEqualTo: oldCommunicationSpecialistId )
+                                                    .collection('Appointments')
+                                                    .where('studentId', isEqualTo: studentId )
                                                     .get().then((value) => value.docs.forEach((element) {
                                                   String doId= element.id;
                                                   FirebaseFirestore.instance.collection('Students').doc(studentId)
@@ -792,7 +788,8 @@ class _StudentInfoState extends State<StudentInfo> {
                                                 }));
 
                                                 FirebaseFirestore.instance.collection('Students').doc(studentId)
-                                                    .collection('Appointments').where('specialistId', isEqualTo: oldCommunicationSpecialistId )
+                                                    .collection('Appointments')
+                                                    .where('specialistId', isEqualTo: oldCommunicationSpecialistId )
                                                     .get().then((value) => value.docs.forEach((element) {
                                                   String doId= element.id;
                                                   FirebaseFirestore.instance.collection('Students').doc(studentId)
@@ -801,7 +798,9 @@ class _StudentInfoState extends State<StudentInfo> {
 
                                                 if(teacherId==null){
                                                   FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
-                                                      .collection('Appointments').where('specialistId', isEqualTo: oldCommunicationSpecialistId )
+                                                      .collection('Appointments')
+                                                      .where('specialistId', isEqualTo: oldCommunicationSpecialistId )
+                                                      .where('studentId', isEqualTo: studentId )
                                                       .get().then((value) => value.docs.forEach((element) {
                                                     String doId= element.id;
                                                     FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
@@ -809,6 +808,68 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   }));
                                                 }
 
+                                              }
+                                              if (psychologySpecialistId != null) {
+                                                students.doc(studentId).update({
+                                                  'psychologySpecialistName': psychologySpecialistName,
+                                                  //تخاطب
+                                                  'psychologySpecialistId': psychologySpecialistId,
+                                                });
+
+                                                studentsPlans.where('psychologySpecialistId',isEqualTo:oldPsychologySpecialistId)
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                      studentsPlans.doc(element.id).update({
+                                                        'psychologySpecialistId': psychologySpecialistId,
+                                                      });}));
+
+                                                studentsFiles.where('psychologySpecialistId',isEqualTo:oldPsychologySpecialistId).get().then((value) =>
+                                                    value.docs.forEach((element) {
+                                                      studentsFiles.doc(element.id).update({
+                                                        'psychologySpecialistId': psychologySpecialistId,
+                                                      });}));
+
+                                                studentsPlans.get().then((value) =>
+                                                    value.docs.forEach((element) {
+                                                      studentsPlans.doc(element.id).collection('Goals')
+                                                          .where('psychologySpecialistId', isGreaterThan: '' ).
+                                                      get().then((val) => val.docs.forEach((goal) {
+                                                        studentsPlans.doc(element.id).collection('Goals').doc(goal.id).update({
+                                                          'psychologySpecialistName': psychologySpecialistName,
+                                                          //تخاطب
+                                                          'psychologySpecialistId': psychologySpecialistId,
+                                                        });}));}));
+
+
+
+                                                FirebaseFirestore.instance.collection('Specialists').doc(oldPsychologySpecialistId)
+                                                    .collection('Appointments')
+                                                    .where('studentId', isEqualTo: studentId )
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                  String doId= element.id;
+                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                      .collection('Appointments').doc(doId).delete();
+                                                }));
+
+                                                FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                    .collection('Appointments')
+                                                    .where('specialistId', isEqualTo: oldPsychologySpecialistId )
+                                                    .get().then((value) => value.docs.forEach((element) {
+                                                  String doId= element.id;
+                                                  FirebaseFirestore.instance.collection('Students').doc(studentId)
+                                                      .collection('Appointments').doc(doId).delete();
+                                                }));
+
+                                                if(teacherId==null){
+                                                  FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                      .collection('Appointments')
+                                                      .where('specialistId', isEqualTo: oldPsychologySpecialistId )
+                                                      .where('studentId', isEqualTo: studentId )
+                                                      .get().then((value) => value.docs.forEach((element) {
+                                                    String doId= element.id;
+                                                    FirebaseFirestore.instance.collection('Teachers').doc(oldTeacherId)
+                                                        .collection('Appointments').doc(doId).delete();
+                                                  }));
+                                                }
                                               }
 
                                               users.doc(studentId).update({
@@ -821,53 +882,13 @@ class _StudentInfoState extends State<StudentInfo> {
                                                   'gender': gender,
                                                 });
                                               }
-                                              if (teacherId != null) {
-                                                users.doc(studentId).update({
-                                                  'teacherId': teacherId,
-                                                  'teacherName': teacherName,
-                                                });
-                                              }
+                                              // if (teacherId != null) {
+                                              //   users.doc(studentId).update({
+                                              //     'teacherId': teacherId,
+                                              //     'teacherName': teacherName,
+                                              //   });
+                                              // }
 
-                                              if (psychologySpecialistId !=
-                                                  null) {
-                                                users.doc(studentId).update({
-                                                  'psychologySpecialistName':
-                                                      psychologySpecialistName,
-                                                  //نفسي
-                                                  'psychologySpecialistId':
-                                                      psychologySpecialistId,
-                                                });
-                                              }
-                                              if (occupationalSpecialistId !=
-                                                  null) {
-                                                users.doc(studentId).update({
-                                                  'occupationalSpecialistName':
-                                                      occupationalSpecialistName,
-                                                  //,ظيفي
-                                                  'occupationalSpecialistId':
-                                                      occupationalSpecialistId,
-                                                });
-                                              }
-                                              if (physiotherapySpecialistId !=
-                                                  null) {
-                                                users.doc(studentId).update({
-                                                  'physiotherapySpecialistName':
-                                                      physiotherapySpecialistName,
-                                                  //علاج طبيعي
-                                                  'physiotherapySpecialistId':
-                                                      physiotherapySpecialistId,
-                                                });
-                                              }
-
-                                              if (communicationSpecialistId != null) {
-                                                users.doc(studentId).update({
-                                                  'communicationSpecialistName':
-                                                      communicationSpecialistName,
-                                                  //تخاطب
-                                                  'communicationSpecialistId':
-                                                      communicationSpecialistId,
-                                                });
-                                              }
                                               Navigator.pop(
                                                   context,
                                                   MaterialPageRoute(
