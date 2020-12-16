@@ -1,11 +1,9 @@
 import 'dart:io';
-import 'package:export_video_frame/export_video_frame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../Constance.dart';
 import 'Post.dart';
-import 'package:path/path.dart' as p;
 import 'package:image_downloader/image_downloader.dart';
 
 
