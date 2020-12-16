@@ -13,7 +13,6 @@ class ParentDiaries extends StatefulWidget {
   _ParentDiariesState createState() => _ParentDiariesState();
 }
 
-
 class _ParentDiariesState extends State<ParentDiaries> {
   String comment;
   DateTime dateSearch=DateTime.now();
