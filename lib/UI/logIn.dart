@@ -255,9 +255,9 @@ class _MainLogInState extends State<MainLogIn> {
                                       } else {
                                         setState(() {
                                           isLoading = false;
-                                          warningText = 'الرجاء تعيين كلمة المرور';
+                                          warningText =
+                                              'الرجاء تعيين كلمة المرور';
                                         });
-
                                       }
                                     }
                                   }),
@@ -277,8 +277,8 @@ class _MainLogInState extends State<MainLogIn> {
                                     child: Text(" تعيين كلمة المرور",
                                         style: kTextPageStyle.copyWith(
                                             decoration:
-                                            TextDecoration.underline)),
-                                    onTap: () async{
+                                                TextDecoration.underline)),
+                                    onTap: () async {
                                       String type = await whoIs(_email.text);
                                       Navigator.push(
                                           context,

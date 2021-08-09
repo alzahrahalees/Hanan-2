@@ -91,39 +91,7 @@ class _ParentDiariesState extends State<ParentDiaries> {
                                           documentSnapshot['videoUrl']!=null ?
                                           Column(
                                             children: [
-<<<<<<< HEAD
                                               Container(
-=======
-                                              Padding(padding: EdgeInsets.all(8),),
-                                            documentSnapshot['videoUrl']!=null ?
-                                              Column(
-                                                children: [
-                                                  Container(
-
-                                    child:IconButton(icon: Icon(Icons.file_download,color: Colors.deepPurpleAccent.shade100,), onPressed:() async {
-                                      String path =documentSnapshot['videoUrl'];
-                                      GallerySaver.saveVideo(path, albumName: "Hanan")
-                                          .then((bool success) {
-                                        setState(() {
-                                          print('Video is saved');
-                                          Scaffold.of(context).showSnackBar(
-                                              SnackBar(
-                                                  content: Text(
-                                                      "تم حفظ المقطع بنجاح",
-                                                      style: TextStyle(
-                                                          color: Colors
-                                                              .deepPurple,
-                                                          fontSize: 12)),
-                                                  backgroundColor: Colors.white70,
-                                                  duration: Duration(
-                                                      seconds: 1)));
-                                        });
-                                      });
-                                    }),
-                                    alignment: Alignment.centerLeft,
-                                    ),
-                                                  Video(documentSnapshot['videoUrl'],),
->>>>>>> ad11161ee5ed7ee71fc214646e8cbf8be2e11e4c
 
                                                 child:IconButton(icon: Icon(Icons.file_download,color: Colors.deepPurpleAccent.shade100,), onPressed:() async {
                                                   String path =documentSnapshot['videoUrl'];
@@ -160,9 +128,6 @@ class _ParentDiariesState extends State<ParentDiaries> {
 
                                                   String path =documentSnapshot['imageUrl'];
                                                   GallerySaver.saveImage(path, albumName: "Hanan")
-
-
-
 
                                                       .then((bool success) {
 
